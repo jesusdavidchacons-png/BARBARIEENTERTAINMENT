@@ -100,13 +100,12 @@
 
   <div class="film-grain"></div>
 
-  <!-- PANTALLA DE INICIO (SPLASH SCREEN / LOGO PURO CON ANIMACIÓN REC Y BOTÓN PLAY) -->
+  <!-- PANTALLA DE INICIO (SPLASH SCREEN CON LOGO PURO Y BOTÓN PLAY) -->
   <aside id="splash-screen" class="fixed inset-0 z-50 bg-[#050505] flex flex-col items-center justify-center p-6 select-none" aria-label="Pantalla de entrada">
     <div class="relative flex flex-col items-center max-w-md w-full text-center">
       
-      <!-- LOGO DE BARBARIE: ANIMACIÓN DEL REDONDO ROJO REC + TIPOGRAFÍA OFICIAL -->
+      <!-- LOGO DE BARBARIE: REDONDO ROJO REC ANIMADO + TIPOGRAFÍA OFICIAL -->
       <div class="flex items-center gap-3.5 mb-14">
-        <!-- Punto rojo REC con aro expansivo -->
         <span class="relative flex h-4 w-4">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
           <span class="relative inline-flex rounded-full h-4 w-4 bg-red-600"></span>
@@ -134,7 +133,6 @@
         </svg>
       </button>
 
-      <!-- Indicador sutil de inicio -->
       <span class="font-mono text-[10px] text-neutral-500 tracking-[0.3em] uppercase mt-8 animate-pulse">
         HAGA CLIC PARA INICIAR
       </span>
@@ -149,7 +147,7 @@
   <header class="fixed top-0 inset-x-0 z-40 bg-[#080808]/85 backdrop-blur-md border-b border-white/[0.04]">
     <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
       
-      <!-- Logotipo con punto rojo animado original -->
+      <!-- Logotipo con punto rojo animado -->
       <a href="#" class="flex items-center gap-3">
         <span class="relative flex h-2.5 w-2.5">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
@@ -175,7 +173,7 @@
     </div>
   </header>
 
-  <!-- HERO SECTION -->
+  <!-- 1. HERO SECTION -->
   <section class="min-h-[70vh] flex flex-col justify-center max-w-6xl mx-auto pt-36 pb-12 px-6">
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] font-mono uppercase tracking-[0.25em] text-neutral-400 mb-8 self-start">
       <span>Cine</span> • <span>Comerciales</span> • <span>Streaming</span> • <span>VR 360</span>
@@ -190,38 +188,7 @@
     </p>
   </section>
 
-  <!-- VISOR 360 INTERACTIVO DIRECTO (ARRASTRAR CON MOUSE O DEDO) -->
-  <section id="vr360" class="py-16 px-6 max-w-6xl mx-auto border-t border-white/10">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-      <div>
-        <div class="inline-flex items-center gap-2 font-mono text-xs text-red-500 tracking-widest uppercase mb-2">
-          <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-          ECOSISTEMAS VIRTUALES INMERSIVOS
-        </div>
-        <h2 class="font-display font-bold text-3xl sm:text-4xl text-white">VISOR 360° INTERACTIVO</h2>
-        <p class="font-sans text-xs text-neutral-400 mt-1">
-          Haz clic dentro del reproductor y <strong>arrastra con el ratón o el dedo</strong> para girar la perspectiva en 360 grados.
-        </p>
-      </div>
-
-      <div class="font-mono text-xs text-neutral-500 border border-white/10 px-3 py-1.5 rounded self-start md:self-auto">
-        PRODUCCIÓN: EXPOMETAL 2025 // MINA COLOMBIA
-      </div>
-    </div>
-
-    <div class="relative w-full aspect-[2.39/1] min-h-[380px] sm:min-h-[520px] rounded-xl overflow-hidden border border-white/20 shadow-2xl bg-black">
-      <iframe 
-        id="vr360-inline-player"
-        class="w-full h-full border-0" 
-        src="https://www.youtube-nocookie.com/embed/VCTQabyWgfs?enablejsapi=1&rel=0&modestbranding=1&playsinline=1" 
-        title="VR 360 Minas Venezolanas - ExpoMetal 2025"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; vr; xr" 
-        allowfullscreen>
-      </iframe>
-    </div>
-  </section>
-
-  <!-- LISTA VERTICAL DE PRODUCCIONES CON VIDEOS EN LA RAÍZ (./video.mp4) -->
+  <!-- 2. PRODUCCIONES (LISTA VERTICAL CONTINUA CON VIDEOS EN LA RAÍZ) -->
   <section id="obras" class="py-16 px-6 max-w-6xl mx-auto border-t border-white/5">
     
     <div class="mb-20">
@@ -492,7 +459,7 @@
                 href="#vr360"
                 class="font-mono text-xs text-red-400 border-b border-red-500/30 pb-0.5 hover:border-red-400 transition-all flex items-center gap-2"
               >
-                PROBAR ARRASTRE ARRIBA <span>↑</span>
+                IR AL VISOR 360 INTERACTIVO <span>↓</span>
               </a>
             </div>
           </div>
@@ -502,7 +469,39 @@
     </div>
   </section>
 
-  <!-- ENFOQUE TÉCNICO & MANIFIESTO -->
+  <!-- 3. VISOR 360 INTERACTIVO (AL FINAL DE LAS PRODUCCIONES) -->
+  <section id="vr360" class="py-24 px-6 max-w-6xl mx-auto border-t border-white/10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 font-mono text-xs text-red-500 tracking-widest uppercase mb-2">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          ECOSISTEMAS VIRTUALES INMERSIVOS
+        </div>
+        <h2 class="font-display font-bold text-3xl sm:text-4xl text-white">VISOR 360° INTERACTIVO</h2>
+        <p class="font-sans text-xs text-neutral-400 mt-1">
+          Haz clic dentro del reproductor y <strong>arrastra con el ratón o con el dedo</strong> para rotar la cámara en 360 grados.
+        </p>
+      </div>
+
+      <div class="font-mono text-xs text-neutral-500 border border-white/10 px-3 py-1.5 rounded self-start md:self-auto">
+        PRODUCCIÓN: EXPOMETAL 2025 // MINA COLOMBIA
+      </div>
+    </div>
+
+    <!-- REPRODUCTOR EMBEBIDO 360 ACTIVO -->
+    <div class="relative w-full aspect-[2.39/1] min-h-[380px] sm:min-h-[520px] rounded-xl overflow-hidden border border-white/20 shadow-2xl bg-black">
+      <iframe 
+        id="vr360-inline-player"
+        class="w-full h-full border-0" 
+        src="https://www.youtube-nocookie.com/embed/VCTQabyWgfs?enablejsapi=1&rel=0&modestbranding=1&playsinline=1" 
+        title="VR 360 Minas Venezolanas - ExpoMetal 2025"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; vr; xr" 
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- 4. ENFOQUE TÉCNICO & MANIFIESTO -->
   <section id="manifiesto" class="py-24 px-6 max-w-4xl mx-auto border-t border-white/5 text-center">
     <span class="font-mono text-xs text-neutral-500 uppercase tracking-widest block mb-6">// EL ESTÁNDAR BARBARIE</span>
     <blockquote class="font-display font-medium text-2xl sm:text-4xl text-neutral-200 leading-snug mb-8">
@@ -528,7 +527,7 @@
     </div>
   </section>
 
-  <!-- FOOTER & CONTACTO -->
+  <!-- 5. FOOTER & CONTACTO -->
   <footer id="contacto" class="py-20 px-6 border-t border-white/10 bg-[#060606] text-center">
     <div class="max-w-4xl mx-auto">
       <h2 class="font-display font-black text-4xl sm:text-6xl text-white mb-6 uppercase">
@@ -585,7 +584,7 @@
       if (splash) {
         splash.classList.add('fade-out');
         
-        // Forzar la reproducción de todos los loops en navegadores estrictos
+        // Forzar reproducción de loops
         const videos = document.querySelectorAll('.loop-video');
         videos.forEach(v => {
           v.play().catch(() => {});
