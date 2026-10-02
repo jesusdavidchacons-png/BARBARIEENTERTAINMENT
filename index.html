@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BARBARIE ENTERTAINMENT | Portafolio Audiovisual & XR</title>
   
-  <!-- Tipografías de alta gama -->
+  <!-- Tipografías -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Three.js para el motor 360 interactivo -->
+  <!-- Three.js para visor 360 interactivo -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
@@ -37,7 +37,6 @@
       letter-spacing: -0.01em;
     }
 
-    /* Grano de celuloide */
     .film-grain {
       position: fixed;
       inset: 0;
@@ -47,7 +46,6 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
 
-    /* Líneas anamórficas de cine */
     .anamorphic-bars::before,
     .anamorphic-bars::after {
       content: '';
@@ -67,7 +65,7 @@
 
   <div class="film-grain"></div>
 
-  <!-- NAVEGACIÓN MINIMALISTA SUPERIOR -->
+  <!-- NAVEGACIÓN -->
   <header class="fixed top-0 inset-x-0 z-40 bg-[#080808]/85 backdrop-blur-md border-b border-white/[0.04]">
     <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
       
@@ -91,7 +89,7 @@
     </div>
   </header>
 
-  <!-- SECCIÓN HERO -->
+  <!-- HERO -->
   <section class="min-h-[75vh] flex flex-col justify-center max-w-6xl mx-auto pt-36 pb-16 px-6">
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] font-mono uppercase tracking-[0.25em] text-neutral-400 mb-8 self-start">
       <span>Cine</span> • <span>Comerciales</span> • <span>Streaming</span> • <span>VR 360</span>
@@ -106,7 +104,7 @@
     </p>
   </section>
 
-  <!-- LISTA VERTICAL DE PRODUCCIONES (ONE-BY-ONE CON VIDEO LOOP) -->
+  <!-- PRODUCCIONES (LISTA VERTICAL CONTINUA CON VIDEOS EN LA RAÍZ) -->
   <section id="obras" class="py-16 px-6 max-w-6xl mx-auto border-t border-white/5">
     
     <div class="mb-20">
@@ -114,32 +112,28 @@
       <h2 class="font-display font-bold text-3xl sm:text-5xl text-white">PRODUCCIONES</h2>
     </div>
 
-    <!-- CONTENEDOR EN LISTA HACIA ABAJO -->
     <div class="space-y-32">
 
       <!-- ITEM 1: CINE -->
       <article class="group border-b border-white/10 pb-20">
-        <!-- Contenedor de Video Loop (Clic abre el video completo) -->
         <div 
           onclick="openVideoModal('IW1YCug4wC4', 'DE YARE A MIRAFLORES (2025)', 'CINE NARRATIVO | SONY FX6')"
           class="relative w-full aspect-[2.39/1] bg-neutral-950 rounded-lg overflow-hidden border border-white/10 cursor-pointer shadow-2xl group-hover:border-white/30 transition-all duration-500"
         >
-          <!-- Si tienes el archivo en videos/yare.mp4 se reproducirá solo. Si aún no lo subes, muestra el poster de respaldo -->
           <video 
             class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
             autoplay 
             muted 
             loop 
             playsinline 
-            preload="metadata"
+            preload="auto"
             poster="https://img.youtube.com/vi/IW1YCug4wC4/maxresdefault.jpg"
           >
-            <source src="videos/yare.mp4" type="video/mp4">
+            <source src="./yare.mp4" type="video/mp4">
           </video>
 
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
 
-          <!-- Botón de Reproducción Minimalista Flotante -->
           <div class="absolute inset-0 flex items-center justify-center">
             <span class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-white group-hover:text-black transition-all duration-300">
               <svg class="w-6 h-6 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -151,7 +145,6 @@
           </div>
         </div>
 
-        <!-- Ficha Técnica e Información -->
         <div class="mt-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
           <div class="md:col-span-5">
             <div class="font-mono text-xs text-neutral-500 mb-1">2025 • SONY FX6 • CINE HISTÓRICO</div>
@@ -185,10 +178,10 @@
             muted 
             loop 
             playsinline 
-            preload="metadata"
+            preload="auto"
             poster="https://img.youtube.com/vi/ZGfMG73JZm0/hqdefault.jpg"
           >
-            <source src="videos/postal.mp4" type="video/mp4">
+            <source src="./postal.mp4" type="video/mp4">
           </video>
 
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
@@ -237,10 +230,10 @@
             muted 
             loop 
             playsinline 
-            preload="metadata"
+            preload="auto"
             poster="https://img.youtube.com/vi/NEfxP1dnhEU/maxresdefault.jpg"
           >
-            <source src="videos/streaming.mp4" type="video/mp4">
+            <source src="./streaming.mp4" type="video/mp4">
           </video>
 
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
@@ -289,10 +282,10 @@
             muted 
             loop 
             playsinline 
-            preload="metadata"
+            preload="auto"
             poster="https://img.youtube.com/vi/tnVCRiSXAIw/maxresdefault.jpg"
           >
-            <source src="videos/tvshow.mp4" type="video/mp4">
+            <source src="./tvshow.mp4" type="video/mp4">
           </video>
 
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
@@ -341,10 +334,10 @@
             muted 
             loop 
             playsinline 
-            preload="metadata"
+            preload="auto"
             poster="https://img.youtube.com/vi/ddULoya6Pvo/maxresdefault.jpg"
           >
-            <source src="videos/vr360.mp4" type="video/mp4">
+            <source src="./vr360.mp4" type="video/mp4">
           </video>
 
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
@@ -392,7 +385,7 @@
     </div>
   </section>
 
-  <!-- SECCIÓN VISOR 360 INTERACTIVO THREE.JS -->
+  <!-- VISOR 360 THREE.JS -->
   <section id="vr360" class="py-24 px-6 border-t border-white/5 bg-[#0a0a0c]">
     <div class="max-w-6xl mx-auto">
       
@@ -412,7 +405,6 @@
         </button>
       </div>
 
-      <!-- Contenedor WebGL -->
       <div class="relative w-full aspect-[21/9] min-h-[380px] rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
         <div id="three-container" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
         
@@ -424,7 +416,7 @@
     </div>
   </section>
 
-  <!-- MANIFIESTO MINIMALISTA -->
+  <!-- ENFOQUE -->
   <section id="manifiesto" class="py-24 px-6 max-w-4xl mx-auto border-t border-white/5 text-center">
     <span class="font-mono text-xs text-neutral-500 uppercase tracking-widest block mb-6">// EL ESTÁNDAR BARBARIE</span>
     <blockquote class="font-display font-medium text-2xl sm:text-4xl text-neutral-200 leading-snug mb-8">
@@ -450,7 +442,7 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- CONTACTO -->
   <footer id="contacto" class="py-20 px-6 border-t border-white/10 bg-[#060606] text-center">
     <div class="max-w-4xl mx-auto">
       <h2 class="font-display font-black text-4xl sm:text-6xl text-white mb-6 uppercase">
@@ -476,9 +468,8 @@
     </div>
   </footer>
 
-  <!-- MODAL DE REPRODUCCIÓN (YOUTUBE) -->
+  <!-- MODAL VIDEO -->
   <div id="video-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl hidden flex-col justify-center items-center p-4 sm:p-8">
-    
     <div class="w-full max-w-5xl flex items-center justify-between pb-3 text-neutral-400 font-mono text-xs border-b border-white/10 mb-4">
       <div>
         <span id="modal-title" class="text-white font-semibold block sm:inline">PROYECTO</span>
@@ -515,7 +506,7 @@
       if (el) el.innerText = `${h}:${m}:${s}:${f}`;
     }, 1000 / 24);
 
-    // 2. Control Modal Video
+    // 2. Control Modal
     function openVideoModal(youtubeId, title, desc) {
       const modal = document.getElementById('video-modal');
       const iframe = document.getElementById('modal-iframe');
@@ -539,7 +530,7 @@
       if (e.key === 'Escape') closeVideoModal();
     });
 
-    // 3. Three.js Motor 360
+    // 3. Three.js 360
     window.addEventListener('DOMContentLoaded', () => {
       const container = document.getElementById('three-container');
       if (!container) return;
