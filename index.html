@@ -5,15 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BARBARIE ENTERTAINMENT | Portafolio Audiovisual & XR</title>
   
-  <!-- Tipografías -->
+  <!-- Metadatos de Autor y Descripción -->
+  <meta name="description" content="BARBARIE ENTERTAINMENT - Productora audiovisual cinematográfica, cine, comerciales de gran formato, transmisiones multicámara en vivo y experiencias virtuales inmersivas VR 360.">
+  <meta name="author" content="BARBARIE ENTERTAINMENT">
+
+  <!-- Open Graph / WhatsApp / Telegram / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BARBARIE ENTERTAINMENT">
+  <meta property="og:title" content="BARBARIE ENTERTAINMENT | Portafolio Audiovisual & XR">
+  <meta property="og:description" content="Cine, comerciales de alto impacto, transmisiones en vivo y experiencias virtuales 360 inmersivas.">
+  <meta property="og:image" content="https://i.postimg.cc/Gtnswy0w/logo-barbarie.png">
+  <meta property="og:image:secure_url" content="https://i.postimg.cc/Gtnswy0w/logo-barbarie.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BARBARIE ENTERTAINMENT | Portafolio Audiovisual & XR">
+  <meta name="twitter:description" content="Cine, comerciales de alto impacto, transmisiones en vivo y experiencias virtuales 360 inmersivas.">
+  <meta name="twitter:image" content="https://i.postimg.cc/Gtnswy0w/logo-barbarie.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/Gtnswy0w/logo-barbarie.png">
+  <link rel="apple-touch-icon" href="https://i.postimg.cc/Gtnswy0w/logo-barbarie.png">
+  
+  <!-- Tipografías de alta gama -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Three.js para visor 360 interactivo -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script>
     tailwind.config = {
@@ -37,6 +60,7 @@
       letter-spacing: -0.01em;
     }
 
+    /* Grano de celuloide analógico */
     .film-grain {
       position: fixed;
       inset: 0;
@@ -46,6 +70,7 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
 
+    /* Barras anamórficas de cine */
     .anamorphic-bars::before,
     .anamorphic-bars::after {
       content: '';
@@ -59,38 +84,110 @@
     }
     .anamorphic-bars::before { top: 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .anamorphic-bars::after { bottom: 0; border-top: 1px solid rgba(255,255,255,0.05); }
+
+    /* Transición suave para el telón de bienvenida */
+    #splash-screen {
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s ease;
+    }
+    #splash-screen.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body class="anamorphic-bars selection:bg-neutral-800 selection:text-white">
 
   <div class="film-grain"></div>
 
-  <!-- NAVEGACIÓN -->
+  <!-- PANTALLA DE INICIO (SPLASH SCREEN / CORTINA NEGRA CON PLAY) -->
+  <aside id="splash-screen" class="fixed inset-0 z-50 bg-[#050505] flex flex-col items-center justify-center p-6 select-none" aria-label="Pantalla de entrada">
+    <div class="relative flex flex-col items-center max-w-md w-full text-center">
+      
+      <!-- Isotipo oficial y Punto Rojo REC Animado -->
+      <div class="relative mb-6">
+        <img 
+          src="https://i.postimg.cc/Gtnswy0w/logo-barbarie.png" 
+          alt="BARBARIE ENTERTAINMENT" 
+          class="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-[0_0_25px_rgba(255,255,255,0.08)]"
+        />
+        <!-- Punto rojo parpadeante con aro expansivo -->
+        <span class="absolute -top-1.5 -right-1.5 flex h-4 w-4">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-4 w-4 bg-red-600 border-2 border-black"></span>
+        </span>
+      </div>
+
+      <!-- Nombre Oficial de Marca -->
+      <div class="mb-12">
+        <h1 class="font-display font-black text-3xl sm:text-4xl text-white tracking-tight uppercase leading-none">
+          BARBARIE
+        </h1>
+        <p class="font-mono text-xs text-neutral-400 tracking-[0.3em] uppercase mt-2">
+          Entertainment
+        </p>
+      </div>
+
+      <!-- Botón de PLAY para entrar al sitio -->
+      <button 
+        id="enter-btn"
+        onclick="enterSite()"
+        class="group relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-white/20 bg-white/[0.04] backdrop-blur-md hover:bg-white text-white hover:text-black hover:border-white transition-all duration-500 hover:scale-110 shadow-2xl focus:outline-none"
+        aria-label="Entrar a Barbarie Entertainment"
+      >
+        <span class="absolute inset-0 rounded-full border border-white/10 animate-ping group-hover:hidden"></span>
+        <!-- Icono de Play Triángulo Cinematográfico -->
+        <svg class="w-8 h-8 sm:w-9 sm:h-9 fill-current ml-1 transition-transform group-hover:scale-105" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+
+      <!-- Instrucción sutil -->
+      <span class="font-mono text-[10px] text-neutral-500 tracking-[0.25em] uppercase mt-8 animate-pulse">
+        HAGA CLIC PARA INGRESAR
+      </span>
+
+      <div class="font-mono text-[9px] text-neutral-600 tracking-widest mt-12">
+        ESTUDIO CINEMATOGRÁFICO & ECOSISTEMAS XR
+      </div>
+    </div>
+  </aside>
+
+  <!-- NAVEGACIÓN PRINCIPAL -->
   <header class="fixed top-0 inset-x-0 z-40 bg-[#080808]/85 backdrop-blur-md border-b border-white/[0.04]">
     <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
       
+      <!-- Logotipo con isotipo oficial -->
       <a href="#" class="flex items-center gap-3">
-        <span class="w-2.5 h-2.5 bg-red-600 rounded-full animate-pulse"></span>
+        <div class="relative">
+          <img src="https://i.postimg.cc/Gtnswy0w/logo-barbarie.png" alt="Barbarie Logo" class="w-8 h-8 object-contain">
+          <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
+          </span>
+        </div>
         <span class="font-display font-extrabold tracking-tighter text-xl text-white">
           BARBARIE <span class="font-light tracking-widest text-xs uppercase text-neutral-400 ml-1">Entertainment</span>
         </span>
       </a>
 
+      <!-- Menú -->
       <nav class="hidden md:flex items-center gap-8 font-mono text-xs text-neutral-400">
         <a href="#obras" class="hover:text-white transition-colors">/PRODUCCIONES</a>
-        <a href="#vr360" class="hover:text-white transition-colors">/VISOR_360</a>
+        <a href="#vr360" class="hover:text-white transition-colors text-red-400">/VISOR_360</a>
         <a href="#manifiesto" class="hover:text-white transition-colors">/ENFOQUE</a>
         <a href="#contacto" class="text-white border border-white/20 px-3 py-1 rounded hover:bg-white hover:text-black transition-all">CONTACTO</a>
       </nav>
 
+      <!-- Timecode 24 FPS Dinámico -->
       <div class="font-mono text-xs text-neutral-500 tracking-wider hidden sm:block">
         REC <span id="tc-display" class="text-neutral-300 font-semibold">00:00:00:00</span> [24FPS]
       </div>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="min-h-[75vh] flex flex-col justify-center max-w-6xl mx-auto pt-36 pb-16 px-6">
+  <!-- HERO SECTION -->
+  <section class="min-h-[70vh] flex flex-col justify-center max-w-6xl mx-auto pt-36 pb-12 px-6">
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02] text-[10px] font-mono uppercase tracking-[0.25em] text-neutral-400 mb-8 self-start">
       <span>Cine</span> • <span>Comerciales</span> • <span>Streaming</span> • <span>VR 360</span>
     </div>
@@ -100,11 +197,43 @@
     </h1>
 
     <p class="font-sans font-light text-neutral-400 max-w-2xl text-base sm:text-lg leading-relaxed">
-      Estudio audiovisual enfocado en cinematografía de alto impacto, transmisiones multicámara en vivo y experiencias virtuales inmersivas.
+      Estudio audiovisual enfocado en cinematografía de alto calibre, transmisiones multicámara en vivo y experiencias virtuales inmersivas.
     </p>
   </section>
 
-  <!-- PRODUCCIONES (LISTA VERTICAL CONTINUA CON VIDEOS EN LA RAÍZ) -->
+  <!-- VISOR 360 INTERACTIVO DIRECTO (ARRASTRAR CON MOUSE O DEDO) -->
+  <section id="vr360" class="py-16 px-6 max-w-6xl mx-auto border-t border-white/10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 font-mono text-xs text-red-500 tracking-widest uppercase mb-2">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          ECOSISTEMAS VIRTUALES INMERSIVOS
+        </div>
+        <h2 class="font-display font-bold text-3xl sm:text-4xl text-white">VISOR 360° INTERACTIVO</h2>
+        <p class="font-sans text-xs text-neutral-400 mt-1">
+          Haz clic dentro del reproductor y <strong>arrastra con el ratón o el dedo</strong> para girar la perspectiva en 360 grados.
+        </p>
+      </div>
+
+      <div class="font-mono text-xs text-neutral-500 border border-white/10 px-3 py-1.5 rounded self-start md:self-auto">
+        PRODUCCIÓN: EXPOMETAL 2025 // MINA COLOMBIA
+      </div>
+    </div>
+
+    <!-- REPRODUCTOR EMBEBIDO 360 ACTIVO -->
+    <div class="relative w-full aspect-[2.39/1] min-h-[380px] sm:min-h-[520px] rounded-xl overflow-hidden border border-white/20 shadow-2xl bg-black">
+      <iframe 
+        id="vr360-inline-player"
+        class="w-full h-full border-0" 
+        src="https://www.youtube-nocookie.com/embed/VCTQabyWgfs?enablejsapi=1&rel=0&modestbranding=1&playsinline=1" 
+        title="VR 360 Minas Venezolanas - ExpoMetal 2025"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; vr; xr" 
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- LISTA VERTICAL DE PRODUCCIONES CON VIDEOS EN LA RAÍZ (./video.mp4) -->
   <section id="obras" class="py-16 px-6 max-w-6xl mx-auto border-t border-white/5">
     
     <div class="mb-20">
@@ -121,7 +250,7 @@
           class="relative w-full aspect-[2.39/1] bg-neutral-950 rounded-lg overflow-hidden border border-white/10 cursor-pointer shadow-2xl group-hover:border-white/30 transition-all duration-500"
         >
           <video 
-            class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
+            class="loop-video w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
             autoplay 
             muted 
             loop 
@@ -173,7 +302,7 @@
           class="relative w-full aspect-[2.39/1] bg-neutral-950 rounded-lg overflow-hidden border border-white/10 cursor-pointer shadow-2xl group-hover:border-white/30 transition-all duration-500"
         >
           <video 
-            class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
+            class="loop-video w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
             autoplay 
             muted 
             loop 
@@ -225,7 +354,7 @@
           class="relative w-full aspect-[2.39/1] bg-neutral-950 rounded-lg overflow-hidden border border-white/10 cursor-pointer shadow-2xl group-hover:border-white/30 transition-all duration-500"
         >
           <video 
-            class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
+            class="loop-video w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
             autoplay 
             muted 
             loop 
@@ -277,7 +406,7 @@
           class="relative w-full aspect-[2.39/1] bg-neutral-950 rounded-lg overflow-hidden border border-white/10 cursor-pointer shadow-2xl group-hover:border-white/30 transition-all duration-500"
         >
           <video 
-            class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
+            class="loop-video w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
             autoplay 
             muted 
             loop 
@@ -310,7 +439,7 @@
           </div>
           <div class="md:col-span-7 flex flex-col justify-between">
             <p class="font-sans text-xs sm:text-sm text-neutral-400 leading-relaxed mb-4">
-              Formato de programa dinámico para televisión con reportería de campo, entrevistas en estudio y cobertura deportiva diaria. Montaje estructurado con ritmo broadcast y estándares técnicos para señal abierta y cable.
+              Formato de programa dinámico para televisión con reportería de campo, entrevistas en estudio y cobertura deportiva diaria. Montaje estructurado con ritmo broadcast y estándares técnicos para emisión.
             </p>
             <button 
               onclick="openVideoModal('tnVCRiSXAIw', 'XLIII JUEGOS INTEREMPRESAS: RESUMEN DEPORTIVO', 'PROGRAMA PARA TV / FORMATO DEPORTIVO')"
@@ -325,17 +454,17 @@
       <!-- ITEM 5: REALIDAD VIRTUAL 360 -->
       <article class="group">
         <div 
-          onclick="openVideoModal('ddULoya6Pvo', 'VR 360 MINAS VENEZOLANAS - EXPOMETAL 2025', 'VIDEO INTERACTIVO 360° / WEBXR')"
+          onclick="openVideoModal('VCTQabyWgfs', 'VR 360 MINAS VENEZOLANAS - EXPOMETAL 2025', 'VIDEO INTERACTIVO 360° / WEBXR')"
           class="relative w-full aspect-[2.39/1] bg-neutral-950 rounded-lg overflow-hidden border border-white/10 cursor-pointer shadow-2xl group-hover:border-white/30 transition-all duration-500"
         >
           <video 
-            class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
+            class="loop-video w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out"
             autoplay 
             muted 
             loop 
             playsinline 
             preload="auto"
-            poster="https://img.youtube.com/vi/ddULoya6Pvo/maxresdefault.jpg"
+            poster="https://img.youtube.com/vi/VCTQabyWgfs/maxresdefault.jpg"
           >
             <source src="./vr360.mp4" type="video/mp4">
           </video>
@@ -362,20 +491,20 @@
           </div>
           <div class="md:col-span-7 flex flex-col justify-between">
             <p class="font-sans text-xs sm:text-sm text-neutral-400 leading-relaxed mb-4">
-              Exploración a más de 470 metros bajo tierra en Mina Colombia y Mina Sosa Méndez. Documentación inmersiva esférica preparada para headsets VR (Meta Quest, Apple Vision) y navegadores web interactivos.
+              Exploración a más de 470 metros bajo tierra en Mina Colombia y Mina Sosa Méndez. Documentación inmersiva esférica preparada para headsets VR (Meta Quest, Apple Vision) y navegadores web con rotación 360° interactiva.
             </p>
-            <div class="flex gap-4">
+            <div class="flex flex-wrap gap-4">
               <button 
-                onclick="openVideoModal('ddULoya6Pvo', 'VR 360 MINAS VENEZOLANAS - EXPOMETAL 2025', 'VIDEO INTERACTIVO 360° / WEBXR')"
+                onclick="openVideoModal('VCTQabyWgfs', 'VR 360 MINAS VENEZOLANAS - EXPOMETAL 2025', 'VIDEO INTERACTIVO 360° / WEBXR')"
                 class="font-mono text-xs text-white border-b border-white/30 pb-0.5 hover:border-white transition-all flex items-center gap-2"
               >
-                VER EN REPRODUCTOR 360 <span>→</span>
+                PANTALLA COMPLETA 360 <span>→</span>
               </button>
               <a 
                 href="#vr360"
                 class="font-mono text-xs text-red-400 border-b border-red-500/30 pb-0.5 hover:border-red-400 transition-all flex items-center gap-2"
               >
-                PROBAR EN VISOR WEBGL <span>↓</span>
+                PROBAR ARRASTRE ARRIBA <span>↑</span>
               </a>
             </div>
           </div>
@@ -385,38 +514,7 @@
     </div>
   </section>
 
-  <!-- VISOR 360 THREE.JS -->
-  <section id="vr360" class="py-24 px-6 border-t border-white/5 bg-[#0a0a0c]">
-    <div class="max-w-6xl mx-auto">
-      
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-        <div>
-          <span class="font-mono text-xs text-red-500 uppercase tracking-widest block mb-2">// ECOSISTEMAS VIRTUALES</span>
-          <h2 class="font-display font-bold text-3xl sm:text-4xl text-white">VISOR PANORÁMICO 360°</h2>
-          <p class="font-sans text-xs text-neutral-400 mt-1">Arrastra con el ratón o el dedo para explorar el espacio esférico en 360°.</p>
-        </div>
-
-        <button 
-          onclick="openVideoModal('ddULoya6Pvo', 'VR 360 MINAS VENEZOLANAS - EXPOMETAL 2025', 'VIDEO INTERACTIVO 360°')"
-          class="font-mono text-xs border border-white/20 px-4 py-2 rounded text-white hover:bg-white hover:text-black transition-all flex items-center gap-2 self-start md:self-auto"
-        >
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-          REPRODUCIR VIDEO COMPLETO
-        </button>
-      </div>
-
-      <div class="relative w-full aspect-[21/9] min-h-[380px] rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-        <div id="three-container" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
-        
-        <div class="absolute top-4 left-4 font-mono text-[10px] text-neutral-400 bg-black/60 backdrop-blur px-2.5 py-1 rounded border border-white/10 pointer-events-none">
-          ENGINE: THREE.JS | 360 SPHERE | DRAG TO ROTATE
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ENFOQUE -->
+  <!-- ENFOQUE TÉCNICO & MANIFIESTO -->
   <section id="manifiesto" class="py-24 px-6 max-w-4xl mx-auto border-t border-white/5 text-center">
     <span class="font-mono text-xs text-neutral-500 uppercase tracking-widest block mb-6">// EL ESTÁNDAR BARBARIE</span>
     <blockquote class="font-display font-medium text-2xl sm:text-4xl text-neutral-200 leading-snug mb-8">
@@ -442,7 +540,7 @@
     </div>
   </section>
 
-  <!-- CONTACTO -->
+  <!-- FOOTER & CONTACTO -->
   <footer id="contacto" class="py-20 px-6 border-t border-white/10 bg-[#060606] text-center">
     <div class="max-w-4xl mx-auto">
       <h2 class="font-display font-black text-4xl sm:text-6xl text-white mb-6 uppercase">
@@ -468,7 +566,7 @@
     </div>
   </footer>
 
-  <!-- MODAL VIDEO -->
+  <!-- MODAL DE REPRODUCCIÓN (YOUTUBE) -->
   <div id="video-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl hidden flex-col justify-center items-center p-4 sm:p-8">
     <div class="w-full max-w-5xl flex items-center justify-between pb-3 text-neutral-400 font-mono text-xs border-b border-white/10 mb-4">
       <div>
@@ -485,15 +583,29 @@
         id="modal-iframe" 
         class="w-full h-full border-0" 
         src="" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; vr; xr" 
         allowfullscreen>
       </iframe>
     </div>
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPTS FUNCIONALES -->
   <script>
-    // 1. Timecode 24 FPS
+    // 1. Desvanecer la pantalla de bienvenida al hacer clic en PLAY
+    function enterSite() {
+      const splash = document.getElementById('splash-screen');
+      if (splash) {
+        splash.classList.add('fade-out');
+        
+        // Forzar la reproducción de todos los loops en navegadores estrictos
+        const videos = document.querySelectorAll('.loop-video');
+        videos.forEach(v => {
+          v.play().catch(() => {});
+        });
+      }
+    }
+
+    // 2. Contador Timecode 24 FPS dinámico
     let frame = 0;
     setInterval(() => {
       frame = (frame + 1) % 24;
@@ -506,14 +618,14 @@
       if (el) el.innerText = `${h}:${m}:${s}:${f}`;
     }, 1000 / 24);
 
-    // 2. Control Modal
+    // 3. Control del Modal de Video
     function openVideoModal(youtubeId, title, desc) {
       const modal = document.getElementById('video-modal');
       const iframe = document.getElementById('modal-iframe');
       document.getElementById('modal-title').innerText = title;
       document.getElementById('modal-desc').innerText = desc ? `// ${desc}` : '';
       
-      iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+      iframe.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
@@ -528,101 +640,6 @@
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeVideoModal();
-    });
-
-    // 3. Three.js 360
-    window.addEventListener('DOMContentLoaded', () => {
-      const container = document.getElementById('three-container');
-      if (!container) return;
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-      
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      container.appendChild(renderer.domElement);
-
-      const geometry = new THREE.SphereGeometry(500, 60, 40);
-      geometry.scale(-1, 1, 1);
-
-      const canvas = document.createElement('canvas');
-      canvas.width = 2048;
-      canvas.height = 1024;
-      const ctx = canvas.getContext('2d');
-
-      const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      grad.addColorStop(0, '#040608');
-      grad.addColorStop(0.5, '#161410');
-      grad.addColorStop(1, '#030303');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = 'rgba(255, 170, 70, 0.18)';
-      for (let i = 0; i < 220; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const r = Math.random() * 3 + 1;
-        ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      const texture = new THREE.CanvasTexture(canvas);
-      const material = new THREE.MeshBasicMaterial({ map: texture });
-      const sphere = new THREE.Mesh(geometry, material);
-      scene.add(sphere);
-
-      camera.position.set(0, 0, 0.1);
-
-      let isUserInteracting = false;
-      let onPointerDownMouseX = 0, onPointerDownMouseY = 0;
-      let lon = 0, onPointerDownLon = 0;
-      let lat = 0, onPointerDownLat = 0;
-      let phi = 0, theta = 0;
-
-      container.addEventListener('pointerdown', (e) => {
-        isUserInteracting = true;
-        onPointerDownMouseX = e.clientX;
-        onPointerDownMouseY = e.clientY;
-        onPointerDownLon = lon;
-        onPointerDownLat = lat;
-      });
-
-      window.addEventListener('pointermove', (e) => {
-        if (!isUserInteracting) return;
-        lon = (onPointerDownMouseX - e.clientX) * 0.15 + onPointerDownLon;
-        lat = (e.clientY - onPointerDownMouseY) * 0.15 + onPointerDownLat;
-      });
-
-      window.addEventListener('pointerup', () => {
-        isUserInteracting = false;
-      });
-
-      function animate() {
-        requestAnimationFrame(animate);
-        if (!isUserInteracting) lon += 0.05;
-
-        lat = Math.max(-85, Math.min(85, lat));
-        phi = THREE.MathUtils.degToRad(90 - lat);
-        theta = THREE.MathUtils.degToRad(lon);
-
-        camera.target = new THREE.Vector3(
-          500 * Math.sin(phi) * Math.cos(theta),
-          500 * Math.cos(phi),
-          500 * Math.sin(phi) * Math.sin(theta)
-        );
-        camera.lookAt(camera.target);
-
-        renderer.render(scene, camera);
-      }
-      animate();
-
-      window.addEventListener('resize', () => {
-        if (!container) return;
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
-      });
     });
   </script>
 </body>
