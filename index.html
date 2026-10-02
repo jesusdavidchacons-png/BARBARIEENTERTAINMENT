@@ -1,27 +1,875 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Experiencia Interactiva</title>
+  <title>BARBARIE ENTERTAINMENT | Cinematografía, Publicidad & VR 360°</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js CDN for interactive 360/VR spherical engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- Google Fonts: Space Grotesk & Syne -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              pitch: '#060607',
+              surface: '#0d0d10',
+              card: '#121217',
+              border: 'rgba(255, 255, 255, 0.08)',
+              silver: '#e4e4e7',
+              dim: '#71717a'
+            }
+          },
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          letterSpacing: {
+            cinematic: '0.24em',
+            ultra: '0.38em'
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: #0c0d10; color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; text-align: center; }
-    .card { max-width: 360px; width: 100%; display: flex; flex-direction: column; gap: 16px; }
-    h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
-    p { font-size: 0.95rem; color: #a1a1aa; margin-bottom: 12px; }
-    .btn { display: block; padding: 15px 20px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: transform 0.15s ease; }
-    .btn:active { transform: scale(0.98); }
-    .btn-ar { background: #fff; color: #000; box-shadow: 0 4px 20px rgba(255,255,255,0.15); }
-    .btn-portfolio { background: #1f222a; color: #fff; border: 1px solid #2e3340; }
+    body {
+      background-color: #060607;
+      color: #e4e4e7;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      selection-background-color: #ffffff;
+      selection-color: #000000;
+    }
+
+    ::selection {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    /* Subtle cinematic film grain overlay */
+    .film-grain {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 0);
+      background-size: 28px 28px;
+    }
+
+    /* 2.39:1 Anamorphic Scope ratio */
+    .aspect-scope {
+      aspect-ratio: 2.39 / 1;
+    }
+
+    @media (max-width: 768px) {
+      .aspect-scope {
+        aspect-ratio: 16 / 9;
+      }
+    }
+
+    /* Minimalist smooth scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #060607;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #71717a;
+    }
   </style>
 </head>
-<body>
-  <div class="card">
-    <h1>Experiencia Interactiva</h1>
-    <p>Selecciona una opción para continuar:</p>
-    <a href="ar.html" class="btn btn-ar">Ver Realidad Aumentada</a>
-    <a href="https://tu-portafolio.com" class="btn btn-portfolio" target="_blank" rel="noopener">Ir al Portafolio</a>
+<body class="bg-brand-pitch text-brand-silver min-h-screen flex flex-col antialiased relative selection:bg-white selection:text-black">
+
+  <!-- Grain Ambient Layer -->
+  <div class="fixed inset-0 pointer-events-none film-grain z-30 opacity-70"></div>
+
+  <!-- Header / Navigation -->
+  <header class="fixed top-0 left-0 w-full z-40 bg-brand-pitch/85 backdrop-blur-md border-b border-brand-border">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="group flex items-center gap-3">
+        <div class="w-3 h-3 bg-red-600 animate-pulse rounded-full shadow-[0_0_12px_rgba(239,68,68,0.8)]"></div>
+        <div class="flex flex-col">
+          <span class="font-display font-extrabold tracking-cinematic text-sm md:text-base text-white group-hover:text-zinc-300 transition-colors">
+            BARBARIE ENTERTAINMENT
+          </span>
+          <span class="font-mono text-[9px] tracking-ultra text-brand-dim uppercase">
+            24 FPS • 4K RAW • DCI-P3
+          </span>
+        </div>
+      </a>
+
+      <!-- Minimal Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 text-xs font-mono tracking-widest uppercase text-brand-dim">
+        <a href="#works" class="hover:text-white transition-colors duration-200">/ Obras</a>
+        <a href="#vr-viewer" class="hover:text-white transition-colors duration-200 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          / 360° XR
+        </a>
+        <a href="#manifiesto" class="hover:text-white transition-colors duration-200">/ Manifiesto</a>
+        <a href="#contacto" class="hover:text-white transition-colors duration-200">/ Contacto</a>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center gap-4">
+        <a href="#contacto" class="px-4 py-2 rounded border border-white/20 bg-brand-surface text-white font-mono text-[11px] tracking-widest uppercase hover:bg-white hover:text-black transition-all duration-300">
+          Iniciar Proyecto
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 px-6 overflow-hidden">
+    <!-- Atmospheric Ambient Video Background -->
+    <div class="absolute inset-0 z-0">
+      <div class="absolute inset-0 bg-gradient-to-t from-brand-pitch via-brand-pitch/60 to-brand-pitch/80 z-10"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-brand-pitch via-transparent to-brand-pitch z-10"></div>
+      
+      <!-- Video Element Loop -->
+      <video id="hero-video-reel" autoplay loop muted playsinline class="w-full h-full object-cover filter brightness-[0.65] contrast-125 saturate-50 scale-105 transition-all duration-1000">
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-cameraman-filming-in-the-sunset-41618-large.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-20 max-w-6xl mx-auto w-full flex flex-col items-start gap-8 py-20">
+      
+      <!-- Live Timecode & Status -->
+      <div class="inline-flex items-center gap-3 px-3 py-1.5 rounded border border-white/10 bg-black/60 backdrop-blur-md font-mono text-[11px] text-zinc-300">
+        <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+        <span class="tracking-widest uppercase text-zinc-400">REC</span>
+        <span id="live-timecode" class="text-white font-semibold">00:00:00:00</span>
+        <span class="text-zinc-600">|</span>
+        <span class="text-zinc-400">PRODUCCIÓN AUDIOVISUAL & ECOSISTEMAS XR</span>
+      </div>
+
+      <!-- Main Headline -->
+      <div class="space-y-4 max-w-5xl">
+        <h1 class="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white uppercase leading-[0.98]">
+          Cine. Narrativa.<br>
+          <span class="text-zinc-500 hover:text-zinc-300 transition-colors">Comerciales. 360° XR.</span>
+        </h1>
+        <p class="text-zinc-400 font-light text-base sm:text-xl max-w-2xl leading-relaxed tracking-wide pt-2">
+          Dirigimos la luz, el movimiento y la realidad espacial. Desde películas en formato anamórfico hasta entornos inmersivos de realidad virtual.
+        </p>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-wrap items-center gap-4 pt-4">
+        <button onclick="openCinemaPlayer('reel')" class="flex items-center gap-3 px-7 py-4 rounded bg-white text-black font-semibold text-xs tracking-cinematic uppercase hover:bg-zinc-200 transition-all duration-200 shadow-2xl group">
+          <svg class="w-4 h-4 fill-current group-hover:scale-125 transition-transform" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          Reproducir Reel Master
+        </button>
+
+        <a href="#vr-viewer" class="flex items-center gap-3 px-6 py-4 rounded border border-white/20 bg-brand-surface/70 text-white font-medium text-xs tracking-cinematic uppercase hover:border-white hover:bg-brand-surface transition-all">
+          <svg class="w-4 h-4 stroke-current fill-none" viewBox="0 0 24 24" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M3.6 9h16.8M3.6 15h16.8"/>
+            <ellipse cx="12" cy="12" rx="4" ry="9"/>
+          </svg>
+          Visor 360° Interactivo
+        </a>
+      </div>
+
+      <!-- Technical Metadata Bar -->
+      <div class="w-full grid grid-cols-2 md:grid-cols-4 gap-4 pt-12 border-t border-brand-border text-xs font-mono text-zinc-400">
+        <div>
+          <span class="block text-zinc-600 text-[10px] uppercase">Formato de Rodaje</span>
+          <span class="text-white">2.39:1 Anamórfico Scope</span>
+        </div>
+        <div>
+          <span class="block text-zinc-600 text-[10px] uppercase">Color & Master</span>
+          <span class="text-white">ACES DCI-P3 / HDR10</span>
+        </div>
+        <div>
+          <span class="block text-zinc-600 text-[10px] uppercase">Streaming Broadcast</span>
+          <span class="text-white">Multicámara 4K 12G-SDI</span>
+        </div>
+        <div>
+          <span class="block text-zinc-600 text-[10px] uppercase">Ecosistema Espacial</span>
+          <span class="text-white">Captura 8K / WebXR 360°</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll Indicator -->
+    <a href="#works" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-zinc-600 hover:text-white transition-colors">
+      <span class="text-[9px] tracking-ultra uppercase font-mono">Scroll</span>
+      <div class="w-px h-8 bg-gradient-to-b from-white to-transparent"></div>
+    </a>
+  </section>
+
+  <!-- Curated Works Section -->
+  <section id="works" class="relative py-28 px-6 max-w-7xl mx-auto w-full">
+    
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-brand-border pb-8">
+      <div>
+        <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest">[ 01 — OBRAS SELECCIONADAS ]</span>
+        <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white uppercase tracking-tight mt-2">
+          Catálogo & Disciplinas
+        </h2>
+      </div>
+      <p class="text-zinc-400 text-sm max-w-md font-light">
+        Selección de proyectos de alto impacto sin intermediarios ni adornos innecesarios. Haz clic en cualquier pieza para reproducir en sala cinemática.
+      </p>
+    </div>
+
+    <!-- Projects List -->
+    <div class="space-y-4" id="works-list">
+      
+      <!-- Project 01: Cine -->
+      <article onclick="openCinemaPlayer('origen')" class="group relative rounded-xl border border-brand-border bg-brand-surface/40 hover:bg-brand-surface/90 hover:border-white/30 transition-all duration-300 p-6 md:p-8 cursor-pointer overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+          <div class="space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-[11px] font-mono tracking-wider px-2.5 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700">
+                01 // CINE & NARRATIVA
+              </span>
+              <span class="text-xs font-mono text-zinc-500">Largometraje de Ficción</span>
+            </div>
+            <h3 class="font-display text-2xl md:text-4xl font-bold text-white group-hover:translate-x-2 transition-transform duration-300 uppercase">
+              ORIGEN
+            </h3>
+            <p class="text-zinc-400 text-sm max-w-2xl font-light">
+              Producción cinematográfica de escala natural rodada con lentes anamórficos. Iluminación diegética, textura fotoquímica y diseño sonoro envolvente.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-6">
+            <div class="hidden lg:flex flex-col text-right font-mono text-[11px] text-zinc-500">
+              <span class="text-zinc-300 font-medium">ARRI Alexa Mini LF</span>
+              <span>Atlas Orion Anamorphic 2x</span>
+            </div>
+            <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all">
+              <svg class="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 02: Comercial -->
+      <article onclick="openCinemaPlayer('velocity')" class="group relative rounded-xl border border-brand-border bg-brand-surface/40 hover:bg-brand-surface/90 hover:border-white/30 transition-all duration-300 p-6 md:p-8 cursor-pointer overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+          <div class="space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-[11px] font-mono tracking-wider px-2.5 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700">
+                02 // PUBLICIDAD & MARCA
+              </span>
+              <span class="text-xs font-mono text-zinc-500">Campaña Global Automotriz</span>
+            </div>
+            <h3 class="font-display text-2xl md:text-4xl font-bold text-white group-hover:translate-x-2 transition-transform duration-300 uppercase">
+              VELOCITY
+            </h3>
+            <p class="text-zinc-400 text-sm max-w-2xl font-light">
+              Comercial de alta estética con captura en cámara ultra lenta a 1000 fotogramas por segundo, contrastes extremos y sincronización de luz robótica.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-6">
+            <div class="hidden lg:flex flex-col text-right font-mono text-[11px] text-zinc-500">
+              <span class="text-zinc-300 font-medium">Phantom Flex4K</span>
+              <span>1000 FPS RAW DCI-4K</span>
+            </div>
+            <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all">
+              <svg class="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 03: Streaming -->
+      <article onclick="openCinemaPlayer('streaming')" class="group relative rounded-xl border border-brand-border bg-brand-surface/40 hover:bg-brand-surface/90 hover:border-white/30 transition-all duration-300 p-6 md:p-8 cursor-pointer overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+          <div class="space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-[11px] font-mono tracking-wider px-2.5 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700">
+                03 // STREAMING BROADCAST
+              </span>
+              <span class="text-xs font-mono text-zinc-500">Concierto Multicámara en Vivo</span>
+            </div>
+            <h3 class="font-display text-2xl md:text-4xl font-bold text-white group-hover:translate-x-2 transition-transform duration-300 uppercase">
+              SONIC RESONANCE
+            </h3>
+            <p class="text-zinc-400 text-sm max-w-2xl font-light">
+              Transmisión multicámara en vivo con 8 sensores cinematográficos de cuadro completo enlazados por fibra óptica, gradación en tiempo real y cero latencia.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-6">
+            <div class="hidden lg:flex flex-col text-right font-mono text-[11px] text-zinc-500">
+              <span class="text-zinc-300 font-medium">8x Sony FX9 / Venice</span>
+              <span>12G-SDI / Blackmagic ATEM 4K</span>
+            </div>
+            <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all">
+              <svg class="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 04: VR 360 -->
+      <article onclick="scrollToVR()" class="group relative rounded-xl border border-emerald-950/60 bg-emerald-950/15 hover:bg-emerald-950/30 hover:border-emerald-500/40 transition-all duration-300 p-6 md:p-8 cursor-pointer overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+          <div class="space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="text-[11px] font-mono tracking-wider px-2.5 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700/50">
+                04 // REALIDAD VIRTUAL & WEBXR
+              </span>
+              <span class="text-xs font-mono text-emerald-400">Entorno Espacial 360°</span>
+            </div>
+            <h3 class="font-display text-2xl md:text-4xl font-bold text-white group-hover:translate-x-2 transition-transform duration-300 uppercase">
+              NEO-CARACAS 2030
+            </h3>
+            <p class="text-zinc-400 text-sm max-w-2xl font-light">
+              Entorno inmersivo esférico interactivo capturado en alta resolución para cascos VR y navegadores de escritorio o móvil con soporte de rotación libre.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-6">
+            <div class="hidden lg:flex flex-col text-right font-mono text-[11px] text-emerald-400/80">
+              <span class="text-emerald-300 font-medium">Insta360 Titan 11K</span>
+              <span>Three.js WebGL Engine</span>
+            </div>
+            <div class="w-12 h-12 rounded-full border border-emerald-500/40 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-400 group-hover:text-black transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- 360 / VR Interactive Visor Section -->
+  <section id="vr-viewer" class="py-24 px-6 bg-brand-surface/30 border-y border-brand-border relative overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 uppercase tracking-widest mb-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            [ 02 — VISOR INMERSIVO EN VIVO ]
+          </div>
+          <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white uppercase tracking-tight">
+            Ecosistema de Realidad Virtual 360°
+          </h2>
+        </div>
+        <p class="text-xs font-mono text-zinc-400 max-w-sm">
+          Haz clic y arrastra con el cursor o el dedo para girar en 360 grados dentro de la toma espacial esférica.
+        </p>
+      </div>
+
+      <!-- VR Container Frame -->
+      <div class="relative w-full rounded-2xl overflow-hidden border border-white/15 bg-black h-[500px] md:h-[620px] shadow-2xl group">
+        
+        <!-- Three.js Canvas Container -->
+        <div id="three-container" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+
+        <!-- VR UI Overlay Controls -->
+        <div class="absolute top-6 left-6 pointer-events-none z-10 flex items-center gap-3">
+          <div class="px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-white font-mono text-[11px] tracking-widest uppercase flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            WebGL 360° Equirrectangular Activo
+          </div>
+        </div>
+
+        <div class="absolute bottom-6 left-6 right-6 pointer-events-none z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="bg-black/80 backdrop-blur-md border border-white/10 p-3 rounded-lg text-xs font-mono text-zinc-300 max-w-md">
+            <span class="text-white font-semibold">Toma Espacial: Domo Cinematográfico</span> — Renderizado en tiempo real sobre malla esférica invertida.
+          </div>
+
+          <div class="pointer-events-auto flex items-center gap-2">
+            <button onclick="resetVRView()" class="px-4 py-2 rounded bg-zinc-900/90 hover:bg-zinc-800 text-white border border-white/20 text-xs font-mono tracking-wider uppercase transition-colors">
+              Reset Centro
+            </button>
+            <button onclick="toggleVRRotation()" id="vr-rotate-btn" class="px-4 py-2 rounded bg-white text-black hover:bg-zinc-200 text-xs font-mono tracking-wider uppercase font-semibold transition-colors">
+              Pausar Giro
+            </button>
+          </div>
+        </div>
+
+        <!-- Initial Drag Guidance -->
+        <div id="vr-hint" class="absolute inset-0 pointer-events-none flex items-center justify-center transition-opacity duration-700 bg-black/30">
+          <div class="bg-black/85 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 text-xs font-mono tracking-widest uppercase text-white flex items-center gap-3">
+            <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18m-4 4l4-4m-4-4l4 4"/></svg>
+            Arrastra para navegar la escena 360°
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Manifesto Section -->
+  <section id="manifiesto" class="py-28 px-6 max-w-5xl mx-auto w-full">
+    <div class="space-y-8">
+      <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest">[ 03 — MANIFIESTO ]</span>
+      
+      <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white uppercase tracking-tight leading-tight">
+        No producimos contenido de relleno.<br>
+        <span class="text-zinc-500">Fabricamos presencia visual con peso, escala y propósito.</span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 text-zinc-400 font-light text-base leading-relaxed">
+        <p>
+          En <span class="text-white font-medium">BARBARIE ENTERTAINMENT</span> operamos en la intersección de dos mundos: la disciplina tradicional del cine (iluminación volumétrica, textura de lente y dirección actoral) con la vanguardia tecnológica del streaming broadcast y los ecosistemas inmersivos WebXR.
+        </p>
+        <p>
+          Nuestro flujo está optimizado para directores, marcas y audiencias que exigen contundencia. Eliminamos la grasa de las producciones lentas y entregamos piezas que se imponen con autoridad en pantallas gigantes o visores de realidad virtual.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contacto" class="py-24 px-6 border-t border-brand-border bg-brand-surface/40">
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-end justify-between gap-12">
+      
+      <div class="space-y-6 max-w-xl">
+        <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest">[ 04 — CONTACTO DIRECTO ]</span>
+        <h2 class="font-display text-4xl sm:text-6xl font-black text-white uppercase tracking-tight">
+          Hablemos de producción.
+        </h2>
+        <p class="text-zinc-400 text-base font-light">
+          Disponibles para rodajes cinematográficos, comerciales de marca, transmisiones multicámara 4K o experiencias inmersivas 360°.
+        </p>
+
+        <!-- Direct Instant Actions -->
+        <div class="flex flex-wrap items-center gap-4 pt-2">
+          <!-- WhatsApp Direct Link -->
+          <a href="https://wa.me/584120000000?text=Hola%20Barbarie%20Entertainment,%20quisiera%20conversar%20sobre%20una%20producci%C3%B3n" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded bg-emerald-500 text-black font-semibold text-xs tracking-wider uppercase hover:bg-emerald-400 transition-colors shadow-lg">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.353.101.174.449.741.964 1.2.662.591 1.221.774 1.394.86.174.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.203c.044.072.044.419-.1.824z"/>
+            </svg>
+            Escribir por WhatsApp
+          </a>
+
+          <!-- Email Direct Link -->
+          <a href="mailto:contacto@barbarie.ent" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded border border-white/20 bg-brand-surface text-white text-xs font-mono tracking-wider uppercase hover:border-white transition-colors">
+            contacto@barbarie.ent
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Credits & Socials -->
+      <div class="flex flex-col gap-4 font-mono text-xs text-zinc-500">
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-white transition-colors">Vimeo Pro</a>
+          <a href="#" class="hover:text-white transition-colors">Instagram</a>
+          <a href="#" class="hover:text-white transition-colors">YouTube 4K</a>
+        </div>
+        <p class="text-[11px] text-zinc-600">
+          © 2026 BARBARIE ENTERTAINMENT. TODOS LOS DERECHOS RESERVADOS.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Cinema Scope Modal Player -->
+  <div id="cinema-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 hidden opacity-0 transition-opacity duration-300">
+    
+    <div class="relative w-full max-w-6xl flex flex-col gap-4">
+      
+      <!-- Top Modal Bar -->
+      <div class="flex items-center justify-between text-xs font-mono text-zinc-400 border-b border-white/10 pb-3">
+        <div class="flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+          <span id="modal-project-category" class="text-white uppercase font-bold tracking-wider">[ CINE ]</span>
+          <span id="modal-project-title" class="text-zinc-300">ORIGEN</span>
+        </div>
+
+        <button onclick="closeCinemaPlayer()" class="text-zinc-400 hover:text-white flex items-center gap-1.5 uppercase tracking-widest text-[11px] transition-colors">
+          <span>Cerrar</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Scope 2.39:1 Player Frame with Letterbox Bars -->
+      <div class="relative w-full aspect-scope bg-black rounded-lg overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center group">
+        
+        <!-- Video Stream Player -->
+        <video id="modal-video-element" class="w-full h-full object-cover" playsinline>
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-cameraman-filming-in-the-sunset-41618-large.mp4" type="video/mp4">
+        </video>
+
+        <!-- Big Play Button Center Overlay -->
+        <button id="modal-big-play-btn" onclick="toggleModalPlay()" class="absolute inset-0 flex items-center justify-center bg-black/30 group">
+          <div class="w-20 h-20 rounded-full border border-white/40 bg-black/60 backdrop-blur flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+            <svg id="big-play-icon" class="w-8 h-8 fill-current ml-1" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </button>
+      </div>
+
+      <!-- Player Controls & Technical Metadata -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono text-zinc-400 pt-2 items-center">
+        <div class="flex items-center gap-4">
+          <button onclick="toggleModalPlay()" class="text-white hover:text-zinc-300 uppercase font-semibold tracking-wider">
+            <span id="modal-play-text">PAUSA</span>
+          </button>
+          <button onclick="toggleModalMute()" class="text-zinc-400 hover:text-white uppercase">
+            <span id="modal-mute-text">SONIDO: ON</span>
+          </button>
+        </div>
+
+        <div class="text-center text-zinc-500 text-[11px]">
+          RATIO 2.39:1 • COLOR ACES • 48kHz AUDIO
+        </div>
+
+        <div class="text-right text-zinc-400" id="modal-project-specs">
+          ARRI Mini LF • Master Anamorphic
+        </div>
+      </div>
+
+    </div>
   </div>
+
+  <script>
+    // ==========================================
+    // 1. DATA DICTIONARY FOR PROJECTS
+    // ==========================================
+    const projectsData = {
+      'reel': {
+        category: '[ SHOWREEL MASTER ]',
+        title: 'BARBARIE: Reel Principal de Producción',
+        specs: 'ARRI Mini LF & Phantom Flex4K • Anamorphic Scope',
+        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-set-of-plateaus-seen-from-the-sky-in-a-sunset-26070-large.mp4'
+      },
+      'origen': {
+        category: '[ CINE & NARRATIVA ]',
+        title: 'ORIGEN (Largometraje)',
+        specs: 'ARRI Alexa Mini LF • Atlas Orion Anamorphic 2x',
+        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-cameraman-filming-in-the-sunset-41618-large.mp4'
+      },
+      'velocity': {
+        category: '[ PUBLICIDAD DE MARCA ]',
+        title: 'VELOCITY: The Kinetic Edge',
+        specs: 'Phantom Flex4K 1000fps • Lentes Cooke S4/i',
+        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-tunnel-of-futuristic-neon-lights-40076-large.mp4'
+      },
+      'streaming': {
+        category: '[ STREAMING BROADCAST ]',
+        title: 'SONIC RESONANCE: Live Arena Concert',
+        specs: '8x Sony FX9 / Venice • 12G-SDI Multicam',
+        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-concert-crowd-at-a-music-festival-42571-large.mp4'
+      }
+    };
+
+    // ==========================================
+    // 2. LIVE TIMECODE SIMULATION (24 FPS)
+    // ==========================================
+    let frame = 0;
+    let sec = 0;
+    let min = 0;
+    let hour = 1;
+
+    function updateTimecode() {
+      frame++;
+      if (frame >= 24) {
+        frame = 0;
+        sec++;
+        if (sec >= 60) {
+          sec = 0;
+          min++;
+          if (min >= 60) {
+            min = 0;
+            hour++;
+          }
+        }
+      }
+      const pad = (n) => String(n).padStart(2, '0');
+      const timecodeEl = document.getElementById('live-timecode');
+      if (timecodeEl) {
+        timecodeEl.textContent = `${pad(hour)}:${pad(min)}:${pad(sec)}:${pad(frame)}`;
+      }
+    }
+    setInterval(updateTimecode, 1000 / 24);
+
+    // ==========================================
+    // 3. CINEMA MODAL CONTROLLER
+    // ==========================================
+    const modal = document.getElementById('cinema-modal');
+    const modalVideo = document.getElementById('modal-video-element');
+    const modalCat = document.getElementById('modal-project-category');
+    const modalTitle = document.getElementById('modal-project-title');
+    const modalSpecs = document.getElementById('modal-project-specs');
+    const modalPlayText = document.getElementById('modal-play-text');
+    const modalMuteText = document.getElementById('modal-mute-text');
+    const bigPlayBtn = document.getElementById('modal-big-play-btn');
+
+    function openCinemaPlayer(projectId) {
+      const item = projectsData[projectId] || projectsData['reel'];
+      modalCat.textContent = item.category;
+      modalTitle.textContent = item.title;
+      modalSpecs.textContent = item.specs;
+      modalVideo.src = item.videoUrl;
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+      }, 20);
+
+      modalVideo.currentTime = 0;
+      modalVideo.muted = false;
+      modalMuteText.textContent = 'SONIDO: ON';
+
+      modalVideo.play().then(() => {
+        updatePlayState(true);
+      }).catch(() => {
+        // Fallback to muted autoplay if browser blocks audio
+        modalVideo.muted = true;
+        modalMuteText.textContent = 'SONIDO: OFF';
+        modalVideo.play();
+        updatePlayState(true);
+      });
+    }
+
+    function closeCinemaPlayer() {
+      modal.classList.add('opacity-0');
+      modalVideo.pause();
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    function toggleModalPlay() {
+      if (modalVideo.paused) {
+        modalVideo.play();
+        updatePlayState(true);
+      } else {
+        modalVideo.pause();
+        updatePlayState(false);
+      }
+    }
+
+    function updatePlayState(isPlaying) {
+      if (isPlaying) {
+        modalPlayText.textContent = 'PAUSA';
+        bigPlayBtn.classList.add('opacity-0', 'pointer-events-none');
+      } else {
+        modalPlayText.textContent = 'PLAY';
+        bigPlayBtn.classList.remove('opacity-0', 'pointer-events-none');
+      }
+    }
+
+    function toggleModalMute() {
+      modalVideo.muted = !modalVideo.muted;
+      modalMuteText.textContent = modalVideo.muted ? 'SONIDO: OFF' : 'SONIDO: ON';
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeCinemaPlayer();
+      }
+    });
+
+    function scrollToVR() {
+      const el = document.getElementById('vr-viewer');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ==========================================
+    // 4. THREE.JS 360° EQUIRECTANGULAR ENGINE
+    // ==========================================
+    let vrScene, vrCamera, vrRenderer;
+    let isUserInteracting = false;
+    let onPointerDownPointerX = 0, onPointerDownPointerY = 0;
+    let lon = 0, onPointerDownLon = 0;
+    let lat = 0, onPointerDownLat = 0;
+    let phi = 0, theta = 0;
+    let autoRotate = true;
+
+    function initVR() {
+      const container = document.getElementById('three-container');
+      if (!container) return;
+
+      // 1. Scene & Camera
+      vrScene = new THREE.Scene();
+      vrCamera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 1, 1100);
+      vrCamera.target = new THREE.Vector3(0, 0, 0);
+
+      // 2. Procedural Equirectangular High-Res Texture
+      const canvasTexture = createPanoramicCanvasTexture();
+      const texture = new THREE.CanvasTexture(canvasTexture);
+
+      // 3. Inverted Sphere Geometry for 360 view
+      const geometry = new THREE.SphereGeometry(500, 60, 40);
+      geometry.scale(-1, 1, 1);
+
+      const material = new THREE.MeshBasicMaterial({ map: texture });
+      const mesh = new THREE.Mesh(geometry, material);
+      vrScene.add(mesh);
+
+      // 4. WebGL Renderer
+      vrRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      vrRenderer.setPixelRatio(window.devicePixelRatio);
+      vrRenderer.setSize(container.clientWidth, container.clientHeight);
+      container.appendChild(vrRenderer.domElement);
+
+      // 5. Interaction Listeners
+      container.addEventListener('pointerdown', onPointerDown);
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
+
+      window.addEventListener('resize', onVRResize);
+
+      animateVR();
+    }
+
+    // Generates a cinematic cyberpunk/architectural panoramic grid texture procedurally
+    function createPanoramicCanvasTexture() {
+      const c = document.createElement('canvas');
+      c.width = 2048;
+      c.height = 1024;
+      const ctx = c.getContext('2d');
+
+      // Atmospheric dark sky gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, c.height);
+      grad.addColorStop(0, '#020204');
+      grad.addColorStop(0.45, '#0a0a14');
+      grad.addColorStop(0.5, '#16192b');
+      grad.addColorStop(0.55, '#07080d');
+      grad.addColorStop(1, '#000000');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, c.width, c.height);
+
+      // Horizon line
+      ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, c.height / 2);
+      ctx.lineTo(c.width, c.height / 2);
+      ctx.stroke();
+
+      // Atmospheric stars & spatial light beacons
+      for (let i = 0; i < 400; i++) {
+        const x = Math.random() * c.width;
+        const y = Math.random() * c.height;
+        const radius = Math.random() * 1.8;
+        ctx.fillStyle = i % 10 === 0 ? 'rgba(52, 211, 153, 0.8)' : 'rgba(255, 255, 255, 0.6)';
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Neon spatial architectural rings & geometry
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.lineWidth = 1.5;
+      for (let col = 0; col < c.width; col += 128) {
+        ctx.beginPath();
+        ctx.moveTo(col, 0);
+        ctx.lineTo(col, c.height);
+        ctx.stroke();
+      }
+      for (let row = 0; row < c.height; row += 64) {
+        ctx.beginPath();
+        ctx.moveTo(0, row);
+        ctx.lineTo(c.width, row);
+        ctx.stroke();
+      }
+
+      // Large Cinematic Brand typography projected onto 360 dome
+      ctx.font = 'bold 84px Syne, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.textAlign = 'center';
+      ctx.fillText('BARBARIE 360° ENVIRONMENT', c.width / 2, c.height / 2 - 40);
+
+      ctx.font = '32px "JetBrains Mono", monospace';
+      ctx.fillStyle = 'rgba(52, 211, 153, 0.6)';
+      ctx.fillText('SPATIAL REALITY • 8K CAPTURE', c.width / 2, c.height / 2 + 50);
+
+      return c;
+    }
+
+    function onPointerDown(event) {
+      isUserInteracting = true;
+      const hint = document.getElementById('vr-hint');
+      if (hint) hint.style.opacity = '0';
+
+      onPointerDownPointerX = event.clientX;
+      onPointerDownPointerY = event.clientY;
+
+      onPointerDownLon = lon;
+      onPointerDownLat = lat;
+    }
+
+    function onPointerMove(event) {
+      if (isUserInteracting === true) {
+        lon = (onPointerDownPointerX - event.clientX) * 0.1 + onPointerDownLon;
+        lat = (event.clientY - onPointerDownPointerY) * 0.1 + onPointerDownLat;
+      }
+    }
+
+    function onPointerUp() {
+      isUserInteracting = false;
+    }
+
+    function onVRResize() {
+      const container = document.getElementById('three-container');
+      if (!container || !vrCamera || !vrRenderer) return;
+      vrCamera.aspect = container.clientWidth / container.clientHeight;
+      vrCamera.updateProjectionMatrix();
+      vrRenderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function resetVRView() {
+      lon = 0;
+      lat = 0;
+    }
+
+    function toggleVRRotation() {
+      autoRotate = !autoRotate;
+      const btn = document.getElementById('vr-rotate-btn');
+      if (btn) {
+        btn.textContent = autoRotate ? 'Pausar Giro' : 'Reanudar Giro';
+      }
+    }
+
+    function animateVR() {
+      requestAnimationFrame(animateVR);
+
+      if (autoRotate && !isUserInteracting) {
+        lon += 0.08;
+      }
+
+      lat = Math.max(-85, Math.min(85, lat));
+      phi = THREE.MathUtils.degToRad(90 - lat);
+      theta = THREE.MathUtils.degToRad(lon);
+
+      const targetX = 500 * Math.sin(phi) * Math.cos(theta);
+      const targetY = 500 * Math.cos(phi);
+      const targetZ = 500 * Math.sin(phi) * Math.sin(theta);
+
+      vrCamera.lookAt(targetX, targetY, targetZ);
+      vrRenderer.render(vrScene, vrCamera);
+    }
+
+    // Initialize on window load
+    window.addEventListener('load', () => {
+      initVR();
+    });
+  </script>
 </body>
 </html>
