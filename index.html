@@ -9,7 +9,7 @@
   <meta name="description" content="BARBARIE ENTERTAINMENT - Productora audiovisual cinematográfica, cine, comerciales de gran formato, transmisiones multicámara en vivo y experiencias virtuales inmersivas VR 360.">
   <meta name="author" content="BARBARIE ENTERTAINMENT">
 
-  <!-- Open Graph / WhatsApp / Telegram / Facebook -->
+  <!-- Open Graph / WhatsApp / Redes Sociales -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="BARBARIE ENTERTAINMENT">
   <meta property="og:title" content="BARBARIE ENTERTAINMENT | Portafolio Audiovisual & XR">
@@ -85,7 +85,7 @@
     .anamorphic-bars::before { top: 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .anamorphic-bars::after { bottom: 0; border-top: 1px solid rgba(255,255,255,0.05); }
 
-    /* Transición suave para el telón de bienvenida */
+    /* Cortina cinematográfica de entrada */
     #splash-screen {
       transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s ease;
     }
@@ -100,55 +100,47 @@
 
   <div class="film-grain"></div>
 
-  <!-- PANTALLA DE INICIO (SPLASH SCREEN / CORTINA NEGRA CON PLAY) -->
+  <!-- PANTALLA DE INICIO (SPLASH SCREEN / LOGO PURO CON ANIMACIÓN REC Y BOTÓN PLAY) -->
   <aside id="splash-screen" class="fixed inset-0 z-50 bg-[#050505] flex flex-col items-center justify-center p-6 select-none" aria-label="Pantalla de entrada">
     <div class="relative flex flex-col items-center max-w-md w-full text-center">
       
-      <!-- Isotipo oficial y Punto Rojo REC Animado -->
-      <div class="relative mb-6">
-        <img 
-          src="https://i.postimg.cc/Gtnswy0w/logo-barbarie.png" 
-          alt="BARBARIE ENTERTAINMENT" 
-          class="w-24 h-24 sm:w-28 sm:h-28 object-contain drop-shadow-[0_0_25px_rgba(255,255,255,0.08)]"
-        />
-        <!-- Punto rojo parpadeante con aro expansivo -->
-        <span class="absolute -top-1.5 -right-1.5 flex h-4 w-4">
+      <!-- LOGO DE BARBARIE: ANIMACIÓN DEL REDONDO ROJO REC + TIPOGRAFÍA OFICIAL -->
+      <div class="flex items-center gap-3.5 mb-14">
+        <!-- Punto rojo REC con aro expansivo -->
+        <span class="relative flex h-4 w-4">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-4 w-4 bg-red-600 border-2 border-black"></span>
+          <span class="relative inline-flex rounded-full h-4 w-4 bg-red-600"></span>
         </span>
+        <div class="text-left leading-none">
+          <span class="font-display font-black tracking-tighter text-2xl sm:text-3xl text-white block">
+            BARBARIE
+          </span>
+          <span class="font-light tracking-[0.35em] text-[10px] uppercase text-neutral-400 block mt-1">
+            ENTERTAINMENT
+          </span>
+        </div>
       </div>
 
-      <!-- Nombre Oficial de Marca -->
-      <div class="mb-12">
-        <h1 class="font-display font-black text-3xl sm:text-4xl text-white tracking-tight uppercase leading-none">
-          BARBARIE
-        </h1>
-        <p class="font-mono text-xs text-neutral-400 tracking-[0.3em] uppercase mt-2">
-          Entertainment
-        </p>
-      </div>
-
-      <!-- Botón de PLAY para entrar al sitio -->
+      <!-- BOTÓN PLAY PARA INICIAR -->
       <button 
         id="enter-btn"
         onclick="enterSite()"
-        class="group relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-white/20 bg-white/[0.04] backdrop-blur-md hover:bg-white text-white hover:text-black hover:border-white transition-all duration-500 hover:scale-110 shadow-2xl focus:outline-none"
-        aria-label="Entrar a Barbarie Entertainment"
+        class="group relative flex items-center justify-center w-24 h-24 rounded-full border border-white/20 bg-white/[0.03] backdrop-blur-md hover:bg-white text-white hover:text-black hover:border-white transition-all duration-500 hover:scale-110 shadow-2xl focus:outline-none"
+        aria-label="Iniciar portafolio"
       >
         <span class="absolute inset-0 rounded-full border border-white/10 animate-ping group-hover:hidden"></span>
-        <!-- Icono de Play Triángulo Cinematográfico -->
-        <svg class="w-8 h-8 sm:w-9 sm:h-9 fill-current ml-1 transition-transform group-hover:scale-105" viewBox="0 0 24 24">
+        <svg class="w-9 h-9 fill-current ml-1 transition-transform group-hover:scale-105" viewBox="0 0 24 24">
           <path d="M8 5v14l11-7z"/>
         </svg>
       </button>
 
-      <!-- Instrucción sutil -->
-      <span class="font-mono text-[10px] text-neutral-500 tracking-[0.25em] uppercase mt-8 animate-pulse">
-        HAGA CLIC PARA INGRESAR
+      <!-- Indicador sutil de inicio -->
+      <span class="font-mono text-[10px] text-neutral-500 tracking-[0.3em] uppercase mt-8 animate-pulse">
+        HAGA CLIC PARA INICIAR
       </span>
 
-      <div class="font-mono text-[9px] text-neutral-600 tracking-widest mt-12">
-        ESTUDIO CINEMATOGRÁFICO & ECOSISTEMAS XR
+      <div class="font-mono text-[9px] text-neutral-600 tracking-widest mt-16">
+        CINE • BROADCAST • ECOSISTEMAS XR
       </div>
     </div>
   </aside>
@@ -157,15 +149,12 @@
   <header class="fixed top-0 inset-x-0 z-40 bg-[#080808]/85 backdrop-blur-md border-b border-white/[0.04]">
     <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
       
-      <!-- Logotipo con isotipo oficial -->
+      <!-- Logotipo con punto rojo animado original -->
       <a href="#" class="flex items-center gap-3">
-        <div class="relative">
-          <img src="https://i.postimg.cc/Gtnswy0w/logo-barbarie.png" alt="Barbarie Logo" class="w-8 h-8 object-contain">
-          <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
-          </span>
-        </div>
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-600 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
+        </span>
         <span class="font-display font-extrabold tracking-tighter text-xl text-white">
           BARBARIE <span class="font-light tracking-widest text-xs uppercase text-neutral-400 ml-1">Entertainment</span>
         </span>
@@ -220,7 +209,6 @@
       </div>
     </div>
 
-    <!-- REPRODUCTOR EMBEBIDO 360 ACTIVO -->
     <div class="relative w-full aspect-[2.39/1] min-h-[380px] sm:min-h-[520px] rounded-xl overflow-hidden border border-white/20 shadow-2xl bg-black">
       <iframe 
         id="vr360-inline-player"
@@ -591,7 +579,7 @@
 
   <!-- SCRIPTS FUNCIONALES -->
   <script>
-    // 1. Desvanecer la pantalla de bienvenida al hacer clic en PLAY
+    // 1. Transición suave de entrada al pulsar PLAY
     function enterSite() {
       const splash = document.getElementById('splash-screen');
       if (splash) {
