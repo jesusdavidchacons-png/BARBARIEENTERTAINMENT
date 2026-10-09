@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth bg-[#080808] text-[#e0e0e0]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CVG | Transformación del Aluminio en Venezuela</title>
+  
+  <meta name="description" content="Campaña audiovisual: Manto aluminizado, menaje de alta cocina, ollas industriales y perfiles para techos.">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/FKZsr2s8/LOGO-CVG-VECTORIZADO-Mesa-de-trabajo-1-01.png">
+
+  <!-- Tipografías de alta gama -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="selection:bg-neutral-800 selection:text-white">
+
+  <!-- NAVBAR MINIMALISTA -->
+  <header class="fixed top-0 inset-x-0 z-40 bg-[#080808]/90 backdrop-blur-md border-b border-white/[0.06]">
+    <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img 
+          src="https://i.postimg.cc/FKZsr2s8/LOGO-CVG-VECTORIZADO-Mesa-de-trabajo-1-01.png" 
+          alt="Logo CVG" 
+          class="h-10 w-auto object-contain filter brightness-110"
+        >
+        <span class="font-mono text-xs tracking-wider text-neutral-400 hidden sm:inline-block border-l border-white/10 pl-4 uppercase">
+          Transformación del Aluminio
+        </span>
+      </div>
+
+      <!-- BOTÓN DIRECTO A DRIVE EN EL HEADER -->
+      <a 
+        href="https://drive.google.com/drive/folders/1F5b7M9l57U9FuWUCHRzLm5eC0gKEnapT?usp=sharing" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="bg-white text-black px-4 py-2 rounded-lg font-mono text-xs font-bold hover:bg-neutral-200 transition-all flex items-center gap-2 shadow-lg"
+      >
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+        <span>DESCARGAR DRIVE</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- BANNER HERO CON VIDEO ESTILO GIF DE GITHUB -->
+  <section class="relative min-h-[85vh] flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden">
+    <!-- Video de portada en bucle -->
+    <video 
+      class="absolute inset-0 w-full h-full object-cover opacity-25 filter grayscale contrast-125"
+      autoplay 
+      muted 
+      loop 
+      playsinline
+      preload="auto"
+    >
+      <source src="./BANNER%20PORTADA%20ALUMINIO.mp4" type="video/mp4">
+      <source src="BANNER%20PORTADA%20ALUMINIO.mp4" type="video/mp4">
+    </video>
+
+    <!-- Overlay Gradiente -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/60 to-[#080808]/90"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] font-mono text-[11px] tracking-[0.25em] text-neutral-400 uppercase mb-8">
+        <span>CVG</span> • <span>Soberanía Productiva</span>
+      </div>
+
+      <h1 class="font-display font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white uppercase leading-none mb-6">
+        TRANSFORMACIÓN DEL ALUMINIO
+      </h1>
+
+      <p class="font-sans font-normal text-neutral-300 text-lg sm:text-xl max-w-xl mx-auto mb-4">
+        Del corazón de Guayana al valor agregado de la nación.
+      </p>
+
+      <p class="font-sans text-xs sm:text-sm text-neutral-500 max-w-xl mx-auto leading-relaxed mb-10">
+        Manto aluminizado, menaje de alta cocina, ollas industriales y perfiles para techos estructurados.
+      </p>
+
+      <!-- BOTÓN PRINCIPAL DE GOOGLE DRIVE HIPER-VISIBLE -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a 
+          href="https://drive.google.com/drive/folders/1F5b7M9l57U9FuWUCHRzLm5eC0gKEnapT?usp=sharing" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white text-black font-bold font-mono text-xs uppercase tracking-wider hover:bg-neutral-200 transition-all flex items-center justify-center gap-3 shadow-2xl hover:scale-105"
+        >
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+          <span>DESCARGAR MASTER & PIEZAS (GOOGLE DRIVE)</span>
+        </a>
+        <a 
+          href="#spot-central"
+          class="w-full sm:w-auto px-8 py-4 rounded-xl border border-white/20 text-white font-mono text-xs uppercase tracking-wider hover:border-white transition-all flex items-center justify-center"
+        >
+          VER SPOTS ↓
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPOT CENTRAL DE CAMPAÑA -->
+  <section id="spot-central" class="py-20 px-6 max-w-5xl mx-auto border-t border-white/5">
+    <div class="mb-10 text-center sm:text-left">
+      <span class="font-mono text-xs text-neutral-500 uppercase tracking-widest block mb-2">// PIEZA INSTITUCIONAL PRINCIPAL</span>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-white">SPOT CENTRAL</h2>
+    </div>
+
+    <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-white/15 bg-neutral-950 shadow-2xl">
+      <iframe 
+        class="w-full h-full border-0" 
+        src="https://www.youtube-nocookie.com/embed/JSV2IqcNXtw?rel=0&modestbranding=1" 
+        title="Spot Central - Transformación del Aluminio" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- LÍNEAS DE TRANSFORMACIÓN (VIDEOS INDIVIDUALES) -->
+  <section class="py-20 px-6 max-w-6xl mx-auto border-t border-white/5">
+    <div class="mb-14">
+      <span class="font-mono text-xs text-neutral-500 uppercase tracking-widest block mb-2">// DERIVADOS Y PROCESOS</span>
+      <h2 class="font-display font-bold text-3xl text-white">CÁPSULAS POR SECTOR</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- Video 1 -->
+      <article class="border border-white/10 rounded-xl overflow-hidden bg-neutral-900/40">
+        <div class="relative aspect-video">
+          <iframe class="w-full h-full border-0" src="https://www.youtube-nocookie.com/embed/SVMx62HK8ws?rel=0" allowfullscreen></iframe>
+        </div>
+        <div class="p-5 font-mono text-xs">
+          <span class="text-neutral-500 block mb-1">CÁPSULA 01</span>
+          <h3 class="text-white font-semibold text-sm">MANTO ALUMINIZADO E IMPERMEABILIZACIÓN</h3>
+        </div>
+      </article>
+
+      <!-- Video 2 -->
+      <article class="border border-white/10 rounded-xl overflow-hidden bg-neutral-900/40">
+        <div class="relative aspect-video">
+          <iframe class="w-full h-full border-0" src="https://www.youtube-nocookie.com/embed/WeDV0pbUuHo?rel=0" allowfullscreen></iframe>
+        </div>
+        <div class="p-5 font-mono text-xs">
+          <span class="text-neutral-500 block mb-1">CÁPSULA 02</span>
+          <h3 class="text-white font-semibold text-sm">OLLAS INDUSTRIALES & GASTRONOMÍA</h3>
+        </div>
+      </article>
+
+      <!-- Video 3 -->
+      <article class="border border-white/10 rounded-xl overflow-hidden bg-neutral-900/40">
+        <div class="relative aspect-video">
+          <iframe class="w-full h-full border-0" src="https://www.youtube-nocookie.com/embed/cHd3xYCLg8Y?rel=0" allowfullscreen></iframe>
+        </div>
+        <div class="p-5 font-mono text-xs">
+          <span class="text-neutral-500 block mb-1">CÁPSULA 03</span>
+          <h3 class="text-white font-semibold text-sm">ALTA COCINA & MENAJE ARTESANAL</h3>
+        </div>
+      </article>
+
+      <!-- Video 4 -->
+      <article class="border border-white/10 rounded-xl overflow-hidden bg-neutral-900/40">
+        <div class="relative aspect-video">
+          <iframe class="w-full h-full border-0" src="https://www.youtube-nocookie.com/embed/PRfUU9LHVBw?rel=0" allowfullscreen></iframe>
+        </div>
+        <div class="p-5 font-mono text-xs">
+          <span class="text-neutral-500 block mb-1">CÁPSULA 04</span>
+          <h3 class="text-white font-semibold text-sm">LÁMINAS & TECHOS ESTRUCTURALES</h3>
+        </div>
+      </article>
+
+      <!-- Video 5 -->
+      <article class="border border-white/10 rounded-xl overflow-hidden bg-neutral-900/40 md:col-span-2 lg:col-span-1">
+        <div class="relative aspect-video">
+          <iframe class="w-full h-full border-0" src="https://www.youtube-nocookie.com/embed/IBBPK2sD1qU?rel=0" allowfullscreen></iframe>
+        </div>
+        <div class="p-5 font-mono text-xs">
+          <span class="text-neutral-500 block mb-1">CÁPSULA 05</span>
+          <h3 class="text-white font-semibold text-sm">CADENA DE VALOR AGREGADO</h3>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- BANNER FINAL DE DESCARGA DIRECTA A DRIVE -->
+  <section class="py-16 px-6 max-w-4xl mx-auto text-center border-t border-white/10 my-12 bg-white/[0.01] rounded-2xl border">
+    <span class="font-mono text-xs text-neutral-500 uppercase tracking-widest block mb-3">// MATERIAL DE PRENSA Y DIFUSIÓN</span>
+    <h3 class="font-display font-bold text-2xl sm:text-3xl text-white mb-4">¿NECESITAS EL MATERIAL ORIGINAL EN ALTA RESOLUCIÓN?</h3>
+    <p class="font-sans text-xs sm:text-sm text-neutral-400 max-w-md mx-auto mb-8">
+      Descarga las versiones máster de emisión, audios y piezas finales directamente desde la carpeta de Google Drive.
+    </p>
+    <a 
+      href="https://drive.google.com/drive/folders/1F5b7M9l57U9FuWUCHRzLm5eC0gKEnapT?usp=sharing" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-white text-black font-semibold font-mono text-xs uppercase tracking-wider hover:bg-neutral-200 transition-all shadow-xl hover:scale-105"
+    >
+      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>
+      <span>ACCEDER A LA CARPETA EN GOOGLE DRIVE</span>
+    </a>
+  </section>
+
+  <!-- FOOTER INSTITUCIONAL -->
+  <footer class="py-12 px-6 border-t border-white/5 bg-[#050505] text-center font-mono text-xs text-neutral-600">
+    <div class="flex items-center justify-center gap-3 mb-4">
+      <img src="https://i.postimg.cc/FKZsr2s8/LOGO-CVG-VECTORIZADO-Mesa-de-trabajo-1-01.png" alt="CVG" class="h-6 w-auto opacity-70">
+    </div>
+    <p>© 2026 CORPORACIÓN VENEZOLANA DE GUAYANA • DESARROLLADO POR BARBARIE ENTERTAINMENT</p>
+  </footer>
+
+</body>
+</html>
