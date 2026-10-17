@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Venezuela es tu Destino | Changan CS95 AWD & CS55 Plus</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-black: #050608;
+      --bg-surface: #0c0e12;
+      --bg-surface-elevated: #141720;
+      --text-white: #f5f6f8;
+      --text-muted: #8b929e;
+      --text-dim: #4b525f;
+      --accent-blue: #2f81f7;
+      --accent-teal: #2ea043;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(255, 255, 255, 0.25);
+      --nav-glass: rgba(5, 6, 8, 0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: var(--text-white);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.45;
+    }
+
+    /* OVERLAY CINEMATOGRÁFICO: GIRAR TELÉFONO + VIMEO */
+    .experience-gate {
+      position: fixed;
+      inset: 0;
+      background: #020305;
+      z-index: 5000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      padding: 24px;
+    }
+
+    .experience-gate.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gate-rotate-prompt {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+      max-width: 320px;
+    }
+
+    .gate-logo {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(255,255,255,0.3));
+      margin-bottom: 8px;
+    }
+
+    .phone-rotate-icon {
+      width: 52px;
+      height: 52px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      position: relative;
+      animation: rotatePhone 2.6s infinite ease-in-out;
+    }
+
+    .phone-rotate-icon::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 2px;
+    }
+
+    @keyframes rotatePhone {
+      0%, 15% { transform: rotate(0deg); }
+      50%, 75% { transform: rotate(90deg); }
+      90%, 100% { transform: rotate(90deg); }
+    }
+
+    .rotate-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+
+    .rotate-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .gate-cinema-ready {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 22px;
+      max-width: 680px;
+      position: relative;
+    }
+
+    .btn-skip-intro {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      z-index: 5200;
+      background: rgba(14, 17, 22, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 980px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-skip-intro:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-ghost-cinema {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 16px 36px;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .btn-ghost-cinema:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: #fff;
+      transform: scale(1.03);
+      box-shadow: 0 0 40px rgba(47, 129, 247, 0.35);
+    }
+
+    .btn-ghost-cinema svg {
+      transition: transform 0.2s ease;
+    }
+
+    .btn-ghost-cinema:hover svg {
+      transform: scale(1.15);
+    }
+
+    .cinema-vimeo-stage {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 5100;
+      display: none;
+    }
+
+    .cinema-vimeo-stage.active {
+      display: block;
+    }
+
+    .cinema-vimeo-stage iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    @media (orientation: portrait) and (max-width: 900px) {
+      .gate-rotate-prompt {
+        display: flex;
+      }
+      .gate-cinema-ready {
+        display: none !important;
+      }
+    }
+
+    @media (orientation: landscape) or (min-width: 901px) {
+      .gate-rotate-prompt {
+        display: none !important;
+      }
+      .gate-cinema-ready {
+        display: flex;
+      }
+    }
+
+    /* HEADER CON LOGO OFICIAL */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 54px;
+      background: var(--nav-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 1000;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo-img {
+      height: 24px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.25));
+    }
+
+    .brand-badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      background: rgba(47, 129, 247, 0.14);
+      color: var(--accent-blue);
+      border: 1px solid rgba(47, 129, 247, 0.28);
+      padding: 3px 8px;
+      border-radius: 980px;
+      text-transform: uppercase;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-back-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s ease;
+    }
+
+    .nav-back-link:hover {
+      color: #fff;
+    }
+
+    .nav-btn-reel {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 7px 15px;
+      border-radius: 980px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn-reel:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: var(--border-focus);
+    }
+
+    /* BANNER PRINCIPAL DE VIDEO */
+    .hero-banner-container {
+      position: relative;
+      width: 100%;
+      height: 92vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 60px;
+    }
+
+    .hero-video-bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, 
+        rgba(5, 6, 8, 0.45) 0%, 
+        rgba(5, 6, 8, 0.2) 40%,
+        rgba(5, 6, 8, 0.8) 80%,
+        var(--bg-black) 100%);
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 28px;
+      width: 100%;
+    }
+
+    .campaign-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .campaign-eyebrow::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      display: inline-block;
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .hero-heading {
+      font-size: clamp(38px, 6vw, 76px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      max-width: 860px;
+      margin-bottom: 16px;
+    }
+
+    .hero-heading span {
+      background: linear-gradient(180deg, #FFFFFF 30%, rgba(255, 255, 255, 0.6) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subheading {
+      font-size: clamp(15px, 1.6vw, 19px);
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 620px;
+      font-weight: 400;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-solid-white {
+      background: #fff;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn-solid-white:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline-glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline-glass:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* FRANJA DE CIFRAS */
+    .metric-strip {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 28px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .metric-cell {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-val {
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #fff;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* CARRUSEL TÁCTIL */
+    .carousel-section {
+      padding: 80px 0 100px;
+      position: relative;
+    }
+
+    .carousel-header-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 28px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .carousel-title-group h2 {
+      font-size: clamp(26px, 3.2vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .carousel-title-group p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .carousel-arrows {
+      display: flex;
+      gap: 8px;
+    }
+
+    .carousel-arrow-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .carousel-arrow-btn:hover {
+      border-color: var(--border-focus);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .tabs-bar {
+      max-width: 1200px;
+      margin: 0 auto 28px;
+      padding: 0 28px;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tabs-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-item {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 8px 18px;
+      border-radius: 980px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-item.active, .tab-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .carousel-viewport {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 10px 28px 24px;
+      scrollbar-width: none;
+    }
+
+    .carousel-viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .poster-card {
+      flex: 0 0 clamp(290px, 29vw, 370px);
+      aspect-ratio: 9 / 14;
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+      scroll-snap-align: start;
+      cursor: pointer;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .poster-card:hover {
+      transform: translateY(-6px) scale(1.015);
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .poster-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.65) contrast(1.1);
+      z-index: 1;
+    }
+
+    .poster-card:hover .poster-image {
+      transform: scale(1.05);
+    }
+
+    .poster-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, 
+        rgba(5, 6, 8, 0.55) 0%, 
+        rgba(5, 6, 8, 0.1) 30%, 
+        rgba(5, 6, 8, 0.5) 65%,
+        rgba(5, 6, 8, 0.96) 100%);
+      z-index: 2;
+    }
+
+    .poster-top-bar {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      right: 18px;
+      z-index: 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vehicle-badge-ford {
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 4px 10px;
+      border-radius: 980px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #fff;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .vehicle-badge-ford.cs95 {
+      border-color: rgba(47, 129, 247, 0.4);
+      color: #79c0ff;
+    }
+
+    .vehicle-badge-ford.cs55 {
+      border-color: rgba(46, 160, 67, 0.4);
+      color: #7ee787;
+    }
+
+    .center-teaser-overlay {
+      position: absolute;
+      top: 44%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 86%;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .badge-lock-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 13px;
+      margin-bottom: 4px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    .giant-coming-soon {
+      font-size: clamp(14px, 1.4vw, 17px);
+      font-weight: 800;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: rgba(10, 12, 16, 0.65);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 20px;
+      border-radius: 980px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+      width: 100%;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .poster-card:hover .giant-coming-soon {
+      border-color: rgba(255, 255, 255, 0.45);
+      transform: scale(1.03);
+    }
+
+    .teaser-subtext {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.65);
+      font-weight: 600;
+    }
+
+    .poster-bottom-content {
+      position: absolute;
+      bottom: 22px;
+      left: 20px;
+      right: 20px;
+      z-index: 3;
+    }
+
+    .poster-model-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 4px;
+    }
+
+    .poster-model-tag.cs55 {
+      color: var(--accent-teal);
+    }
+
+    .poster-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .poster-state-name {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #fff;
+    }
+
+    .poster-arrow-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .poster-card:hover .poster-arrow-circle {
+      background: #fff;
+      color: #000;
+      transform: translateX(3px);
+    }
+
+    .poster-test-desc {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.45;
+      font-weight: 400;
+    }
+
+    .editorial-section {
+      max-width: 1200px;
+      margin: 40px auto 100px;
+      padding: 0 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .editorial-title {
+      font-size: clamp(28px, 3.4vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .editorial-p {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .editorial-p + .editorial-p {
+      margin-top: 18px;
+    }
+
+    .state-drawer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 2100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .state-drawer.active {
+      display: flex;
+    }
+
+    .drawer-card {
+      width: 100%;
+      max-width: 760px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      animation: popIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.96); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .drawer-video-container {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .drawer-body {
+      padding: 28px 24px;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      font-size: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 28px 60px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    @media (max-width: 768px) {
+      .hero-banner-container {
+        height: 85vh;
+      }
+      .poster-card {
+        flex: 0 0 78vw;
+      }
+      .editorial-section {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .metric-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      header {
+        padding: 0 16px;
+      }
+      .brand-logo-img {
+        height: 20px;
+      }
+      .carousel-header-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .carousel-arrows {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- OVERLAY INICIAL: GIRAR TELÉFONO + VIMEO -->
+  <div class="experience-gate" id="experienceGate">
+    <button class="btn-skip-intro" onclick="skipToWebsite()">Saltar Intro ✕</button>
+
+    <div class="gate-rotate-prompt">
+      <img src="https://i.postimg.cc/CxhD6BQL/LETRAS-CHANGAN.png" alt="Changan Logo" class="gate-logo">
+      <div class="phone-rotate-icon"></div>
+      <div class="rotate-title">Gira tu dispositivo</div>
+      <div class="rotate-desc">
+        Para disfrutar la experiencia cinematográfica en formato panorámico 16:9.
+      </div>
+    </div>
+
+    <div class="gate-cinema-ready">
+      <img src="https://i.postimg.cc/CxhD6BQL/LETRAS-CHANGAN.png" alt="Changan Logo" class="gate-logo" style="height: 38px;">
+      
+      <div style="font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent-blue); font-weight: 700;">
+        Estreno Audiovisual Exclusivo
+      </div>
+
+      <h2 style="font-size: clamp(28px, 4.5vw, 54px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;">
+        Venezuela es tu Destino
+      </h2>
+
+      <button class="btn-ghost-cinema" onclick="startVimeoExperience()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        Iniciar Experiencia: Venezuela es tu Destino
+      </button>
+
+      <span style="font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45);">
+        Audio & Video 4K Master Grade
+      </span>
+    </div>
+  </div>
+
+  <!-- REPRODUCTOR VIMEO PANTALLA COMPLETA -->
+  <div class="cinema-vimeo-stage" id="cinemaVimeoStage">
+    <button class="btn-skip-intro" style="z-index: 5300;" onclick="skipToWebsite()">Cerrar Video ✕</button>
+    <iframe 
+      id="vimeoFrame"
+      src="" 
+      allow="autoplay; fullscreen; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- HEADER PRINCIPAL -->
+  <header>
+    <div class="brand-group">
+      <img 
+        src="https://i.postimg.cc/CxhD6BQL/LETRAS-CHANGAN.png" 
+        alt="Changan Logo" 
+        class="brand-logo-img"
+      >
+      <div class="brand-badge">PROYECTO PAÍS</div>
+    </div>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-back-link">
+        ← Volver a Barbarie
+      </a>
+      <button class="nav-btn-reel" onclick="relaunchExperience()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        Ver Film Central
+      </button>
+    </div>
+  </header>
+
+  <!-- BANNER PRINCIPAL DE VIDEO: BANERSITO.mp4 -->
+  <section class="hero-banner-container">
+    <video class="hero-video-bg" autoplay muted loop playsinline poster="https://i.postimg.cc/Xqvqkdvk/Nano-Banana-Pro-quiero-cambiar-el-fondo-en-otra-carretera-pero-sin-modificar-nada-de-la-camioneta.png">
+      <source src="./BANERSITO.mp4" type="video/mp4">
+      <source src="BANERSITO.mp4" type="video/mp4">
+      <source src="./BANERSITO.webm" type="video/webm">
+    </video>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <div class="campaign-eyebrow">Validación de Territorio Real</div>
+      <h1 class="hero-heading">
+        <span>Venezuela es tu Destino.</span>
+      </h1>
+      <p class="hero-subheading">
+        16 estados recorridos. Dos camionetas sometidas a la topografía real del país para demostrar solidez y arraigo genuino.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn-solid-white" onclick="relaunchExperience()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          Reproducir Film Central
+        </button>
+        <a href="#catalogo" class="btn-outline-glass">
+          Explorar los 16 Estados ↓
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIFRAS DE CAMPAÑA -->
+  <div class="metric-strip">
+    <div class="metric-cell">
+      <span class="metric-val">16</span>
+      <span class="metric-label">Estados de Venezuela</span>
+    </div>
+    <div class="metric-cell">
+      <span class="metric-val">+8.400</span>
+      <span class="metric-label">Kilómetros de Asfalto</span>
+    </div>
+    <div class="metric-cell">
+      <span class="metric-val">2</span>
+      <span class="metric-label">Camionetas en Ruta</span>
+    </div>
+    <div class="metric-cell">
+      <span class="metric-val">Cinema 4K</span>
+      <span class="metric-label">Captura en Gran Formato</span>
+    </div>
+  </div>
+
+  <!-- CARRUSEL TÁCTIL HORIZONTAL -->
+  <section class="carousel-section" id="catalogo">
+    <div class="carousel-header-wrapper">
+      <div class="carousel-title-group">
+        <h2>Ruta por Estados</h2>
+        <p>Desliza horizontalmente. Los 16 episodios se encuentran actualmente en plan de rodaje y postproducción.</p>
+      </div>
+      <div class="carousel-arrows">
+        <button class="carousel-arrow-btn" onclick="scrollCarousel(-1)" aria-label="Anterior">←</button>
+        <button class="carousel-arrow-btn" onclick="scrollCarousel(1)" aria-label="Siguiente">→</button>
+      </div>
+    </div>
+
+    <!-- PESTAÑAS FILTRO -->
+    <div class="tabs-bar">
+      <button class="tab-item active" onclick="setFilter('all', this)">Todos los Estados (16)</button>
+      <button class="tab-item" onclick="setFilter('CS95 AWD', this)">Changan CS95 AWD</button>
+      <button class="tab-item" onclick="setFilter('CS55 Plus', this)">Changan CS55 Plus Turbo</button>
+    </div>
+
+    <!-- CONTENEDOR DESLIZABLE HORIZONTAL -->
+    <div class="carousel-viewport" id="carouselTrack">
+      <!-- Inyectado con JS -->
+    </div>
+  </section>
+
+  <!-- MANIFIESTO EDITORIAL -->
+  <section class="editorial-section">
+    <div>
+      <div class="campaign-eyebrow" style="margin-bottom: 8px;">Criterio Estratégico</div>
+      <h3 class="editorial-title">
+        La confianza mecánica se gana sobre el asfalto del país.
+      </h3>
+    </div>
+    <div>
+      <p class="editorial-p">
+        El conductor venezolano no busca discursos de catálogo: busca la certeza de que su vehículo no fallará ante el bache imprevisto, la pendiente andina o el calor del mediodía llanero.
+      </p>
+      <p class="editorial-p">
+        Al llevar la <strong>Changan CS95 AWD</strong> y la <strong>Changan CS55 Plus Turbo</strong> a los 16 estados sin montajes de estudio, la marca deja de ser un invitado extranjero para convertirse en un compañero de ruta probado en casa.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>© 2026 BARBARIE ENTERTAINMENT · Propuesta Changan Venezuela</div>
+    <div>Dirección de Producción & Cinematografía</div>
+  </footer>
+
+  <!-- MODAL / VISOR DE ESTADO -->
+  <div class="state-drawer" id="stateDrawer" onclick="closeDrawer(event)">
+    <div class="drawer-card" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeDrawer(event)" style="top: 12px; right: 12px;">✕</button>
+      <div id="drawerVideoArea" class="drawer-video-container"></div>
+      <div class="drawer-body" id="drawerBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const VIMEO_EMBED_URL = "https://player.vimeo.com/video/1236900298?autoplay=1&badge=0&autopause=0&player_id=0&app_id=58479";
+
+    const gate = document.getElementById('experienceGate');
+    const vimeoStage = document.getElementById('cinemaVimeoStage');
+    const vimeoFrame = document.getElementById('vimeoFrame');
+
+    function startVimeoExperience() {
+      vimeoFrame.src = VIMEO_EMBED_URL;
+      vimeoStage.classList.add('active');
+    }
+
+    function skipToWebsite() {
+      vimeoFrame.src = "";
+      vimeoStage.classList.remove('active');
+      gate.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function relaunchExperience() {
+      gate.classList.remove('hidden');
+      startVimeoExperience();
+    }
+
+    const originalVehicleImages = [
+      "https://i.postimg.cc/Xqvqkdvk/Nano-Banana-Pro-quiero-cambiar-el-fondo-en-otra-carretera-pero-sin-modificar-nada-de-la-camioneta.png",
+      "https://i.postimg.cc/XJf1kBPy/Nano-Banana-Pro-quiero-cambiar-el-fondo-en-otra-carretera-pero-sin-modificar-nada-de-la-camioneta.png",
+      "https://i.postimg.cc/28hdbNPH/Nano-Banana-Pro-quiero-cambiar-el-fondo-en-otra-carretera-pero-sin-modificar-nada-de-la-camioneta.png"
+    ];
+
+    const rawStates = [
+      { id: "01", name: "Lara", vehicle: "Changan CS55 Plus Turbo", type: "CS55 Plus", test: "Dinámica y absorción de suspensión en los bulevares crepusculares y asfalto semiárido de Lara." },
+      { id: "02", name: "Aragua", vehicle: "Changan CS55 Plus Turbo", type: "CS55 Plus", test: "Agilidad del chasis en las cerradas curvas de selva nublada de Henri Pittier hacia la costa." },
+      { id: "03", name: "Mérida", vehicle: "Changan CS95 AWD", type: "CS95 AWD", test: "Ascenso a gran altitud, frenado motor en bajadas pronunciadas y aclimatación en el Collado del Cóndor." },
+      { id: "04", name: "Táchira", vehicle: "Changan CS95 AWD", type: "CS95 AWD", test: "Torque sostenido y confort de marcha en curvas estrechas de cordillera y calzadas empinadas." },
+      { id: "05", name: "Falcón", vehicle: "Changan CS55 Plus Turbo", type: "CS55 Plus", test: "Estabilidad con vientos cruzados sostenidos en el Istmo y paso seguro en las arenas de los Médanos." },
+      { id: "06", name: "Bolívar", vehicle: "Changan CS95 AWD", type: "CS95 AWD", test: "Autonomía de crucero en rectas infinitas y tracción superior en la aproximación a La Gran Sabana." },
+      { id: "07", name: "Carabobo", vehicle: "Changan CS55 Plus Turbo", type: "CS55 Plus", test: "Recuperación de aceleración y eficiencia térmica en autopistas interurbanas de alto flujo." },
+      { id: "08", name: "Anzoátegui", vehicle: "Changan CS55 Plus Turbo", type: "CS55 Plus", test: "Rendimiento del aire acondicionado bajo temperaturas costeras extremas y dinamismo en la Troncal 9." },
+      { id: "09", name: "Monagas", vehicle: "Changan CS95 AWD", type: "CS95 AWD", test: "Filtrado acústico en cabina y tracción en pavimento húmedo cruzando la zona de Caripe." },
+      { id: "10", name: "Sucre", vehicle: "Changan CS55 Plus Turbo", type: "CS55 Plus", test: "Frenado en bajadas con curvas de cornisa marina con vista directa al Golfo de Cariaco." },
+      { id: "11", name: "Guárico", vehicle: "Changan CS95 AWD", type: "CS95 AWD", test: "Comportamiento del sistema de refrigeración en calor llanero de 38°C y solidez en largas rectas." },
+      { id: "12", name: "Barinas", vehicle: "Changan CS95 AWD", type: "CS95 AWD", test: "Cruce de asfalto mixto a tierra compacta en la transición hacia el pie de monte andino." },
+      { id: "13", name: "Portuguesa", vehicle: "Changan CS55 Plus Turbo", type: "CS55 Plus", test: "Eficiencia de combustible en trayectos planos de producción agrícola y control de crucero adaptativo." },
+      { id: "14", name: "Yaracuy", vehicle: "Changan CS55 Plus Turbo", type: "CS55 Plus", test: "Respuesta de los limpiaparabrisas automáticos y adherencia de llantas en tormentas tropicales repentinas." },
+      { id: "15", name: "Miranda", vehicle: "Changan CS55 Plus Turbo", type: "CS55 Plus", test: "Transición de la autopista Gran Mariscal de Ayacucho hacia el litoral costero de Higuerote." },
+      { id: "16", name: "Zulia", vehicle: "Changan CS95 AWD", type: "CS95 AWD", test: "Presencia escénica y estabilidad estructural sobre los 8.6 kilómetros del Puente sobre el Lago de Maracaibo." }
+    ];
+
+    const states = rawStates.map((st, idx) => {
+      const randImg = originalVehicleImages[(idx + Math.floor(Math.random() * 3)) % originalVehicleImages.length];
+      return { ...st, img: randImg };
+    });
+
+    const track = document.getElementById('carouselTrack');
+
+    function renderCarousel(filterType = 'all') {
+      track.innerHTML = '';
+      const filtered = filterType === 'all' 
+        ? states 
+        : states.filter(s => s.type === filterType);
+
+      filtered.forEach(item => {
+        const isCs95 = item.type === 'CS95 AWD';
+        const card = document.createElement('div');
+        card.className = 'poster-card';
+        card.onclick = () => openStateDetails(item);
+
+        card.innerHTML = `
+          <img class="poster-image" src="${item.img}" alt="${item.name}" loading="lazy">
+          <div class="poster-gradient"></div>
+          
+          <div class="center-teaser-overlay">
+            <div class="badge-lock-icon">🔒</div>
+            <div class="giant-coming-soon">PRÓXIMAMENTE</div>
+            <span class="teaser-subtext">Episodio en Postproducción</span>
+          </div>
+          
+          <div class="poster-top-bar">
+            <span class="vehicle-badge-ford ${isCs95 ? 'cs95' : 'cs55'}">
+              ${item.vehicle}
+            </span>
+          </div>
+
+          <div class="poster-bottom-content">
+            <div class="poster-model-tag ${isCs95 ? '' : 'cs55'}">
+              ${item.vehicle}
+            </div>
+            <div class="poster-title-row">
+              <span class="poster-state-name">${item.name}</span>
+              <div class="poster-arrow-circle">→</div>
+            </div>
+            <p class="poster-test-desc">${item.test}</p>
+          </div>
+        `;
+        track.appendChild(card);
+      });
+    }
+
+    function scrollCarousel(direction) {
+      const scrollAmount = window.innerWidth * 0.45;
+      track.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+
+    function setFilter(type, btn) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      renderCarousel(type);
+    }
+
+    const stateDrawer = document.getElementById('stateDrawer');
+    const drawerVideoArea = document.getElementById('drawerVideoArea');
+    const drawerBody = document.getElementById('drawerBody');
+
+    function openStateDetails(item) {
+      drawerVideoArea.innerHTML = `
+        <img src="${item.img}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);gap:10px;">
+          <div style="font-size: 16px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #fff; background: rgba(0,0,0,0.7); padding: 10px 24px; border-radius: 980px; border: 1px solid rgba(255,255,255,0.3);">
+            🔒 PRÓXIMAMENTE
+          </div>
+          <span style="font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:0.12em;text-transform:uppercase;">Episodio en Plan de Rodaje</span>
+        </div>
+      `;
+      drawerBody.innerHTML = `
+        <div style="font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 6px;">
+          Ruta Planificada · Estado ${item.id} de 16
+        </div>
+        <h3 style="font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px;">
+          ${item.name}
+        </h3>
+        <div style="font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 14px;">
+          Vehículo Asignado: <span style="color: var(--accent-blue);">${item.vehicle}</span>
+        </div>
+        <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
+          <strong>Prueba Asignada:</strong> ${item.test}
+        </p>
+      `;
+
+      stateDrawer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer(e) {
+      stateDrawer.classList.remove('active');
+      drawerVideoArea.innerHTML = '';
+      document.body.style.overflow = 'auto';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        skipToWebsite();
+        closeDrawer();
+      }
+    });
+
+    renderCarousel('all');
+  </script>
+</body>
+</html>
