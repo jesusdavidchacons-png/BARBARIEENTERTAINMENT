@@ -3,11 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Barbarietv Studios | Master S-Log & Pre-cortes de Edición</title>
+  <title>Master S-Log & Pre-cortes | Barbarie Studios</title>
   
-  <meta name="description" content="Portal de entrega y descarga de material Master en S-Log3 / 4K y referencias de pre-corte para producción y edición.">
+  <meta name="description" content="Portal de entrega técnica: Brutos de cámara en S-Log3, audio multicanal y referencias de montaje para edición.">
+  <link rel="canonical" href="https://barbariestudios.com">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
 
-  <!-- Tipografías de alta gama -->
+  <!-- ======================================================== -->
+  <!-- METADATOS PARA VISTA PREVIA EN WHATSAPP Y REDES SOCIALES -->
+  <!-- ======================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Barbarie Studios">
+  <meta property="og:title" content="Barbarie Studios | Master S-Log & Pre-cortes">
+  <meta property="og:description" content="Portal de entrega técnica: Brutos de cámara en S-Log3, audio multicanal y referencias de montaje para edición.">
+  <meta property="og:url" content="https://barbariestudios.com">
+  <meta property="og:image" content="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
+  <meta property="og:image:secure_url" content="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Barbarie Studios">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Barbarie Studios | Master S-Log & Pre-cortes">
+  <meta name="twitter:description" content="Portal de entrega técnica: Brutos de cámara en S-Log3, audio multicanal y referencias de montaje para edición.">
+  <meta name="twitter:image" content="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
+
+  <!-- Tipografías -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
@@ -66,12 +89,10 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    /* Brillo cálido festivo cinematográfico */
     .cinematic-glow {
-      background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.12) 0%, rgba(153, 27, 27, 0.1) 45%, transparent 75%);
+      background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.12) 0%, rgba(153, 27, 27, 0.08) 45%, transparent 75%);
     }
 
-    /* Borde dorado de lujo */
     .gold-border-gradient {
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.45) 0%, rgba(220, 38, 38, 0.25) 50%, rgba(212, 175, 55, 0.1) 100%);
       padding: 1px;
@@ -79,26 +100,26 @@
     }
   </style>
 </head>
-<body class="selection:bg-amber-400 selection:text-black bg-[#08090C] font-sans antialiased">
+<body class="selection:bg-amber-400 selection:text-black bg-[#08090E] font-sans antialiased">
 
-  <!-- NAVBAR FLOTANTE CON ACCESO RÁPIDO A DRIVE -->
+  <!-- NAVBAR CON ENLACE AL SITIO PRINCIPAL -->
   <header class="fixed top-0 inset-x-0 z-50 glass-nav">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
       
-      <!-- Logo e Identidad -->
-      <div class="flex items-center gap-3">
-        <div class="h-9 w-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xmas-gold text-base font-serif font-black shadow-inner">
-          B
+      <!-- Identidad Barbarie Studios -->
+      <a href="https://barbariestudios.com" class="flex items-center gap-3 group">
+        <div class="h-9 w-9 rounded-xl bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center group-hover:border-amber-400/50 transition-colors">
+          <img src="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png" alt="Barbarie Studios" class="w-full h-full object-contain p-1">
         </div>
         <div class="flex flex-col">
-          <span class="font-display font-black text-sm sm:text-base tracking-wider text-white uppercase leading-none">
-            BARBARIETV
+          <span class="font-display font-black text-sm sm:text-base tracking-wider text-white uppercase leading-none group-hover:text-amber-300 transition-colors">
+            BARBARIE STUDIOS
           </span>
           <span class="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-amber-400/90 uppercase font-medium mt-0.5">
-            POST-PRODUCTION ASSETS
+            CLIENT PORTAL // S-LOG ASSETS
           </span>
         </div>
-      </div>
+      </a>
 
       <!-- Acciones de Cabecera -->
       <div class="flex items-center gap-3">
@@ -107,7 +128,7 @@
           class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono text-slate-300 hover:text-white hover:bg-white/5 transition-all"
         >
           <i class="fa-solid fa-film text-amber-400/90 text-xs"></i>
-          <span>Ver Pre-cortes</span>
+          <span>Pre-cortes</span>
         </a>
 
         <!-- Botón Directo Drive Master -->
@@ -125,7 +146,7 @@
     </div>
   </header>
 
-  <!-- BANNER HERO CON VIDEO EN LOOP EN PRIMER PLANO -->
+  <!-- BANNER HERO CON VIDEO EN LOOP ESTILO GIF -->
   <section class="relative min-h-[92vh] sm:min-h-[88vh] flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 overflow-hidden cinematic-glow">
     
     <!-- VIDEO DE FONDO: PORTADADEVIDEO.mp4 -->
@@ -144,7 +165,7 @@
       <source src="PORTADADEVIDEO.mp4" type="video/mp4">
     </video>
 
-    <!-- Overlay Gradiente Cinematográfico & Acentos Cálidos -->
+    <!-- Overlay Gradiente -->
     <div class="absolute inset-0 bg-gradient-to-t from-[#08090C] via-[#08090C]/60 to-[#08090C]/85 pointer-events-none"></div>
 
     <div class="relative z-10 max-w-4xl mx-auto text-center w-full">
@@ -152,12 +173,12 @@
       <!-- Badge de Entrega Navideña / Master -->
       <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 font-mono text-[10px] sm:text-xs tracking-[0.2em] text-amber-300 uppercase mb-6 sm:mb-8 backdrop-blur-md">
         <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-        <span>PRODUCCIÓN NAVIDEÑA</span>
+        <span>PRODUCCIÓN CINEMATOGRÁFICA</span>
         <span class="text-slate-600">•</span>
         <span class="text-rose-400 font-bold">MASTER S-LOG3</span>
       </div>
 
-      <!-- Título de Impacto -->
+      <!-- Título Principal -->
       <h1 class="font-display font-black text-3xl sm:text-6xl lg:text-7xl tracking-tight text-white uppercase leading-[1.08] sm:leading-none mb-4 sm:mb-6 drop-shadow-2xl">
         ENTREGA DE RODAJE & <br class="hidden sm:inline">
         <span class="bg-gradient-to-r from-amber-200 via-amber-400 to-rose-400 bg-clip-text text-transparent">
@@ -166,10 +187,10 @@
       </h1>
 
       <p class="font-sans font-light text-slate-200 text-sm sm:text-lg max-w-2xl mx-auto mb-4 px-2 leading-relaxed">
-        Descarga directa del material original en curva logarítmica para etalonaje y montaje. Incluye pre-cortes de escena con código de tiempo preservado.
+        Descarga del material bruto en curva logarítmica para etalonaje y montaje. Incluye pre-cortes de escena con código de tiempo preservado.
       </p>
 
-      <!-- Ficha Rápida de Especificaciones Técnicas del Master -->
+      <!-- Ficha Técnica -->
       <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 font-mono text-[10px] sm:text-xs text-slate-400 mb-8 sm:mb-10 max-w-xl mx-auto">
         <span class="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/10 text-amber-300">
           <i class="fa-solid fa-camera mr-1 text-[9px]"></i> S-Log3 / S-Gamut3.Cine
@@ -182,7 +203,7 @@
         </span>
       </div>
 
-      <!-- Botón Principal de Google Drive (Acción Central) -->
+      <!-- Botones de Acción -->
       <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-md mx-auto sm:max-w-none">
         <a 
           href="https://drive.google.com/drive/folders/1Gfrdd-S5EClJks61-o6kxV7_d-iPngpm?usp=sharing" 
@@ -206,7 +227,7 @@
     </div>
   </section>
 
-  <!-- SECCIÓN DE REFERENCIAS VISUALES: LOS 2 PRE-CORTES DE ESCENA -->
+  <!-- SECCIÓN DE REFERENCIAS VISUALES: LOS 2 PRE-CORTES -->
   <section id="precortes" class="py-14 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto border-t border-white/[0.06]">
     
     <div class="mb-10 sm:mb-14 text-center sm:text-left flex flex-col sm:flex-row sm:items-end justify-between gap-4">
@@ -228,7 +249,7 @@
       </div>
     </div>
 
-    <!-- Rejilla de los 2 Videos de YouTube -->
+    <!-- Rejilla de los 2 Videos -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
       
       <!-- Video 1: 6_yPt6SKeCU -->
@@ -259,7 +280,7 @@
                 Secuencia A: Montaje Narrativo & Atmósfera
               </h3>
               <p class="text-xs text-slate-400 font-light leading-relaxed mb-4">
-                Pre-corte estructurado con la selección de tomas principales. Diseñado para contrastar con las tomas raw en S-Log3 y validar la continuidad lumínica de la escena.
+                Pre-corte estructurado con la selección de tomas principales para contrastar con las tomas raw en S-Log3 y validar la continuidad lumínica de la escena.
               </p>
             </div>
 
@@ -308,7 +329,7 @@
                 Secuencia B: Dinámica de Planos & Intención de Color
               </h3>
               <p class="text-xs text-slate-400 font-light leading-relaxed mb-4">
-                Montaje de ritmo rápido con planos de detalle y sincronización sonora. Permite al editor identificar los fotogramas clave para empatar el etalonaje definitivo en DaVinci Resolve.
+                Montaje con planos de detalle y sincronización sonora para identificar los fotogramas clave y empatar el etalonaje definitivo en DaVinci Resolve.
               </p>
             </div>
 
@@ -332,7 +353,7 @@
     </div>
   </section>
 
-  <!-- GUÍA DE FLUJO DE TRABAJO PARA EL EQUIPO DE POSTPRODUCCIÓN -->
+  <!-- INSTRUCCIONES DE INGESTA PARA POSTPRODUCCIÓN -->
   <section class="py-12 sm:py-16 px-4 sm:px-6 max-w-5xl mx-auto border-t border-white/[0.06]">
     <div class="bg-gradient-to-r from-xmas-card via-black to-xmas-card rounded-2xl border border-white/10 p-6 sm:p-8">
       
@@ -403,14 +424,14 @@
   <footer class="py-10 px-4 sm:px-6 border-t border-white/[0.06] bg-[#050608] text-center font-mono text-[10px] sm:text-xs text-slate-500">
     <div class="flex items-center justify-center gap-2 mb-2">
       <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-      <span class="text-slate-300 font-bold tracking-wider">BARBARIETV STUDIOS</span>
+      <a href="https://barbariestudios.com" class="text-slate-300 font-bold tracking-wider hover:text-amber-400 transition-colors">BARBARIE STUDIOS</a>
       <span class="text-slate-600">•</span>
-      <span>EDICIÓN & POSTPRODUCCIÓN CINEMATOGRÁFICA</span>
+      <span>POST-PRODUCTION DELIVERY</span>
     </div>
-    <p>© 2026 BARBARIE ENTERTAINMENT • TODOS LOS DERECHOS RESERVADOS</p>
+    <p>© 2026 BARBARIE STUDIOS • <a href="https://barbariestudios.com" class="hover:underline">barbariestudios.com</a></p>
   </footer>
 
-  <!-- SCRIPT PARA AUTOPLAY DEL VIDEO BANNER (iOS / Android / Desktop) -->
+  <!-- SCRIPT PARA AUTOPLAY DEL VIDEO BANNER -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const bannerVideo = document.getElementById('hero-banner-video');
@@ -419,7 +440,6 @@
         const playPromise = bannerVideo.play();
         if (playPromise !== undefined) {
           playPromise.catch(() => {
-            // Reintento en caso de bloqueo estricto en Safari / Chrome móvil
             window.addEventListener('touchstart', () => {
               bannerVideo.play();
             }, { once: true });
