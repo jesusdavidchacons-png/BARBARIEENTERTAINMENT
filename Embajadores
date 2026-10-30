@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth bg-[#060709] text-[#e5e7eb]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teatro Teresa Carreño | Monumento Nacional & Patrimonio Cultural</title>
+  
+  <meta name="description" content="Obra cinematográfica conmemorativa dedicada al Teatro Teresa Carreño: bastión arquitectónico, embajador cultural y monumento nacional de Venezuela.">
+  <link rel="canonical" href="https://barbariestudios.com">
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="video.movie">
+  <meta property="og:site_name" content="Barbarie Studios">
+  <meta property="og:title" content="Teatro Teresa Carreño | Cortometraje Oficial">
+  <meta property="og:description" content="Una mirada cinematográfica a la catedral de las artes escénicas de Venezuela.">
+  <meta property="og:url" content="https://barbariestudios.com">
+  <meta property="og:image" content="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
+
+  <!-- Tipografías de corte monumental y editorial -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <!-- Iconografía Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            monument: {
+              gold: '#C5A059',
+              'gold-light': '#E8D5A3',
+              bronze: '#8C6D37',
+              concrete: '#1C1F26',
+              velvet: '#4A0E17',
+              dark: '#060709',
+              card: '#0C0E12',
+              border: '#232733'
+            }
+          },
+          boxShadow: {
+            'glow-gold': '0 0 50px -10px rgba(197, 160, 89, 0.25)',
+            'glow-subtle': '0 0 80px -20px rgba(74, 14, 23, 0.4)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #060709; }
+    ::-webkit-scrollbar-thumb { background: #232733; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #C5A059; }
+
+    .glass-header {
+      background: rgba(6, 7, 9, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.12);
+    }
+
+    .hero-vignette {
+      background: radial-gradient(circle at 50% 30%, rgba(197, 160, 89, 0.08) 0%, rgba(74, 14, 23, 0.06) 40%, #060709 85%);
+    }
+
+    .border-condecoration {
+      background: linear-gradient(135deg, rgba(197, 160, 89, 0.4) 0%, rgba(35, 39, 51, 0.6) 50%, rgba(197, 160, 89, 0.15) 100%);
+      padding: 1px;
+    }
+
+    .film-grain {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+
+<body class="selection:bg-monument-gold selection:text-black font-sans antialiased text-slate-300">
+
+  <!-- CAPA DE GRANO CINEMATOGRÁFICO -->
+  <div class="fixed inset-0 pointer-events-none z-50 film-grain"></div>
+
+  <!-- NAVEGACIÓN PRINCIPAL / INSIGNIA -->
+  <header class="fixed top-0 inset-x-0 z-40 glass-header">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 h-20 sm:h-24 flex items-center justify-between">
+      
+      <!-- Sello Monumental -->
+      <a href="https://barbariestudios.com" class="flex items-center gap-4 group">
+        <div class="w-10 h-10 rounded-sm border border-monument-gold/40 flex items-center justify-center bg-black/40 text-monument-gold font-serif text-lg tracking-widest group-hover:border-monument-gold transition-colors">
+          TC
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif font-bold text-xs sm:text-sm tracking-[0.25em] text-white uppercase group-hover:text-monument-gold-light transition-colors">
+            Teatro Teresa Carreño
+          </span>
+          <span class="font-mono text-[9px] tracking-[0.2em] text-monument-gold/80 uppercase mt-0.5">
+            Monumento Nacional de Venezuela
+          </span>
+        </div>
+      </a>
+
+      <!-- Accesos -->
+      <div class="flex items-center gap-6">
+        <a href="#vision" class="hidden md:inline-block font-mono text-[11px] tracking-[0.2em] text-slate-400 hover:text-white uppercase transition-colors">
+          Premisa
+        </a>
+        <a href="#obra" class="hidden md:inline-block font-mono text-[11px] tracking-[0.2em] text-slate-400 hover:text-white uppercase transition-colors">
+          El Film
+        </a>
+        <a href="#legado" class="hidden sm:inline-block font-mono text-[11px] tracking-[0.2em] text-slate-400 hover:text-white uppercase transition-colors">
+          Ficha Técnica
+        </a>
+        <a 
+          href="#obra"
+          class="px-5 py-2.5 rounded-sm border border-monument-gold/40 bg-monument-gold/10 hover:bg-monument-gold hover:text-black font-mono text-[11px] tracking-widest text-monument-gold uppercase font-semibold transition-all shadow-glow-gold active:scale-95"
+        >
+          Proyección
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- SECCIÓN HERO: ANAMÓRFICA Y PROTOCOLAR -->
+  <section class="relative min-h-screen flex items-center justify-center pt-24 pb-20 px-6 sm:px-10 overflow-hidden hero-vignette">
+    
+    <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+      <div class="w-[85vw] h-[85vw] max-w-[1100px] max-h-[1100px] border border-monument-gold rounded-full"></div>
+      <div class="absolute w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] border border-white rounded-full"></div>
+    </div>
+
+    <div class="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
+      
+      <!-- Laurel de Condecoración Cultural -->
+      <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-monument-gold/25 bg-monument-card/80 backdrop-blur-md mb-8 shadow-glow-gold">
+        <i class="fa-solid fa-award text-monument-gold text-xs"></i>
+        <span class="font-mono text-[10px] sm:text-xs tracking-[0.25em] text-monument-gold-light uppercase font-medium">
+          Embajador del Patrimonio Cultural de la República
+        </span>
+        <i class="fa-solid fa-award text-monument-gold text-xs"></i>
+      </div>
+
+      <!-- Título de Obra -->
+      <h1 class="font-serif font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-white uppercase leading-[1.05] mb-6">
+        Catedral <br class="hidden sm:inline">
+        <span class="bg-gradient-to-r from-[#C5A059] via-[#F4E3BA] to-[#8C6D37] bg-clip-text text-transparent">
+          Del Escenario
+        </span>
+      </h1>
+
+      <div class="w-24 h-px bg-gradient-to-r from-transparent via-monument-gold to-transparent mb-8"></div>
+
+      <!-- Tagline -->
+      <p class="font-serif italic text-slate-300 text-base sm:text-xl md:text-2xl max-w-3xl leading-relaxed mb-6 font-light">
+        "El concreto dialoga con la acústica sagrada. La presencia viva de la gran pianista vigila cada preludio en el corazón de Caracas."
+      </p>
+
+      <p class="font-sans text-xs sm:text-sm text-slate-400 max-w-xl mx-auto leading-relaxed tracking-wide font-light mb-12">
+        Un homenaje cinematográfico a la majestuosidad de la sala Ríos Reyna, el taller de utilería, la ingeniería escénica y los cincuenta mil metros cuadrados consagrados al espíritu sublime del arte universal.
+      </p>
+
+      <!-- Botones de Acción -->
+      <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full max-w-md sm:max-w-none justify-center">
+        <a 
+          href="#obra"
+          class="w-full sm:w-auto px-8 py-4 rounded-sm bg-monument-gold text-black font-serif font-bold text-xs uppercase tracking-[0.2em] hover:bg-monument-gold-light transition-all flex items-center justify-center gap-3 shadow-glow-gold active:scale-95"
+        >
+          <i class="fa-solid fa-play text-[10px]"></i>
+          <span>Ver Proyección Oficial</span>
+        </a>
+
+        <a 
+          href="#vision"
+          class="w-full sm:w-auto px-8 py-4 rounded-sm border border-slate-700 hover:border-monument-gold/50 text-slate-300 hover:text-white font-mono text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 bg-black/30 backdrop-blur-sm active:scale-95"
+        >
+          <span>Declaración Artística</span>
+          <i class="fa-solid fa-arrow-down text-[10px] text-monument-gold"></i>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Indicador de Scroll -->
+    <div class="absolute bottom-6 inset-x-0 flex flex-col items-center gap-2 pointer-events-none opacity-40">
+      <span class="font-mono text-[9px] tracking-[0.3em] uppercase">Desplazar</span>
+      <div class="w-px h-8 bg-gradient-to-b from-monument-gold to-transparent"></div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN: LA CONDECORACIÓN & EL MONUMENTO -->
+  <section id="vision" class="py-24 sm:py-32 px-6 sm:px-10 max-w-6xl mx-auto border-t border-monument-border">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      
+      <!-- Columna Texto Solemne -->
+      <div class="lg:col-span-7 flex flex-col">
+        <span class="font-mono text-[10px] sm:text-xs text-monument-gold uppercase tracking-[0.25em] mb-3 block">
+          // Declaratoria Solemne
+        </span>
+        <h2 class="font-serif font-bold text-2xl sm:text-4xl text-white tracking-wide uppercase leading-tight mb-6">
+          Monumento Nacional: Custodio del Espíritu Creador
+        </h2>
+        <div class="space-y-4 text-xs sm:text-sm text-slate-300 font-light leading-relaxed">
+          <p>
+            Inaugurado como un prodigio de arquitectura brutalista de integración espacial y vanguardia acústica, el Complejo Cultural Teatro Teresa Carreño trasciende su condición de edificio para erigirse como el altar vivo de las artes sonoras y escénicas de Venezuela.
+          </p>
+          <p>
+            Esta pieza cinematográfica documenta la comunión invisible entre el espacio monumental y quienes lo habitan: desde las cuerdas vibrantes de las orquestas hasta las manos silenciosas de los artesanos y utileros que forjan la ilusión detrás de cada telón.
+          </p>
+          <p class="font-serif italic text-monument-gold-light pt-2">
+            "The horseshoe that accompanied Teresa Carreño’s artistic creation."
+          </p>
+        </div>
+
+        <!-- Cifras y Atributos Patrimoniales -->
+        <div class="grid grid-cols-3 gap-4 pt-10 mt-6 border-t border-monument-border font-mono">
+          <div>
+            <span class="block text-xl sm:text-2xl font-bold text-white">2.365</span>
+            <span class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest">Butacas Ríos Reyna</span>
+          </div>
+          <div>
+            <span class="block text-xl sm:text-2xl font-bold text-monument-gold">1983</span>
+            <span class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest">Año de Apertura</span>
+          </div>
+          <div>
+            <span class="block text-xl sm:text-2xl font-bold text-white">Cinema 4K</span>
+            <span class="text-[10px] sm:text-xs text-slate-500 uppercase tracking-widest">Master Digital</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna Visual: La Medalla / El Sello Simbólico -->
+      <div class="lg:col-span-5">
+        <div class="border-condecoration rounded-xl shadow-glow-subtle">
+          <div class="bg-monument-card p-8 rounded-[0.7rem] flex flex-col items-center text-center">
+            
+            <div class="w-20 h-20 rounded-full border-2 border-monument-gold/40 flex items-center justify-center mb-6 bg-monument-velvet/30 text-monument-gold text-2xl shadow-inner">
+              <i class="fa-solid fa-landmark-dome"></i>
+            </div>
+
+            <span class="font-serif font-bold text-lg text-white uppercase tracking-wider mb-2">
+              Patrimonio Vivo
+            </span>
+
+            <span class="font-mono text-[10px] uppercase text-monument-gold tracking-[0.2em] mb-4">
+              Gaceta Oficial · República Bolivariana de Venezuela
+            </span>
+
+            <p class="text-xs text-slate-400 font-light leading-relaxed mb-6">
+              Reconocido como Monumento Nacional por su valor arquitectónico, su colección de obras integradas de Jesús Soto y Pedro Basalo, y su testimonio inquebrantable de la cultura latinoamericana.
+            </p>
+
+            <div class="w-full pt-4 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
+              <span>Sede Central</span>
+              <span class="text-white font-semibold">Caracas, Venezuela</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SECCIÓN CINEMATOGRÁFICA: PROYECCIÓN DEL FILM (REPRODUCTOR VIMEO INTEGRADO) -->
+  <section id="obra" class="py-20 sm:py-32 px-4 sm:px-10 bg-[#090b0f] border-t border-monument-border relative overflow-hidden">
+    
+    <div class="max-w-6xl mx-auto">
+      
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8 sm:mb-12">
+        <div>
+          <span class="font-mono text-[10px] sm:text-xs text-monument-gold uppercase tracking-[0.25em] block mb-2">
+            // Proyección Principal
+          </span>
+          <h2 class="font-serif font-bold text-3xl sm:text-5xl text-white tracking-wide uppercase">
+            El Cortometraje
+          </h2>
+        </div>
+        <div class="font-mono text-xs text-slate-400 flex items-center gap-3">
+          <span class="px-2.5 py-1 rounded-sm bg-black/60 border border-slate-800 text-monument-gold">VIMEO 4K MASTER</span>
+          <span>AUDIO DIRECTO ESTÉREO</span>
+        </div>
+      </div>
+
+      <!-- Pantalla Anamórfica con Reproductor Vimeo Oficial -->
+      <div class="relative w-full aspect-video sm:aspect-[2.39/1] bg-black border border-monument-gold/40 rounded-sm overflow-hidden shadow-2xl">
+        <iframe 
+          src="https://player.vimeo.com/video/1241515888?color=c5a059&title=0&byline=0&portrait=0" 
+          class="w-full h-full border-0" 
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
+          title="Teatro Teresa Carreño - Cortometraje Oficial">
+        </iframe>
+      </div>
+
+      <!-- Enlace directo y detalles -->
+      <div class="mt-4 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-400 gap-2">
+        <span>Transmisión Oficial de Producción</span>
+        <a 
+          href="https://vimeo.com/1241515888" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="text-monument-gold hover:text-monument-gold-light transition-colors inline-flex items-center gap-1.5"
+        >
+          <span>Abrir directamente en Vimeo</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </a>
+      </div>
+
+      <!-- Reseña del Rodaje -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-14 text-xs font-light text-slate-400">
+        <div class="p-5 rounded-sm bg-black/40 border border-slate-800/80">
+          <span class="font-mono text-white text-[11px] uppercase tracking-wider block mb-2 font-semibold">
+            01. La Materia Escénica
+          </span>
+          <p class="leading-relaxed">
+            Tomas capturadas con ópticas de cine a baja profundidad de campo, revelando la textura del hormigón martillado y la madera curada por décadas de vibración acústica.
+          </p>
+        </div>
+        <div class="p-5 rounded-sm bg-black/40 border border-slate-800/80">
+          <span class="font-mono text-white text-[11px] uppercase tracking-wider block mb-2 font-semibold">
+            02. Los Oficios Ocultos
+          </span>
+          <p class="leading-relaxed">
+            Homenaje a los maestros utileros, carpinteros teatrales, sonidistas e iluminadores cuya labor invisible sostiene la magia del telón de boca.
+          </p>
+        </div>
+        <div class="p-5 rounded-sm bg-black/40 border border-slate-800/80">
+          <span class="font-mono text-white text-[11px] uppercase tracking-wider block mb-2 font-semibold">
+            03. El Vuelo Sinfónico
+          </span>
+          <p class="leading-relaxed">
+            Secuencias de cámara fluida que recorren la fosa de orquesta, los palcos presidenciales y los pasillos patrimoniales del complejo cultural.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SECCIÓN: FICHA TÉCNICA CINEMATOGRÁFICA -->
+  <section id="legado" class="py-20 sm:py-28 px-6 sm:px-10 max-w-5xl mx-auto border-t border-monument-border">
+    
+    <div class="text-center mb-16">
+      <span class="font-mono text-[10px] sm:text-xs text-monument-gold uppercase tracking-[0.25em] block mb-2">
+        // Especificaciones de Archivo
+      </span>
+      <h2 class="font-serif font-bold text-2xl sm:text-4xl text-white uppercase tracking-wider">
+        Ficha Técnica de Producción
+      </h2>
+    </div>
+
+    <!-- Tabla Editorial de Créditos -->
+    <div class="border border-slate-800 bg-monument-card/60 divide-y divide-slate-800 font-mono text-xs rounded-sm">
+      <div class="grid grid-cols-1 sm:grid-cols-3 p-4 gap-2">
+        <span class="text-slate-500 uppercase tracking-wider">Obra</span>
+        <span class="sm:col-span-2 text-white font-serif tracking-wide text-sm">Teatro Teresa Carreño: Bastión de la Creación</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 p-4 gap-2">
+        <span class="text-slate-500 uppercase tracking-wider">Categoría</span>
+        <span class="sm:col-span-2 text-slate-300">Cortometraje Documental Institucional / Cine Patrimonial</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 p-4 gap-2">
+        <span class="text-slate-500 uppercase tracking-wider">Locación Principal</span>
+        <span class="sm:col-span-2 text-slate-300">Sala Ríos Reyna, Sala José Félix Ribas, Talleres de Utilería y Plazas Culturales</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 p-4 gap-2">
+        <span class="text-slate-500 uppercase tracking-wider">Formato de Captura</span>
+        <span class="sm:col-span-2 text-slate-300">Cinema 4K RAW • Curva S-Log3 • Perfil 10-Bit 4:2:2</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 p-4 gap-2">
+        <span class="text-slate-500 uppercase tracking-wider">Plataforma Máster</span>
+        <span class="sm:col-span-2 text-slate-300">Vimeo Pro (ID: 1241515888)</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 p-4 gap-2">
+        <span class="text-slate-500 uppercase tracking-wider">Reconocimiento</span>
+        <span class="sm:col-span-2 text-monument-gold font-semibold">Patrimonio Histórico y Monumento de la Nación Venezolana</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PIE DE PÁGINA MONUMENTAL -->
+  <footer class="py-14 px-6 sm:px-10 border-t border-monument-border bg-black text-center">
+    <div class="max-w-4xl mx-auto flex flex-col items-center">
+      
+      <div class="w-8 h-8 rounded-sm border border-monument-gold/40 flex items-center justify-center text-monument-gold font-serif text-sm mb-4">
+        TC
+      </div>
+
+      <p class="font-serif text-sm text-white tracking-[0.2em] uppercase mb-2">
+        Fundación Teatro Teresa Carreño
+      </p>
+
+      <p class="font-mono text-[10px] text-slate-500 uppercase tracking-widest mb-6">
+        Caracas, Distrito Capital • República Bolivariana de Venezuela
+      </p>
+
+      <div class="text-[10px] font-mono text-slate-600 space-x-3">
+        <span>© 2026 Todos los Derechos Reservados</span>
+        <span>•</span>
+        <span><a href="https://barbariestudios.com" class="text-slate-500 hover:text-monument-gold transition-colors">Barbarie Studios</a></span>
+        <span>•</span>
+        <span>Patrimonio de la República</span>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>
