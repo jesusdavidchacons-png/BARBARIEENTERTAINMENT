@@ -8,7 +8,7 @@
   <meta name="description" content="Acreditación oficial y consentimiento para el tratamiento de imagen y voz - Mensaje de Navidad 2026.">
   <link rel="icon" type="image/png" href="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
 
-  <!-- Tipografías -->
+  <!-- Tipografías de gala -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -62,7 +62,7 @@
     ::-webkit-scrollbar-thumb { background: #14382a; border-radius: 9999px; }
     ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
 
-    /* Nieve animada */
+    /* Copos de nieve flotantes */
     .snow-canvas {
       position: fixed;
       inset: 0;
@@ -106,10 +106,10 @@
 
 <body class="selection:bg-navidad-gold selection:text-black font-sans antialiased text-slate-200 bg-[#030706]">
 
-  <!-- CINTA DECORATIVA SUPERIOR -->
+  <!-- CINTA DECORATIVA NAVIDEÑA -->
   <div class="xmas-ribbon w-full fixed top-0 inset-x-0 z-50"></div>
 
-  <!-- NIEVE EN PRIMER PLANO -->
+  <!-- NIEVE EN SEGUNDO PLANO -->
   <div class="snow-canvas" id="snowContainer"></div>
 
   <!-- NAVEGACIÓN -->
@@ -159,13 +159,13 @@
       </h1>
 
       <p class="font-sans text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed font-light mb-4">
-        Registro de talento infantil, juvenil y adulto para la obra audiovisual del <strong>Mensaje de Navidad 2026</strong>. Al completar el formulario, el sistema emite el documento legal en PDF debidamente rubricado.
+        Registro de talento infantil, juvenil y adulto para la obra audiovisual del <strong>Mensaje de Navidad 2026</strong>. El sistema genera el documento legal en PDF debidamente firmado.
       </p>
 
     </div>
   </section>
 
-  <!-- FORMULARIO PRINCIPAL -->
+  <!-- FORMULARIO -->
   <main class="max-w-4xl mx-auto px-4 sm:px-8 pb-28 relative z-20">
     
     <form id="talentRegistrationForm" onsubmit="handleRegistrationSubmit(event)" class="space-y-8">
@@ -206,7 +206,7 @@
                 >
                 <div>
                   <span class="block font-bold text-sm text-white">Menor de Edad (Niño / Joven)</span>
-                  <span class="block text-[11px] text-slate-400 font-light">Requiere autorización de padre, madre o tutor (LOPNNA).</span>
+                  <span class="block text-[11px] text-slate-400 font-light">Requiere consentimiento de representante legal (LOPNNA).</span>
                 </div>
               </label>
 
@@ -483,7 +483,7 @@
           </div>
 
           <p id="signatureInstructionText" class="text-xs text-slate-300 font-light mb-6 leading-relaxed">
-            Tome una foto clara de la firma manuscrita sobre papel blanco o firme directamente con el dedo o lápiz óptico en el lienzo inferior.
+            Tome una foto de la firma en papel blanco o firme directamente con el dedo sobre el lienzo inferior.
           </p>
 
           <div class="flex flex-wrap gap-3 mb-5">
@@ -561,29 +561,29 @@
 
 
   <!-- ========================================================================= -->
-  <!-- CONTENEDOR TÉCNICO DEL PDF (POSICIONADO EN 0,0 BAJO LA PÁGINA) -->
+  <!-- HOJA TAMAÑO CARTA FIJA DE ALTA COMPATIBILIDAD (CON FONDO BLANCO Y TEXTO NEGRO) -->
   <!-- ========================================================================= -->
   <div 
     id="pdfExportWrapper" 
-    style="position: fixed; top: 0; left: 0; width: 760px; z-index: -100; pointer-events: none; opacity: 1; visibility: visible;"
+    style="position: absolute; left: 0; top: 0; width: 816px; z-index: -9999; pointer-events: none; opacity: 1; overflow: hidden;"
   >
     <div 
       id="pdfFormalLetter" 
-      style="background: #ffffff !important; color: #111827 !important; width: 760px; min-height: 1040px; padding: 45px 50px; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; font-size: 11px; line-height: 1.55;"
+      style="background: #ffffff !important; color: #111827 !important; width: 215.9mm; min-height: 279.4mm; max-height: 279.4mm; padding: 15mm 18mm; box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; font-size: 10px; line-height: 1.48;"
     >
       
       <!-- MEMBRETE CON TABLA NATIVA -->
-      <table style="width: 100%; border-bottom: 2px solid #111827; padding-bottom: 12px; margin-bottom: 22px;">
+      <table style="width: 100%; border-bottom: 2px solid #111827; padding-bottom: 10px; margin-bottom: 16px;">
         <tr>
           <td style="vertical-align: bottom;">
-            <h1 style="font-size: 20px; font-weight: 900; margin: 0; color: #000000; font-family: Georgia, serif; letter-spacing: 1.5px;">
+            <h1 style="font-size: 19px; font-weight: 900; margin: 0; color: #000000; font-family: Georgia, serif; letter-spacing: 1.5px;">
               BARBARIE STUDIOS
             </h1>
-            <p style="font-size: 9px; margin: 3px 0 0 0; color: #4B5563; font-family: monospace; letter-spacing: 1px;">
+            <p style="font-size: 8.5px; margin: 3px 0 0 0; color: #4B5563; font-family: monospace; letter-spacing: 1px;">
               PRODUCCIÓN AUDIOVISUAL & CINEMATOGRAFÍA • VENEZUELA
             </p>
           </td>
-          <td style="text-align: right; vertical-align: bottom; font-family: monospace; font-size: 9px; color: #374151;">
+          <td style="text-align: right; vertical-align: bottom; font-family: monospace; font-size: 8.5px; color: #374151;">
             <p style="margin: 0; font-weight: bold; color: #000000;">EXPEDIENTE: NAV-2026-<span id="pdfDocId">0000</span></p>
             <p style="margin: 2px 0 0 0;">EMISIÓN: <span id="pdfDateString">Caracas, 2026</span></p>
           </td>
@@ -591,51 +591,51 @@
       </table>
 
       <!-- TÍTULO DE LA CARTA -->
-      <div style="text-align: center; margin-bottom: 22px;">
-        <h2 style="font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin: 0; padding: 6px 12px; border-top: 1px solid #D1D5DB; border-bottom: 1px solid #D1D5DB; color: #111827; display: inline-block;">
+      <div style="text-align: center; margin-bottom: 18px;">
+        <h2 style="font-size: 11.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin: 0; padding: 5px 12px; border-top: 1px solid #D1D5DB; border-bottom: 1px solid #D1D5DB; color: #111827; display: inline-block;">
           AUTORIZACIÓN Y CONSENTIMIENTO INFORMADO PARA USO DE IMAGEN Y VOZ
         </h2>
-        <p style="font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #6B7280; margin: 4px 0 0 0; font-family: monospace;">
+        <p style="font-size: 8.5px; letter-spacing: 1px; text-transform: uppercase; color: #6B7280; margin: 3px 0 0 0; font-family: monospace;">
           OBRA CONMEMORATIVA: "MENSAJE DE NAVIDAD 2026"
         </p>
       </div>
 
       <!-- CUERPO LEGAL -->
-      <div id="pdfLegalBodyText" style="text-align: justify; color: #1F2937; margin-bottom: 25px;">
+      <div id="pdfLegalBodyText" style="text-align: justify; color: #1F2937; margin-bottom: 20px;">
         <!-- Se inyecta con JavaScript -->
       </div>
 
       <!-- CUADRO DE FIRMAS CON TABLA NATIVA -->
-      <table style="width: 100%; margin-top: 25px; border-top: 1px solid #D1D5DB; padding-top: 20px;">
+      <table style="width: 100%; margin-top: 18px; border-top: 1px solid #D1D5DB; padding-top: 16px;">
         <tr>
           <!-- Otorgante -->
           <td style="width: 50%; text-align: center; vertical-align: bottom; padding-right: 15px;">
-            <div style="height: 70px; margin-bottom: 6px; text-align: center;">
-              <img id="pdfSignatureImg" src="" alt="Firma Otorgante" style="max-height: 65px; max-width: 210px; display: inline-block;">
+            <div style="height: 65px; margin-bottom: 5px; text-align: center;">
+              <img id="pdfSignatureImg" src="" alt="Firma Otorgante" style="max-height: 60px; max-width: 200px; display: inline-block;">
             </div>
-            <div style="width: 210px; height: 1px; background: #000000; margin: 0 auto 5px auto;"></div>
-            <p id="pdfSignatoryName" style="font-size: 10px; font-weight: bold; margin: 0; text-transform: uppercase; color: #000000;"></p>
-            <p id="pdfSignatoryId" style="font-size: 9px; margin: 2px 0 0 0; color: #4B5563; font-family: monospace;"></p>
+            <div style="width: 200px; height: 1px; background: #000000; margin: 0 auto 4px auto;"></div>
+            <p id="pdfSignatoryName" style="font-size: 9.5px; font-weight: bold; margin: 0; text-transform: uppercase; color: #000000;"></p>
+            <p id="pdfSignatoryId" style="font-size: 8.5px; margin: 2px 0 0 0; color: #4B5563; font-family: monospace;"></p>
             <p id="pdfSignatoryRole" style="font-size: 8px; margin: 2px 0 0 0; color: #6B7280; font-family: monospace; text-transform: uppercase;"></p>
           </td>
 
           <!-- Sello Producción -->
           <td style="width: 50%; text-align: center; vertical-align: bottom; padding-left: 15px; font-family: monospace;">
-            <div style="height: 70px; margin-bottom: 6px; text-align: center;">
-              <div style="width: 56px; height: 56px; border: 1.5px dashed #9CA3AF; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 8px; color: #6B7280; text-align: center; line-height: 1.2;">
+            <div style="height: 65px; margin-bottom: 5px; text-align: center;">
+              <div style="width: 50px; height: 50px; border: 1.5px dashed #9CA3AF; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 8px; color: #6B7280; text-align: center; line-height: 1.2;">
                 SELLO<br>OFICIAL
               </div>
             </div>
-            <div style="width: 210px; height: 1px; background: #000000; margin: 0 auto 5px auto;"></div>
-            <p style="font-size: 10px; font-weight: bold; margin: 0; text-transform: uppercase; color: #000000;">DIRECCIÓN DE PRODUCCIÓN</p>
-            <p style="font-size: 9px; margin: 2px 0 0 0; color: #4B5563;">BARBARIE STUDIOS</p>
+            <div style="width: 200px; height: 1px; background: #000000; margin: 0 auto 4px auto;"></div>
+            <p style="font-size: 9.5px; font-weight: bold; margin: 0; text-transform: uppercase; color: #000000;">DIRECCIÓN DE PRODUCCIÓN</p>
+            <p style="font-size: 8.5px; margin: 2px 0 0 0; color: #4B5563;">BARBARIE STUDIOS</p>
             <p style="font-size: 8px; margin: 2px 0 0 0; color: #6B7280; text-transform: uppercase;">MENSAJE DE NAVIDAD 2026</p>
           </td>
         </tr>
       </table>
 
       <!-- PIE DE PÁGINA -->
-      <div style="margin-top: 35px; padding-top: 10px; border-top: 1px solid #F3F4F6; text-align: center; font-family: monospace; font-size: 8px; color: #9CA3AF; letter-spacing: 1px; text-transform: uppercase;">
+      <div style="margin-top: 25px; padding-top: 8px; border-top: 1px solid #F3F4F6; text-align: center; font-family: monospace; font-size: 7.5px; color: #9CA3AF; letter-spacing: 1px; text-transform: uppercase;">
         Documento Oficial de Registro • Producción Cinematográfica • Barbarie Studios • jesusdavid.chacons@gmail.com
       </div>
 
@@ -702,9 +702,9 @@
   </footer>
 
 
-  <!-- LÓGICA DE CONTROL -->
+  <!-- SCRIPT -->
   <script>
-    // Generador de Nieve
+    // Nieve
     (function initSnow() {
       const container = document.getElementById('snowContainer');
       const count = 30;
@@ -723,6 +723,7 @@
     let currentCategory = 'menor';
     let isDrawing = false;
     let signatureHasContent = false;
+    let isPhotoUpload = false;
     let canvas, ctx;
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -760,6 +761,7 @@
     function startDrawing(e) {
       isDrawing = true;
       signatureHasContent = true;
+      isPhotoUpload = false;
       document.getElementById('signaturePlaceholder').style.display = 'none';
       ctx.beginPath();
       ctx.moveTo(e.offsetX, e.offsetY);
@@ -783,6 +785,7 @@
       const rect = canvas.getBoundingClientRect();
       isDrawing = true;
       signatureHasContent = true;
+      isPhotoUpload = false;
       document.getElementById('signaturePlaceholder').style.display = 'none';
       ctx.beginPath();
       ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
@@ -800,6 +803,7 @@
     function clearSignatureCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       signatureHasContent = false;
+      isPhotoUpload = false;
       document.getElementById('signaturePlaceholder').style.display = 'block';
       document.getElementById('signatureFileInput').value = '';
     }
@@ -821,11 +825,47 @@
           
           ctx.drawImage(img, 0, 0, img.width, img.height, shiftX, shiftY, img.width * ratio, img.height * ratio);
           signatureHasContent = true;
+          isPhotoUpload = true; // Foto física tomada
           document.getElementById('signaturePlaceholder').style.display = 'none';
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
+    }
+
+    // Convierte el trazo blanco del canvas a tinta oscura para que no salga invisible en papel blanco
+    function getSignatureImageForPdf() {
+      if (isPhotoUpload) {
+        return canvas.toDataURL('image/png');
+      }
+
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = canvas.width;
+      tempCanvas.height = canvas.height;
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCtx.drawImage(canvas, 0, 0);
+
+      const imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+      const data = imgData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+
+        if (a > 25) {
+          if (r > 100 && g > 100 && b > 100) {
+            data[i] = 17;     // Negro carbón
+            data[i + 1] = 24;
+            data[i + 2] = 39;
+            data[i + 3] = 255;
+          }
+        }
+      }
+
+      tempCtx.putImageData(imgData, 0, 0);
+      return tempCanvas.toDataURL('image/png');
     }
 
     function handleAgeCategoryChange(val) {
@@ -850,7 +890,7 @@
         actorSectionTitle.textContent = "Datos del Actor / Actriz (Mayor de Edad)";
         actorSectionBadge.textContent = "Elenco Adulto";
         signatureSectionTitle.textContent = "Firma del Actor / Actriz";
-        signatureInstructionText.textContent = "Tome una foto clara de su firma manuscrita o firme directamente con el dedo sobre el lienzo para validar su consentimiento.";
+        signatureInstructionText.textContent = "Tome una foto de su firma manuscrita o firme directamente con el dedo sobre el lienzo para validar su consentimiento.";
         consentCheckboxText.innerHTML = "Doy fe de que actúo por mis propios derechos y autorizo a <strong>Barbarie Studios</strong> para la fijación, grabación, edición cinematográfica y difusión de mi imagen y voz en la producción del <strong>Mensaje de Navidad 2026</strong>.";
 
         repInputs.forEach(id => document.getElementById(id).required = false);
@@ -940,19 +980,19 @@
         const docMenorTexto = actorDoc ? `titular de ${actorDoc}` : 'en su condición de menor de edad sin cédula';
 
         pdfBody.innerHTML = `
-          <p style="margin: 0 0 10px 0;">
+          <p style="margin: 0 0 8px 0;">
             Yo, <strong>${repName.toUpperCase()}</strong>, mayor de edad, titular de la Cédula de Identidad N° <strong>${repId}</strong>, domiciliado(a) en ${repAddress}, actuando en mi carácter de <strong>${repKinship.toUpperCase()}</strong> y en pleno ejercicio de la patria potestad y representación legal del menor:
           </p>
-          <div style="background-color: #F3F4F6; padding: 10px 14px; border-left: 3px solid #111827; margin-bottom: 12px;">
-            <strong style="font-size: 11px; text-transform: uppercase;">${actorName}</strong>, de ${actorAge} años de edad, ${docMenorTexto}.
+          <div style="background-color: #F3F4F6; padding: 7px 12px; border-left: 3px solid #111827; margin-bottom: 10px;">
+            <strong style="font-size: 10.5px; text-transform: uppercase;">${actorName}</strong>, de ${actorAge} años de edad, ${docMenorTexto}.
           </div>
-          <p style="margin: 0 0 8px 0; font-weight: bold; text-transform: uppercase; font-size: 10px; color: #111827;">
+          <p style="margin: 0 0 6px 0; font-weight: bold; text-transform: uppercase; font-size: 9px; color: #111827;">
             DECLARO Y MANIFIESTO LIBREMENTE:
           </p>
-          <p style="margin: 0 0 8px 0;">
+          <p style="margin: 0 0 6px 0;">
             <strong>PRIMERO (OBJETO):</strong> Autorizo de manera voluntaria e irrevocable a <strong>BARBARIE STUDIOS</strong> y a su equipo de producción para que realicen la captación, filmación cinematográfica, registro de voz, actuación y desenvolvimiento artístico del mencionado menor en el rodaje de la obra conmemorativa <strong>"Mensaje de Navidad 2026"</strong>.
           </p>
-          <p style="margin: 0 0 8px 0;">
+          <p style="margin: 0 0 6px 0;">
             <strong>SEGUNDO (PROTECCIÓN INTEGRAL LOPNNA):</strong> Se deja expresa constancia de que la participación artística se desarrolla con estricto apego a las disposiciones de la Ley Orgánica para la Protección de Niños, Niñas y Adolescentes (LOPNNA), garantizando que las imágenes y grabaciones obtenidas preservarán el honor, dignidad, reputación e integridad moral del menor.
           </p>
           <p style="margin: 0;">
@@ -980,22 +1020,22 @@
 
         signatoryName = actorName;
         signatoryId = `C.I: ${actorDoc}`;
-        signatoryRole = "ACTOR / ACTRIZ (TITULAR DIRECTO)";
+        signatoryRole = "ACTOR / ACTRIZ (TITULAR POR DERECHO PROPIO)";
 
         pdfBody.innerHTML = `
-          <p style="margin: 0 0 10px 0;">
-            Yo, <strong>${actorName.toUpperCase()}</strong>, de nacionalidad venezolana, mayor de edad, titular de la Cédula de Identidad N° <strong>${actorDoc}</strong>, domiciliado(a) en ${adultAddress}, con teléfono de contacto ${adultPhone} y correo electrónico ${adultEmail}, por mis propios derechos y en pleno uso de mis facultades legales:
+          <p style="margin: 0 0 8px 0;">
+            Yo, <strong>${actorName.toUpperCase()}</strong>, mayor de edad, titular de la Cédula de Identidad N° <strong>${actorDoc}</strong>, domiciliado(a) en ${adultAddress}, con teléfono de contacto ${adultPhone} y correo electrónico ${adultEmail}, actuando por mis propios derechos y en pleno uso de mis facultades legales:
           </p>
-          <div style="background-color: #F3F4F6; padding: 10px 14px; border-left: 3px solid #111827; margin-bottom: 12px;">
-            Talento participante: <strong style="font-size: 11px; text-transform: uppercase;">${actorName}</strong> (${actorAge} años) • Rol: ${actorRole}
+          <div style="background-color: #F3F4F6; padding: 7px 12px; border-left: 3px solid #111827; margin-bottom: 10px;">
+            Talento participante: <strong style="font-size: 10.5px; text-transform: uppercase;">${actorName}</strong> (${actorAge} años) • Rol: ${actorRole}
           </div>
-          <p style="margin: 0 0 8px 0; font-weight: bold; text-transform: uppercase; font-size: 10px; color: #111827;">
+          <p style="margin: 0 0 6px 0; font-weight: bold; text-transform: uppercase; font-size: 9px; color: #111827;">
             DECLARO Y MANIFIESTO VOLUNTARIAMENTE:
           </p>
-          <p style="margin: 0 0 8px 0;">
+          <p style="margin: 0 0 6px 0;">
             <strong>PRIMERO (CESIÓN Y TRATAMIENTO DE IMAGEN):</strong> Autorizo de manera libre, expresa e irrevocable a la casa productora <strong>BARBARIE STUDIOS</strong> para que realice la captación, fijación, registro audiovisual de mi rostro, persona, voz, interpretación y desempeño escénico en el marco de la producción <strong>"Mensaje de Navidad 2026"</strong>.
           </p>
-          <p style="margin: 0 0 8px 0;">
+          <p style="margin: 0 0 6px 0;">
             <strong>SEGUNDO (ALCANCE Y TERRITORIALIDAD):</strong> La presente cesión autoriza el uso, edición, etalonaje y difusión de dicho material audiovisual en televisión abierta, televisión por suscripción, circuitos de cine, plataformas web, redes sociales y demás medios de comunicación masiva, tanto en Venezuela como a nivel internacional, sin limitación temporal.
           </p>
           <p style="margin: 0;">
@@ -1019,10 +1059,10 @@
       document.getElementById('pdfSignatoryId').textContent = signatoryId;
       document.getElementById('pdfSignatoryRole').textContent = signatoryRole;
 
-      // Transferir firma al img
-      document.getElementById('pdfSignatureImg').src = canvas.toDataURL('image/png');
+      // Estampar firma convertida a tinta oscura
+      document.getElementById('pdfSignatureImg').src = getSignatureImageForPdf();
 
-      // Envío formal a jesusdavid.chacons@gmail.com
+      // Enviar datos por correo
       enviarDatosPorCorreo(payloadData, docRandom, todayString);
 
       document.getElementById('modalActorName').textContent = actorName;
@@ -1032,10 +1072,9 @@
       modal.classList.remove('hidden');
       modal.classList.add('flex');
 
-      // Descarga automática asegurando el renderizado
       setTimeout(() => {
         downloadGeneratedPdf();
-      }, 500);
+      }, 450);
     }
 
     function enviarDatosPorCorreo(payload, docId, fecha) {
@@ -1044,14 +1083,14 @@
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
           _to: 'jesusdavid.chacons@gmail.com',
-          asunto: `REGISTRO MENSAJE DE NAVIDAD 2026 - ${payload.actor_menor || payload.actor_titular}`,
+          asunto: `REGISTRO NAVIDAD 2026 - ${payload.actor_menor || payload.actor_titular}`,
           expediente: `NAV-2026-${docId}`,
           fecha_emision: fecha,
           datos_completos: payload,
           notificacion: 'Documento PDF generado y firmado debidamente.'
         })
       }).catch(err => {
-        console.log('Registro local almacenado correctamente.');
+        console.log('Registro local almacenado.');
       });
     }
 
@@ -1059,17 +1098,23 @@
       const element = document.getElementById('pdfFormalLetter');
       const actor = (document.getElementById('actorFullName').value.trim() || 'Talento').replace(/\s+/g, '_');
       
+      // Cierra teclado y resetea cualquier desplazamiento en móvil
+      if (document.activeElement) document.activeElement.blur();
+      window.scrollTo(0, 0);
+
       const opt = {
-        margin:       [10, 10, 10, 10],
+        margin:       0,
         filename:     `Autorizacion_Navidad_2026_${actor}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  {
-          scale: 2,
-          useCORS: true,
+        html2canvas:  { 
+          scale: 2, 
+          useCORS: true, 
           logging: false,
           scrollX: 0,
           scrollY: 0,
-          windowWidth: 760
+          x: 0,
+          y: 0,
+          windowWidth: 816
         },
         jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
       };
