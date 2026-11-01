@@ -1,1 +1,1572 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haaru Park | Restaurante Gourmet, Heladería Artesanal & Parque Infantil</title>
+  
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+            banner: ['"Bebas Neue"', 'sans-serif'],
+          },
+          colors: {
+            haaruDark: '#0a0b0e',
+            haaruCard: '#14151b',
+            haaruBorder: '#232530',
+            haaruFlame: '#f97316',
+            haaruRed: '#e11d48',
+            haaruGold: '#eab308'
+          }
+        }
+      }
+    }
+  </script>
 
+  <style>
+    /* Ocultar barra de scroll para sliders horizontales fluidos */
+    .food-slider {
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .food-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Efecto de elevación e iluminación gastronómica */
+    .card-cinematic {
+      transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+    .card-cinematic:hover {
+      transform: translateY(-7px) scale(1.015);
+      box-shadow: 0 20px 40px -10px rgba(249, 115, 22, 0.22);
+    }
+
+    /* Brillo de ambiente interactivo */
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.35; transform: scale(1); }
+      50% { opacity: 0.65; transform: scale(1.06); }
+    }
+    .animate-glow-portal {
+      animation: glowPulse 5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-haaruDark text-slate-100 antialiased selection:bg-haaruFlame selection:text-white font-sans min-h-screen flex flex-col">
+
+  <!-- ======================================================== -->
+  <!-- CONTENEDOR DE NOTIFICACIONES TOAST                      -->
+  <!-- ======================================================== -->
+  <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4"></div>
+
+  <!-- ======================================================== -->
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR (STICKY)                    -->
+  <!-- ======================================================== -->
+  <header class="sticky top-0 z-40 bg-haaruDark/90 backdrop-blur-md border-b border-white/10 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logotipo de Haaru Park -->
+        <a href="javascript:showSection('portal')" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-haaruFlame via-haaruRed to-haaruGold flex items-center justify-center text-white text-xl shadow-lg shadow-haaruFlame/30 group-hover:scale-105 transition-transform duration-300">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <div>
+            <div class="font-banner tracking-wider text-2xl sm:text-3xl leading-none text-white flex items-center gap-1.5">
+              <span>HAARU</span><span class="text-haaruFlame">PARK</span>
+            </div>
+            <p class="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Restaurant &bull; Heladería &bull; Parque</p>
+          </div>
+        </a>
+
+        <!-- Botones de Navegación Rápida -->
+        <nav class="hidden md:flex items-center gap-1 p-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-bold">
+          <button id="nav-btn-portal" onclick="showSection('portal')" class="nav-item px-4 py-2 rounded-xl transition-all text-white bg-gradient-to-r from-haaruFlame to-haaruRed shadow-md">
+            <i class="fa-solid fa-compass mr-1.5"></i> Entrada
+          </button>
+          <button id="nav-btn-restaurant" onclick="showSection('restaurant')" class="nav-item px-4 py-2 rounded-xl transition-all text-slate-300 hover:text-white hover:bg-white/10">
+            <i class="fa-solid fa-fire-burner text-haaruFlame mr-1.5"></i> Restaurant Gourmet
+          </button>
+          <button id="nav-btn-heladeria" onclick="showSection('heladeria')" class="nav-item px-4 py-2 rounded-xl transition-all text-slate-300 hover:text-white hover:bg-white/10">
+            <i class="fa-solid fa-ice-cream text-pink-400 mr-1.5"></i> Heladería Artesanal
+          </button>
+          <button id="nav-btn-parque" onclick="showSection('parque')" class="nav-item px-4 py-2 rounded-xl transition-all text-slate-300 hover:text-white hover:bg-white/10">
+            <i class="fa-solid fa-car-burst text-amber-400 mr-1.5"></i> Parque & Carros
+          </button>
+        </nav>
+
+        <!-- Controles: Audio & Comanda Carrito -->
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <button id="sound-btn" onclick="toggleSound()" title="Efectos de sonido táctiles" class="w-10 h-10 rounded-xl border border-white/10 bg-white/5 text-slate-300 hover:text-white flex items-center justify-center text-sm shadow hover:bg-white/10 transition-all">
+            <i id="sound-icon" class="fa-solid fa-volume-high text-emerald-400"></i>
+          </button>
+
+          <button onclick="toggleCartDrawer(true)" class="relative flex items-center gap-2.5 bg-gradient-to-r from-haaruFlame to-haaruRed text-white font-bold px-4 py-2.5 rounded-2xl shadow-lg shadow-haaruFlame/25 hover:opacity-95 active:scale-95 transition-all text-xs sm:text-sm">
+            <i class="fa-solid fa-receipt"></i>
+            <span class="hidden sm:inline">Comanda</span>
+            <span id="cart-badge-count" class="bg-amber-400 text-slate-950 text-xs px-2 py-0.5 rounded-full font-black min-w-[20px] text-center">
+              0
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- 1. ENTRADA INTERACTIVA: SELECTOR DE MUNDOS HAARU PARK    -->
+  <!-- ======================================================== -->
+  <section id="section-portal" class="flex-1 py-12 lg:py-20 relative overflow-hidden flex flex-col justify-center">
+    
+    <!-- Luces decorativas de ambiente -->
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-haaruFlame/15 rounded-full blur-[140px] pointer-events-none animate-glow-portal"></div>
+    <div class="absolute bottom-0 right-10 w-96 h-96 bg-haaruRed/15 rounded-full blur-[110px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center">
+      
+      <!-- Encabezado de Bienvenida -->
+      <div class="space-y-4 max-w-3xl mx-auto mb-14">
+        <span class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-haaruFlame bg-haaruFlame/10 border border-haaruFlame/30 px-4 py-1.5 rounded-full">
+          <i class="fa-solid fa-sparkles"></i> Bienvenidos a Haaru Park
+        </span>
+        <h1 class="font-display font-extrabold text-4xl sm:text-6xl text-white tracking-tight">
+          ¿Qué experiencia quieres vivir hoy?
+        </h1>
+        <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          Elige entre nuestra cartelera gastronómica de autor, la frescura de helados artesanales o una hora de diversión completa en el parque interactivo con carros eléctricos.
+        </p>
+      </div>
+
+      <!-- 3 Tarjetas de Experiencia Interactiva -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
+        
+        <!-- CARD 1: RESTAURANT GOURMET -->
+        <div onclick="showSection('restaurant')" class="group relative bg-gradient-to-b from-[#181920] to-haaruCard rounded-3xl p-8 border border-white/10 hover:border-haaruFlame/80 shadow-2xl transition-all duration-300 cursor-pointer flex flex-col justify-between text-left hover:-translate-y-2">
+          <div class="space-y-4">
+            <div class="w-16 h-16 rounded-2xl bg-haaruFlame/15 text-haaruFlame border border-haaruFlame/30 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300 shadow-md">
+              <i class="fa-solid fa-utensils"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-black uppercase tracking-wider text-haaruFlame bg-haaruFlame/10 px-2.5 py-0.5 rounded-md">Cartelera Culinaria</span>
+                <span class="text-xs text-amber-400 font-bold"><i class="fa-solid fa-star"></i> 4.9 Premium</span>
+              </div>
+              <h2 class="font-display font-black text-2xl text-white mt-1">Restaurant Gourmet</h2>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                Churrasco de Solomo, Cazuela de Mariscos, Mar y Tierra, Parrillas familiares y hamburguesas artesanales de autor.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-slate-300 group-hover:text-haaruFlame transition-colors">
+            <span>Ver Platos de la Carta</span>
+            <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1.5 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- CARD 2: HELADERÍA ARTESANAL -->
+        <div onclick="showSection('heladeria')" class="group relative bg-gradient-to-b from-[#181920] to-haaruCard rounded-3xl p-8 border border-white/10 hover:border-pink-500/80 shadow-2xl transition-all duration-300 cursor-pointer flex flex-col justify-between text-left hover:-translate-y-2">
+          <div class="space-y-4">
+            <div class="w-16 h-16 rounded-2xl bg-pink-500/15 text-pink-400 border border-pink-500/30 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300 shadow-md">
+              <i class="fa-solid fa-ice-cream"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-black uppercase tracking-wider text-pink-400 bg-pink-500/10 px-2.5 py-0.5 rounded-md">Flips &bull; Pirulin &bull; Frutas</span>
+                <span class="text-xs text-emerald-400 font-bold">Desde $9.000 COP</span>
+              </div>
+              <h2 class="font-display font-black text-2xl text-white mt-1">Heladería Artesanal</h2>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                Especiales con toppings crujientes de Flips, Pirulin y Oreo, más copas de pura fruta en presentación Clásica o Junior.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-slate-300 group-hover:text-pink-400 transition-colors">
+            <span>Explorar Helados</span>
+            <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1.5 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- CARD 3: PARQUE INFANTIL & CARROS -->
+        <div onclick="showSection('parque')" class="group relative bg-gradient-to-b from-[#181920] to-haaruCard rounded-3xl p-8 border border-white/10 hover:border-amber-400/80 shadow-2xl transition-all duration-300 cursor-pointer flex flex-col justify-between text-left hover:-translate-y-2">
+          <div class="space-y-4">
+            <div class="w-16 h-16 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300 shadow-md">
+              <i class="fa-solid fa-car-burst"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-black uppercase tracking-wider text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-md">$20.000 COP / Hora</span>
+                <span class="text-xs text-indigo-400 font-bold">Todo Incluido</span>
+              </div>
+              <h2 class="font-display font-black text-2xl text-white mt-1">Parque Infantil & Carros</h2>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                Dos niveles repletos de obstáculos, piscina de pelotas, toboganes gigantes y pista exclusiva con carros eléctricos para niños.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-slate-300 group-hover:text-amber-400 transition-colors">
+            <span>Configurar Pases de Parque</span>
+            <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1.5 transition-transform"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Barra de Compromiso y Calidad -->
+      <div class="mt-14 inline-flex flex-wrap items-center justify-center gap-6 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-xs text-slate-400">
+        <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i> Monitoreo infantil calificado</span>
+        <span class="hidden sm:inline">&bull;</span>
+        <span><i class="fa-solid fa-utensils text-haaruFlame mr-1.5"></i> Ingredientes frescos preparados al momento</span>
+        <span class="hidden sm:inline">&bull;</span>
+        <span><i class="fa-brands fa-whatsapp text-emerald-400 mr-1.5"></i> Pedido directo a cocina por WhatsApp</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 2. RESTAURANT GOURMET: CARTELERA DE AUTOR                -->
+  <!-- ======================================================== -->
+  <section id="section-restaurant" class="hidden flex-1 pb-20">
+    
+    <!-- Hero Billboard Principal: Churrasco de Solomo -->
+    <div class="relative w-full h-[470px] sm:h-[560px] overflow-hidden bg-black flex items-center">
+      
+      <img 
+        id="hero-billboard-img"
+        src="Churrasco de Solomo.jpg"
+        onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=1600&q=80'" 
+        alt="Churrasco de Solomo" 
+        class="absolute inset-0 w-full h-full object-cover opacity-50 transform scale-105"
+      >
+      <div class="absolute inset-0 bg-gradient-to-t from-haaruDark via-haaruDark/70 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-haaruDark via-haaruDark/80 to-transparent"></div>
+
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="bg-gradient-to-r from-haaruFlame to-haaruRed text-white text-[11px] font-black uppercase px-3 py-1 rounded-md tracking-wider shadow">
+            ESPECIALIDAD A LA BRASA &bull; HAARU PARK
+          </span>
+          <span class="text-emerald-400 font-extrabold text-xs flex items-center gap-1">
+            <i class="fa-solid fa-fire"></i> Recomendado por el Chef
+          </span>
+        </div>
+
+        <h2 id="hero-billboard-title" class="font-banner text-5xl sm:text-7xl lg:text-8xl text-white tracking-wide leading-none drop-shadow-lg">
+          CHURRASCO DE SOLOMO
+        </h2>
+
+        <p class="text-amber-300 font-semibold text-xs sm:text-sm">
+          Churrasco de Solomo + Ensalada de la casa
+        </p>
+
+        <p id="hero-billboard-desc" class="text-slate-300 text-xs sm:text-sm max-w-xl line-clamp-3 leading-relaxed">
+          Corte de solomo tierno asado a la parrilla, servido con fresca ensalada de la casa con parmesano y croutons crocantes, más papas fritas doradas.
+        </p>
+
+        <div class="flex items-center gap-3 pt-2">
+          <span class="text-3xl sm:text-4xl font-display font-black text-amber-400">
+            $45.000 <span class="text-sm font-semibold text-slate-400">COP (45K)</span>
+          </span>
+          <span class="text-xs text-slate-400"><i class="fa-solid fa-bowl-food mr-1"></i> Incluye Solomo + Ensalada + Papas fritas</span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 pt-3">
+          <button onclick="addDishToCart('churrasco-solomo')" class="bg-gradient-to-r from-haaruFlame to-haaruRed hover:opacity-95 text-white font-bold px-7 py-3.5 rounded-2xl flex items-center gap-2.5 text-sm shadow-xl shadow-haaruFlame/30 active:scale-95 transition-all">
+            <i class="fa-solid fa-utensils"></i> Pedir Este Plato ($45.000 COP)
+          </button>
+          <button onclick="openDishModal('churrasco-solomo')" class="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white font-bold px-6 py-3.5 rounded-2xl flex items-center gap-2 text-sm border border-white/20 active:scale-95 transition-all">
+            <i class="fa-solid fa-circle-info text-amber-400"></i> Ver Ficha Completa
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carruseles de Platos Estrella -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 -mt-10 relative z-20">
+      
+      <!-- FILA 1: BURGERS DE AUTOR & AVES -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display font-black text-xl sm:text-2xl text-white flex items-center gap-2.5">
+            <span class="w-3 h-7 bg-haaruFlame rounded-full inline-block"></span>
+            Hamburguesas de Autor & Aves
+          </h3>
+          <div class="flex items-center gap-2">
+            <button onclick="scrollRow('row-burgers-aves', -1)" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs text-white transition-colors">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button onclick="scrollRow('row-burgers-aves', 1)" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs text-white transition-colors">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="row-burgers-aves" class="food-slider flex gap-5 overflow-x-auto pb-4 pt-2">
+          <!-- Inyectado por JS: Pechuga a la Meunier, al vino burguer, Bacon cubrick, Pollo crispy -->
+        </div>
+      </div>
+
+      <!-- FILA 2: ESPECIALIDADES DE MAR & TIERRA -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display font-black text-xl sm:text-2xl text-white flex items-center gap-2.5">
+            <span class="w-3 h-7 bg-blue-500 rounded-full inline-block"></span>
+            Mar, Tierra & Sabor Costero
+          </h3>
+          <div class="flex items-center gap-2">
+            <button onclick="scrollRow('row-mar-tierra', -1)" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs text-white transition-colors">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button onclick="scrollRow('row-mar-tierra', 1)" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs text-white transition-colors">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="row-mar-tierra" class="food-slider flex gap-5 overflow-x-auto pb-4 pt-2">
+          <!-- Inyectado por JS: Mar y tierra, Cazuela de Mariscos, ceviche peruano -->
+        </div>
+      </div>
+
+      <!-- FILA 3: A LA BRASA & PARRILLAS -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display font-black text-xl sm:text-2xl text-white flex items-center gap-2.5">
+            <span class="w-3 h-7 bg-amber-500 rounded-full inline-block"></span>
+            Cortes a la Brasa & Parrillas Compartidas
+          </h3>
+          <div class="flex items-center gap-2">
+            <button onclick="scrollRow('row-brasa', -1)" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs text-white transition-colors">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button onclick="scrollRow('row-brasa', 1)" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs text-white transition-colors">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="row-brasa" class="food-slider flex gap-5 overflow-x-auto pb-4 pt-2">
+          <!-- Inyectado por JS: Churrasco de Solomo, Parrilla -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 3. HELADERÍA ARTESANAL HAARU PARK                        -->
+  <!-- ======================================================== -->
+  <section id="section-heladeria" class="hidden flex-1 py-12 lg:py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Encabezado de Heladería -->
+      <div class="text-center max-w-3xl mx-auto space-y-4">
+        <span class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-pink-400 bg-pink-500/15 border border-pink-500/30 px-4 py-1.5 rounded-full">
+          <i class="fa-solid fa-ice-cream"></i> Estación Heladería Haaru
+        </span>
+        <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-tight">
+          Nuestra Carta de Helados
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base">
+          Disfruta de nuestros especiales dulces con cereales y galletas, o elige la frescura natural de nuestras frutas seleccionadas en copa <strong class="text-white">Clásica</strong> o <strong class="text-white">Junior</strong>.
+        </p>
+      </div>
+
+      <!-- SECCIÓN A: ESPECIALES CRUNCH / TOPPING -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-6 bg-pink-500 rounded-full inline-block"></span>
+          <h3 class="font-display font-black text-xl text-white">Especiales Dulces & Toppings de la Casa</h3>
+        </div>
+        
+        <div id="helados-especiales-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Inyectado por JS (Flips, Pirulin, Oreo) -->
+        </div>
+      </div>
+
+      <!-- SECCIÓN B: FRUTAS 100% NATURALES (Clásico vs Junior) -->
+      <div class="space-y-4 pt-6">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-6 bg-emerald-500 rounded-full inline-block"></span>
+          <h3 class="font-display font-black text-xl text-white">Frutas 100% Naturales (Clásico vs Junior)</h3>
+        </div>
+        
+        <div id="helados-frutales-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Inyectado por JS (Kiwi, Fresa, Guanábana, Piña, Mora, Cereza) -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- 4. PARQUE INFANTIL & CARROS ELÉCTRICOS                   -->
+  <!-- ======================================================== -->
+  <section id="section-parque" class="hidden flex-1 py-12 lg:py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Encabezado del Parque -->
+      <div class="text-center max-w-3xl mx-auto space-y-4">
+        <span class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-amber-400 bg-amber-500/15 border border-amber-500/30 px-4 py-1.5 rounded-full">
+          <i class="fa-solid fa-gamepad"></i> Aventura Infantil Haaru Park
+        </span>
+        <h2 class="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-tight">
+          Dos Niveles de Parque y Carros Eléctricos
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base">
+          Una atracción completa y segura diseñada para la diversión de los niños mientras la familia disfruta de la mejor comida y helados.
+        </p>
+      </div>
+
+      <!-- Tarjeta Principal del Parque ($20.000 COP) -->
+      <div class="bg-gradient-to-br from-[#191b22] to-haaruCard rounded-3xl border border-white/10 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+        
+        <div class="lg:col-span-7 p-6 sm:p-10 space-y-8 flex flex-col justify-between">
+          <div class="space-y-6">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <span class="text-xs font-black uppercase bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1 rounded-lg">Pase Todo Incluido</span>
+                <h3 class="text-2xl sm:text-3xl font-display font-black text-white mt-2">1 Hora Completa de Parque</h3>
+              </div>
+              <div class="text-right">
+                <div class="text-3xl sm:text-4xl font-display font-black text-amber-400">$20.000 <span class="text-xs font-semibold text-slate-400">COP</span></div>
+                <span class="text-xs text-slate-400 font-medium">Por niño &bull; 60 minutos</span>
+              </div>
+            </div>
+
+            <!-- Inclusiones Clave -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
+                <div class="text-amber-400 font-bold text-sm flex items-center gap-2">
+                  <i class="fa-solid fa-layer-group"></i> Dos Niveles de Parque
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Laberintos, piscina de pelotas, rodillos blandos de escalada y super toboganes tubulares.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-1">
+                <div class="text-haaruFlame font-bold text-sm flex items-center gap-2">
+                  <i class="fa-solid fa-car-side"></i> Carros Eléctricos
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                  Pista cerrada y delimitada con mini vehículos eléctricos a batería incluidos en el mismo valor.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selector de Pases / Niños -->
+          <div class="p-5 rounded-2xl bg-black/40 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <span class="text-xs text-slate-400 uppercase font-bold">Configurar Pases</span>
+              <div class="text-sm font-bold text-white">¿Cuántos niños entrarán al parque?</div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div class="flex items-center bg-white/10 rounded-xl p-1 border border-white/10">
+                <button onclick="updateParkCount(-1)" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center">
+                  <i class="fa-solid fa-minus text-xs"></i>
+                </button>
+                <span id="park-kids-counter" class="w-12 text-center font-display font-black text-amber-400 text-lg">1</span>
+                <button onclick="updateParkCount(1)" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center">
+                  <i class="fa-solid fa-plus text-xs"></i>
+                </button>
+              </div>
+
+              <button onclick="addConfiguredParkPasses()" class="bg-gradient-to-r from-amber-500 to-haaruFlame hover:opacity-95 text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs sm:text-sm active:scale-95 transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20">
+                <i class="fa-solid fa-cart-plus"></i>
+                <span>Agregar (<span id="park-subtotal-btn">$20.000 COP</span>)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna de Reglas & Celebraciones -->
+        <div class="lg:col-span-5 bg-gradient-to-br from-[#12141c] to-[#0c0d12] p-8 sm:p-10 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-white/10">
+          <div class="space-y-4">
+            <span class="text-xs font-black uppercase text-haaruFlame tracking-wider">Tranquilidad & Control</span>
+            <h4 class="text-xl font-display font-black text-white">Seguridad de Primera</h4>
+            <ul class="space-y-3 text-xs sm:text-sm text-slate-300">
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-emerald-400"></i> Edades recomendadas de 2 a 12 años</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-emerald-400"></i> Uso obligatorio de medias antideslizantes</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-emerald-400"></i> Brazalete con control de tiempo de 60 min</li>
+              <li class="flex items-center gap-2.5"><i class="fa-solid fa-circle-check text-emerald-400"></i> Monitores dedicados en ambos niveles de juego</li>
+            </ul>
+          </div>
+
+          <div class="pt-6 border-t border-white/10 mt-6">
+            <button onclick="sendBirthdayWhatsApp()" class="w-full bg-white/5 hover:bg-white/15 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors border border-white/10">
+              <i class="fa-solid fa-cake-candles text-amber-400"></i> ¿Deseas celebrar un cumpleaños en Haaru Park? Escríbenos
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- MODAL DE DETALLE DEL PLATO GOURMET                       -->
+  <!-- ======================================================== -->
+  <div id="dish-modal-backdrop" onclick="closeDishModal()" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden transition-opacity"></div>
+  
+  <div id="dish-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-haaruCard rounded-3xl border border-white/15 z-50 shadow-2xl overflow-hidden hidden transition-all max-h-[90vh] flex flex-col">
+    <div class="relative h-64 sm:h-72 w-full bg-black">
+      <img id="modal-dish-img" src="" alt="Plato" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-haaruCard via-haaruCard/40 to-transparent"></div>
+      
+      <button onclick="closeDishModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 text-white hover:bg-black/80 flex items-center justify-center text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="absolute bottom-4 left-6 right-6">
+        <span id="modal-dish-tag" class="bg-haaruFlame text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded">Gourmet</span>
+        <h3 id="modal-dish-title" class="font-display font-black text-2xl sm:text-3xl text-white mt-1">Título del Plato</h3>
+        <p id="modal-dish-subtitle" class="text-amber-300 font-semibold text-xs mt-0.5"></p>
+      </div>
+    </div>
+
+    <div class="p-6 sm:p-8 space-y-5 overflow-y-auto flex-1">
+      <!-- Selector de Tamaño si aplica -->
+      <div id="modal-size-container" class="space-y-2 hidden">
+        <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Selecciona el Tamaño / Porción:</label>
+        <div id="modal-size-buttons" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+      </div>
+
+      <!-- Opción de Croqueta Adicional si aplica -->
+      <div id="modal-croqueta-container" class="p-3 rounded-2xl bg-white/5 border border-white/10 hidden flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="modal-croqueta-check" onchange="toggleModalCroqueta()" class="w-4 h-4 rounded text-haaruFlame focus:ring-0 bg-black/40 border-white/20 cursor-pointer">
+          <label for="modal-croqueta-check" class="text-xs font-bold text-white cursor-pointer">
+            Añadir Croqueta adicional (+5K)
+          </label>
+        </div>
+        <span class="text-xs font-bold text-amber-400">+$5.000 COP</span>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ingredientes & Acompañamiento:</h4>
+        <div id="modal-dish-ingredients" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <div class="pt-4 border-t border-white/10 flex items-center justify-between gap-4">
+        <div>
+          <span class="text-xs text-slate-400">Precio configurado:</span>
+          <div id="modal-dish-price" class="text-2xl font-display font-black text-amber-400">$0 COP</div>
+        </div>
+        <button id="modal-dish-add-btn" class="bg-gradient-to-r from-haaruFlame to-haaruRed hover:opacity-95 text-white font-bold px-6 py-3 rounded-xl flex items-center gap-2 text-sm shadow-lg shadow-haaruFlame/30 active:scale-95 transition-all">
+          <i class="fa-solid fa-plus"></i> Agregar a mi Comanda
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- DRAWER LATERAL: MI COMANDA HAARU PARK                    -->
+  <!-- ======================================================== -->
+  <div id="cart-drawer-backdrop" onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  
+  <aside id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-haaruCard border-l border-white/10 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+    
+    <div class="p-5 border-b border-white/10 flex items-center justify-between bg-black/30">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-haaruFlame to-haaruRed text-white flex items-center justify-center font-bold">
+          <i class="fa-solid fa-receipt"></i>
+        </div>
+        <div>
+          <h3 class="font-display font-black text-lg text-white">Comanda Haaru Park</h3>
+          <p class="text-xs text-slate-400">Restaurant &bull; Helados &bull; Parque</p>
+        </div>
+      </div>
+      <button onclick="toggleCartDrawer(false)" class="w-8 h-8 rounded-full bg-white/10 text-slate-300 hover:text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Lista de Artículos -->
+    <div id="cart-drawer-items" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+
+    <!-- Resumen y Enlace a WhatsApp -->
+    <div class="p-5 border-t border-white/10 bg-black/30 space-y-3">
+      <div class="space-y-1.5">
+        <label class="block text-xs font-bold text-slate-400" for="order-customer-name">Nombre / Mesa / Identificación</label>
+        <input type="text" id="order-customer-name" placeholder="Ej: Mesa 4 / Familia Rodríguez" class="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/15 text-xs text-white focus:border-haaruFlame outline-none">
+      </div>
+
+      <div class="space-y-1 pt-1">
+        <div class="flex justify-between text-xs text-slate-400">
+          <span>Subtotal Restaurant:</span>
+          <span id="cart-subtotal-food" class="text-slate-200 font-semibold">$0 COP</span>
+        </div>
+        <div class="flex justify-between text-xs text-slate-400">
+          <span>Subtotal Heladería:</span>
+          <span id="cart-subtotal-icecream" class="text-slate-200 font-semibold">$0 COP</span>
+        </div>
+        <div class="flex justify-between text-xs text-slate-400">
+          <span>Subtotal Parque:</span>
+          <span id="cart-subtotal-park" class="text-slate-200 font-semibold">$0 COP</span>
+        </div>
+        <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+          <span class="text-sm font-bold text-white">Total Comanda:</span>
+          <span id="cart-grand-total" class="text-2xl font-display font-black text-amber-400">$0 COP</span>
+        </div>
+      </div>
+
+      <button onclick="sendOrderWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-sm shadow-lg shadow-emerald-600/30 active:scale-95 transition-all">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        <span>Enviar Comanda a WhatsApp</span>
+      </button>
+
+      <button onclick="clearCart()" class="w-full text-center text-[11px] text-slate-400 hover:text-haaruRed pt-1">
+        Vaciar Comanda
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- LÓGICA DE LA APLICACIÓN JAVASCRIPT                       -->
+  <!-- ======================================================== -->
+  <script>
+    /* ---------------------------------------------------------
+       1. CATÁLOGO ANALIZADO EXACTAMENTE DE LAS IMÁGENES
+       --------------------------------------------------------- */
+    const PARK_PRICE = 20000;
+
+    // CATÁLOGO DE RESTAURANTE: Nombres de archivo idénticos a GitHub,
+    // títulos exactos, subtítulos, ingredientes y precios en COP (K = miles).
+    const RESTAURANT_DISHES = [
+      // IMAGEN 1: Pechuga a la Meunier.jpg
+      {
+        id: "pechuga-meunier",
+        title: "Pechuga a la Meuniér",
+        subtitle: "Pechuga a la Meunier + Ensalada de la casa",
+        file: "Pechuga a la Meunier.jpg",
+        fallback: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80",
+        price: 35000, // 35K
+        row: "burgers-aves",
+        hasCroquetaOption: false,
+        ingredients: ["Suprema de pollo", "Ensalada cesar", "Papas a la francesa"],
+        tag: "Plato Especial"
+      },
+      // IMAGEN 2: al vino burguer.jpg
+      {
+        id: "al-vino-burguer",
+        title: "Al Vino Burger",
+        subtitle: "Al vino burguer + Papas a la francesa",
+        file: "al vino burguer.jpg",
+        fallback: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80",
+        price: 30000, // 30K
+        row: "burgers-aves",
+        hasCroquetaOption: true, // Croqueta adicional 5K
+        croquetaPrice: 5000,
+        ingredients: ["Muchacho al vino", "Queso crema", "Cebolla caramelizada", "Vegetales frescos", "Papas rufles", "Papas a la francesa"],
+        tag: "Burger de Autor"
+      },
+      // IMAGEN 3: Bacon cubrick.jpg
+      {
+        id: "bacon-cubrick",
+        title: "Bacon Kubrick",
+        subtitle: "Bacon Kubrick + Papas a la francesa",
+        file: "Bacon cubrick.jpg",
+        fallback: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80",
+        price: 30000, // 30K
+        row: "burgers-aves",
+        hasCroquetaOption: true, // Croqueta adicional 5K
+        croquetaPrice: 5000,
+        ingredients: ["Croqueta de Solomillo", "Tocineta", "Relish de pepinillo", "Vegetales frescos", "Queso cheddar", "Papas a la francesa"],
+        tag: "Burger de Autor"
+      },
+      // IMAGEN 4: Pollo crispy.jpg
+      {
+        id: "pollo-crispy",
+        title: "Pollo Crispy",
+        subtitle: "Pollo Crispy + Papas a la francesa",
+        file: "Pollo crispy.jpg",
+        fallback: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=800&q=80",
+        price: 30000, // 30K
+        row: "burgers-aves",
+        hasCroquetaOption: true, // Croqueta adicional 5K
+        croquetaPrice: 5000,
+        ingredients: ["Pollo crispy", "Tocineta", "Queso crema", "Vegetales frescos", "Salsas", "Papas a la francesa"],
+        tag: "Super Crujiente"
+      },
+      // IMAGEN 5: Mar y tierra.jpg
+      {
+        id: "mar-y-tierra",
+        title: "Mar y Tierra",
+        subtitle: "Mar y Tierra + Papas a la francesa",
+        file: "Mar y tierra.jpg",
+        fallback: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
+        price: 55000, // 55K
+        row: "mar-tierra",
+        hasCroquetaOption: false,
+        ingredients: ["Camarones", "Suprema de pollo", "Queso crema", "Vegetales frescos", "Salsas", "Papas a la francesa"],
+        tag: "Especialidad Suprema"
+      },
+      // IMAGEN 6: Parrilla.jpg (Personal 35K, Mediana 60K, Grande 95K)
+      {
+        id: "parrilla",
+        title: "Parrilla",
+        subtitle: "Acompañada de Papas a la francesa",
+        file: "Parrilla.jpg",
+        fallback: "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=800&q=80",
+        price: 35000, // Base Personal
+        row: "brasa",
+        hasCroquetaOption: false,
+        sizes: [
+          { key: "personal", label: "Personal + Papas a la francesa", price: 35000 },
+          { key: "mediana", label: "Mediana + Papas a la francesa", price: 60000 },
+          { key: "grande", label: "Grande + Papas a la francesa", price: 95000 }
+        ],
+        ingredients: ["Solomo", "Pechuga", "Cochino", "Salsas", "Papas a la francesa"],
+        tag: "Para Compartir"
+      },
+      // IMAGEN 7: Cazuela de Mariscos.jpg (Mediana 45K, Grande 75K)
+      {
+        id: "cazuela-mariscos",
+        title: "Cazuela de Mariscos",
+        subtitle: "Acompañada de Pan tostado al horno",
+        file: "Cazuela de Mariscos.jpg",
+        fallback: "https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=800&q=80",
+        price: 45000, // Base Mediana
+        row: "mar-tierra",
+        hasCroquetaOption: false,
+        sizes: [
+          { key: "mediana", label: "Mediana + Pan tostado al horno", price: 45000 },
+          { key: "grande", label: "Grande + Pan tostado al horno", price: 75000 }
+        ],
+        ingredients: ["Camarones", "Calamares", "Langostino", "Almejas", "Chipichipi"],
+        tag: "Frutos del Mar"
+      },
+      // IMAGEN 8: ceviche peruano.jpg
+      {
+        id: "ceviche-peruano",
+        title: "Ceviche Peruano",
+        subtitle: "Ceviche peruano + tostones de la casa",
+        file: "ceviche peruano.jpg",
+        fallback: "https://images.unsplash.com/photo-1535400255456-984241443b29?auto=format&fit=crop&w=800&q=80",
+        price: 45000, // 45K
+        row: "mar-tierra",
+        hasCroquetaOption: false,
+        ingredients: ["Pezcado fresco", "Camarones", "Cebolla morada", "Cilantro", "Tostones de la casa"],
+        tag: "Fresco & Cítrico"
+      },
+      // IMAGEN 9: Churrasco de Solomo.jpg
+      {
+        id: "churrasco-solomo",
+        title: "Churrasco de Solomo",
+        subtitle: "Churrasco de Solomo + Ensalada de la casa",
+        file: "Churrasco de Solomo.jpg",
+        fallback: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80",
+        price: 45000, // 45K
+        row: "brasa",
+        hasCroquetaOption: false,
+        ingredients: ["Solomo", "Ensalada", "Papas fritas"],
+        tag: "Corte Madurado"
+      }
+    ];
+
+    // CATÁLOGO DE HELADOS: ESPECIALES DULCES
+    const ICE_CREAMS_ESPECIALES = [
+      { id: "flips", name: "Flips", desc: "Helado artesanal cubierto con abundante lluvia crocante de cereal Flips.", price: 12000, tag: "Crunch Favorito", icon: "fa-cookie-bite", color: "#F59E0B" },
+      { id: "pirulin", name: "Pirulin", desc: "Coronado con crujientes barquillos de Pirulin rellenos de chocolate y avellana.", price: 13000, tag: "Especial de la Casa", icon: "fa-candy-cane", color: "#B45309" },
+      { id: "oreo", name: "Oreo", desc: "Cremosa base combinada con abundantes trozos de galleta Oreo original.", price: 12000, tag: "Super Cookie", icon: "fa-cookie", color: "#64748B" }
+    ];
+
+    // CATÁLOGO DE HELADOS: FRUTAS 100% NATURALES
+    const ICE_CREAMS_FRUTALES = [
+      { id: "kiwi", name: "Kiwi", desc: "Pulpa de kiwi natural seleccionado con un toque cítrico y refrescante.", clasico: 15000, junior: 12000, color: "#10B981" },
+      { id: "fresa", name: "Fresa", desc: "Elaborado con fresas frescas cosechadas a mano, lleno de aroma y color.", clasico: 12000, junior: 9000, color: "#F43F5E" },
+      { id: "guanabana", name: "Guanábana", desc: "Textura sedosa inigualable elaborada con pura pulpa de guanábana tropical.", clasico: 13000, junior: 10000, color: "#0D9488" },
+      { id: "pina", name: "Piña", desc: "Piña oro miel madurada al punto para un dulzor totalmente natural.", clasico: 13000, junior: 10000, color: "#EAB308" },
+      { id: "mora", name: "Mora", desc: "Mora andina silvestre con su acento característico de frutos rojos.", clasico: 12000, junior: 9000, color: "#8B5CF6" },
+      { id: "cereza", name: "Cereza", desc: "Cerezas glaseadas y maceradas en almíbar fino de alta repostería.", clasico: 15000, junior: 12000, color: "#E11D48" }
+    ];
+
+    /* ---------------------------------------------------------
+       2. ESTADO DE LA APLICACIÓN
+       --------------------------------------------------------- */
+    const state = {
+      activeSection: 'portal',
+      cart: [],
+      parkKidsCount: 1,
+      soundEnabled: true,
+      fruitSizes: {}, // id -> 'clasico' | 'junior'
+      activeDishConfig: null // modal state for dish sizes & add-on
+    };
+
+    // Tamaño inicial por defecto de helados frutales: 'clasico'
+    ICE_CREAMS_FRUTALES.forEach(f => state.fruitSizes[f.id] = 'clasico');
+
+    /* ---------------------------------------------------------
+       3. EFECTOS DE SONIDO SINTETIZADOS (WEB AUDIO API)
+       --------------------------------------------------------- */
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTone(freq = 520, duration = 0.08) {
+      if (!state.soundEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function toggleSound() {
+      state.soundEnabled = !state.soundEnabled;
+      const icon = document.getElementById('sound-icon');
+      if (state.soundEnabled) {
+        icon.className = 'fa-solid fa-volume-high text-emerald-400';
+        showToast('Sonido activado 🔊');
+        playTone(600, 0.08);
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-slate-400';
+        showToast('Sonido desactivado 🔇');
+      }
+    }
+
+    /* ---------------------------------------------------------
+       4. NAVEGACIÓN ENTRE SECCIONES
+       --------------------------------------------------------- */
+    function showSection(sectionId) {
+      state.activeSection = sectionId;
+      playTone(480, 0.05);
+
+      ['portal', 'restaurant', 'heladeria', 'parque'].forEach(sec => {
+        const el = document.getElementById(`section-${sec}`);
+        if (el) el.classList.add('hidden');
+      });
+
+      const activeEl = document.getElementById(`section-${sectionId}`);
+      if (activeEl) activeEl.classList.remove('hidden');
+
+      // Actualizar estilo en Barra Superior
+      ['portal', 'restaurant', 'heladeria', 'parque'].forEach(sec => {
+        const btn = document.getElementById(`nav-btn-${sec}`);
+        if (!btn) return;
+        if (sec === sectionId) {
+          btn.className = "nav-item px-4 py-2 rounded-xl transition-all text-white bg-gradient-to-r from-haaruFlame to-haaruRed shadow-md font-bold";
+        } else {
+          btn.className = "nav-item px-4 py-2 rounded-xl transition-all text-slate-300 hover:text-white hover:bg-white/10 font-bold";
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function formatCOP(amount) {
+      return '$' + Number(amount).toLocaleString('es-CO') + ' COP';
+    }
+
+    function showToast(msg) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = "pointer-events-auto flex items-center gap-3 bg-haaruCard/95 border border-white/20 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold transform transition-all duration-300 translate-y-2 opacity-0";
+      toast.innerHTML = `<i class="fa-solid fa-bell text-haaruFlame"></i><span>${msg}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    /* ---------------------------------------------------------
+       5. RENDERIZADO DEL RESTAURANTE
+       --------------------------------------------------------- */
+    function renderRestaurantRows() {
+      const rowMapping = {
+        'burgers-aves': 'row-burgers-aves',
+        'mar-tierra': 'row-mar-tierra',
+        'brasa': 'row-brasa'
+      };
+
+      Object.entries(rowMapping).forEach(([rowKey, containerId]) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = '';
+
+        const dishes = RESTAURANT_DISHES.filter(d => d.row === rowKey);
+        dishes.forEach(dish => {
+          const card = document.createElement('div');
+          card.className = "card-cinematic flex-shrink-0 w-64 sm:w-72 bg-haaruCard rounded-2xl border border-white/10 overflow-hidden group flex flex-col justify-between";
+
+          // Formato del precio en tarjeta
+          let priceDisplay = formatCOP(dish.price);
+          if (dish.sizes && dish.sizes.length > 0) {
+            priceDisplay = `Desde ${formatCOP(dish.sizes[0].price)}`;
+          }
+
+          card.innerHTML = `
+            <div class="relative h-44 w-full overflow-hidden bg-black cursor-pointer" onclick="openDishModal('${dish.id}')">
+              <img 
+                src="${dish.file}" 
+                onerror="this.onerror=null;this.src='${dish.fallback}'" 
+                alt="${dish.title}"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-90"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-haaruCard via-transparent to-transparent"></div>
+              <span class="absolute top-2.5 left-2.5 bg-black/75 backdrop-blur-md text-[10px] text-amber-400 font-black px-2.5 py-0.5 rounded border border-white/10">
+                ${dish.tag}
+              </span>
+              ${dish.hasCroquetaOption ? `<span class="absolute bottom-2 right-2.5 bg-haaruFlame/90 backdrop-blur-md text-[10px] text-white font-bold px-2 py-0.5 rounded shadow">+Croqueta 5K</span>` : ''}
+            </div>
+
+            <div class="p-4 space-y-2.5 flex-1 flex flex-col justify-between">
+              <div>
+                <h4 class="font-display font-black text-white text-base leading-snug group-hover:text-haaruFlame transition-colors">
+                  ${dish.title}
+                </h4>
+                <p class="text-[11px] text-amber-300/90 font-semibold line-clamp-1 mt-0.5">
+                  ${dish.subtitle}
+                </p>
+                <div class="text-[11px] text-slate-400 line-clamp-2 mt-1">
+                  ${dish.ingredients.join(' &bull; ')}
+                </div>
+              </div>
+
+              <div class="pt-2 border-t border-white/10 flex items-center justify-between">
+                <div>
+                  <span class="font-display font-black text-amber-400 text-sm">
+                    ${priceDisplay}
+                  </span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <button onclick="openDishModal('${dish.id}')" class="w-8 h-8 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xs" title="Detalles">
+                    <i class="fa-solid fa-gear"></i>
+                  </button>
+                  <button onclick="quickAddDish('${dish.id}')" class="bg-gradient-to-r from-haaruFlame to-haaruRed hover:opacity-95 text-white font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 active:scale-95 transition-all shadow">
+                    <i class="fa-solid fa-plus text-[10px]"></i> Pedir
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          container.appendChild(card);
+        });
+      });
+    }
+
+    function scrollRow(rowId, direction) {
+      const el = document.getElementById(rowId);
+      if (el) {
+        el.scrollBy({ left: direction * 320, behavior: 'smooth' });
+        playTone(380, 0.04);
+      }
+    }
+
+    /* ---------------------------------------------------------
+       6. MODAL INTERACTIVO DE PLATO GOURMET
+       --------------------------------------------------------- */
+    function openDishModal(dishId) {
+      const dish = RESTAURANT_DISHES.find(d => d.id === dishId);
+      if (!dish) return;
+
+      playTone(550, 0.06);
+
+      state.activeDishConfig = {
+        dishId: dish.id,
+        selectedSizeKey: (dish.sizes && dish.sizes.length > 0) ? dish.sizes[0].key : null,
+        croquetaSelected: false
+      };
+
+      const modalImg = document.getElementById('modal-dish-img');
+      modalImg.src = dish.file;
+      modalImg.onerror = function() {
+        this.onerror = null;
+        this.src = dish.fallback;
+      };
+
+      document.getElementById('modal-dish-title').innerText = dish.title;
+      document.getElementById('modal-dish-subtitle').innerText = dish.subtitle;
+      document.getElementById('modal-dish-tag').innerText = dish.tag;
+
+      // Render Ingredientes
+      const ingContainer = document.getElementById('modal-dish-ingredients');
+      ingContainer.innerHTML = '';
+      dish.ingredients.forEach(ing => {
+        const span = document.createElement('span');
+        span.className = "bg-white/10 text-slate-200 text-xs px-2.5 py-1 rounded-lg border border-white/5";
+        span.innerText = ing;
+        ingContainer.appendChild(span);
+      });
+
+      // Tamaños (Parrilla / Cazuela)
+      const sizeContainer = document.getElementById('modal-size-container');
+      const sizeButtons = document.getElementById('modal-size-buttons');
+      if (dish.sizes && dish.sizes.length > 0) {
+        sizeContainer.classList.remove('hidden');
+        sizeButtons.innerHTML = '';
+        dish.sizes.forEach(sz => {
+          const btn = document.createElement('button');
+          btn.className = `p-2.5 rounded-xl border text-xs font-bold text-left transition-all ${sz.key === state.activeDishConfig.selectedSizeKey ? 'bg-haaruFlame text-white border-haaruFlame shadow' : 'bg-white/5 text-slate-300 border-white/10 hover:border-white/30'}`;
+          btn.innerHTML = `<div>${sz.label}</div><div class="font-display font-black text-amber-300 text-sm mt-0.5">${formatCOP(sz.price)}</div>`;
+          btn.onclick = () => selectModalSize(sz.key);
+          sizeButtons.appendChild(btn);
+        });
+      } else {
+        sizeContainer.classList.add('hidden');
+      }
+
+      // Croqueta Adicional (+5K)
+      const croquetaContainer = document.getElementById('modal-croqueta-container');
+      const croquetaCheck = document.getElementById('modal-croqueta-check');
+      if (dish.hasCroquetaOption) {
+        croquetaContainer.classList.remove('hidden');
+        croquetaCheck.checked = false;
+      } else {
+        croquetaContainer.classList.add('hidden');
+      }
+
+      updateModalPriceDisplay();
+
+      const addBtn = document.getElementById('modal-dish-add-btn');
+      addBtn.onclick = function() {
+        addConfiguredDishToCart();
+        closeDishModal();
+      };
+
+      document.getElementById('dish-modal-backdrop').classList.remove('hidden');
+      document.getElementById('dish-modal').classList.remove('hidden');
+    }
+
+    function selectModalSize(sizeKey) {
+      state.activeDishConfig.selectedSizeKey = sizeKey;
+      playTone(450, 0.04);
+      const dish = RESTAURANT_DISHES.find(d => d.id === state.activeDishConfig.dishId);
+      const sizeButtons = document.getElementById('modal-size-buttons');
+      sizeButtons.innerHTML = '';
+      dish.sizes.forEach(sz => {
+        const btn = document.createElement('button');
+        btn.className = `p-2.5 rounded-xl border text-xs font-bold text-left transition-all ${sz.key === state.activeDishConfig.selectedSizeKey ? 'bg-haaruFlame text-white border-haaruFlame shadow' : 'bg-white/5 text-slate-300 border-white/10 hover:border-white/30'}`;
+        btn.innerHTML = `<div>${sz.label}</div><div class="font-display font-black text-amber-300 text-sm mt-0.5">${formatCOP(sz.price)}</div>`;
+        btn.onclick = () => selectModalSize(sz.key);
+        sizeButtons.appendChild(btn);
+      });
+      updateModalPriceDisplay();
+    }
+
+    function toggleModalCroqueta() {
+      const croquetaCheck = document.getElementById('modal-croqueta-check');
+      state.activeDishConfig.croquetaSelected = croquetaCheck.checked;
+      playTone(480, 0.04);
+      updateModalPriceDisplay();
+    }
+
+    function calculateActiveDishTotal() {
+      const dish = RESTAURANT_DISHES.find(d => d.id === state.activeDishConfig.dishId);
+      if (!dish) return 0;
+
+      let basePrice = dish.price;
+      if (dish.sizes && state.activeDishConfig.selectedSizeKey) {
+        const foundSize = dish.sizes.find(s => s.key === state.activeDishConfig.selectedSizeKey);
+        if (foundSize) basePrice = foundSize.price;
+      }
+
+      let extraPrice = 0;
+      if (dish.hasCroquetaOption && state.activeDishConfig.croquetaSelected) {
+        extraPrice += (dish.croquetaPrice || 5000);
+      }
+
+      return basePrice + extraPrice;
+    }
+
+    function updateModalPriceDisplay() {
+      const total = calculateActiveDishTotal();
+      document.getElementById('modal-dish-price').innerText = formatCOP(total);
+    }
+
+    function addConfiguredDishToCart() {
+      const dish = RESTAURANT_DISHES.find(d => d.id === state.activeDishConfig.dishId);
+      if (!dish) return;
+
+      let itemDetail = dish.subtitle;
+      let unitPrice = dish.price;
+
+      if (dish.sizes && state.activeDishConfig.selectedSizeKey) {
+        const sz = dish.sizes.find(s => s.key === state.activeDishConfig.selectedSizeKey);
+        if (sz) {
+          unitPrice = sz.price;
+          itemDetail = sz.label;
+        }
+      }
+
+      if (dish.hasCroquetaOption && state.activeDishConfig.croquetaSelected) {
+        unitPrice += (dish.croquetaPrice || 5000);
+        itemDetail += ' (+Croqueta adicional 5K)';
+      }
+
+      const cartId = `dish_${dish.id}_${state.activeDishConfig.selectedSizeKey || 'std'}_${state.activeDishConfig.croquetaSelected ? 'extra' : 'no'}`;
+
+      const existing = state.cart.find(i => i.id === cartId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        state.cart.push({
+          id: cartId,
+          type: 'restaurant',
+          name: dish.title,
+          detail: itemDetail,
+          unitPrice: unitPrice,
+          qty: 1
+        });
+      }
+
+      playTone(640, 0.08);
+      showToast(`¡Agregado!: ${dish.title}`);
+      updateCartUI();
+    }
+
+    function quickAddDish(dishId) {
+      const dish = RESTAURANT_DISHES.find(d => d.id === dishId);
+      if (!dish) return;
+
+      // Si tiene opciones de tamaño múltiples (ej: Parrilla o Cazuela), abrir el modal para que el usuario elija con precisión
+      if (dish.sizes && dish.sizes.length > 0) {
+        openDishModal(dishId);
+        return;
+      }
+
+      const cartId = `dish_${dish.id}_std_no`;
+      const existing = state.cart.find(i => i.id === cartId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        state.cart.push({
+          id: cartId,
+          type: 'restaurant',
+          name: dish.title,
+          detail: dish.subtitle,
+          unitPrice: dish.price,
+          qty: 1
+        });
+      }
+
+      playTone(620, 0.08);
+      showToast(`¡Agregado!: ${dish.title}`);
+      updateCartUI();
+    }
+
+    function addDishToCart(dishId) {
+      quickAddDish(dishId);
+    }
+
+    function closeDishModal() {
+      document.getElementById('dish-modal-backdrop').classList.add('hidden');
+      document.getElementById('dish-modal').classList.add('hidden');
+    }
+
+    /* ---------------------------------------------------------
+       7. HELADERÍA: ESPECIALES Y FRUTAS CLÁSICO/JUNIOR
+       --------------------------------------------------------- */
+    function renderHeladeria() {
+      // 1. Especiales Crunch (Flips, Pirulin, Oreo)
+      const espContainer = document.getElementById('helados-especiales-grid');
+      if (espContainer) {
+        espContainer.innerHTML = '';
+        ICE_CREAMS_ESPECIALES.forEach(item => {
+          const card = document.createElement('div');
+          card.className = "bg-haaruCard rounded-3xl p-6 border border-white/10 hover:border-haaruFlame/60 shadow-xl transition-all duration-300 flex flex-col justify-between";
+
+          card.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-black uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg">
+                  ${item.tag}
+                </span>
+                <div class="w-10 h-10 rounded-2xl flex items-center justify-center text-lg" style="background-color: ${item.color}20; color: ${item.color};">
+                  <i class="fa-solid ${item.icon}"></i>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-display font-black text-2xl text-white">${item.name}</h4>
+                <p class="text-xs text-slate-400 mt-1">${item.desc}</p>
+              </div>
+
+              <div class="p-2.5 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-between text-xs">
+                <span class="text-slate-400">Porción Especial:</span>
+                <span class="font-bold text-white">Topping Abundante</span>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span class="font-display font-black text-amber-400 text-lg">${formatCOP(item.price)}</span>
+              <button onclick="addSpecialIceCream('${item.id}')" class="bg-gradient-to-r from-haaruFlame to-haaruRed hover:opacity-95 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 active:scale-95 transition-all shadow">
+                <i class="fa-solid fa-plus"></i> Agregar
+              </button>
+            </div>
+          `;
+          espContainer.appendChild(card);
+        });
+      }
+
+      // 2. Frutas 100% Naturales (Kiwi, Fresa, Guanábana, Piña, Mora, Cereza)
+      const fruitContainer = document.getElementById('helados-frutales-grid');
+      if (fruitContainer) {
+        fruitContainer.innerHTML = '';
+        ICE_CREAMS_FRUTALES.forEach(item => {
+          const currentSize = state.fruitSizes[item.id] || 'clasico';
+          const currentPrice = item[currentSize];
+
+          const card = document.createElement('div');
+          card.className = "bg-haaruCard rounded-3xl p-6 border border-white/10 hover:border-pink-500/60 shadow-xl transition-all duration-300 flex flex-col justify-between";
+
+          card.innerHTML = `
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-black uppercase tracking-wider text-pink-400 bg-pink-500/10 border border-pink-500/20 px-2.5 py-1 rounded-lg">
+                  Fruta 100% Natural
+                </span>
+                <div class="w-10 h-10 rounded-2xl flex items-center justify-center text-lg" style="background-color: ${item.color}20; color: ${item.color};">
+                  <i class="fa-solid fa-ice-cream"></i>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-display font-black text-2xl text-white">${item.name}</h4>
+                <p class="text-xs text-slate-400 mt-1">${item.desc}</p>
+              </div>
+
+              <!-- Selector Clásico vs Junior -->
+              <div class="p-1 rounded-2xl bg-white/5 border border-white/5 grid grid-cols-2 gap-1 text-xs font-bold">
+                <button 
+                  onclick="setFruitSize('${item.id}', 'clasico')"
+                  class="py-2 rounded-xl transition-all ${currentSize === 'clasico' ? 'bg-gradient-to-r from-haaruFlame to-haaruRed text-white shadow' : 'text-slate-400 hover:text-white'}"
+                >
+                  Clásico (${formatCOP(item.clasico)})
+                </button>
+                <button 
+                  onclick="setFruitSize('${item.id}', 'junior')"
+                  class="py-2 rounded-xl transition-all ${currentSize === 'junior' ? 'bg-gradient-to-r from-haaruFlame to-haaruRed text-white shadow' : 'text-slate-400 hover:text-white'}"
+                >
+                  Junior (${formatCOP(item.junior)})
+                </button>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span class="font-display font-black text-white text-lg">${formatCOP(currentPrice)}</span>
+              <button onclick="addFruitIceCream('${item.id}')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 active:scale-95 transition-all shadow">
+                <i class="fa-solid fa-plus"></i> Agregar
+              </button>
+            </div>
+          `;
+          fruitContainer.appendChild(card);
+        });
+      }
+    }
+
+    function setFruitSize(id, size) {
+      state.fruitSizes[id] = size;
+      playTone(450, 0.04);
+      renderHeladeria();
+    }
+
+    function addSpecialIceCream(id) {
+      const item = ICE_CREAMS_ESPECIALES.find(i => i.id === id);
+      if (!item) return;
+
+      const cartId = `ice_spec_${item.id}`;
+      const existing = state.cart.find(i => i.id === cartId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        state.cart.push({
+          id: cartId,
+          type: 'heladeria',
+          name: `Helado de ${item.name}`,
+          detail: 'Especial Topping',
+          unitPrice: item.price,
+          qty: 1
+        });
+      }
+
+      playTone(660, 0.08);
+      showToast(`¡Helado de ${item.name} agregado!`);
+      updateCartUI();
+    }
+
+    function addFruitIceCream(id) {
+      const item = ICE_CREAMS_FRUTALES.find(i => i.id === id);
+      if (!item) return;
+
+      const size = state.fruitSizes[id] || 'clasico';
+      const sizeLabel = size === 'clasico' ? 'Clásico' : 'Junior';
+      const unitPrice = item[size];
+      const cartId = `ice_fruit_${item.id}_${size}`;
+
+      const existing = state.cart.find(i => i.id === cartId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        state.cart.push({
+          id: cartId,
+          type: 'heladeria',
+          name: `Helado de ${item.name}`,
+          detail: `Tamaño ${sizeLabel}`,
+          unitPrice: unitPrice,
+          qty: 1
+        });
+      }
+
+      playTone(660, 0.08);
+      showToast(`¡Helado de ${item.name} (${sizeLabel}) agregado!`);
+      updateCartUI();
+    }
+
+    /* ---------------------------------------------------------
+       8. PARQUE INFANTIL & CARROS ELÉCTRICOS
+       --------------------------------------------------------- */
+    function updateParkCount(delta) {
+      state.parkKidsCount = Math.max(1, state.parkKidsCount + delta);
+      document.getElementById('park-kids-counter').innerText = state.parkKidsCount;
+      const subtotal = state.parkKidsCount * PARK_PRICE;
+      document.getElementById('park-subtotal-btn').innerText = formatCOP(subtotal);
+      playTone(420 + (state.parkKidsCount * 25), 0.04);
+    }
+
+    function addConfiguredParkPasses() {
+      const count = state.parkKidsCount;
+      const cartId = 'park_pass_1hr';
+      const existing = state.cart.find(i => i.id === cartId);
+      if (existing) {
+        existing.qty += count;
+      } else {
+        state.cart.push({
+          id: cartId,
+          type: 'parque',
+          name: 'Pase Parque Infantil (1 Hora)',
+          detail: '2 Niveles + Carros Eléctricos',
+          unitPrice: PARK_PRICE,
+          qty: count
+        });
+      }
+
+      playTone(720, 0.1);
+      showToast(`¡${count} pase(s) de parque incluidos! 🏎️`);
+      updateCartUI();
+    }
+
+    /* ---------------------------------------------------------
+       9. GESTIÓN DE LA COMANDA / CHECKOUT
+       --------------------------------------------------------- */
+    function updateCartUI() {
+      const totalCount = state.cart.reduce((s, i) => s + i.qty, 0);
+      const grandTotal = state.cart.reduce((s, i) => s + (i.unitPrice * i.qty), 0);
+
+      const foodTotal = state.cart.filter(i => i.type === 'restaurant').reduce((s, i) => s + (i.unitPrice * i.qty), 0);
+      const iceTotal = state.cart.filter(i => i.type === 'heladeria').reduce((s, i) => s + (i.unitPrice * i.qty), 0);
+      const parkTotal = state.cart.filter(i => i.type === 'parque').reduce((s, i) => s + (i.unitPrice * i.qty), 0);
+
+      document.getElementById('cart-badge-count').innerText = totalCount;
+      document.getElementById('cart-subtotal-food').innerText = formatCOP(foodTotal);
+      document.getElementById('cart-subtotal-icecream').innerText = formatCOP(iceTotal);
+      document.getElementById('cart-subtotal-park').innerText = formatCOP(parkTotal);
+      document.getElementById('cart-grand-total').innerText = formatCOP(grandTotal);
+
+      const container = document.getElementById('cart-drawer-items');
+      container.innerHTML = '';
+
+      if (state.cart.length === 0) {
+        container.innerHTML = `
+          <div class="py-16 text-center text-slate-500 space-y-2">
+            <i class="fa-solid fa-receipt text-4xl text-slate-600"></i>
+            <p class="text-sm">Tu comanda está vacía.</p>
+            <p class="text-xs text-slate-500">Agrega platos gourmet, helados o pases para el parque.</p>
+          </div>
+        `;
+        return;
+      }
+
+      state.cart.forEach(item => {
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-3.5 rounded-2xl bg-white/5 border border-white/5 gap-3";
+
+        let icon = '<i class="fa-solid fa-utensils text-haaruFlame"></i>';
+        if (item.type === 'heladeria') icon = '<i class="fa-solid fa-ice-cream text-pink-400"></i>';
+        if (item.type === 'parque') icon = '<i class="fa-solid fa-car-burst text-amber-400"></i>';
+
+        row.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-sm flex-shrink-0">
+              ${icon}
+            </div>
+            <div class="min-w-0">
+              <h5 class="text-xs font-bold text-white truncate">${item.name}</h5>
+              <div class="text-[11px] text-slate-400">${item.detail} &bull; ${formatCOP(item.unitPrice)}</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="flex items-center bg-black/40 border border-white/10 rounded-lg p-0.5">
+              <button onclick="changeItemQty('${item.id}', -1)" class="w-6 h-6 rounded flex items-center justify-center text-slate-400 hover:text-white text-xs">
+                <i class="fa-solid fa-minus text-[10px]"></i>
+              </button>
+              <span class="w-6 text-center font-bold text-xs text-amber-400">${item.qty}</span>
+              <button onclick="changeItemQty('${item.id}', 1)" class="w-6 h-6 rounded flex items-center justify-center text-slate-400 hover:text-white text-xs">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+              </button>
+            </div>
+            <button onclick="removeItem('${item.id}')" class="text-slate-500 hover:text-rose-500 text-xs p-1">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        `;
+
+        container.appendChild(row);
+      });
+    }
+
+    function changeItemQty(id, delta) {
+      const item = state.cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        removeItem(id);
+        return;
+      }
+      playTone(460, 0.04);
+      updateCartUI();
+    }
+
+    function removeItem(id) {
+      const idx = state.cart.findIndex(i => i.id === id);
+      if (idx !== -1) {
+        state.cart.splice(idx, 1);
+        playTone(320, 0.06);
+        updateCartUI();
+      }
+    }
+
+    function clearCart() {
+      state.cart = [];
+      playTone(300, 0.08);
+      updateCartUI();
+    }
+
+    function toggleCartDrawer(open) {
+      const drawer = document.getElementById('cart-drawer');
+      const backdrop = document.getElementById('cart-drawer-backdrop');
+
+      if (open) {
+        initAudio();
+        playTone(550, 0.06);
+        backdrop.classList.remove('hidden');
+        requestAnimationFrame(() => drawer.classList.remove('translate-x-full'));
+      } else {
+        drawer.classList.add('translate-x-full');
+        setTimeout(() => backdrop.classList.add('hidden'), 300);
+      }
+    }
+
+    /* ---------------------------------------------------------
+       10. DESPACHO A WHATSAPP
+       --------------------------------------------------------- */
+    function sendOrderWhatsApp() {
+      if (state.cart.length === 0) {
+        showToast('Agrega elementos a la comanda antes de pedir.');
+        return;
+      }
+
+      const client = document.getElementById('order-customer-name').value.trim() || 'Cliente Haaru Park';
+      const grandTotal = state.cart.reduce((s, i) => s + (i.unitPrice * i.qty), 0);
+
+      const foodItems = state.cart.filter(i => i.type === 'restaurant');
+      const iceItems = state.cart.filter(i => i.type === 'heladeria');
+      const parkItems = state.cart.filter(i => i.type === 'parque');
+
+      let text = `👑 *COMANDA OFICIAL - HAARU PARK* 🍽️\n\n`;
+      text += `📍 *Mesa / Identificación:* ${client}\n`;
+      text += `━━━━━━━━━━━━━━━━━━━━━\n`;
+
+      if (foodItems.length > 0) {
+        text += `\n🥩 *PLATOS RESTAURANT GOURMET:*\n`;
+        foodItems.forEach(i => {
+          text += `• ${i.qty}x ${i.name} [${i.detail}] -> ${formatCOP(i.unitPrice * i.qty)}\n`;
+        });
+      }
+
+      if (iceItems.length > 0) {
+        text += `\n🍨 *HELADERÍA ARTESANAL:*\n`;
+        iceItems.forEach(i => {
+          text += `• ${i.qty}x ${i.name} (${i.detail}) -> ${formatCOP(i.unitPrice * i.qty)}\n`;
+        });
+      }
+
+      if (parkItems.length > 0) {
+        text += `\n🏎️ *PARQUE & CARROS ELÉCTRICOS:*\n`;
+        parkItems.forEach(i => {
+          text += `• ${i.qty}x ${i.name} -> ${formatCOP(i.unitPrice * i.qty)}\n`;
+        });
+      }
+
+      text += `\n━━━━━━━━━━━━━━━━━━━━━\n`;
+      text += `💰 *TOTAL GENERAL:* ${formatCOP(grandTotal)}\n\n`;
+      text += `¡Hola equipo de Haaru Park! Deseo confirmar este pedido y coordinar nuestra atención. ¡Muchas gracias! ✨`;
+
+      const encoded = encodeURIComponent(text);
+      window.open(`https://wa.me/?text=${encoded}`, '_blank');
+      showToast('Redirigiendo a WhatsApp...');
+    }
+
+    function sendBirthdayWhatsApp() {
+      const msg = encodeURIComponent("¡Hola equipo de Haaru Park! Quisiera información y cotización para celebrar un cumpleaños (Parque infantil de 2 niveles, carros eléctricos, heladería y restaurante).");
+      window.open(`https://wa.me/?text=${msg}`, '_blank');
+    }
+
+    /* ---------------------------------------------------------
+       11. INICIALIZACIÓN
+       --------------------------------------------------------- */
+    window.addEventListener('DOMContentLoaded', () => {
+      renderRestaurantRows();
+      renderHeladeria();
+      updateCartUI();
+
+      // Desbloqueo de audio Web Audio en la primera interacción
+      document.body.addEventListener('click', () => initAudio(), { once: true });
+    });
+  </script>
+</body>
+</html>
