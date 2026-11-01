@@ -82,15 +82,20 @@
       <div class="flex items-center justify-between h-20">
         
         <!-- Logotipo de Haaru Park -->
-        <a href="javascript:showSection('portal')" class="flex items-center gap-3 group">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-haaruFlame via-haaruRed to-haaruGold flex items-center justify-center text-white text-xl shadow-lg shadow-haaruFlame/30 group-hover:scale-105 transition-transform duration-300">
-            <i class="fa-solid fa-crown"></i>
-          </div>
-          <div>
-            <div class="font-banner tracking-wider text-2xl sm:text-3xl leading-none text-white flex items-center gap-1.5">
+        <a href="javascript:showSection('portal')" class="flex items-center gap-3 group py-1">
+          <img 
+            src="LOGO HAARU BLANCO.png" 
+            alt="Haaru Park Logo" 
+            class="h-10 sm:h-12 w-auto object-contain drop-shadow-md group-hover:scale-105 transition-transform duration-300"
+            onerror="this.onerror=null;this.classList.add('hidden');document.getElementById('nav-logo-fallback').classList.remove('hidden');"
+          >
+          <div id="nav-logo-fallback" class="hidden flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-haaruFlame via-haaruRed to-haaruGold flex items-center justify-center text-white text-lg shadow-lg shadow-haaruFlame/30">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <div class="font-banner tracking-wider text-2xl sm:text-3xl leading-none text-white flex items-center gap-1">
               <span>HAARU</span><span class="text-haaruFlame">PARK</span>
             </div>
-            <p class="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Restaurant &bull; Heladería &bull; Parque</p>
           </div>
         </a>
 
@@ -141,8 +146,22 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center">
       
       <!-- Encabezado de Bienvenida -->
-      <div class="space-y-4 max-w-3xl mx-auto mb-14">
-        <span class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-haaruFlame bg-haaruFlame/10 border border-haaruFlame/30 px-4 py-1.5 rounded-full">
+      <div class="space-y-6 max-w-3xl mx-auto mb-14 flex flex-col items-center">
+        <!-- Logo Oficial Destacado en el Portal -->
+        <div class="relative group">
+          <div class="absolute -inset-4 bg-gradient-to-r from-haaruFlame/25 via-haaruRed/20 to-amber-500/25 rounded-full blur-2xl opacity-75 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+          <img 
+            src="LOGO HAARU BLANCO.png" 
+            alt="Haaru Park" 
+            class="relative h-20 sm:h-28 md:h-32 w-auto object-contain mx-auto drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] filter brightness-105"
+            onerror="this.onerror=null;this.classList.add('hidden');document.getElementById('portal-logo-fallback').classList.remove('hidden');"
+          >
+          <div id="portal-logo-fallback" class="hidden font-banner tracking-widest text-5xl sm:text-7xl text-white drop-shadow-lg">
+            <span>HAARU</span><span class="text-haaruFlame">PARK</span>
+          </div>
+        </div>
+
+        <span class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-haaruFlame bg-haaruFlame/10 border border-haaruFlame/30 px-4 py-1.5 rounded-full shadow-sm">
           <i class="fa-solid fa-sparkles"></i> Bienvenidos a Haaru Park
         </span>
         <h1 class="font-display font-extrabold text-4xl sm:text-6xl text-white tracking-tight">
@@ -527,6 +546,29 @@
   </section>
 
   <!-- ======================================================== -->
+  <!-- PIE DE PÁGINA (FOOTER)                                   -->
+  <!-- ======================================================== -->
+  <footer class="mt-auto border-t border-white/10 bg-black/60 py-10 relative z-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <div class="flex flex-col sm:flex-row items-center gap-4">
+        <img 
+          src="LOGO HAARU BLANCO.png" 
+          alt="Haaru Park" 
+          class="h-9 w-auto object-contain drop-shadow"
+          onerror="this.onerror=null;this.classList.add('hidden');"
+        >
+        <div>
+          <p class="text-xs font-bold text-white uppercase tracking-wider">Haaru Park</p>
+          <p class="text-[11px] text-slate-400">Restaurant Gourmet &bull; Heladería Artesanal &bull; Parque Infantil & Carros</p>
+        </div>
+      </div>
+      <div class="text-xs text-slate-500">
+        &copy; Haaru Park. Experiencia gastronómica y familiar.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
   <!-- MODAL DE DETALLE DEL PLATO GOURMET                       -->
   <!-- ======================================================== -->
   <div id="dish-modal-backdrop" onclick="closeDishModal()" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden transition-opacity"></div>
@@ -589,14 +631,17 @@
   
   <aside id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-haaruCard border-l border-white/10 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
     
-    <div class="p-5 border-b border-white/10 flex items-center justify-between bg-black/30">
-      <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-haaruFlame to-haaruRed text-white flex items-center justify-center font-bold">
-          <i class="fa-solid fa-receipt"></i>
-        </div>
+    <div class="p-5 border-b border-white/10 flex items-center justify-between bg-black/40">
+      <div class="flex items-center gap-3">
+        <img 
+          src="LOGO HAARU BLANCO.png" 
+          alt="Haaru Park" 
+          class="h-8 w-auto object-contain drop-shadow"
+          onerror="this.onerror=null;this.classList.add('hidden');"
+        >
         <div>
-          <h3 class="font-display font-black text-lg text-white">Comanda Haaru Park</h3>
-          <p class="text-xs text-slate-400">Restaurant &bull; Helados &bull; Parque</p>
+          <h3 class="font-display font-black text-base text-white">Comanda Haaru Park</h3>
+          <p class="text-[11px] text-slate-400">Restaurant &bull; Helados &bull; Parque</p>
         </div>
       </div>
       <button onclick="toggleCartDrawer(false)" class="w-8 h-8 rounded-full bg-white/10 text-slate-300 hover:text-white flex items-center justify-center">
