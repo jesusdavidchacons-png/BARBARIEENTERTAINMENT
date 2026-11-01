@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wins Park | Wi-Fi Gratis & Bienvenida</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            title: ['Poppins', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            park: {
+              yellow: '#F59E0B',
+              coral: '#FF5A5F',
+              cyan: '#06B6D4',
+              dark: '#0B0F19',
+              card: '#131B2E',
+              border: '#1E293B'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-park-dark text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-park-coral selection:text-white">
+
+  <!-- ENCABEZADO -->
+  <header class="py-6 px-4 text-center">
+    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-park-yellow text-xs font-semibold uppercase tracking-wider mb-3">
+      <i class="fa-solid fa-wifi text-emerald-400"></i> Red Wi-Fi Clientes
+    </div>
+    
+    <div class="flex items-center justify-center gap-2 mb-1">
+      <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-park-yellow to-park-coral flex items-center justify-center text-slate-950 font-title font-extrabold text-xl shadow-lg">
+        W
+      </span>
+      <h1 class="font-title font-extrabold text-2xl sm:text-3xl tracking-tight text-white">
+        Wins<span class="text-park-coral">Park</span>
+      </h1>
+    </div>
+    <p class="text-xs text-slate-400 max-w-xs mx-auto">
+      Comida, helados artesanales y el mejor parque de diversiones.
+    </p>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL / FORMULARIO -->
+  <main class="w-full max-w-md mx-auto px-4 pb-8">
+    <div class="bg-park-card border border-park-border rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+      
+      <!-- Detalle decorativo de luz -->
+      <div class="absolute -top-20 -right-20 w-40 h-40 bg-park-coral/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="text-center mb-6">
+        <h2 class="font-title font-bold text-lg text-white mb-1">
+          Activa tu Acceso a Internet
+        </h2>
+        <p class="text-xs text-slate-400">
+          Ingresa tus datos para conectarte a nuestra red de alta velocidad y recibir promociones exclusivas.
+        </p>
+      </div>
+
+      <form id="wifiPortalForm" onsubmit="handlePortalSubmit(event)" class="space-y-4">
+        
+        <!-- Nombre y Apellido -->
+        <div>
+          <label for="fullName" class="block font-mono text-[11px] uppercase tracking-wider text-slate-300 mb-1.5">
+            Nombre y Apellido *
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-xs">
+              <i class="fa-solid fa-user"></i>
+            </span>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="fullName" 
+              required 
+              placeholder="Ej. Juan Pérez" 
+              class="w-full pl-9 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-park-coral transition-colors"
+            >
+          </div>
+        </div>
+
+        <!-- WhatsApp / Teléfono -->
+        <div>
+          <label for="phoneNumber" class="block font-mono text-[11px] uppercase tracking-wider text-slate-300 mb-1.5">
+            Número de WhatsApp *
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-emerald-400 text-sm">
+              <i class="fa-brands fa-whatsapp"></i>
+            </span>
+            <input 
+              type="tel" 
+              id="phoneNumber" 
+              name="phoneNumber" 
+              required 
+              placeholder="Ej. 04121234567" 
+              class="w-full pl-9 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none focus:border-park-coral transition-colors font-mono"
+            >
+          </div>
+        </div>
+
+        <!-- Botón de Conexión y Envío -->
+        <button 
+          type="submit" 
+          id="btnSubmit" 
+          class="w-full mt-2 py-3.5 rounded-xl bg-gradient-to-r from-park-yellow via-amber-400 to-park-coral text-slate-950 font-title font-extrabold text-xs uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-park-coral/25 flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <i class="fa-solid fa-bolt text-sm"></i>
+          <span>Conectar al Wi-Fi</span>
+        </button>
+
+      </form>
+
+      <!-- Estado de Envío -->
+      <div id="statusMessage" class="hidden mt-4 p-3 rounded-xl bg-slate-900 border border-emerald-500/40 text-center font-mono text-xs text-emerald-400">
+        <i class="fa-solid fa-circle-check mr-1.5"></i> Datos verificados. Accediendo a internet...
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-slate-800/80 grid grid-cols-3 gap-2 text-center text-[10px] text-slate-400 font-mono">
+        <div>
+          <i class="fa-solid fa-burger text-park-yellow block text-sm mb-1"></i> Comidas
+        </div>
+        <div>
+          <i class="fa-solid fa-ice-cream text-park-coral block text-sm mb-1"></i> Helados
+        </div>
+        <div>
+          <i class="fa-solid fa-gamepad text-park-cyan block text-sm mb-1"></i> Parque
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="py-4 text-center text-[11px] text-slate-600 font-mono">
+    © 2026 Wins Park • Todos los derechos reservados.
+  </footer>
+
+  <!-- LÓGICA DE CONTROL (EMAIL + WHATSAPP + AUTENTICACIÓN TP-LINK) -->
+  <script>
+    // 1. CONFIGURACIÓN PERSONAL
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/xzezlwbg"; // Endpoint donde te llega el correo
+    const MI_NUMERO_WHATSAPP = "584129315743"; // Tu número (código país + número sin símbolos)
+
+    async function handlePortalSubmit(event) {
+      event.preventDefault();
+      
+      const submitBtn = document.getElementById("btnSubmit");
+      const statusMsg = document.getElementById("statusMessage");
+      const name = document.getElementById("fullName").value.trim();
+      const phone = document.getElementById("phoneNumber").value.trim();
+
+      // Deshabilitar botón durante el proceso
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-sm"></i> Conectando...';
+
+      // -------------------------------------------------------------
+      // ACCIÓN 1: Enviar datos al correo en segundo plano
+      // -------------------------------------------------------------
+      try {
+        await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            origen: "Portal Wi-Fi Wins Park",
+            cliente: name,
+            telefono_whatsapp: phone,
+            fecha: new Date().toLocaleString("es-VE")
+          })
+        });
+      } catch (err) {
+        console.warn("Fallo al enviar correo en segundo plano:", err);
+      }
+
+      // -------------------------------------------------------------
+      // ACCIÓN 2: Preparar y abrir mensaje de WhatsApp
+      // -------------------------------------------------------------
+      const textMsg = encodeURIComponent(
+        `¡Hola Wins Park! Me acabo de registrar en su red Wi-Fi.\n\n` +
+        `👤 Nombre: ${name}\n` +
+        `📱 Teléfono: ${phone}`
+      );
+      const whatsappUrl = `https://wa.me/${MI_NUMERO_WHATSAPP}?text=${textMsg}`;
+      
+      // Abrir WhatsApp en pestaña auxiliar
+      window.open(whatsappUrl, "_blank");
+
+      // Mostrar confirmación
+      statusMsg.classList.remove("hidden");
+
+      // -------------------------------------------------------------
+      // ACCIÓN 3: Liberar Acceso a Internet en el Router TP-Link
+      // -------------------------------------------------------------
+      liberarInternetTPLink();
+    }
+
+    function liberarInternetTPLink() {
+      // Capturar los parámetros que TP-Link inyecta en la URL al redirigir al portal cautivo
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetUrl = urlParams.get("target");       // URL original que buscaba el cliente
+      const clientMac = urlParams.get("clientMac");     // MAC del cliente (Omada)
+      const apMac = urlParams.get("apMac");             // MAC del Access Point (Omada)
+
+      setTimeout(() => {
+        // CASO A: TP-Link Omada (Controlador / Hotspot API)
+        if (clientMac && apMac) {
+          // Envía orden de autenticación al servidor local de TP-Link Omada
+          fetch("/portal/auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ clientMac, apMac, authType: 0 })
+          }).then(() => {
+            window.location.href = targetUrl || "https://www.google.com";
+          }).catch(() => {
+            window.location.href = targetUrl || "https://www.google.com";
+          });
+        } 
+        // CASO B: Red abierta con redirección estándar
+        else if (targetUrl) {
+          window.location.href = decodeURIComponent(targetUrl);
+        } 
+        // CASO C: Salida directa si el router ya liberó el tráfico
+        else {
+          window.location.href = "https://www.google.com";
+        }
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
