@@ -221,7 +221,7 @@
         </button>
 
         <button onclick="mostrarSeccion('parque')" class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-blue-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-car-side"></i>
           </div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-blue-400">Parque</h3>
@@ -634,6 +634,24 @@
   <script>
     const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
 
+    // Función para normalizar texto (elimina tildes, símbolos y espacios extra)
+    function limpiarTexto(str) {
+      return (str || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s]/gi, '')
+        .trim();
+    }
+
+    // Extractor numérico estricto (ignora $, puntos y comas)
+    function limpiarPrecioNumero(val) {
+      if (typeof val === "number") return val;
+      if (!val) return 0;
+      const numStr = String(val).replace(/[^\d]/g, '');
+      return numStr ? Number(numStr) : 0;
+    }
+
     // 1. PROMOS DE NAVIDAD
     let promosNavidadData = [
       { id: 'promo-1', numero: '1#', title: 'Combo Burger & Parque', items: ['Bacon Kubrick', 'Papas a la francesa', 'Refresco personal', 'Helado soft', 'Entrada al parque (Tiempo libre)'], price: 40000, badge: 'Individual Completo' },
@@ -641,7 +659,7 @@
       { id: 'promo-3', numero: '3#', title: 'Super Familiar Festivo', items: ['Pizza margarita familiar', 'Litro de refresco', '3 Helados soft', 'Entrada al parque (Tiempo libre)'], price: 90000, badge: 'Familiar Premium' }
     ];
 
-    // 2. HAMBURGUESAS GOURMET (CON FOTOS LOCALES Y FALLBACKS)
+    // 2. HAMBURGUESAS GOURMET
     let burgersData = [
       { id: 'vino-burger', title: 'Al Vino Burger', file: 'al vino burguer.jpg', fallback: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop', subtitle: 'Al vino burguer + Papas a la francesa 30K', ingredients: 'Muchacho al vino madurado, queso crema, cebolla caramelizada, vegetales frescos, papas rufles crujientes.', price: 30000 },
       { id: 'bacon-kubrick', title: 'Bacon Kubrick', file: 'Bacon cubrick.jpg', fallback: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=800&auto=format&fit=crop', subtitle: 'Bacon Kubrick + Papas a la francesa 30K', ingredients: 'Croqueta de solomillo, tocineta crujiente, relish de pepinillo, vegetales frescos, queso cheddar fundido, papas francesas.', price: 30000 },
@@ -711,7 +729,7 @@
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    // ================= SINCRONIZACIÓN DE MENÚ EN VIVO CON GOOGLE SHEETS =================
+    // ================= SINCRONIZACIÓN INTELIGENTE DE PRECIOS Y MENÚ =================
     async function sincronizarMenuEnVivo() {
       try {
         const respuesta = await fetch(`${GOOGLE_SHEETS_WEBHOOK_URL}?tipo=catalogo&t=${Date.now()}`, { cache: "no-store" });
@@ -721,12 +739,15 @@
           const catalogo = data.catalogo;
 
           catalogo.forEach(item => {
-            const nom = (item.name || '').trim().toLowerCase();
-            const precio = Number(item.price) || 0;
+            const nomLimpio = limpiarTexto(item.name);
+            const precio = limpiarPrecioNumero(item.price);
             const tieneFotoValida = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
 
             // 1. Hamburguesas
-            const b = burgersData.find(x => x.title.toLowerCase().trim() === nom);
+            const b = burgersData.find(x => {
+              const t = limpiarTexto(x.title);
+              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
+            });
             if (b) {
               if (precio > 0) b.price = precio;
               if (item.detail) b.ingredients = item.detail;
@@ -734,44 +755,57 @@
             }
 
             // 2. Restaurant
-            const d = dishesData.find(x => x.title.toLowerCase().trim() === nom);
+            const d = dishesData.find(x => {
+              const t = limpiarTexto(x.title);
+              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
+            });
             if (d) {
               if (precio > 0) d.price = precio;
               if (item.detail) d.ingredients = item.detail;
               if (tieneFotoValida) d.file = item.image;
 
-              if (nom.includes('solomo') || nom.includes('churrasco')) {
+              if (nomLimpio.includes('solomo') || nomLimpio.includes('churrasco')) {
                 heroPlatoActual.precio = precio;
                 const hPre = document.getElementById('hero-plato-precio');
                 if (hPre) hPre.innerHTML = `${formatCOP(precio)} <span class="text-xs text-zinc-400 font-normal">COP</span>`;
               }
             }
 
-            // 3. Pizzas (Acepta formato directo o con "(Mediana)" / "(Grande)")
+            // 3. Pizzas (Maneja precio mediana y grande)
             pizzasData.forEach(p => {
-              const nomP = p.name.toLowerCase().trim();
-              if (nom === nomP || nom === `${nomP} (mediana)`) {
-                if (precio > 0) p.mediana = precio;
-              }
-              if (nom === `${nomP} (grande)`) {
-                if (precio > 0) p.grande = precio;
+              const nomP = limpiarTexto(p.name);
+              if (nomLimpio === nomP || nomLimpio.includes(nomP)) {
+                if (nomLimpio.includes('grande')) {
+                  if (precio > 0) p.grande = precio;
+                } else {
+                  if (precio > 0) p.mediana = precio;
+                }
               }
             });
 
             // 4. Cócteles
-            const c = coctelesData.find(x => x.name.toLowerCase().trim() === nom);
+            const c = coctelesData.find(x => {
+              const t = limpiarTexto(x.name);
+              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
+            });
             if (c && precio > 0) {
               c.price = precio;
             }
 
             // 5. Bebidas
-            const beb = bebidasData.find(x => x.name.toLowerCase().trim() === nom);
+            const beb = bebidasData.find(x => {
+              const t = limpiarTexto(x.name);
+              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
+            });
             if (beb && precio > 0) {
               beb.price = precio;
             }
 
             // 6. Helados
-            const h = heladosData.find(x => x.name.toLowerCase().trim() === nom);
+            const h = heladosData.find(x => {
+              const t = limpiarTexto(x.name);
+              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
+            });
             if (h) {
               if (precio > 0) {
                 h.price = precio;
@@ -782,13 +816,15 @@
 
             // 7. Promos de Navidad
             promosNavidadData.forEach(pr => {
-              if (nom.includes(pr.numero.toLowerCase()) || nom === pr.title.toLowerCase().trim()) {
+              const t = limpiarTexto(pr.title);
+              const num = limpiarTexto(pr.numero);
+              if (nomLimpio.includes(num) || nomLimpio === t) {
                 if (precio > 0) pr.price = precio;
               }
             });
 
             // 8. Parque
-            if (nom.includes('parque') || (item.category || '').toLowerCase() === 'parque') {
+            if (nomLimpio.includes('parque') || (item.category || '').toLowerCase() === 'parque') {
               if (precio > 0) {
                 precioParqueActual = precio;
                 const elTarifa = document.getElementById('parque-tarifa-display');
@@ -797,7 +833,7 @@
             }
           });
 
-          // Re-renderizado de todas las secciones con los nuevos precios
+          // Re-renderizar catálogo con precios nuevos
           renderHamburguesas();
           renderRestaurant();
           renderPizzas();
@@ -806,7 +842,7 @@
           renderPromosNavidad();
         }
       } catch (err) {
-        console.warn("Aviso: usando catálogo local:", err);
+        console.warn("Aviso: usando menú local:", err);
       }
     }
 
@@ -1382,7 +1418,7 @@
 
       const idComandaGenerado = "CMD-" + Math.floor(1000 + Math.random() * 9000);
 
-      // 1. Envío a Google Sheets asegurando que salga la petición
+      // 1. Envío asegurado a Google Sheets
       if (typeof GOOGLE_SHEETS_WEBHOOK_URL !== 'undefined' && GOOGLE_SHEETS_WEBHOOK_URL.startsWith('http')) {
         const payload = {
           idComanda: idComandaGenerado,
@@ -1408,7 +1444,7 @@
         }
       }
 
-      // 2. Construcción de mensaje para WhatsApp
+      // 2. Construcción del mensaje para WhatsApp
       let mensaje = `*¡HOLA HAARU PARK! QUIERO REALIZAR ESTE PEDIDO:*%0A%0A`;
       mensaje += `🎟️ *N° Comanda:* ${idComandaGenerado}%0A`;
       mensaje += `👤 *Cliente:* ${encodeURIComponent(nombreCliente)}%0A`;
@@ -1427,6 +1463,7 @@
       mensaje += `━━━━━━━━━━━━━━━━━━━━━%0A`;
       mensaje += `*TOTAL A PAGAR:* ${encodeURIComponent(formatCOP(total))}%0A`;
       mensaje += `━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
+      
       mensaje += `✨ *¡Gracias por venir a disfrutar la experiencia Haaru Park!*%0A`;
       mensaje += `🎁 _Al consignar este pedido con tu número de teléfono, ya quedas participando oficialmente por nuestros premios sorpresa y cortesías exclusivas._%0A%0A`;
       mensaje += `_Enviado desde el portal web oficial de Haaru Park_`;
@@ -1481,7 +1518,7 @@
       renderHelados();
       renderCart();
 
-      // Sincroniza precios desde Google Sheets en tiempo real
+      // Sincronización en vivo
       sincronizarMenuEnVivo();
     });
   </script>
