@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de Mando & Control de Menú — Haaru Park</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #0c0d14;
+      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #0f101a; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #2a2d42; border-radius: 9999px; }
+  </style>
+</head>
+<body class="min-h-full flex flex-col justify-between selection:bg-orange-600 selection:text-white">
+
+  <!-- ================= BARRA SUPERIOR ================= -->
+  <header class="bg-[#121420]/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between py-3">
+      
+      <div class="flex items-center gap-3">
+        <img src="LOGO HAARU BLANCO.png" alt="Haaru" class="h-9 w-auto object-contain" onerror="this.style.display='none'">
+        <div>
+          <h1 class="text-base font-black uppercase tracking-wider text-white font-heading">
+            HAARU <span class="text-orange-500">CONTROL</span>
+          </h1>
+          <p class="text-[10px] text-zinc-400">Comandas en Vivo & Administrador de Menú</p>
+        </div>
+      </div>
+
+      <!-- Selector de Pestañas Principales -->
+      <div class="flex bg-black/50 p-1 rounded-xl border border-white/10 text-xs">
+        <button onclick="cambiarVista('comandas')" id="btn-tab-comandas" class="px-4 py-2 rounded-lg font-bold transition-all bg-orange-600 text-white cursor-pointer">
+          <i class="fa-solid fa-receipt mr-1.5"></i> Comandas & Caja
+        </button>
+        <button onclick="cambiarVista('menu')" id="btn-tab-menu" class="px-4 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition-all cursor-pointer">
+          <i class="fa-solid fa-pen-to-square mr-1.5"></i> Editar Menú & Precios
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="cargarDatosServidor(true)" id="btnSincronizar" class="bg-white/10 hover:bg-white/20 text-white px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-white/15 transition cursor-pointer">
+          <i id="iconoSync" class="fa-solid fa-rotate"></i>
+          <span class="hidden sm:inline">Sincronizar</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= CONTENIDO ================= -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex-1 space-y-6">
+
+    <!-- ================= VISTA 1: COMANDAS & VENTAS ================= -->
+    <section id="vista-comandas" class="space-y-6">
+      
+      <!-- Selector de Fecha y Filtros -->
+      <div class="bg-[#161824] p-4 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <label class="text-xs font-bold text-zinc-400 uppercase tracking-wider shrink-0">
+            <i class="fa-solid fa-calendar-day text-orange-500 mr-1"></i> Fecha de Cierre:
+          </label>
+          <input type="date" id="filtroFecha" onchange="aplicarFiltrosVentas()" class="bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:ring-1 focus:ring-orange-500 transition">
+          <button onclick="establecerFechaHoy()" class="bg-white/10 hover:bg-white/20 text-xs text-zinc-300 px-3 py-2 rounded-xl font-medium transition cursor-pointer">Hoy</button>
+        </div>
+
+        <div class="w-full sm:w-72 relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-zinc-500"></i>
+          <input type="text" id="filtroBusqueda" onkeyup="aplicarFiltrosVentas()" placeholder="Buscar cliente, comanda o ítem..." class="w-full bg-black/60 border border-white/15 rounded-xl pl-8 pr-3 py-2 text-xs text-white focus:ring-1 focus:ring-orange-500 transition">
+        </div>
+      </div>
+
+      <!-- Tarjetas de Métricas -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div class="bg-[#161824] p-4 rounded-2xl border border-white/10">
+          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Total del Día</span>
+          <div id="kpiTotalDia" class="text-2xl font-black text-emerald-400 font-heading mt-1">$0 COP</div>
+          <span class="text-[10px] text-zinc-500">Ventas brutas registradas</span>
+        </div>
+        <div class="bg-[#161824] p-4 rounded-2xl border border-white/10">
+          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Comandas Recibidas</span>
+          <div id="kpiNumComandas" class="text-2xl font-black text-white font-heading mt-1">0</div>
+          <span class="text-[10px] text-zinc-500">Mesas y despachos</span>
+        </div>
+        <div class="bg-[#161824] p-4 rounded-2xl border border-white/10">
+          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Productos Despachados</span>
+          <div id="kpiItemsTotal" class="text-2xl font-black text-amber-400 font-heading mt-1">0</div>
+          <span class="text-[10px] text-zinc-500">Unidades vendidas</span>
+        </div>
+        <div class="bg-[#161824] p-4 rounded-2xl border border-white/10">
+          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Ticket Promedio</span>
+          <div id="kpiTicketPromedio" class="text-2xl font-black text-cyan-400 font-heading mt-1">$0 COP</div>
+          <span class="text-[10px] text-zinc-500">Promedio por orden</span>
+        </div>
+      </div>
+
+      <!-- Tabla de Comandas -->
+      <div class="bg-[#161824] rounded-2xl border border-white/10 overflow-hidden shadow-xl">
+        <div class="p-4 border-b border-white/10 flex items-center justify-between">
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-orange-500"></i> Desglose de Comandas Recibidas
+          </h3>
+          <span id="conteoRegistros" class="text-xs text-zinc-400">0 registros</span>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs whitespace-nowrap">
+            <thead class="bg-black/40 border-b border-white/10 text-zinc-400 uppercase text-[10px]">
+              <tr>
+                <th class="py-3 px-4">Hora</th>
+                <th class="py-3 px-4">N° Comanda</th>
+                <th class="py-3 px-4">Cliente / Contacto</th>
+                <th class="py-3 px-4">Categoría</th>
+                <th class="py-3 px-4">Producto & Detalle</th>
+                <th class="py-3 px-4 text-center">Cant.</th>
+                <th class="py-3 px-4 text-right">Unitario</th>
+                <th class="py-3 px-4 text-right">Subtotal</th>
+                <th class="py-3 px-4">Nota Especial</th>
+              </tr>
+            </thead>
+            <tbody id="tablaComandasBody" class="divide-y divide-white/5 text-zinc-300">
+              <tr>
+                <td colspan="9" class="text-center py-10 text-zinc-500">Conectando con Google Sheets...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VISTA 2: GESTOR DE MENÚ & PRECIOS ================= -->
+    <section id="vista-menu" class="space-y-6 hidden">
+      
+      <div class="bg-[#161824] p-5 rounded-2xl border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-black text-white font-heading">Catálogo de Productos & Precios</h2>
+          <p class="text-xs text-zinc-400 mt-0.5">Modifica precios, nombres, imágenes o elimina productos. Los cambios se sincronizan en Google Sheets y en la web pública.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="abrirModalNuevoProducto()" class="bg-white/10 hover:bg-white/20 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 border border-white/15 transition cursor-pointer">
+            <i class="fa-solid fa-plus text-orange-500"></i> Nuevo Producto
+          </button>
+          <button onclick="guardarCatalogoEnServidor()" id="btnGuardarMenu" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition active:scale-95 cursor-pointer">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Guardar Cambios en la Web
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Filtro de Categoría -->
+      <div class="flex flex-wrap gap-2 text-xs" id="filtrosCategoriasMenu">
+        <button onclick="filtrarCatalogo('todos')" class="cat-btn active bg-orange-600 text-white px-3.5 py-1.5 rounded-xl font-bold cursor-pointer">Todos</button>
+        <button onclick="filtrarCatalogo('Navidad')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Navidad</button>
+        <button onclick="filtrarCatalogo('Restaurant')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Restaurant</button>
+        <button onclick="filtrarCatalogo('Pizzas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Pizzas</button>
+        <button onclick="filtrarCatalogo('Cócteles')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Cócteles</button>
+        <button onclick="filtrarCatalogo('Bebidas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Bebidas</button>
+        <button onclick="filtrarCatalogo('Helados')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Helados</button>
+        <button onclick="filtrarCatalogo('Parque')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Parque</button>
+      </div>
+
+      <!-- Cuadrícula de Edición de Productos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="contenedorCatalogoEditable">
+        <!-- Inyectado dinámicamente -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= MODAL: NUEVO PRODUCTO ================= -->
+  <div id="modalNuevoProducto" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#161824] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 class="text-base font-black text-white font-heading">Agregar Nuevo Producto</h3>
+        <button onclick="cerrarModalNuevoProducto()" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-zinc-400 font-semibold mb-1">Categoría</label>
+          <select id="nuevoCat" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white">
+            <option value="Restaurant">Restaurant</option>
+            <option value="Pizzas">Pizzas</option>
+            <option value="Cócteles">Cócteles</option>
+            <option value="Bebidas">Bebidas</option>
+            <option value="Helados">Helados</option>
+            <option value="Navidad">Navidad</option>
+            <option value="Parque">Parque</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-zinc-400 font-semibold mb-1">Nombre del Producto</label>
+          <input type="text" id="nuevoNombre" placeholder="Ej: Pizza Cuatro Quesos" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white">
+        </div>
+        <div>
+          <label class="block text-zinc-400 font-semibold mb-1">Descripción / Ingredientes</label>
+          <textarea id="nuevoDetalle" rows="2" placeholder="Detalles de la preparación..." class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white"></textarea>
+        </div>
+        <div>
+          <label class="block text-zinc-400 font-semibold mb-1">Precio en COP</label>
+          <input type="number" id="nuevoPrecio" placeholder="35000" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white font-mono">
+        </div>
+        <div>
+          <label class="block text-zinc-400 font-semibold mb-1">Archivo de Imagen o URL</label>
+          <input type="text" id="nuevoImagen" placeholder="Ej: pizza_4quesos.jpg o enlace web" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white">
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="guardarNuevoProductoEnMemoria()" class="flex-1 bg-orange-600 hover:bg-orange-500 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
+          Agregar a la Lista
+        </button>
+        <button onclick="cerrarModalNuevoProducto()" class="flex-1 bg-white/10 hover:bg-white/20 text-zinc-300 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="py-4 text-center text-[11px] text-zinc-500 border-t border-white/10">
+    Haaru Park &copy; 2026. Centro de Mando Administrativo.
+  </footer>
+
+  <!-- ================= SCRIPT OPERATIVO ================= -->
+  <script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
+
+    let rawVentas = [];
+    let catalogoProductos = [];
+    let categoriaActivaMenu = 'todos';
+
+    function formatCOP(num) {
+      return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
+    }
+
+    function establecerFechaHoy() {
+      const hoy = new Date().toISOString().split('T')[0];
+      document.getElementById('filtroFecha').value = hoy;
+      aplicarFiltrosVentas();
+    }
+
+    function cambiarVista(vista) {
+      const vCom = document.getElementById('vista-comandas');
+      const vMen = document.getElementById('vista-menu');
+      const bCom = document.getElementById('btn-tab-comandas');
+      const bMen = document.getElementById('btn-tab-menu');
+
+      if (vista === 'comandas') {
+        vCom.classList.remove('hidden');
+        vMen.classList.add('hidden');
+        bCom.className = "px-4 py-2 rounded-lg font-bold transition-all bg-orange-600 text-white cursor-pointer";
+        bMen.className = "px-4 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition-all cursor-pointer";
+      } else {
+        vCom.classList.add('hidden');
+        vMen.classList.remove('hidden');
+        bMen.className = "px-4 py-2 rounded-lg font-bold transition-all bg-orange-600 text-white cursor-pointer";
+        bCom.className = "px-4 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition-all cursor-pointer";
+        renderizarCatalogoEditable();
+      }
+    }
+
+    async function cargarDatosServidor(manual = false) {
+      const icono = document.getElementById('iconoSync');
+      icono.classList.add('fa-spin');
+
+      try {
+        const respuesta = await fetch(`${APPS_SCRIPT_URL}?t=${Date.now()}`);
+        const data = await respuesta.json();
+
+        if (data.status === "success") {
+          rawVentas = data.ventas || [];
+          catalogoProductos = data.catalogo || [];
+
+          aplicarFiltrosVentas();
+          renderizarCatalogoEditable();
+          if (manual) alert("¡Datos sincronizados correctamente con Google Sheets!");
+        } else {
+          throw new Error(data.error || "Error al leer datos");
+        }
+      } catch (err) {
+        console.warn("Fallo de conexión, intentando respaldo...", err);
+        // Respaldo de ejemplo si está fuera de línea
+        if (catalogoProductos.length === 0) {
+          cargarCatalogoPorDefecto();
+        }
+      } finally {
+        icono.classList.remove('fa-spin');
+      }
+    }
+
+    function aplicarFiltrosVentas() {
+      const fechaFiltro = document.getElementById('filtroFecha').value;
+      const busqueda = document.getElementById('filtroBusqueda').value.toLowerCase().trim();
+
+      const filtradas = rawVentas.filter(v => {
+        const coincideFecha = !fechaFiltro || v.fecha === fechaFiltro;
+        const coincideBusqueda = 
+          (v.cliente || "").toLowerCase().includes(busqueda) ||
+          (v.idComanda || "").toLowerCase().includes(busqueda) ||
+          (v.name || "").toLowerCase().includes(busqueda) ||
+          (v.category || "").toLowerCase().includes(busqueda);
+
+        return coincideFecha && coincideBusqueda;
+      });
+
+      // Cálculo de KPIs
+      let totalDinero = 0;
+      let totalItems = 0;
+      const comandasUnicas = new Set();
+
+      filtradas.forEach(v => {
+        totalDinero += (v.total || 0);
+        totalItems += (v.quantity || 1);
+        if (v.idComanda) comandasUnicas.add(v.idComanda);
+      });
+
+      const numComandas = comandasUnicas.size || (filtradas.length > 0 ? 1 : 0);
+      const ticketPromedio = numComandas > 0 ? Math.round(totalDinero / numComandas) : 0;
+
+      document.getElementById('kpiTotalDia').innerText = formatCOP(totalDinero);
+      document.getElementById('kpiNumComandas').innerText = numComandas;
+      document.getElementById('kpiItemsTotal').innerText = totalItems;
+      document.getElementById('kpiTicketPromedio').innerText = formatCOP(ticketPromedio);
+      document.getElementById('conteoRegistros').innerText = `${filtradas.length} ítems en comanda`;
+
+      // Renderizado de tabla
+      const tbody = document.getElementById('tablaComandasBody');
+      if (filtradas.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-zinc-500">No hay ventas registradas para este criterio de fecha.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtradas.map(v => `
+        <tr class="hover:bg-white/5 transition">
+          <td class="py-3 px-4 font-mono text-[11px] text-zinc-400">${v.hora || "--:--"}</td>
+          <td class="py-3 px-4 font-mono font-bold text-orange-400">${v.idComanda}</td>
+          <td class="py-3 px-4">
+            <div class="font-bold text-white">${v.cliente}</div>
+            <span class="text-[10px] text-zinc-500">${v.telefono || "Sin tel"}</span>
+          </td>
+          <td class="py-3 px-4">
+            <span class="bg-white/10 text-zinc-300 px-2 py-0.5 rounded text-[10px] uppercase font-semibold">${v.category}</span>
+          </td>
+          <td class="py-3 px-4 font-medium text-white">
+            <div>${v.name}</div>
+            <span class="text-[10px] text-zinc-500">${v.detail || ""}</span>
+          </td>
+          <td class="py-3 px-4 text-center font-bold">${v.quantity}</td>
+          <td class="py-3 px-4 text-right font-mono text-zinc-400">${formatCOP(v.price)}</td>
+          <td class="py-3 px-4 text-right font-mono font-bold text-emerald-400">${formatCOP(v.total)}</td>
+          <td class="py-3 px-4 text-zinc-400 italic">${v.note ? '✍️ ' + v.note : '--'}</td>
+        </tr>
+      `).join('');
+    }
+
+    // ================= GESTOR DE MENÚ & PRECIOS =================
+    function filtrarCatalogo(cat) {
+      categoriaActivaMenu = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-orange-600', 'text-white');
+        btn.classList.add('bg-black/40', 'text-zinc-400');
+      });
+      event.target.classList.add('active', 'bg-orange-600', 'text-white');
+      event.target.classList.remove('bg-black/40', 'text-zinc-400');
+      renderizarCatalogoEditable();
+    }
+
+    function renderizarCatalogoEditable() {
+      const container = document.getElementById('contenedorCatalogoEditable');
+      const lista = catalogoProductos.filter(p => categoriaActivaMenu === 'todos' || p.category === categoriaActivaMenu);
+
+      if (lista.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-zinc-500">No hay productos en esta categoría. Agrega uno con el botón superior.</div>`;
+        return;
+      }
+
+      container.innerHTML = lista.map((p, idx) => {
+        const indexReal = catalogoProductos.indexOf(p);
+        return `
+          <div class="bg-[#161824] border border-white/10 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-lg">
+            <div class="flex items-start gap-3">
+              <div class="w-16 h-16 rounded-xl bg-black/60 border border-white/10 overflow-hidden shrink-0 relative group">
+                <img src="${p.image || 'PIZZAS.jpg'}" alt="${p.name}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=200&auto=format&fit=crop'">
+              </div>
+              <div class="flex-1 min-w-0">
+                <span class="text-[9px] uppercase font-bold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">${p.category}</span>
+                <input type="text" value="${p.name}" onchange="actualizarDatoProducto(${indexReal}, 'name', this.value)" class="w-full bg-transparent border-b border-transparent hover:border-white/20 focus:border-orange-500 text-sm font-bold text-white mt-1 py-0.5 focus:outline-none transition">
+                <input type="text" value="${p.detail}" onchange="actualizarDatoProducto(${indexReal}, 'detail', this.value)" class="w-full bg-transparent border-b border-transparent hover:border-white/20 focus:border-orange-500 text-[11px] text-zinc-400 py-0.5 focus:outline-none transition">
+              </div>
+            </div>
+
+            <!-- Edición de Precio e Imagen -->
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/5 text-xs">
+              <div>
+                <label class="block text-[10px] text-zinc-500 font-bold uppercase">Precio (COP):</label>
+                <input type="number" value="${p.price}" onchange="actualizarDatoProducto(${indexReal}, 'price', Number(this.value))" class="w-full bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-white font-mono font-bold focus:ring-1 focus:ring-orange-500">
+              </div>
+              <div>
+                <label class="block text-[10px] text-zinc-500 font-bold uppercase">Nombre Foto / URL:</label>
+                <input type="text" value="${p.image || ''}" placeholder="foto.jpg" onchange="actualizarDatoProducto(${indexReal}, 'image', this.value)" class="w-full bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-zinc-300 text-[11px] focus:ring-1 focus:ring-orange-500">
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-[10px] text-zinc-500">ID: ${p.id || indexReal}</span>
+              <button onclick="eliminarProductoCatalogo(${indexReal})" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 transition cursor-pointer">
+                <i class="fa-solid fa-trash-can"></i> Eliminar
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function actualizarDatoProducto(index, campo, valor) {
+      catalogoProductos[index][campo] = valor;
+    }
+
+    function eliminarProductoCatalogo(index) {
+      if (confirm(`¿Seguro que deseas eliminar "${catalogoProductos[index].name}" del menú?`)) {
+        catalogoProductos.splice(index, 1);
+        renderizarCatalogoEditable();
+      }
+    }
+
+    function abrirModalNuevoProducto() {
+      document.getElementById('modalNuevoProducto').classList.remove('hidden');
+    }
+
+    function cerrarModalNuevoProducto() {
+      document.getElementById('modalNuevoProducto').classList.add('hidden');
+    }
+
+    function guardarNuevoProductoEnMemoria() {
+      const cat = document.getElementById('nuevoCat').value;
+      const nom = document.getElementById('nuevoNombre').value.trim();
+      const det = document.getElementById('nuevoDetalle').value.trim();
+      const pre = Number(document.getElementById('nuevoPrecio').value) || 0;
+      const img = document.getElementById('nuevoImagen').value.trim();
+
+      if (!nom || pre <= 0) {
+        alert("Ingresa al menos el nombre y un precio válido.");
+        return;
+      }
+
+      catalogoProductos.push({
+        id: "prod-" + Date.now(),
+        category: cat,
+        name: nom,
+        detail: det,
+        price: pre,
+        image: img
+      });
+
+      cerrarModalNuevoProducto();
+      renderizarCatalogoEditable();
+      alert("Producto añadido a la lista temporal. Pulsa 'Guardar Cambios en la Web' para publicarlo.");
+    }
+
+    async function guardarCatalogoEnServidor() {
+      const btn = document.getElementById('btnGuardarMenu');
+      const textoOriginal = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Guardando...`;
+      btn.disabled = true;
+
+      try {
+        const payload = {
+          action: "guardar_catalogo",
+          catalogo: catalogoProductos
+        };
+
+        const resp = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify(payload)
+        });
+
+        alert("¡Catálogo y precios actualizados con éxito en Google Sheets y en la web!");
+      } catch (err) {
+        console.error("Error al guardar:", err);
+        alert("Ocurrió un error al guardar. Revisa la conexión de Apps Script.");
+      } finally {
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+      }
+    }
+
+    function cargarCatalogoPorDefecto() {
+      catalogoProductos = [
+        { category: "Restaurant", name: "Pasticho Tradicional", detail: "Personal con salsa bolognesa y bechamel", price: 25000, image: "pasticho.jpg" },
+        { category: "Restaurant", name: "Churrasco de Solomo", detail: "Solomo madurado + Ensalada + Papas fritas", price: 45000, image: "Churrasco de Solomo.jpg" },
+        { category: "Pizzas", name: "Pizza Margarita", detail: "Queso mozzarella, jamón, cebolla, pimentón", price: 35000, image: "PIZZAS.jpg" },
+        { category: "Cócteles", name: "Cóctel Laguna Azul", detail: "Vodka, curaçao azul, limón y soda", price: 18000, image: "" },
+        { category: "Helados", name: "Helado Flips", detail: "Cremoso con cereal Flips chocolate", price: 12000, image: "FLIPS.jpg" },
+        { category: "Parque", name: "Pase Parque (Tiempo Libre)", detail: "Acceso ilimitado por niño a los 2 niveles + carros", price: 20000, image: "" }
+      ];
+      renderizarCatalogoEditable();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      establecerFechaHoy();
+      cargarDatosServidor();
+    });
+  </script>
+</body>
+</html>
