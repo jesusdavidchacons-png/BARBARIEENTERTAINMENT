@@ -40,7 +40,7 @@
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> En Vivo
             </span>
           </div>
-          <p class="text-[10px] text-zinc-400">Recepción de Comandas & Gestor de Menú</p>
+          <p class="text-[10px] text-zinc-400">Recepción de Comandas, Premios & Menú</p>
         </div>
       </div>
 
@@ -138,7 +138,7 @@
                 <th class="py-3 px-4 text-right">Precio Unit.</th>
                 <th class="py-3 px-4 text-right">Subtotal</th>
                 <th class="py-3 px-4">Sugerencia / Nota</th>
-                <th class="py-3 px-4 text-center">Acción</th>
+                <th class="py-3 px-4 text-center">Acciones</th>
               </tr>
             </thead>
             <tbody id="tablaComandasBody" class="divide-y divide-white/5 text-zinc-300">
@@ -292,13 +292,10 @@
   <script>
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
 
-    // Catálogo maestro con fotos de referencia garantizadas para cada producto
     const FOTOS_REFERENCIA = {
-      // Hamburguesas
       "al vino burger": "al vino burguer.jpg",
       "bacon kubrick": "Bacon cubrick.jpg",
       "pollo crispy": "Pollo crispy.jpg",
-      // Restaurant
       "pasticho tradicional": "pasticho.jpg",
       "churrasco de solomo": "Churrasco de Solomo.jpg",
       "pechuga a la meuniér": "Pechuga a la Meunier.jpg",
@@ -307,25 +304,21 @@
       "parrilla mixta": "Parrilla.jpg",
       "cazuela de mariscos": "Cazuela de Mariscos.jpg",
       "ceviche peruano": "ceviche peruano.jpg",
-      // Pizzas
       "pizza margarita": "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?q=80&w=600&auto=format&fit=crop",
       "pizza hawaina": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=600&auto=format&fit=crop",
       "pizza italiana": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?q=80&w=600&auto=format&fit=crop",
       "pizza ranchera": "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?q=80&w=600&auto=format&fit=crop",
       "pizza wins": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop",
       "borde de queso adicional": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=600&auto=format&fit=crop",
-      // Cócteles
       "cóctel laguna azul": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop",
       "cóctel mai tai": "https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=600&auto=format&fit=crop",
       "cóctel mojito cubano": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=600&auto=format&fit=crop",
       "cóctel cuba libre": "https://images.unsplash.com/photo-1556881286-fc6915169721?q=80&w=600&auto=format&fit=crop",
       "cóctel laguna roja": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=600&auto=format&fit=crop",
-      // Bebidas
       "granizado de frutas": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?q=80&w=600&auto=format&fit=crop",
       "refresco personal": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=600&auto=format&fit=crop",
       "agua mineral 600ml": "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?q=80&w=600&auto=format&fit=crop",
       "refresco de litro": "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop",
-      // Helados
       "helado flips": "FLIPS.jpg",
       "helado pirulin": "PIRULIN.jpg",
       "helado oreo": "OREO.jpg",
@@ -335,7 +328,6 @@
       "helado piña": "PIÑA.jpg",
       "helado mora": "MORA.jpg",
       "helado cereza": "CEREZA.jpg",
-      // Parque & Promos
       "pase parque (tiempo libre)": "https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=600&auto=format&fit=crop",
       "promo 1# combo burger & parque": "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=600&auto=format&fit=crop",
       "promo 2# dúo pizza & parque": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop",
@@ -372,6 +364,18 @@
 
     function formatCOP(num) {
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
+    }
+
+    // Normalizador de formato para Venezuela/Colombia
+    function formatearTelefonoWhatsApp(tel) {
+      if (!tel) return "";
+      let clean = tel.toString().replace(/\D/g, '');
+      if (clean.startsWith('0') && clean.length === 11) {
+        clean = '58' + clean.substring(1);
+      } else if (clean.length === 10 && clean.startsWith('4')) {
+        clean = '58' + clean;
+      }
+      return clean;
     }
 
     function normalizarFecha(val) {
@@ -524,22 +528,47 @@
       }
     }
 
-    // ================= FUNCIÓN PARA ELIMINAR COMANDAS =================
-    async function eliminarComanda(idComanda) {
-      if (!idComanda) return;
+    // ================= FUNCIONES DE INTERACCIÓN WHATSAPP =================
+    function contactarClienteWA(telefono, cliente, idComanda) {
+      const telLimpio = formatearTelefonoWhatsApp(telefono);
+      if (!telLimpio) {
+        alert(`El cliente "${cliente}" no tiene un número telefónico válido para WhatsApp.`);
+        return;
+      }
+      const mensaje = `¡Hola *${cliente}*! 👋 Te saludamos desde *Haaru Park* sobre tu orden *${idComanda}*. ¿En qué podemos ayudarte?`;
+      window.open(`https://wa.me/${telLimpio}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    }
 
-      const confirmar = confirm(`¿Estás seguro de que deseas eliminar la comanda "${idComanda}"? Esta acción borrará todos sus productos de Google Sheets.`);
+    function activarPremioSorpresaWA(telefono, cliente) {
+      const telLimpio = formatearTelefonoWhatsApp(telefono);
+      if (!telLimpio) {
+        alert(`El cliente "${cliente}" no tiene un número telefónico registrado para enviar el premio.`);
+        return;
+      }
+      const mensaje = `✨ ¡Hola *${cliente}*! 🎁🎉\n\n¡Felicidades! Por haber disfrutado la experiencia en *Haaru Park*, acabas de ser seleccionado(a) para recibir un *Premio Sorpresa* especial.\n\n👉 Para activar tu regalo y saber más sobre el premio, por favor responde a este mensaje escribiendo la palabra:\n\n*Haaru* 🌟`;
+      window.open(`https://wa.me/${telLimpio}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    }
+
+    // ================= BORRADO INDIVIDUAL Y SEGURO DE COMANDAS =================
+    async function eliminarComanda(idComanda) {
+      const idTarget = (idComanda || "").toString().trim();
+      if (!idTarget) {
+        alert("No se pudo identificar el código de la comanda a eliminar.");
+        return;
+      }
+
+      const confirmar = confirm(`¿Estás seguro de que deseas eliminar la comanda "${idTarget}"? Se borrará permanentemente de Google Sheets.`);
       if (!confirmar) return;
 
-      // 1. Eliminar inmediatamente en memoria para actualización visual instantánea
-      rawVentas = rawVentas.filter(v => (v.idComanda || '').trim() !== idComanda.trim());
+      // 1. Filtrar solo la comanda específica de la memoria
+      rawVentas = rawVentas.filter(v => (v.idComanda || "").toString().trim() !== idTarget);
       aplicarFiltrosVentas();
 
-      // 2. Enviar orden de eliminación al servidor de Google Apps Script
+      // 2. Comunicar la eliminación a Google Sheets
       try {
         const payload = {
           action: "eliminar_comanda",
-          idComanda: idComanda
+          idComanda: idTarget
         };
 
         const res = await fetch(APPS_SCRIPT_URL, {
@@ -550,11 +579,10 @@
 
         const resultado = await res.json();
         if (resultado.status === "success") {
-          console.log(`Comanda ${idComanda} eliminada de Google Sheets.`);
+          console.log(`Comanda ${idTarget} eliminada de Google Sheets.`);
         }
       } catch (err) {
-        console.error("Error al eliminar comanda en Google Sheets:", err);
-        alert("Aviso: No se pudo confirmar el borrado en Google Sheets. Revisa la conexión.");
+        console.error("Error al procesar el borrado en Sheets:", err);
       }
     }
 
@@ -609,8 +637,9 @@
       const ordenadas = [...filtradas].reverse();
 
       tbody.innerHTML = ordenadas.map(v => {
-        const telefonoLimpio = (v.telefono || "").replace(/\D/g, '');
-        const linkWa = telefonoLimpio ? `https://wa.me/${telefonoLimpio}` : null;
+        const telLimpio = formatearTelefonoWhatsApp(v.telefono);
+        const clienteEsc = (v.cliente || "Cliente").replace(/'/g, "\\'");
+        const cmdEsc = (v.idComanda || "").replace(/'/g, "\\'");
 
         return `
           <tr class="hover:bg-white/5 transition">
@@ -621,7 +650,7 @@
             <td class="py-3 px-4 font-mono font-bold text-orange-400">${v.idComanda}</td>
             <td class="py-3 px-4">
               <div class="font-bold text-white">${v.cliente}</div>
-              ${linkWa ? `<a href="${linkWa}" target="_blank" class="text-[10px] text-emerald-400 hover:underline flex items-center gap-1"><i class="fa-brands fa-whatsapp"></i> ${v.telefono}</a>` : `<span class="text-[10px] text-zinc-500">Sin tel</span>`}
+              <span class="text-[10px] text-zinc-400 font-mono">${v.telefono || "Sin tel"}</span>
             </td>
             <td class="py-3 px-4">
               <span class="bg-white/10 text-zinc-300 px-2 py-0.5 rounded text-[10px] uppercase font-semibold">${v.category}</span>
@@ -635,9 +664,20 @@
             <td class="py-3 px-4 text-right font-mono font-bold text-emerald-400">${formatCOP(v.total)}</td>
             <td class="py-3 px-4 text-zinc-400 italic">${v.note ? '✍️ ' + v.note : '--'}</td>
             <td class="py-3 px-4 text-center">
-              <button onclick="eliminarComanda('${v.idComanda}')" class="text-[11px] text-red-400 hover:text-red-300 font-bold bg-red-500/10 hover:bg-red-500/20 px-2.5 py-1.5 rounded-lg border border-red-500/30 transition flex items-center gap-1 mx-auto cursor-pointer" title="Eliminar esta comanda">
-                <i class="fa-solid fa-trash-can"></i> Borrar
-              </button>
+              <div class="flex items-center justify-center gap-1.5">
+                <!-- Botón Contactar por WhatsApp -->
+                <button onclick="contactarClienteWA('${telLimpio}', '${clienteEsc}', '${cmdEsc}')" class="p-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/30 transition cursor-pointer" title="Contactar al cliente por WhatsApp">
+                  <i class="fa-brands fa-whatsapp text-sm"></i>
+                </button>
+                <!-- Botón Activar Premio Sorpresa -->
+                <button onclick="activarPremioSorpresaWA('${telLimpio}', '${clienteEsc}')" class="p-2 rounded-xl bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black border border-amber-500/40 transition cursor-pointer" title="Activar Premio Sorpresa con mensaje 'Haaru'">
+                  <i class="fa-solid fa-gift text-sm"></i>
+                </button>
+                <!-- Botón Eliminar Comanda -->
+                <button onclick="eliminarComanda('${cmdEsc}')" class="p-2 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 transition cursor-pointer" title="Eliminar comanda">
+                  <i class="fa-solid fa-trash-can text-sm"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -713,7 +753,7 @@
 
             <div class="flex items-center justify-between pt-1">
               <span class="text-[9px] text-zinc-500 truncate max-w-[200px]">
-                ${p.image && p.image.startsWith('data:') ? '📸 Foto tomada en vivo' : (p.image || 'Referencia estándar')}
+                ${p.image && p.image.startsWith('data:') ? '📸 Foto en Base64' : (p.image || 'Referencia estándar')}
               </span>
               <button onclick="eliminarProductoCatalogo(${indexReal})" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 transition cursor-pointer">
                 <i class="fa-solid fa-trash-can"></i> Eliminar
@@ -819,7 +859,7 @@
         video.srcObject = streamCamaraActivo;
         modal.classList.remove('hidden');
       } catch (err) {
-        console.warn("Fallo getUserMedia, usando selector de cámara nativo:", err);
+        console.warn("Fallo getUserMedia, usando cámara nativa:", err);
         const inputFallback = document.createElement('input');
         inputFallback.type = 'file';
         inputFallback.accept = 'image/*';
