@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <!-- Pestañas Principales -->
+      <!-- Selector de Pestañas -->
       <div class="flex bg-black/50 p-1 rounded-xl border border-white/10 text-xs">
         <button onclick="cambiarVista('comandas')" id="btn-tab-comandas" class="px-4 py-2 rounded-lg font-bold transition-all bg-orange-600 text-white cursor-pointer">
           <i class="fa-solid fa-receipt mr-1.5"></i> Comandas & Caja
@@ -138,11 +138,12 @@
                 <th class="py-3 px-4 text-right">Precio Unit.</th>
                 <th class="py-3 px-4 text-right">Subtotal</th>
                 <th class="py-3 px-4">Sugerencia / Nota</th>
+                <th class="py-3 px-4 text-center">Acción</th>
               </tr>
             </thead>
             <tbody id="tablaComandasBody" class="divide-y divide-white/5 text-zinc-300">
               <tr>
-                <td colspan="9" class="text-center py-12 text-zinc-500">
+                <td colspan="10" class="text-center py-12 text-zinc-500">
                   <i class="fa-solid fa-spinner fa-spin mr-2"></i> Conectando con Google Sheets...
                 </td>
               </tr>
@@ -291,7 +292,7 @@
   <script>
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
 
-    // Catálogo maestro con fotos de referencia reales
+    // Catálogo maestro con fotos de referencia garantizadas para cada producto
     const FOTOS_REFERENCIA = {
       // Hamburguesas
       "al vino burger": "al vino burguer.jpg",
@@ -349,7 +350,6 @@
         if (limpio.includes(k) || k.includes(limpio)) return FOTOS_REFERENCIA[k];
       }
 
-      // Fallbacks temáticos si es un producto nuevo sin foto
       const c = (cat || '').toLowerCase();
       if (c.includes('burger') || c.includes('hamburguesa')) return "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600&auto=format&fit=crop";
       if (c.includes('pizza')) return "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop";
@@ -374,7 +374,6 @@
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    // Normalizador universal de fechas (resuelve desfase de ISO y formato DD/MM/AAAA)
     function normalizarFecha(val) {
       if (!val) return '';
       const str = String(val).trim();
@@ -451,7 +450,6 @@
       if (timerAutoSync) clearInterval(timerAutoSync);
     }
 
-    // Fija la fecha local exacta de Venezuela
     function establecerFechaHoy() {
       const ahora = new Date();
       const y = ahora.getFullYear();
@@ -526,6 +524,40 @@
       }
     }
 
+    // ================= FUNCIÓN PARA ELIMINAR COMANDAS =================
+    async function eliminarComanda(idComanda) {
+      if (!idComanda) return;
+
+      const confirmar = confirm(`¿Estás seguro de que deseas eliminar la comanda "${idComanda}"? Esta acción borrará todos sus productos de Google Sheets.`);
+      if (!confirmar) return;
+
+      // 1. Eliminar inmediatamente en memoria para actualización visual instantánea
+      rawVentas = rawVentas.filter(v => (v.idComanda || '').trim() !== idComanda.trim());
+      aplicarFiltrosVentas();
+
+      // 2. Enviar orden de eliminación al servidor de Google Apps Script
+      try {
+        const payload = {
+          action: "eliminar_comanda",
+          idComanda: idComanda
+        };
+
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify(payload)
+        });
+
+        const resultado = await res.json();
+        if (resultado.status === "success") {
+          console.log(`Comanda ${idComanda} eliminada de Google Sheets.`);
+        }
+      } catch (err) {
+        console.error("Error al eliminar comanda en Google Sheets:", err);
+        alert("Aviso: No se pudo confirmar el borrado en Google Sheets. Revisa la conexión.");
+      }
+    }
+
     function aplicarFiltrosVentas() {
       const fechaFiltro = normalizarFecha(document.getElementById('filtroFecha').value);
       const busqueda = document.getElementById('filtroBusqueda').value.toLowerCase().trim();
@@ -566,7 +598,7 @@
       if (filtradas.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="9" class="text-center py-10 text-zinc-500">
+            <td colspan="10" class="text-center py-10 text-zinc-500">
               No hay comandas registradas para la fecha seleccionada (${fechaFiltro || 'todas'}).
               <button onclick="limpiarFiltroFecha()" class="text-orange-400 underline font-bold ml-1 cursor-pointer">Ver todas las fechas</button>
             </td>
@@ -602,6 +634,11 @@
             <td class="py-3 px-4 text-right font-mono text-zinc-400">${formatCOP(v.price)}</td>
             <td class="py-3 px-4 text-right font-mono font-bold text-emerald-400">${formatCOP(v.total)}</td>
             <td class="py-3 px-4 text-zinc-400 italic">${v.note ? '✍️ ' + v.note : '--'}</td>
+            <td class="py-3 px-4 text-center">
+              <button onclick="eliminarComanda('${v.idComanda}')" class="text-[11px] text-red-400 hover:text-red-300 font-bold bg-red-500/10 hover:bg-red-500/20 px-2.5 py-1.5 rounded-lg border border-red-500/30 transition flex items-center gap-1 mx-auto cursor-pointer" title="Eliminar esta comanda">
+                <i class="fa-solid fa-trash-can"></i> Borrar
+              </button>
+            </td>
           </tr>
         `;
       }).join('');
@@ -676,7 +713,7 @@
 
             <div class="flex items-center justify-between pt-1">
               <span class="text-[9px] text-zinc-500 truncate max-w-[200px]">
-                ${p.image && p.image.startsWith('data:') ? '📸 Foto en Base64' : (p.image || 'Referencia estándar')}
+                ${p.image && p.image.startsWith('data:') ? '📸 Foto tomada en vivo' : (p.image || 'Referencia estándar')}
               </span>
               <button onclick="eliminarProductoCatalogo(${indexReal})" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 transition cursor-pointer">
                 <i class="fa-solid fa-trash-can"></i> Eliminar
@@ -782,7 +819,7 @@
         video.srcObject = streamCamaraActivo;
         modal.classList.remove('hidden');
       } catch (err) {
-        console.warn("Fallo getUserMedia, usando cámara nativa:", err);
+        console.warn("Fallo getUserMedia, usando selector de cámara nativo:", err);
         const inputFallback = document.createElement('input');
         inputFallback.type = 'file';
         inputFallback.accept = 'image/*';
