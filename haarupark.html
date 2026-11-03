@@ -106,7 +106,7 @@
             <i class="fa-solid fa-compass mr-1 text-brand-orange"></i> Todo
           </button>
           <button onclick="mostrarSeccion('promos')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
-            <i class="fa-solid fa-gift mr-1 text-red-500"></i> Navidad
+            <i class="fa-solid fa-gift mr-1 text-red-500"></i> Promos
           </button>
           <button onclick="mostrarSeccion('hamburguesas')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
             <i class="fa-solid fa-burger mr-1 text-orange-500"></i> Hamburguesas
@@ -177,7 +177,7 @@
             <i class="fa-solid fa-gift"></i>
           </div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Promos</h3>
-          <p class="text-[10px] text-zinc-400 mt-0.5">Navideñas</p>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Especiales</p>
         </button>
 
         <button onclick="mostrarSeccion('hamburguesas')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-amber-950/40 to-brand-card border border-amber-500/50 p-4 text-left hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
@@ -221,7 +221,7 @@
         </button>
 
         <button onclick="mostrarSeccion('parque')" class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-blue-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-car-side"></i>
           </div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-blue-400">Parque</h3>
@@ -234,15 +234,15 @@
   <!-- ================= CONTENEDOR PRINCIPAL ================= -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-24">
 
-    <!-- SECCIÓN 0: PROMOS NAVIDAD -->
+    <!-- SECCIÓN 0: PROMOS (CON FOTO Y DINÁMICAS) -->
     <section id="sec-promos" class="space-y-8">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/20 text-red-400 border border-red-500/40 text-xs font-bold uppercase tracking-wider mb-2">
-            <i class="fa-solid fa-tree text-emerald-400"></i> Edición Festiva 2026
+            <i class="fa-solid fa-gift text-amber-400"></i> Combos & Paquetes Especiales
           </div>
           <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
-            Promos Especiales de Navidad
+            Promociones Haaru
           </h2>
           <p class="text-zinc-400 text-sm sm:text-base mt-1">
             Combos completos que incluyen comida, postre, bebidas y entrada al parque.
@@ -379,7 +379,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-pizzas"></div>
     </section>
 
-    <!-- SECCIÓN 4: BEBIDAS & CÓCTELES -->
+    <!-- SECCIÓN 4: BEBIDAS & CÓCTELES (TRAGOS CON FOTO) -->
     <section id="sec-bebidas" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
@@ -387,24 +387,26 @@
             <i class="fa-solid fa-wine-glass"></i> Barra & Coctelería
           </div>
           <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
-            Bebidas, Granizados & Cócteles
+            Bar de Cócteles & Bebidas
           </h2>
           <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            Refrescantes cócteles tropicales clásicos y bebidas frías para acompañar tu mesa.
+            Cócteles tropicales de autor preparados con licores selectos y bebidas frías.
           </p>
         </div>
         <div class="text-xs text-cyan-400 font-semibold bg-cyan-500/10 border border-cyan-500/30 px-3 py-1.5 rounded-xl">
-          🍹 Cócteles a $18.000 COP c/u
+          🍹 Cócteles Preparados al Momento
         </div>
       </div>
 
+      <!-- Tragos / Cócteles con Fotografía -->
       <div class="space-y-4">
         <h3 class="text-xl font-black text-white font-heading flex items-center gap-2">
-          <i class="fa-solid fa-cocktail text-cyan-400"></i> Cócteles de la Casa
+          <i class="fa-solid fa-cocktail text-cyan-400"></i> Cócteles de la Casa (Tragos)
         </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="grid-cocteles"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6" id="grid-cocteles"></div>
       </div>
 
+      <!-- Bebidas Sin Alcohol -->
       <div class="space-y-4 pt-4">
         <h3 class="text-xl font-black text-white font-heading flex items-center gap-2">
           <i class="fa-solid fa-bottle-water text-emerald-400"></i> Bebidas & Granizados
@@ -634,7 +636,6 @@
   <script>
     const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
 
-    // Función para normalizar texto (elimina tildes, símbolos y espacios extra)
     function limpiarTexto(str) {
       return (str || "")
         .toLowerCase()
@@ -644,7 +645,6 @@
         .trim();
     }
 
-    // Extractor numérico estricto (ignora $, puntos y comas)
     function limpiarPrecioNumero(val) {
       if (typeof val === "number") return val;
       if (!val) return 0;
@@ -652,11 +652,38 @@
       return numStr ? Number(numStr) : 0;
     }
 
-    // 1. PROMOS DE NAVIDAD
+    // 1. PROMOS (CON FOTOS LOCALES Y FALLBACKS)
     let promosNavidadData = [
-      { id: 'promo-1', numero: '1#', title: 'Combo Burger & Parque', items: ['Bacon Kubrick', 'Papas a la francesa', 'Refresco personal', 'Helado soft', 'Entrada al parque (Tiempo libre)'], price: 40000, badge: 'Individual Completo' },
-      { id: 'promo-2', numero: '2#', title: 'Dúo Pizza & Parque', items: ['Pizza margarita mediana', '2 Refrescos', '2 Helados soft', 'Entrada al parque (Tiempo libre)'], price: 50000, badge: 'Dúo Familiar' },
-      { id: 'promo-3', numero: '3#', title: 'Super Familiar Festivo', items: ['Pizza margarita familiar', 'Litro de refresco', '3 Helados soft', 'Entrada al parque (Tiempo libre)'], price: 90000, badge: 'Familiar Premium' }
+      { 
+        id: 'promo-1', 
+        numero: '1#', 
+        title: 'Combo Burger & Parque', 
+        items: ['Bacon Kubrick', 'Papas a la francesa', 'Refresco personal', 'Helado soft', 'Entrada al parque (Tiempo libre)'], 
+        price: 40000, 
+        badge: 'Individual Completo',
+        file: 'Bacon cubrick.jpg',
+        fallback: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop'
+      },
+      { 
+        id: 'promo-2', 
+        numero: '2#', 
+        title: 'Dúo Pizza & Parque', 
+        items: ['Pizza margarita mediana', '2 Refrescos', '2 Helados soft', 'Entrada al parque (Tiempo libre)'], 
+        price: 50000, 
+        badge: 'Dúo Familiar',
+        file: 'PIZZAS.jpg',
+        fallback: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop'
+      },
+      { 
+        id: 'promo-3', 
+        numero: '3#', 
+        title: 'Super Familiar Festivo', 
+        items: ['Pizza margarita familiar', 'Litro de refresco', '3 Helados soft', 'Entrada al parque (Tiempo libre)'], 
+        price: 90000, 
+        badge: 'Familiar Premium',
+        file: 'PIZZAS.jpg',
+        fallback: 'https://images.unsplash.com/photo-1579684947550-22e945225d9a?q=80&w=800&auto=format&fit=crop'
+      }
     ];
 
     // 2. HAMBURGUESAS GOURMET
@@ -686,13 +713,48 @@
       { id: 'pizza-wins', name: 'Pizza Wins', fallback: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop', ingredients: 'Queso mozzarella, pollo, jamón, pepperoni, tocineta, maíz, champiñón, pimentón, cebolla', mediana: 55000, grande: 85000 }
     ];
 
-    // 5. CÓCTELES Y BEBIDAS
+    // 5. CÓCTELES (TRAGOS) — CON FOTO Y FALLBACK
     let coctelesData = [
-      { id: 'laguna-azul', name: 'Laguna Azul', desc: 'Vodka, curaçao azul, limón y soda refrescante.', price: 18000 },
-      { id: 'mai-tai', name: 'Mai Tai', desc: 'Ron añejo y blanco, licor de naranja, amaretto y jugo tropical.', price: 18000 },
-      { id: 'mojito-cubano', name: 'Mojito Cubano', desc: 'Ron blanco, hierbabuena fresca, azúcar de caña y lima.', price: 18000 },
-      { id: 'cuba-libre', name: 'Cuba Libre', desc: 'Ron dorado, refresco cola, limón y hielo frappé.', price: 18000 },
-      { id: 'laguna-roja', name: 'Laguna Roja', desc: 'Bebida vibrante de frutos rojos, vodka y licor dulce.', price: 18000 }
+      { 
+        id: 'laguna-azul', 
+        name: 'Laguna Azul', 
+        desc: 'Vodka, curaçao azul, limón y soda refrescante.', 
+        price: 18000,
+        file: 'laguna azul.jpg',
+        fallback: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop'
+      },
+      { 
+        id: 'mai-tai', 
+        name: 'Mai Tai', 
+        desc: 'Ron añejo y blanco, licor de naranja, amaretto y jugo tropical.', 
+        price: 18000,
+        file: 'mai tai.jpg',
+        fallback: 'https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=600&auto=format&fit=crop'
+      },
+      { 
+        id: 'mojito-cubano', 
+        name: 'Mojito Cubano', 
+        desc: 'Ron blanco, hierbabuena fresca, azúcar de caña y lima.', 
+        price: 18000,
+        file: 'mojito.jpg',
+        fallback: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=600&auto=format&fit=crop'
+      },
+      { 
+        id: 'cuba-libre', 
+        name: 'Cuba Libre', 
+        desc: 'Ron dorado, refresco cola, limón y hielo frappé.', 
+        price: 18000,
+        file: 'cuba libre.jpg',
+        fallback: 'https://images.unsplash.com/photo-1556881286-fc6915169721?q=80&w=600&auto=format&fit=crop'
+      },
+      { 
+        id: 'laguna-roja', 
+        name: 'Laguna Roja', 
+        desc: 'Bebida vibrante de frutos rojos, vodka y licor dulce.', 
+        price: 18000,
+        file: 'laguna roja.jpg',
+        fallback: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=600&auto=format&fit=crop'
+      }
     ];
 
     let bebidasData = [
@@ -729,7 +791,7 @@
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    // ================= SINCRONIZACIÓN INTELIGENTE DE PRECIOS Y MENÚ =================
+    // ================= SINCRONIZACIÓN EN VIVO (TRAGOS, PROMOS Y MENÚ) =================
     async function sincronizarMenuEnVivo() {
       try {
         const respuesta = await fetch(`${GOOGLE_SHEETS_WEBHOOK_URL}?tipo=catalogo&t=${Date.now()}`, { cache: "no-store" });
@@ -738,12 +800,72 @@
         if (data.status === "success" && Array.isArray(data.catalogo) && data.catalogo.length > 0) {
           const catalogo = data.catalogo;
 
+          // 1. Promociones (actualiza fotos, precios o combos nuevos desde el panel)
+          const promoItems = catalogo.filter(x => {
+            const c = limpiarTexto(x.category);
+            return c.includes('navidad') || c.includes('promo');
+          });
+
+          if (promoItems.length > 0) {
+            promosNavidadData = promoItems.map((item, idx) => {
+              const localEx = promosNavidadData[idx] || {};
+              let bulletList = [];
+              if (item.detail) {
+                bulletList = item.detail.split(/[+,\n•]/).map(s => s.trim()).filter(Boolean);
+              }
+              if (bulletList.length === 0) {
+                bulletList = localEx.items || [item.detail || item.name];
+              }
+              const tieneFoto = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
+              const numMatch = item.name.match(/\d+/);
+
+              return {
+                id: localEx.id || ('promo-' + (idx + 1)),
+                numero: numMatch ? (numMatch[0] + '#') : (localEx.numero || `${idx + 1}#`),
+                title: item.name,
+                items: bulletList,
+                price: limpiarPrecioNumero(item.price) || localEx.price || 40000,
+                badge: localEx.badge || (item.category || 'Promo Especial'),
+                file: tieneFoto ? item.image : (localEx.file || localEx.fallback || 'PIZZAS.jpg'),
+                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop'
+              };
+            });
+          }
+
+          // 2. Tragos / Cócteles (actualiza foto y precio)
+          const coctelItems = catalogo.filter(x => {
+            const c = limpiarTexto(x.category);
+            return c.includes('coctel') || c.includes('trago') || c.includes('bar');
+          });
+
+          if (coctelItems.length > 0) {
+            coctelesData = coctelItems.map((item, idx) => {
+              const nomLimpioItem = limpiarTexto(item.name);
+              const localEx = coctelesData.find(x => {
+                const t = limpiarTexto(x.name);
+                return t === nomLimpioItem || t.includes(nomLimpioItem) || nomLimpioItem.includes(t);
+              }) || {};
+
+              const tieneFoto = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
+
+              return {
+                id: localEx.id || ('coctel-dyn-' + idx),
+                name: item.name,
+                desc: item.detail || localEx.desc || 'Preparación especial con hielo frappé y licores selectos.',
+                price: limpiarPrecioNumero(item.price) || localEx.price || 18000,
+                file: tieneFoto ? item.image : (localEx.file || localEx.fallback || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop'),
+                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop'
+              };
+            });
+          }
+
+          // 3. Sincronización general por coincidencia inteligente de nombres
           catalogo.forEach(item => {
             const nomLimpio = limpiarTexto(item.name);
             const precio = limpiarPrecioNumero(item.price);
             const tieneFotoValida = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
 
-            // 1. Hamburguesas
+            // Hamburguesas
             const b = burgersData.find(x => {
               const t = limpiarTexto(x.title);
               return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
@@ -754,7 +876,7 @@
               if (tieneFotoValida) b.file = item.image;
             }
 
-            // 2. Restaurant
+            // Restaurant
             const d = dishesData.find(x => {
               const t = limpiarTexto(x.title);
               return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
@@ -771,7 +893,7 @@
               }
             }
 
-            // 3. Pizzas (Maneja precio mediana y grande)
+            // Pizzas
             pizzasData.forEach(p => {
               const nomP = limpiarTexto(p.name);
               if (nomLimpio === nomP || nomLimpio.includes(nomP)) {
@@ -783,16 +905,7 @@
               }
             });
 
-            // 4. Cócteles
-            const c = coctelesData.find(x => {
-              const t = limpiarTexto(x.name);
-              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
-            });
-            if (c && precio > 0) {
-              c.price = precio;
-            }
-
-            // 5. Bebidas
+            // Bebidas
             const beb = bebidasData.find(x => {
               const t = limpiarTexto(x.name);
               return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
@@ -801,7 +914,7 @@
               beb.price = precio;
             }
 
-            // 6. Helados
+            // Helados
             const h = heladosData.find(x => {
               const t = limpiarTexto(x.name);
               return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
@@ -814,16 +927,7 @@
               if (tieneFotoValida) h.file = item.image;
             }
 
-            // 7. Promos de Navidad
-            promosNavidadData.forEach(pr => {
-              const t = limpiarTexto(pr.title);
-              const num = limpiarTexto(pr.numero);
-              if (nomLimpio.includes(num) || nomLimpio === t) {
-                if (precio > 0) pr.price = precio;
-              }
-            });
-
-            // 8. Parque
+            // Parque
             if (nomLimpio.includes('parque') || (item.category || '').toLowerCase() === 'parque') {
               if (precio > 0) {
                 precioParqueActual = precio;
@@ -833,7 +937,7 @@
             }
           });
 
-          // Re-renderizar catálogo con precios nuevos
+          // Re-renderizar
           renderHamburguesas();
           renderRestaurant();
           renderPizzas();
@@ -846,7 +950,56 @@
       }
     }
 
-    // ================= RENDERIZADO DE SECCIONES =================
+    // ================= RENDERIZADO: PROMOS CON FOTO =================
+    function renderPromosNavidad() {
+      const container = document.getElementById('grid-promos');
+      if (!container) return;
+
+      container.innerHTML = promosNavidadData.map(p => `
+        <div class="poster-card rounded-3xl bg-gradient-to-b from-brand-card to-[#121320] border-2 border-red-500/50 overflow-hidden flex flex-col justify-between shadow-2xl relative group">
+          <div class="relative h-56 w-full overflow-hidden bg-black/40">
+            <img 
+              src="${p.file || p.fallback}" 
+              alt="${p.title}" 
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+              onerror="this.src='${p.fallback}'"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#121320] via-transparent to-black/40"></div>
+            <div class="absolute top-3 left-3 bg-red-600/90 backdrop-blur-md text-white font-black text-xs px-2.5 py-1 rounded-lg uppercase tracking-wider shadow">
+              PROMO ${p.numero}
+            </div>
+            <div class="absolute top-3 right-3 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-md">
+              ${p.badge}
+            </div>
+          </div>
+
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div>
+              <h4 class="text-2xl font-black text-white font-heading">${p.title}</h4>
+              <ul class="mt-4 space-y-2 text-xs text-zinc-300">
+                ${p.items.map(it => `
+                  <li class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-check text-emerald-400 text-xs mt-0.5 shrink-0"></i>
+                    <span>${it}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+            <div class="pt-4 border-t border-brand-border/60 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] text-zinc-400 uppercase block font-semibold">Todo por</span>
+                <span class="text-2xl font-black text-amber-400 font-heading">${formatCOP(p.price)}</span>
+              </div>
+              <button onclick="agregarPromoNavidad('${p.id}')" class="bg-gradient-to-r from-red-600 to-brand-orange hover:from-red-500 hover:to-orange-500 text-white font-black px-4 py-3 rounded-xl text-xs flex items-center gap-2 active:scale-95 transition-all shadow-lg shadow-red-600/25 cursor-pointer">
+                <i class="fa-solid fa-gift"></i> Pedir Promo
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ================= RENDERIZADO: HAMBURGUESAS =================
     function renderHamburguesas() {
       const container = document.getElementById('grid-hamburguesas');
       if (!container) return;
@@ -947,6 +1100,7 @@
       showToast(`¡${b.title} agregada!`);
     }
 
+    // ================= RENDERIZADO: RESTAURANT =================
     function renderRestaurant() {
       const container = document.getElementById('grid-restaurant');
       container.innerHTML = dishesData.map(d => {
@@ -990,6 +1144,7 @@
       agregarPlatoSimple(heroPlatoActual.nombre, heroPlatoActual.precio, heroPlatoActual.detalle);
     }
 
+    // ================= RENDERIZADO: PIZZAS =================
     function renderPizzas() {
       const container = document.getElementById('grid-pizzas');
       container.innerHTML = pizzasData.map(p => `
@@ -1039,54 +1194,67 @@
       const p = pizzasData.find(x => x.id === pizzaId);
       const isGrande = document.querySelector(`input[name="size-${pizzaId}"]:checked`).value === 'grande';
       const conBorde = document.getElementById(`borde-${pizzaId}`).checked;
-      
       let total = isGrande ? p.grande : p.mediana;
       if (conBorde) total += 12000;
-
       document.getElementById(`price-btn-${pizzaId}`).innerText = formatCOP(total);
     }
 
+    // ================= RENDERIZADO: TRAGOS / CÓCTELES CON FOTO =================
     function renderBebidasYCocteles() {
       const cContainer = document.getElementById('grid-cocteles');
-      cContainer.innerHTML = coctelesData.map(c => `
-        <div class="poster-card rounded-2xl bg-brand-card border border-brand-border p-4 flex flex-col justify-between space-y-3 shadow-lg">
-          <div>
-            <div class="flex items-center justify-between text-cyan-400 text-xs font-bold mb-1">
-              <span>Cóctel</span>
-              <i class="fa-solid fa-martini-glass"></i>
+      if (cContainer) {
+        cContainer.innerHTML = coctelesData.map(c => `
+          <div class="poster-card rounded-3xl bg-brand-card border border-brand-border overflow-hidden flex flex-col justify-between shadow-xl group">
+            <div class="relative h-44 sm:h-48 w-full overflow-hidden bg-black/40">
+              <img 
+                src="${c.file || c.fallback}" 
+                alt="${c.name}" 
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                onerror="this.src='${c.fallback}'"
+              />
+              <div class="absolute top-2.5 right-2.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-cyan-300 border border-cyan-500/30 flex items-center gap-1">
+                <i class="fa-solid fa-martini-glass"></i> Trago
+              </div>
             </div>
-            <h4 class="text-base font-black text-white font-heading">${c.name}</h4>
-            <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">${c.desc}</p>
+            <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+              <div>
+                <h4 class="text-base font-black text-white font-heading">${c.name}</h4>
+                <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed line-clamp-2">${c.desc}</p>
+              </div>
+              <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between">
+                <span class="text-sm font-black text-cyan-300 font-heading">${formatCOP(c.price)}</span>
+                <button onclick="agregarCoctel('${c.name}', ${c.price})" class="bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 active:scale-95 transition-all shadow-md shadow-cyan-500/20 cursor-pointer">
+                  <i class="fa-solid fa-plus"></i> Pedir
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between">
-            <span class="text-sm font-black text-cyan-300 font-heading">${formatCOP(c.price)}</span>
-            <button onclick="agregarCoctel('${c.name}', ${c.price})" class="bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 active:scale-95 transition-all cursor-pointer">
-              <i class="fa-solid fa-plus"></i> Pedir
-            </button>
-          </div>
-        </div>
-      `).join('');
+        `).join('');
+      }
 
       const bContainer = document.getElementById('grid-bebidas');
-      bContainer.innerHTML = bebidasData.map(b => `
-        <div class="poster-card rounded-2xl bg-brand-card border border-brand-border p-4 flex flex-col justify-between space-y-3 shadow-lg">
-          <div>
-            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm mb-2">
-              <i class="fa-solid ${b.icon}"></i>
+      if (bContainer) {
+        bContainer.innerHTML = bebidasData.map(b => `
+          <div class="poster-card rounded-2xl bg-brand-card border border-brand-border p-4 flex flex-col justify-between space-y-3 shadow-lg">
+            <div>
+              <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm mb-2">
+                <i class="fa-solid ${b.icon}"></i>
+              </div>
+              <h4 class="text-base font-black text-white font-heading">${b.name}</h4>
+              <p class="text-[11px] text-zinc-400 mt-0.5">${b.detail}</p>
             </div>
-            <h4 class="text-base font-black text-white font-heading">${b.name}</h4>
-            <p class="text-[11px] text-zinc-400 mt-0.5">${b.detail}</p>
+            <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between">
+              <span class="text-sm font-black text-emerald-400 font-heading">${formatCOP(b.price)}</span>
+              <button onclick="agregarBebida('${b.name}', ${b.price}, '${b.detail}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 active:scale-95 transition-all cursor-pointer">
+                <i class="fa-solid fa-plus"></i> Sumar
+              </button>
+            </div>
           </div>
-          <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between">
-            <span class="text-sm font-black text-emerald-400 font-heading">${formatCOP(b.price)}</span>
-            <button onclick="agregarBebida('${b.name}', ${b.price}, '${b.detail}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 active:scale-95 transition-all cursor-pointer">
-              <i class="fa-solid fa-plus"></i> Sumar
-            </button>
-          </div>
-        </div>
-      `).join('');
+        `).join('');
+      }
     }
 
+    // ================= RENDERIZADO: HELADOS =================
     function renderHelados() {
       const container = document.getElementById('grid-helados');
       container.innerHTML = heladosData.map(h => {
@@ -1145,38 +1313,6 @@
       }).join('');
     }
 
-    function renderPromosNavidad() {
-      const container = document.getElementById('grid-promos');
-      container.innerHTML = promosNavidadData.map(p => `
-        <div class="poster-card rounded-3xl bg-gradient-to-b from-brand-card to-[#121320] border-2 border-red-500/50 p-6 flex flex-col justify-between space-y-5 shadow-2xl relative overflow-hidden group">
-          <div>
-            <div class="flex items-center justify-between">
-              <span class="text-xs uppercase font-black tracking-widest text-red-400 bg-red-500/20 px-2.5 py-1 rounded-lg border border-red-500/30">PROMO ${p.numero}</span>
-              <span class="text-[11px] font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">${p.badge}</span>
-            </div>
-            <h4 class="text-2xl font-black text-white font-heading mt-3">${p.title}</h4>
-            <ul class="mt-4 space-y-2 text-xs text-zinc-300">
-              ${p.items.map(it => `
-                <li class="flex items-start gap-2">
-                  <i class="fa-solid fa-circle-check text-emerald-400 text-xs mt-0.5 shrink-0"></i>
-                  <span>${it}</span>
-                </li>
-              `).join('')}
-            </ul>
-          </div>
-          <div class="pt-4 border-t border-brand-border/60 flex items-center justify-between">
-            <div>
-              <span class="text-[10px] text-zinc-400 uppercase block font-semibold">Todo por</span>
-              <span class="text-2xl font-black text-amber-400 font-heading">${formatCOP(p.price)}</span>
-            </div>
-            <button onclick="agregarPromoNavidad('${p.id}')" class="bg-gradient-to-r from-red-600 to-brand-orange hover:from-red-500 hover:to-orange-500 text-white font-black px-4 py-3 rounded-xl text-xs flex items-center gap-2 active:scale-95 transition-all shadow-lg shadow-red-600/25 cursor-pointer">
-              <i class="fa-solid fa-gift"></i> Pedir Promo
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
     // ================= FUNCIONES DE COMANDA =================
     function showToast(msj) {
       const toast = document.getElementById('toast');
@@ -1189,7 +1325,16 @@
 
     function agregarPromoNavidad(promoId) {
       const p = promosNavidadData.find(x => x.id === promoId);
-      cart.push({ id: 'promo-' + Date.now(), name: `Promo Navideña ${p.numero} (${p.title})`, detail: p.items.join(' + '), price: p.price, category: 'Navidad', quantity: 1, note: '' });
+      if (!p) return;
+      cart.push({ 
+        id: 'promo-' + Date.now(), 
+        name: `Promo ${p.numero} (${p.title})`, 
+        detail: Array.isArray(p.items) ? p.items.join(' + ') : (p.items || ''), 
+        price: p.price, 
+        category: 'Promos', 
+        quantity: 1, 
+        note: '' 
+      });
       renderCart();
       showToast(`¡Promo ${p.numero} agregada!`);
     }
