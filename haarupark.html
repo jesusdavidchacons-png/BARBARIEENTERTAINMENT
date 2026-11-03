@@ -101,26 +101,29 @@
         </a>
 
         <!-- Botones de Navegación Rápida -->
-        <nav class="hidden xl:flex items-center gap-2 bg-brand-card/80 p-1.5 rounded-full border border-brand-border/60">
-          <button onclick="mostrarSeccion('todos')" class="px-3.5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider text-white hover:bg-white/10 transition-colors cursor-pointer">
+        <nav class="hidden 2xl:flex items-center gap-1.5 bg-brand-card/80 p-1.5 rounded-full border border-brand-border/60">
+          <button onclick="mostrarSeccion('todos')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white hover:bg-white/10 transition-colors cursor-pointer">
             <i class="fa-solid fa-compass mr-1 text-brand-orange"></i> Todo
           </button>
-          <button onclick="mostrarSeccion('promos')" class="px-3.5 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
+          <button onclick="mostrarSeccion('promos')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
             <i class="fa-solid fa-gift mr-1 text-red-500"></i> Navidad
           </button>
-          <button onclick="mostrarSeccion('restaurant')" class="px-3.5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+          <button onclick="mostrarSeccion('hamburguesas')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-orange-400 hover:bg-orange-500/20 transition-colors cursor-pointer">
+            <i class="fa-solid fa-burger mr-1 text-amber-500"></i> Hamburguesas
+          </button>
+          <button onclick="mostrarSeccion('restaurant')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
             <i class="fa-solid fa-utensils mr-1 text-amber-500"></i> Restaurant
           </button>
-          <button onclick="mostrarSeccion('pizzas')" class="px-3.5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+          <button onclick="mostrarSeccion('pizzas')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
             <i class="fa-solid fa-pizza-slice mr-1 text-red-500"></i> Pizzas
           </button>
-          <button onclick="mostrarSeccion('bebidas')" class="px-3.5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+          <button onclick="mostrarSeccion('bebidas')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
             <i class="fa-solid fa-martini-glass-citrus mr-1 text-cyan-400"></i> Bar & Cócteles
           </button>
-          <button onclick="mostrarSeccion('heladeria')" class="px-3.5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+          <button onclick="mostrarSeccion('heladeria')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
             <i class="fa-solid fa-ice-cream mr-1 text-pink-500"></i> Heladería
           </button>
-          <button onclick="mostrarSeccion('parque')" class="px-3.5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+          <button onclick="mostrarSeccion('parque')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
             <i class="fa-solid fa-car-side mr-1 text-blue-500"></i> Parque
           </button>
         </nav>
@@ -170,7 +173,7 @@
       </p>
 
       <!-- Selector de Experiencia -->
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 max-w-6xl mx-auto">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4 max-w-7xl mx-auto">
         
         <!-- Tarjeta Promos Navidad -->
         <button 
@@ -181,7 +184,19 @@
             <i class="fa-solid fa-gift"></i>
           </div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Promos</h3>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Especial Navidad</p>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Navideñas</p>
+        </button>
+
+        <!-- Tarjeta Hamburguesas -->
+        <button 
+          onclick="mostrarSeccion('hamburguesas')"
+          class="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-amber-950/40 to-brand-card border border-amber-500/50 p-4 text-left hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
+        >
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-burger"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Burgers</h3>
+          <p class="text-[10px] text-amber-400 font-semibold mt-0.5">Solomillo & Pollo</p>
         </button>
 
         <!-- Tarjeta Restaurant -->
@@ -193,7 +208,7 @@
             <i class="fa-solid fa-utensils"></i>
           </div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Restaurant</h3>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Carnes & Pasticho</p>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Cortes & Pasticho</p>
         </button>
 
         <!-- Tarjeta Pizzas -->
@@ -205,7 +220,7 @@
             <i class="fa-solid fa-pizza-slice"></i>
           </div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-red-400">Pizzas</h3>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Masa & Borde Queso</p>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Borde de Queso</p>
         </button>
 
         <!-- Tarjeta Bebidas & Cócteles -->
@@ -216,8 +231,8 @@
           <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-martini-glass-citrus"></i>
           </div>
-          <h3 class="text-sm font-bold text-white font-heading group-hover:text-cyan-400">Bar & Bebidas</h3>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Cócteles 18K</p>
+          <h3 class="text-sm font-bold text-white font-heading group-hover:text-cyan-400">Bar</h3>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Cócteles 18K</p>
         </button>
 
         <!-- Tarjeta Heladería -->
@@ -229,7 +244,7 @@
             <i class="fa-solid fa-ice-cream"></i>
           </div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-pink-400">Heladería</h3>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Toppings & Fruta</p>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Toppings & Fruta</p>
         </button>
 
         <!-- Tarjeta Parque -->
@@ -241,7 +256,7 @@
             <i class="fa-solid fa-car-side"></i>
           </div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-blue-400">Parque</h3>
-          <p class="text-[11px] text-blue-400 font-semibold mt-0.5">Tiempo Libre 20K</p>
+          <p class="text-[10px] text-blue-400 font-semibold mt-0.5">Tiempo Libre</p>
         </button>
 
       </div>
@@ -275,18 +290,42 @@
       </div>
     </section>
 
-    <!-- ================= SECCIÓN 1: RESTAURANT GOURMET ================= -->
+    <!-- ================= SECCIÓN 1: HAMBURGUESAS GOURMET (SEPARADA) ================= -->
+    <section id="sec-hamburguesas" class="space-y-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-burger"></i> Línea Artesanal & Croquetas de Solomillo
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
+            Hamburguesas Haaru
+          </h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">
+            Pan brioche artesanal, cortes madurados y papas fritas. Añade croqueta de carne adicional por +$5.000 COP.
+          </p>
+        </div>
+        <div class="text-xs text-amber-400 font-semibold bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl">
+          🍔 + Croqueta Adicional (+5K)
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-hamburguesas">
+        <!-- Renderizado dinámico de Burgers -->
+      </div>
+    </section>
+
+    <!-- ================= SECCIÓN 2: RESTAURANT GOURMET ================= -->
     <section id="sec-restaurant" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold uppercase tracking-wider mb-2">
-            <i class="fa-solid fa-fire"></i> Cocina de Autor & Brasas
+            <i class="fa-solid fa-fire"></i> Cocina de Autor, Cortes & Mariscos
           </div>
           <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
             Cartelera de Platos
           </h2>
           <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            Imágenes y preparaciones al momento con ingredientes selectos.
+            Cortes a la brasa, pasticho tradicional, cazuelas de mariscos y platos gourmet.
           </p>
         </div>
         <div class="text-xs text-zinc-500 font-mono flex items-center gap-2">
@@ -300,8 +339,8 @@
           <span class="bg-brand-orange text-white text-xs font-black uppercase px-3 py-1 rounded-md tracking-wider">
             Plato Insignia
           </span>
-          <h3 class="text-3xl sm:text-4xl font-black text-white font-heading">Churrasco de Solomo</h3>
-          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">
+          <h3 id="hero-plato-titulo" class="text-3xl sm:text-4xl font-black text-white font-heading">Churrasco de Solomo</h3>
+          <p id="hero-plato-desc" class="text-zinc-300 text-sm sm:text-base leading-relaxed">
             Corte tierno y jugoso de solomo madurado a la brasa con el término exacto del chef, acompañado de ensalada fresca de la casa y crujientes papas fritas doradas.
           </p>
           <div class="flex items-center gap-4 text-xs text-zinc-400 pt-1">
@@ -310,9 +349,9 @@
             <span class="text-green-400 font-bold"><i class="fa-solid fa-leaf mr-1"></i> Ingredientes frescos</span>
           </div>
           <div class="pt-4 flex items-center gap-4">
-            <div class="text-3xl font-black text-amber-400 font-heading">$45.000 <span class="text-xs text-zinc-400 font-normal">COP</span></div>
+            <div id="hero-plato-precio" class="text-3xl font-black text-amber-400 font-heading">$45.000 <span class="text-xs text-zinc-400 font-normal">COP</span></div>
             <button 
-              onclick="agregarPlatoSimple('Churrasco de Solomo', 45000, 'Churrasco de Solomo + Ensalada de la casa + Papas fritas')"
+              onclick="ordenarHeroPlato()"
               class="bg-white hover:bg-zinc-200 text-brand-dark font-extrabold px-6 py-3 rounded-2xl flex items-center gap-2 active:scale-95 transition-all shadow-lg cursor-pointer"
             >
               <i class="fa-solid fa-plus"></i> Ordenar Plato
@@ -321,26 +360,27 @@
         </div>
         <div class="w-full lg:w-1/2 relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-brand-border/80 group">
           <img 
+            id="hero-plato-img"
             src="Churrasco de Solomo.jpg" 
             alt="Churrasco de Solomo" 
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1000&auto=format&fit=crop'"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
-            <span class="text-xs font-semibold text-zinc-200 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
+            <span id="hero-plato-badge" class="text-xs font-semibold text-zinc-200 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
               Churrasco de Solomo + Ensalada 45K
             </span>
           </div>
         </div>
       </div>
 
-      <!-- Cuadrícula de Platos -->
+      <!-- Cuadrícula de Platos Restaurant -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-restaurant">
         <!-- Renderizado dinámico vía JavaScript -->
       </div>
     </section>
 
-    <!-- ================= SECCIÓN 2: PIZZAS ARTESANALES ================= -->
+    <!-- ================= SECCIÓN 3: PIZZAS ARTESANALES ================= -->
     <section id="sec-pizzas" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
@@ -382,7 +422,7 @@
       </div>
     </section>
 
-    <!-- ================= SECCIÓN 2.5: BEBIDAS, REFRESCOS Y CÓCTELES ================= -->
+    <!-- ================= SECCIÓN 4: BEBIDAS, REFRESCOS Y CÓCTELES ================= -->
     <section id="sec-bebidas" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
@@ -401,17 +441,15 @@
         </div>
       </div>
 
-      <!-- Subsección Cócteles -->
       <div class="space-y-4">
         <h3 class="text-xl font-black text-white font-heading flex items-center gap-2">
-          <i class="fa-solid fa-cocktail text-cyan-400"></i> Cócteles de la Casa (18.000 COP)
+          <i class="fa-solid fa-cocktail text-cyan-400"></i> Cócteles de la Casa
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="grid-cocteles">
           <!-- Inyectado vía JS -->
         </div>
       </div>
 
-      <!-- Subsección Bebidas Sin Alcohol -->
       <div class="space-y-4 pt-4">
         <h3 class="text-xl font-black text-white font-heading flex items-center gap-2">
           <i class="fa-solid fa-bottle-water text-emerald-400"></i> Bebidas & Granizados
@@ -422,7 +460,7 @@
       </div>
     </section>
 
-    <!-- ================= SECCIÓN 3: HELADERÍA ARTESANAL ================= -->
+    <!-- ================= SECCIÓN 5: HELADERÍA ARTESANAL ================= -->
     <section id="sec-heladeria" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
@@ -443,7 +481,7 @@
       </div>
     </section>
 
-    <!-- ================= SECCIÓN 4: PARQUE INFANTIL (TIEMPO LIBRE) ================= -->
+    <!-- ================= SECCIÓN 6: PARQUE INFANTIL (TIEMPO LIBRE) ================= -->
     <section id="sec-parque" class="space-y-8">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
@@ -459,7 +497,6 @@
         </div>
       </div>
 
-      <!-- Card Principal Parque con Entrada Tiempo Libre -->
       <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#121424] via-brand-card to-[#0d0f1b] border-2 border-blue-500/40 p-6 sm:p-10 shadow-2xl">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
@@ -505,10 +542,9 @@
             </div>
           </div>
 
-          <!-- Selector y Compra Entrada Parque -->
           <div class="lg:col-span-5 bg-black/40 border border-brand-border p-6 sm:p-8 rounded-3xl text-center flex flex-col justify-center items-center shadow-inner">
             <span class="text-xs uppercase tracking-widest text-zinc-400 font-bold mb-2">Entrada por Niño</span>
-            <div class="text-4xl sm:text-5xl font-black text-white font-heading mb-1">
+            <div id="parque-tarifa-display" class="text-4xl sm:text-5xl font-black text-white font-heading mb-1">
               $20.000 <span class="text-sm font-semibold text-zinc-400">COP</span>
             </div>
             <p class="text-xs text-blue-400 font-bold mb-6">Incluye 2 Niveles + Carros Eléctricos (Tiempo Libre)</p>
@@ -548,7 +584,6 @@
   
   <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[500px] bg-brand-card border-l border-brand-border z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
     
-    <!-- Encabezado Comanda -->
     <div class="p-5 border-b border-brand-border flex items-center justify-between bg-[#0e0f18]">
       <div class="flex items-center gap-3">
         <img 
@@ -567,15 +602,11 @@
       </button>
     </div>
 
-    <!-- Lista de Items en Comanda -->
     <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar">
-      <!-- Se inyecta con renderCart() -->
+      <!-- Inyectado por renderCart() -->
     </div>
 
-    <!-- Pie: Datos de Cliente + Participación en Premios + Botón de Envío -->
     <div class="p-5 border-t border-brand-border bg-[#0e0f18] space-y-4">
-      
-      <!-- Cajita para Identificar al Cliente y Premios Sorpresa -->
       <div class="bg-gradient-to-br from-brand-orange/15 to-amber-500/10 border border-brand-orange/30 p-3.5 rounded-2xl space-y-2.5">
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-brand-orange uppercase tracking-wider flex items-center gap-1.5">
@@ -584,7 +615,7 @@
           <span class="text-[10px] bg-brand-orange/20 text-brand-orange px-2 py-0.5 rounded-full font-bold">Gratis</span>
         </div>
         <p class="text-[11px] text-zinc-300 leading-snug">
-          Ingresa tus datos para identificar tu orden y quedas participando automáticamente en nuestros sorteos y premios sorpresa.
+          Ingresa tus datos para identificar tu orden y quedas participando automáticamente en nuestros sorteos y cortesías sorpresa.
         </p>
         <div class="grid grid-cols-1 gap-2 pt-1">
           <input 
@@ -602,7 +633,6 @@
         </div>
       </div>
 
-      <!-- Resumen Económico -->
       <div class="space-y-1.5 text-sm text-zinc-300">
         <div class="flex justify-between">
           <span class="text-zinc-400">Subtotal</span>
@@ -647,7 +677,6 @@
   <!-- ================= FOOTER ================= -->
   <footer class="mt-20 border-t border-brand-border/50 bg-[#08090e] py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-      
       <div class="flex justify-center">
         <img 
           src="LOGO HAARU BLANCO.png" 
@@ -658,14 +687,15 @@
       </div>
 
       <p class="text-xs sm:text-sm text-zinc-400 max-w-md mx-auto">
-        Haaru Park: Gastronomía gourmet, cócteles, heladería de autor y parque infantil con pista de carros eléctricos por tiempo libre.
+        Haaru Park: Gastronomía gourmet, hamburguesas con croqueta de solomillo, cócteles, heladería y parque infantil por tiempo libre.
       </p>
 
       <div class="flex flex-wrap justify-center gap-6 text-zinc-400 text-sm">
-        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('promos')">Promos Navidad</span>
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('promos')">Promos</span>
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('hamburguesas')">Hamburguesas</span>
         <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('restaurant')">Restaurant</span>
         <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('pizzas')">Pizzas</span>
-        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('bebidas')">Bebidas & Cócteles</span>
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('bebidas')">Bebidas & Bar</span>
         <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('heladeria')">Helados</span>
         <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('parque')">Parque</span>
       </div>
@@ -676,24 +706,17 @@
     </div>
   </footer>
 
-  <!-- ================= SCRIPT PRINCIPAL CON INTEGRACIÓN ================= -->
+  <!-- ================= SCRIPT PRINCIPAL ================= -->
   <script>
-    // ================= URL OFICIAL DE GOOGLE APPS SCRIPT =================
     const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
 
-    // ================= DATA: PROMOS DE NAVIDAD =================
-    const promosNavidadData = [
+    // ================= DATA LOCAL DE RESPALDO =================
+    let promosNavidadData = [
       {
         id: 'promo-1',
         numero: '1#',
         title: 'Combo Burger & Parque',
-        items: [
-          'Bacon Kubrick',
-          'Papas a la francesa',
-          'Refresco personal',
-          'Helado soft',
-          'Entrada al parque (Tiempo libre)'
-        ],
+        items: ['Bacon Kubrick', 'Papas a la francesa', 'Refresco personal', 'Helado soft', 'Entrada al parque (Tiempo libre)'],
         price: 40000,
         badge: 'Individual Completo'
       },
@@ -701,12 +724,7 @@
         id: 'promo-2',
         numero: '2#',
         title: 'Dúo Pizza & Parque',
-        items: [
-          'Pizza margarita mediana',
-          '2 Refrescos',
-          '2 Helados soft',
-          'Entrada al parque (Tiempo libre)'
-        ],
+        items: ['Pizza margarita mediana', '2 Refrescos', '2 Helados soft', 'Entrada al parque (Tiempo libre)'],
         price: 50000,
         badge: 'Dúo Familiar'
       },
@@ -714,19 +732,45 @@
         id: 'promo-3',
         numero: '3#',
         title: 'Super Familiar Festivo',
-        items: [
-          'Pizza margarita familiar',
-          'Litro de refresco',
-          '3 Helados soft',
-          'Entrada al parque (Tiempo libre)'
-        ],
+        items: ['Pizza margarita familiar', 'Litro de refresco', '3 Helados soft', 'Entrada al parque (Tiempo libre)'],
         price: 90000,
         badge: 'Familiar Premium'
       }
     ];
 
-    // ================= DATA: RESTAURANT GOURMET (INCLUYE PASTICHO) =================
-    const dishesData = [
+    // HAMBURGUESAS (SECCIÓN INDEPENDIENTE)
+    let burgersData = [
+      {
+        id: 'vino-burger',
+        title: 'Al Vino Burger',
+        file: 'al vino burguer.jpg',
+        fallback: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Al vino burguer + Papas a la francesa 30K',
+        ingredients: 'Muchacho al vino madurado, queso crema, cebolla caramelizada, vegetales frescos, papas rufles crujientes.',
+        price: 30000
+      },
+      {
+        id: 'bacon-kubrick',
+        title: 'Bacon Kubrick',
+        file: 'Bacon cubrick.jpg',
+        fallback: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Bacon Kubrick + Papas a la francesa 30K',
+        ingredients: 'Croqueta de solomillo, tocineta crujiente, relish de pepinillo, vegetales frescos, queso cheddar fundido, papas francesas.',
+        price: 30000
+      },
+      {
+        id: 'pollo-crispy',
+        title: 'Pollo Crispy',
+        file: 'Pollo crispy.jpg',
+        fallback: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Pollo Crispy + Papas a la francesa 30K',
+        ingredients: 'Suprema de pollo crujiente rebozada, tocineta, queso crema, vegetales frescos de temporada, salsas de la casa, papas.',
+        price: 30000
+      }
+    ];
+
+    // RESTAURANT GOURMET (SIN HAMBURGUESAS)
+    let dishesData = [
       {
         id: 'pasticho',
         title: 'Pasticho Tradicional',
@@ -748,45 +792,12 @@
         type: 'simple'
       },
       {
-        id: 'vino-burger',
-        title: 'Al Vino Burger',
-        file: 'al vino burguer.jpg',
-        fallback: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
-        subtitle: 'Al vino burguer + Papas a la francesa 30K',
-        ingredients: 'Muchacho al vino, queso crema, cebolla caramelizada, vegetales frescos, papas rufles',
-        price: 30000,
-        hasCroquetaOption: true,
-        type: 'burger'
-      },
-      {
-        id: 'bacon-kubrick',
-        title: 'Bacon Kubrick',
-        file: 'Bacon cubrick.jpg',
-        fallback: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=800&auto=format&fit=crop',
-        subtitle: 'Bacon Kubrick + Papas a la francesa 30K',
-        ingredients: 'Croqueta de solomillo, tocineta, relish de pepinillo, vegetales frescos, queso cheddar, papas a la francesa',
-        price: 30000,
-        hasCroquetaOption: true,
-        type: 'burger'
-      },
-      {
-        id: 'pollo-crispy',
-        title: 'Pollo Crispy',
-        file: 'Pollo crispy.jpg',
-        fallback: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=800&auto=format&fit=crop',
-        subtitle: 'Pollo Crispy + Papas a la francesa 30K',
-        ingredients: 'Pollo crispy, tocineta, queso crema, vegetales frescos, salsas, papas a la francesa',
-        price: 30000,
-        hasCroquetaOption: true,
-        type: 'burger'
-      },
-      {
         id: 'mar-tierra',
         title: 'Mar y Tierra',
         file: 'Mar y tierra.jpg',
         fallback: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop',
         subtitle: 'Mar y Tierra + Papas a la francesa 55K',
-        ingredients: 'Camarones, suprema de pollo, queso crema, vegetales frescos, salsas, papas a la francesa',
+        ingredients: 'Camarones seleccionados, suprema de pollo, queso crema, vegetales frescos, salsas de la casa, papas a la francesa.',
         price: 55000,
         type: 'simple'
       },
@@ -796,7 +807,7 @@
         file: 'Parrilla.jpg',
         fallback: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop',
         subtitle: 'Solomo, Pechuga, Cochino, Salsas, Papas a la francesa',
-        ingredients: 'Solomo, pechuga, cochino, salsas, papas a la francesa',
+        ingredients: 'Solomo madurado, pechuga, cochino, salsas caseras, papas a la francesa.',
         type: 'portion',
         portions: [
           { name: 'Personal (+ Papas)', price: 35000 },
@@ -810,7 +821,7 @@
         file: 'Cazuela de Mariscos.jpg',
         fallback: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=800&auto=format&fit=crop',
         subtitle: 'Camarones, Calamares, Langostino, Almejas, Chipichipi',
-        ingredients: 'Camarones, calamares, langostino, almejas, chipichipi + pan tostado al horno',
+        ingredients: 'Camarones, calamares, langostino, almejas, chipichipi en bisque criollo + pan tostado al horno.',
         type: 'portion',
         portions: [
           { name: 'Mediana (+ Pan tostado)', price: 45000 },
@@ -823,7 +834,7 @@
         file: 'ceviche peruano.jpg',
         fallback: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?q=80&w=800&auto=format&fit=crop',
         subtitle: 'Ceviche peruano + tostones de la casa 45K',
-        ingredients: 'Pescado fresco, camarones, cebolla morada, cilantro',
+        ingredients: 'Pescado fresco marinado en leche de tigre, camarones, cebolla morada, cilantro y tostones crujientes.',
         price: 45000,
         type: 'simple'
       },
@@ -833,14 +844,13 @@
         file: 'Churrasco de Solomo.jpg',
         fallback: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
         subtitle: 'Churrasco de Solomo + Ensalada de la casa 45K',
-        ingredients: 'Solomo, ensalada fresca, papas fritas',
+        ingredients: 'Solomo madurado a la brasa, ensalada fresca, papas fritas doradas.',
         price: 45000,
         type: 'simple'
       }
     ];
 
-    // ================= DATA: PIZZAS ARTESANALES =================
-    const pizzasData = [
+    let pizzasData = [
       {
         id: 'pizza-margarita',
         name: 'Pizza Margarita',
@@ -878,25 +888,22 @@
       }
     ];
 
-    // ================= DATA: CÓCTELES (18.000 COP) =================
-    const coctelesData = [
-      { id: 'laguna-azul', name: 'Laguna Azul', desc: 'Vodka, curaçao azul, toque cítrico y refrescante soda.', price: 18000 },
+    let coctelesData = [
+      { id: 'laguna-azul', name: 'Laguna Azul', desc: 'Vodka, curaçao azul, limón y soda refrescante.', price: 18000 },
       { id: 'mai-tai', name: 'Mai Tai', desc: 'Ron añejo y blanco, licor de naranja, amaretto y jugo tropical.', price: 18000 },
       { id: 'mojito-cubano', name: 'Mojito Cubano', desc: 'Ron blanco, hierbabuena fresca, azúcar de caña y lima.', price: 18000 },
-      { id: 'cuba-libre', name: 'Cuba Libre', desc: 'Ron dorado, refresco de cola, zumo de limón y hielo frappé.', price: 18000 },
+      { id: 'cuba-libre', name: 'Cuba Libre', desc: 'Ron dorado, refresco cola, limón y hielo frappé.', price: 18000 },
       { id: 'laguna-roja', name: 'Laguna Roja', desc: 'Bebida vibrante de frutos rojos, vodka y licor dulce.', price: 18000 }
     ];
 
-    // ================= DATA: BEBIDAS FRÍAS =================
-    const bebidasData = [
+    let bebidasData = [
       { id: 'granizado', name: 'Granizado de Frutas', detail: 'Frappé con pulpa fresca a elección', price: 10000, icon: 'fa-blender' },
       { id: 'refresco-personal', name: 'Refresco Personal', detail: 'Botella individual fría', price: 5000, icon: 'fa-bottle-droplet' },
       { id: 'agua-mineral', name: 'Agua Mineral 600ml', detail: 'Agua pura sin gas', price: 5000, icon: 'fa-bottle-water' },
       { id: 'refresco-litro', name: 'Refresco de Litro', detail: 'Formato familiar para compartir', price: 10000, icon: 'fa-champagne-glasses' }
     ];
 
-    // ================= DATA: HELADOS =================
-    const heladosData = [
+    let heladosData = [
       {
         id: 'flips',
         name: 'Flips',
@@ -995,12 +1002,279 @@
       }
     ];
 
-    // ================= ESTADO DE LA COMANDA =================
+    let precioParqueActual = 20000;
+    let heroPlatoActual = {
+      nombre: "Churrasco de Solomo",
+      precio: 45000,
+      detalle: "Churrasco de Solomo madurado + Ensalada de la casa + Papas fritas"
+    };
+
     let cart = [];
     let parqueCant = 1;
 
     function formatCOP(num) {
-      return '$' + num.toLocaleString('es-CO') + ' COP';
+      return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
+    }
+
+    // ================= SINCRONIZACIÓN DE MENÚ EN VIVO CON GOOGLE SHEETS =================
+    async function sincronizarMenuEnVivo() {
+      try {
+        const respuesta = await fetch(`${GOOGLE_SHEETS_WEBHOOK_URL}?tipo=catalogo&t=${Date.now()}`);
+        const data = await respuesta.json();
+
+        if (data.status === "success" && Array.isArray(data.catalogo) && data.catalogo.length > 0) {
+          const cat = data.catalogo;
+
+          // 1. Parque
+          const itemParque = cat.find(x => (x.category || '').toLowerCase() === 'parque');
+          if (itemParque && itemParque.price > 0) {
+            precioParqueActual = itemParque.price;
+            const elTarifa = document.getElementById('parque-tarifa-display');
+            if (elTarifa) {
+              elTarifa.innerHTML = `${formatCOP(precioParqueActual)} <span class="text-sm font-semibold text-zinc-400">COP</span>`;
+            }
+          }
+
+          // 2. Hamburguesas
+          const itemsBurgers = cat.filter(x => (x.category || '').toLowerCase() === 'hamburguesas');
+          if (itemsBurgers.length > 0) {
+            burgersData = itemsBurgers.map((b, idx) => {
+              const localEx = burgersData.find(x => x.title.toLowerCase() === b.name.toLowerCase()) || {};
+              return {
+                id: localEx.id || ('burger-dyn-' + idx),
+                title: b.name,
+                file: b.image || localEx.file || 'al vino burguer.jpg',
+                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
+                subtitle: b.detail || localEx.subtitle || `${b.name} ${formatCOP(b.price)}`,
+                ingredients: b.detail || localEx.ingredients || '',
+                price: Number(b.price) || 30000
+              };
+            });
+            renderHamburguesas();
+          }
+
+          // 3. Restaurant
+          const itemsRest = cat.filter(x => (x.category || '').toLowerCase() === 'restaurant');
+          if (itemsRest.length > 0) {
+            const churrascoItem = itemsRest.find(x => x.name.toLowerCase().includes('solomo') || x.name.toLowerCase().includes('churrasco'));
+            if (churrascoItem) {
+              heroPlatoActual.nombre = churrascoItem.name;
+              heroPlatoActual.precio = churrascoItem.price;
+              heroPlatoActual.detalle = churrascoItem.detail || heroPlatoActual.detalle;
+              
+              const hTitle = document.getElementById('hero-plato-titulo');
+              const hPre = document.getElementById('hero-plato-precio');
+              const hDesc = document.getElementById('hero-plato-desc');
+              const hBadge = document.getElementById('hero-plato-badge');
+              const hImg = document.getElementById('hero-plato-img');
+
+              if (hTitle) hTitle.innerText = churrascoItem.name;
+              if (hPre) hPre.innerHTML = `${formatCOP(churrascoItem.price)} <span class="text-xs text-zinc-400 font-normal">COP</span>`;
+              if (hDesc && churrascoItem.detail) hDesc.innerText = churrascoItem.detail;
+              if (hBadge) hBadge.innerText = `${churrascoItem.name} ${formatCOP(churrascoItem.price)}`;
+              if (hImg && churrascoItem.image) hImg.src = churrascoItem.image;
+            }
+
+            dishesData = itemsRest.map((item, idx) => {
+              const localExistente = dishesData.find(d => d.title.toLowerCase() === item.name.toLowerCase()) || {};
+              return {
+                id: localExistente.id || ('dish-dyn-' + idx),
+                title: item.name,
+                file: item.image || localExistente.file || 'Churrasco de Solomo.jpg',
+                fallback: localExistente.fallback || 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
+                subtitle: item.detail || localExistente.subtitle || `${item.name} ${formatCOP(item.price)}`,
+                ingredients: item.detail || localExistente.ingredients || '',
+                price: Number(item.price) || 35000,
+                type: localExistente.type || 'simple',
+                portions: localExistente.portions || null
+              };
+            });
+            renderRestaurant();
+          }
+
+          // 4. Promos Navidad
+          const itemsNav = cat.filter(x => (x.category || '').toLowerCase() === 'navidad');
+          if (itemsNav.length > 0) {
+            promosNavidadData = itemsNav.map((item, idx) => {
+              const localEx = promosNavidadData[idx] || {};
+              const bulletItems = item.detail ? item.detail.split('+').map(s => s.trim()) : (localEx.items || []);
+              return {
+                id: localEx.id || ('promo-dyn-' + idx),
+                numero: localEx.numero || `${idx + 1}#`,
+                title: item.name,
+                items: bulletItems.length > 0 ? bulletItems : ['Plato principal', 'Papas fritas', 'Bebida', 'Entrada al parque'],
+                price: Number(item.price) || 40000,
+                badge: localEx.badge || 'Edición Navidad'
+              };
+            });
+            renderPromosNavidad();
+          }
+
+          // 5. Cócteles y Bebidas
+          const itemsCoctel = cat.filter(x => (x.category || '').toLowerCase() === 'cócteles');
+          if (itemsCoctel.length > 0) {
+            coctelesData = itemsCoctel.map((c, idx) => ({
+              id: 'coctel-dyn-' + idx,
+              name: c.name,
+              desc: c.detail || 'Preparación especial con hielo frappé y licores selectos.',
+              price: Number(c.price) || 18000
+            }));
+          }
+
+          const itemsBeb = cat.filter(x => (x.category || '').toLowerCase() === 'bebidas');
+          if (itemsBeb.length > 0) {
+            bebidasData = itemsBeb.map((b, idx) => {
+              const localEx = bebidasData.find(x => x.name.toLowerCase() === b.name.toLowerCase()) || {};
+              return {
+                id: 'beb-dyn-' + idx,
+                name: b.name,
+                detail: b.detail || 'Bebida fría',
+                price: Number(b.price) || 5000,
+                icon: localEx.icon || 'fa-bottle-water'
+              };
+            });
+          }
+          renderBebidasYCocteles();
+
+          // 6. Helados
+          const itemsHel = cat.filter(x => (x.category || '').toLowerCase() === 'helados');
+          if (itemsHel.length > 0) {
+            heladosData = itemsHel.map((h, idx) => {
+              const localEx = heladosData.find(x => x.name.toLowerCase() === h.name.toLowerCase()) || {};
+              return {
+                id: localEx.id || ('ice-dyn-' + idx),
+                name: h.name,
+                file: h.image || localEx.file || 'FLIPS.jpg',
+                altFile: localEx.altFile || '',
+                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop',
+                type: localEx.type || 'special',
+                price: Number(h.price) || 12000,
+                clasico: Number(h.price) || 12000,
+                junior: Math.round(Number(h.price) * 0.75) || 9000,
+                desc: h.detail || localEx.desc || 'Helado suave artesanal con ingredientes frescos.'
+              };
+            });
+            renderHelados();
+          }
+
+          console.log("Menú Haaru Park sincronizado en vivo desde Google Sheets.");
+        }
+      } catch (err) {
+        console.warn("Usando catálogo de respaldo:", err);
+      }
+    }
+
+    // ================= RENDERIZADO: HAMBURGUESAS (NUEVO) =================
+    function renderHamburguesas() {
+      const container = document.getElementById('grid-hamburguesas');
+      if (!container) return;
+
+      container.innerHTML = burgersData.map(b => `
+        <div class="poster-card rounded-3xl bg-brand-card border border-brand-border overflow-hidden flex flex-col justify-between shadow-xl">
+          <div class="relative h-60 w-full overflow-hidden bg-black/40">
+            <img 
+              src="${b.file}" 
+              alt="${b.title}" 
+              class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              onerror="this.src='${b.fallback}'"
+            />
+            <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-amber-400 border border-amber-500/30">
+              Burger Gourmet
+            </div>
+          </div>
+          
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div>
+              <h4 class="text-xl font-black text-white font-heading">${b.title}</h4>
+              <p class="text-xs text-brand-orange font-semibold mt-0.5">${b.subtitle}</p>
+              <p class="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">${b.ingredients}</p>
+            </div>
+
+            <div class="pt-3 border-t border-brand-border/60 flex items-center justify-between">
+              <span class="text-xl font-black text-amber-400 font-heading">${formatCOP(b.price)}</span>
+              <button 
+                onclick="abrirModalBurger('${b.id}')"
+                class="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 active:scale-95 transition-all shadow-md shadow-amber-500/20 cursor-pointer"
+              >
+                <i class="fa-solid fa-plus"></i> Elegir
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function abrirModalBurger(burgerId) {
+      const b = burgersData.find(x => x.id === burgerId);
+      const modal = document.getElementById('dish-modal');
+      const content = document.getElementById('dish-modal-content');
+
+      content.innerHTML = `
+        <div class="relative h-48 w-full bg-black/60">
+          <img src="${b.file}" alt="${b.title}" class="w-full h-full object-cover" onerror="this.src='${b.fallback}'" />
+          <button onclick="cerrarModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div>
+            <h3 class="text-2xl font-black text-white font-heading">${b.title}</h3>
+            <p class="text-xs text-brand-orange font-semibold mt-1">${b.subtitle}</p>
+            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">${b.ingredients}</p>
+          </div>
+          
+          <div class="p-4 rounded-2xl bg-black/40 border border-brand-border space-y-3">
+            <span class="text-xs uppercase font-bold text-zinc-400">Adicional Recomendado</span>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="text-sm font-semibold text-white flex items-center gap-2">
+                <i class="fa-solid fa-burger text-amber-500"></i> Croqueta de carne adicional
+              </span>
+              <input type="checkbox" id="modal-croqueta" class="w-5 h-5 rounded text-amber-500 bg-brand-card border-brand-border focus:ring-0" onchange="actualizarTotalModalBurger(${b.price})">
+            </label>
+            <p class="text-[11px] text-zinc-400">Agrega otra croqueta de solomillo por <strong>+$5.000 COP</strong>.</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3">
+            <span class="text-xs text-zinc-400">Total:</span>
+            <span id="modal-burger-total" class="text-2xl font-black text-amber-400 font-heading">${formatCOP(b.price)}</span>
+          </div>
+
+          <button onclick="confirmarBurger('${b.id}')" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold py-3.5 rounded-2xl active:scale-95 transition-all text-sm cursor-pointer">
+            Agregar a la Comanda
+          </button>
+        </div>
+      `;
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-95');
+      content.classList.add('scale-100');
+    }
+
+    function actualizarTotalModalBurger(precioBase) {
+      const croqueta = document.getElementById('modal-croqueta').checked;
+      const total = precioBase + (croqueta ? 5000 : 0);
+      document.getElementById('modal-burger-total').innerText = formatCOP(total);
+    }
+
+    function confirmarBurger(burgerId) {
+      const b = burgersData.find(x => x.id === burgerId);
+      const croqueta = document.getElementById('modal-croqueta').checked;
+      const precio = b.price + (croqueta ? 5000 : 0);
+      const detalle = `${b.subtitle}${croqueta ? ' + Croqueta adicional (+5K)' : ''}`;
+
+      cart.push({
+        id: 'burger-' + Date.now(),
+        name: b.title,
+        detail: detalle,
+        price: precio,
+        category: 'Hamburguesas',
+        quantity: 1,
+        note: ''
+      });
+
+      cerrarModal();
+      renderCart();
+      showToast(`¡${b.title} agregada!`);
     }
 
     // ================= RENDERIZADO: PROMOS NAVIDEÑAS =================
@@ -1058,9 +1332,6 @@
         if (d.type === 'simple') {
           priceTag = `<span class="text-xl font-black text-amber-400 font-heading">${formatCOP(d.price)}</span>`;
           buttonAction = `onclick="agregarPlatoSimple('${d.title}', ${d.price}, '${d.subtitle}')"`;
-        } else if (d.type === 'burger') {
-          priceTag = `<span class="text-xl font-black text-amber-400 font-heading">${formatCOP(d.price)}</span>`;
-          buttonAction = `onclick="abrirModalPlato('${d.id}')"`;
         } else if (d.type === 'portion') {
           const minPrice = Math.min(...d.portions.map(p => p.price));
           priceTag = `<span class="text-sm text-zinc-400">Desde <strong class="text-lg text-amber-400 font-heading font-black">${formatCOP(minPrice)}</strong></span>`;
@@ -1077,7 +1348,7 @@
                 onerror="this.src='${d.fallback}'"
               />
               <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-zinc-200 border border-white/10">
-                ${d.type === 'burger' ? 'Burger Gourmet' : d.type === 'portion' ? 'Porciones' : 'Plato Principal'}
+                ${d.type === 'portion' ? 'Porciones' : 'Plato Principal'}
               </div>
             </div>
             
@@ -1101,6 +1372,10 @@
           </div>
         `;
       }).join('');
+    }
+
+    function ordenarHeroPlato() {
+      agregarPlatoSimple(heroPlatoActual.nombre, heroPlatoActual.precio, heroPlatoActual.detalle);
     }
 
     // ================= RENDERIZADO: PIZZAS =================
@@ -1165,7 +1440,6 @@
 
     // ================= RENDERIZADO: CÓCTELES Y BEBIDAS =================
     function renderBebidasYCocteles() {
-      // Cócteles (18K)
       const cContainer = document.getElementById('grid-cocteles');
       cContainer.innerHTML = coctelesData.map(c => `
         <div class="poster-card rounded-2xl bg-brand-card border border-brand-border p-4 flex flex-col justify-between space-y-3 shadow-lg">
@@ -1189,7 +1463,6 @@
         </div>
       `).join('');
 
-      // Bebidas Frías
       const bContainer = document.getElementById('grid-bebidas');
       bContainer.innerHTML = bebidasData.map(b => `
         <div class="poster-card rounded-2xl bg-brand-card border border-brand-border p-4 flex flex-col justify-between space-y-3 shadow-lg">
@@ -1410,14 +1683,13 @@
       showToast(`¡Helado ${h.name} (${tamano}) agregado!`);
     }
 
-    // ================= PARQUE A TIEMPO LIBRE =================
     function cambiarCantidadParque(delta) {
       parqueCant = Math.max(1, parqueCant + delta);
       document.getElementById('parque-cant').innerText = parqueCant;
     }
 
     function agregarPaseParque() {
-      const total = 20000 * parqueCant;
+      const total = precioParqueActual * parqueCant;
       cart.push({
         id: 'parque-' + Date.now(),
         name: `Pase Parque (${parqueCant} ${parqueCant === 1 ? 'Niño' : 'Niños'})`,
@@ -1433,36 +1705,26 @@
       showToast('¡Pases del parque (Tiempo Libre) agregados!');
     }
 
-    // ================= MODAL DE PLATOS =================
+    // Modal para platos con porciones (Parrillas, Cazuelas)
     function abrirModalPlato(dishId) {
       const d = dishesData.find(x => x.id === dishId);
       const modal = document.getElementById('dish-modal');
       const content = document.getElementById('dish-modal-content');
 
-      let optionsHTML = '';
-
-      if (d.type === 'burger') {
-        optionsHTML = `
-          <div class="p-4 rounded-2xl bg-black/40 border border-brand-border space-y-3">
-            <span class="text-xs uppercase font-bold text-zinc-400">Adicional Recomendado</span>
-            <label class="flex items-center justify-between cursor-pointer">
-              <span class="text-sm font-semibold text-white flex items-center gap-2">
-                <i class="fa-solid fa-burger text-amber-500"></i> Croqueta de carne adicional
-              </span>
-              <input type="checkbox" id="modal-croqueta" class="w-5 h-5 rounded text-amber-500 bg-brand-card border-brand-border focus:ring-0" onchange="actualizarTotalModalBurger(${d.price})">
-            </label>
-            <p class="text-[11px] text-zinc-400">Agrega otra croqueta de solomillo por <strong>+$5.000 COP</strong>.</p>
-          </div>
-          <div class="flex items-center justify-between pt-3">
-            <span class="text-xs text-zinc-400">Total:</span>
-            <span id="modal-burger-total" class="text-2xl font-black text-amber-400 font-heading">${formatCOP(d.price)}</span>
-          </div>
-          <button onclick="confirmarBurger('${d.id}')" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold py-3.5 rounded-2xl active:scale-95 transition-all text-sm cursor-pointer">
-            Agregar a la Comanda
+      content.innerHTML = `
+        <div class="relative h-48 w-full bg-black/60">
+          <img src="${d.file}" alt="${d.title}" class="w-full h-full object-cover" onerror="this.src='${d.fallback}'" />
+          <button onclick="cerrarModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer">
+            <i class="fa-solid fa-xmark"></i>
           </button>
-        `;
-      } else if (d.type === 'portion') {
-        optionsHTML = `
+        </div>
+        <div class="p-6 space-y-4">
+          <div>
+            <h3 class="text-2xl font-black text-white font-heading">${d.title}</h3>
+            <p class="text-xs text-brand-orange font-semibold mt-1">${d.subtitle}</p>
+            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">${d.ingredients}</p>
+          </div>
+          
           <div class="space-y-3">
             <span class="text-xs uppercase font-bold text-zinc-400">Selecciona el tamaño:</span>
             <div class="space-y-2">
@@ -1480,56 +1742,12 @@
           <button onclick="confirmarPorcion('${d.id}')" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold py-3.5 rounded-2xl active:scale-95 transition-all text-sm mt-4 cursor-pointer">
             Agregar a la Comanda
           </button>
-        `;
-      }
-
-      content.innerHTML = `
-        <div class="relative h-48 w-full bg-black/60">
-          <img src="${d.file}" alt="${d.title}" class="w-full h-full object-cover" onerror="this.src='${d.fallback}'" />
-          <button onclick="cerrarModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <div class="p-6 space-y-4">
-          <div>
-            <h3 class="text-2xl font-black text-white font-heading">${d.title}</h3>
-            <p class="text-xs text-brand-orange font-semibold mt-1">${d.subtitle}</p>
-            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">${d.ingredients}</p>
-          </div>
-          ${optionsHTML}
         </div>
       `;
 
       modal.classList.remove('opacity-0', 'pointer-events-none');
       content.classList.remove('scale-95');
       content.classList.add('scale-100');
-    }
-
-    function actualizarTotalModalBurger(precioBase) {
-      const croqueta = document.getElementById('modal-croqueta').checked;
-      const total = precioBase + (croqueta ? 5000 : 0);
-      document.getElementById('modal-burger-total').innerText = formatCOP(total);
-    }
-
-    function confirmarBurger(dishId) {
-      const d = dishesData.find(x => x.id === dishId);
-      const croqueta = document.getElementById('modal-croqueta').checked;
-      const precio = d.price + (croqueta ? 5000 : 0);
-      const detalle = `${d.subtitle}${croqueta ? ' + Croqueta adicional (+5K)' : ''}`;
-
-      cart.push({
-        id: 'burger-' + Date.now(),
-        name: d.title,
-        detail: detalle,
-        price: precio,
-        category: 'Restaurant',
-        quantity: 1,
-        note: ''
-      });
-
-      cerrarModal();
-      renderCart();
-      showToast(`¡${d.title} agregada!`);
     }
 
     function confirmarPorcion(dishId) {
@@ -1604,7 +1822,7 @@
             </div>
             <div>
               <p class="text-white font-bold text-base font-heading">Tu comanda está vacía</p>
-              <p class="text-xs text-zinc-400 mt-1 max-w-[240px]">Agrega platos, pizzas, helados, cócteles o pases al parque para comenzar.</p>
+              <p class="text-xs text-zinc-400 mt-1 max-w-[240px]">Agrega hamburguesas, platos, pizzas, helados, cócteles o pases al parque.</p>
             </div>
           </div>
         `;
@@ -1675,7 +1893,7 @@
 
       const idComandaGenerado = "CMD-" + Math.floor(1000 + Math.random() * 9000);
 
-      // 1. SINCRONIZACIÓN SILENCIOSA CON TU HOJA DE GOOGLE SHEETS
+      // Sincronización con Google Sheets en segundo plano
       if (typeof GOOGLE_SHEETS_WEBHOOK_URL !== 'undefined' && GOOGLE_SHEETS_WEBHOOK_URL.startsWith('http')) {
         const payload = {
           idComanda: idComandaGenerado,
@@ -1693,7 +1911,7 @@
         }).catch(err => console.warn("Error enviando datos a Google Sheets:", err));
       }
 
-      // 2. CONSTRUCCIÓN Y DESPACHO DEL MENSAJE PARA WHATSAPP
+      // Mensaje de WhatsApp
       let mensaje = `*¡HOLA HAARU PARK! QUIERO REALIZAR ESTE PEDIDO:*%0A%0A`;
       mensaje += `🎟️ *N° Comanda:* ${idComandaGenerado}%0A`;
       mensaje += `👤 *Cliente:* ${encodeURIComponent(nombreCliente)}%0A`;
@@ -1713,7 +1931,6 @@
       mensaje += `*TOTAL A PAGAR:* ${encodeURIComponent(formatCOP(total))}%0A`;
       mensaje += `━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
       
-      // Mensaje de agradecimiento y confirmación de participación
       mensaje += `✨ *¡Gracias por venir a disfrutar la experiencia Haaru Park!*%0A`;
       mensaje += `🎁 _Al consignar este pedido con tu número de teléfono, ya quedas participando oficialmente por nuestros premios sorpresa y cortesías exclusivas._%0A%0A`;
       mensaje += `_Enviado desde el portal web oficial de Haaru Park_`;
@@ -1726,6 +1943,7 @@
     // ================= FILTRO Y NAVEGACIÓN =================
     function mostrarSeccion(sec) {
       const sProm = document.getElementById('sec-promos');
+      const sBurg = document.getElementById('sec-hamburguesas');
       const sRest = document.getElementById('sec-restaurant');
       const sPizz = document.getElementById('sec-pizzas');
       const sBebi = document.getElementById('sec-bebidas');
@@ -1734,6 +1952,7 @@
 
       if (sec === 'todos') {
         sProm.classList.remove('hidden');
+        sBurg.classList.remove('hidden');
         sRest.classList.remove('hidden');
         sPizz.classList.remove('hidden');
         sBebi.classList.remove('hidden');
@@ -1742,6 +1961,7 @@
         document.getElementById('portal').scrollIntoView({ behavior: 'smooth' });
       } else {
         sProm.classList.toggle('hidden', sec !== 'promos');
+        sBurg.classList.toggle('hidden', sec !== 'hamburguesas');
         sRest.classList.toggle('hidden', sec !== 'restaurant');
         sPizz.classList.toggle('hidden', sec !== 'pizzas');
         sBebi.classList.toggle('hidden', sec !== 'bebidas');
@@ -1758,11 +1978,14 @@
     // ================= INICIALIZACIÓN =================
     window.addEventListener('DOMContentLoaded', () => {
       renderPromosNavidad();
+      renderHamburguesas();
       renderRestaurant();
       renderPizzas();
       renderBebidasYCocteles();
       renderHelados();
       renderCart();
+
+      sincronizarMenuEnVivo();
     });
   </script>
 </body>
