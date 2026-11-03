@@ -145,7 +145,7 @@
       <div class="bg-[#161824] p-5 rounded-2xl border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 class="text-xl font-black text-white font-heading">Catálogo de Productos & Precios</h2>
-          <p class="text-xs text-zinc-400 mt-0.5">Modifica precios, nombres, imágenes o elimina productos. Los cambios se sincronizan en Google Sheets y en la web pública.</p>
+          <p class="text-xs text-zinc-400 mt-0.5">Modifica precios, nombres, toma fotos con la cámara o sube imágenes de tu galería. Pulsa "Guardar Cambios" para sincronizar.</p>
         </div>
 
         <div class="flex items-center gap-2">
@@ -161,9 +161,10 @@
       <!-- Barra de Filtro de Categoría -->
       <div class="flex flex-wrap gap-2 text-xs" id="filtrosCategoriasMenu">
         <button onclick="filtrarCatalogo('todos')" class="cat-btn active bg-orange-600 text-white px-3.5 py-1.5 rounded-xl font-bold cursor-pointer">Todos</button>
-        <button onclick="filtrarCatalogo('Navidad')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Navidad</button>
+        <button onclick="filtrarCatalogo('Hamburguesas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Hamburguesas</button>
         <button onclick="filtrarCatalogo('Restaurant')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Restaurant</button>
         <button onclick="filtrarCatalogo('Pizzas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Pizzas</button>
+        <button onclick="filtrarCatalogo('Navidad')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Navidad</button>
         <button onclick="filtrarCatalogo('Cócteles')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Cócteles</button>
         <button onclick="filtrarCatalogo('Bebidas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Bebidas</button>
         <button onclick="filtrarCatalogo('Helados')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Helados</button>
@@ -178,6 +179,38 @@
 
   </main>
 
+  <!-- ================= MODAL DE CÁMARA EN VIVO ================= -->
+  <div id="modalCamara" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#161824] border border-white/15 rounded-3xl max-w-lg w-full p-5 space-y-4 shadow-2xl flex flex-col items-center">
+      <div class="w-full flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-camera text-orange-500 text-base"></i>
+          <h3 class="text-sm font-black text-white font-heading">Tomar Foto del Producto</h3>
+        </div>
+        <button onclick="cerrarModalCamara()" class="text-zinc-400 hover:text-white cursor-pointer">✕</button>
+      </div>
+
+      <!-- Visor de Video en Directo -->
+      <div class="relative w-full aspect-square max-h-[340px] bg-black rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
+        <video id="videoElemento" autoplay playsinline class="w-full h-full object-cover"></video>
+        <div class="absolute inset-0 border-2 border-dashed border-white/30 rounded-2xl pointer-events-none"></div>
+      </div>
+
+      <!-- Botones de Acción de Cámara -->
+      <div class="w-full flex gap-3">
+        <button onclick="capturarFotoCamara()" class="flex-1 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/30 transition active:scale-95 cursor-pointer">
+          <i class="fa-solid fa-circle-dot text-sm"></i> Capturar Foto
+        </button>
+        <button onclick="cerrarModalCamara()" class="bg-white/10 hover:bg-white/20 text-zinc-300 font-bold px-4 py-3 rounded-xl text-xs transition cursor-pointer">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input oculto para subir fotos desde galería/archivos -->
+  <input type="file" id="inputArchivoOculto" accept="image/*" class="hidden" onchange="procesarArchivoSeleccionado(event)">
+
   <!-- ================= MODAL: NUEVO PRODUCTO ================= -->
   <div id="modalNuevoProducto" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-[#161824] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
@@ -190,6 +223,7 @@
         <div>
           <label class="block text-zinc-400 font-semibold mb-1">Categoría</label>
           <select id="nuevoCat" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white">
+            <option value="Hamburguesas">Hamburguesas</option>
             <option value="Restaurant">Restaurant</option>
             <option value="Pizzas">Pizzas</option>
             <option value="Cócteles">Cócteles</option>
@@ -201,7 +235,7 @@
         </div>
         <div>
           <label class="block text-zinc-400 font-semibold mb-1">Nombre del Producto</label>
-          <input type="text" id="nuevoNombre" placeholder="Ej: Pizza Cuatro Quesos" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white">
+          <input type="text" id="nuevoNombre" placeholder="Ej: Bacon Burger Doble" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white">
         </div>
         <div>
           <label class="block text-zinc-400 font-semibold mb-1">Descripción / Ingredientes</label>
@@ -209,11 +243,24 @@
         </div>
         <div>
           <label class="block text-zinc-400 font-semibold mb-1">Precio en COP</label>
-          <input type="number" id="nuevoPrecio" placeholder="35000" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white font-mono">
+          <input type="number" id="nuevoPrecio" placeholder="30000" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white font-mono">
         </div>
+        
+        <!-- Opciones de Imagen para Nuevo Producto -->
         <div>
-          <label class="block text-zinc-400 font-semibold mb-1">Archivo de Imagen o URL</label>
-          <input type="text" id="nuevoImagen" placeholder="Ej: pizza_4quesos.jpg o enlace web" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white">
+          <label class="block text-zinc-400 font-semibold mb-1">Imagen del Producto</label>
+          <div class="flex items-center gap-2">
+            <input type="text" id="nuevoImagen" placeholder="Nombre de archivo, URL o sube foto" class="flex-1 bg-black/60 border border-white/15 rounded-xl p-2 text-white text-[11px]">
+            <button type="button" onclick="dispararSubidaParaNuevo()" class="p-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs transition" title="Subir desde archivos">
+              <i class="fa-solid fa-folder-open"></i>
+            </button>
+            <button type="button" onclick="abrirCamaraParaNuevo()" class="p-2 bg-orange-600/30 hover:bg-orange-600 text-orange-400 hover:text-white rounded-xl text-xs transition" title="Tomar foto con cámara">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+          </div>
+          <div id="previewNuevoCont" class="mt-2 hidden">
+            <img id="previewNuevoImg" src="" class="h-16 w-16 object-cover rounded-xl border border-white/20">
+          </div>
         </div>
       </div>
 
@@ -239,6 +286,10 @@
     let rawVentas = [];
     let catalogoProductos = [];
     let categoriaActivaMenu = 'todos';
+
+    // Variables de control de cámara y fotos
+    let indiceProductoFotoActivo = null; // null = nuevo producto, number = producto existente
+    let streamCamaraActivo = null;
 
     function formatCOP(num) {
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
@@ -289,8 +340,7 @@
           throw new Error(data.error || "Error al leer datos");
         }
       } catch (err) {
-        console.warn("Fallo de conexión, intentando respaldo...", err);
-        // Respaldo de ejemplo si está fuera de línea
+        console.warn("Fallo de conexión, cargando respaldo local...", err);
         if (catalogoProductos.length === 0) {
           cargarCatalogoPorDefecto();
         }
@@ -314,7 +364,6 @@
         return coincideFecha && coincideBusqueda;
       });
 
-      // Cálculo de KPIs
       let totalDinero = 0;
       let totalItems = 0;
       const comandasUnicas = new Set();
@@ -334,10 +383,9 @@
       document.getElementById('kpiTicketPromedio').innerText = formatCOP(ticketPromedio);
       document.getElementById('conteoRegistros').innerText = `${filtradas.length} ítems en comanda`;
 
-      // Renderizado de tabla
       const tbody = document.getElementById('tablaComandasBody');
       if (filtradas.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-zinc-500">No hay ventas registradas para este criterio de fecha.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-zinc-500">No hay ventas registradas para esta fecha.</td></tr>`;
         return;
       }
 
@@ -381,18 +429,33 @@
       const lista = catalogoProductos.filter(p => categoriaActivaMenu === 'todos' || p.category === categoriaActivaMenu);
 
       if (lista.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-12 text-zinc-500">No hay productos en esta categoría. Agrega uno con el botón superior.</div>`;
+        container.innerHTML = `<div class="col-span-full text-center py-12 text-zinc-500">No hay productos en esta categoría. Puedes agregar uno con el botón superior.</div>`;
         return;
       }
 
-      container.innerHTML = lista.map((p, idx) => {
+      container.innerHTML = lista.map((p) => {
         const indexReal = catalogoProductos.indexOf(p);
+        const imagenValida = p.image && (p.image.startsWith('data:') || p.image.startsWith('http') || p.image.includes('.jpg') || p.image.includes('.png'));
+        const srcFoto = imagenValida ? p.image : 'Churrasco de Solomo.jpg';
+
         return `
           <div class="bg-[#161824] border border-white/10 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-lg">
+            
             <div class="flex items-start gap-3">
-              <div class="w-16 h-16 rounded-xl bg-black/60 border border-white/10 overflow-hidden shrink-0 relative group">
-                <img src="${p.image || 'PIZZAS.jpg'}" alt="${p.name}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=200&auto=format&fit=crop'">
+              <!-- Contenedor de la foto con overlay para cambiar -->
+              <div class="w-20 h-20 rounded-xl bg-black/60 border border-white/10 overflow-hidden shrink-0 relative group">
+                <img id="img-prod-${indexReal}" src="${srcFoto}" alt="${p.name}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=200&auto=format&fit=crop'">
+                
+                <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1">
+                  <button onclick="dispararSubidaParaIndex(${indexReal})" class="text-[9px] bg-white/20 hover:bg-white text-white hover:text-black font-bold px-2 py-0.5 rounded transition" title="Subir archivo">
+                    <i class="fa-solid fa-folder-open"></i> Subir
+                  </button>
+                  <button onclick="abrirCamaraParaIndex(${indexReal})" class="text-[9px] bg-orange-600/80 hover:bg-orange-600 text-white font-bold px-2 py-0.5 rounded transition" title="Tomar foto con cámara">
+                    <i class="fa-solid fa-camera"></i> Cámara
+                  </button>
+                </div>
               </div>
+
               <div class="flex-1 min-w-0">
                 <span class="text-[9px] uppercase font-bold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">${p.category}</span>
                 <input type="text" value="${p.name}" onchange="actualizarDatoProducto(${indexReal}, 'name', this.value)" class="w-full bg-transparent border-b border-transparent hover:border-white/20 focus:border-orange-500 text-sm font-bold text-white mt-1 py-0.5 focus:outline-none transition">
@@ -400,20 +463,26 @@
               </div>
             </div>
 
-            <!-- Edición de Precio e Imagen -->
-            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/5 text-xs">
+            <!-- Edición de Precio y Botones de Fotos -->
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/5 text-xs items-end">
               <div>
                 <label class="block text-[10px] text-zinc-500 font-bold uppercase">Precio (COP):</label>
-                <input type="number" value="${p.price}" onchange="actualizarDatoProducto(${indexReal}, 'price', Number(this.value))" class="w-full bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-white font-mono font-bold focus:ring-1 focus:ring-orange-500">
+                <input type="number" value="${p.price}" onchange="actualizarDatoProducto(${indexReal}, 'price', Number(this.value))" class="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1.5 text-white font-mono font-bold focus:ring-1 focus:ring-orange-500">
               </div>
-              <div>
-                <label class="block text-[10px] text-zinc-500 font-bold uppercase">Nombre Foto / URL:</label>
-                <input type="text" value="${p.image || ''}" placeholder="foto.jpg" onchange="actualizarDatoProducto(${indexReal}, 'image', this.value)" class="w-full bg-black/60 border border-white/10 rounded-lg px-2 py-1.5 text-zinc-300 text-[11px] focus:ring-1 focus:ring-orange-500">
+              <div class="flex items-center gap-1.5">
+                <button onclick="dispararSubidaParaIndex(${indexReal})" class="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-1.5 px-2 rounded-lg text-[10px] flex items-center justify-center gap-1 border border-white/10 transition cursor-pointer" title="Subir desde archivos">
+                  <i class="fa-solid fa-folder-open text-orange-400"></i> Archivo
+                </button>
+                <button onclick="abrirCamaraParaIndex(${indexReal})" class="flex-1 bg-orange-600/30 hover:bg-orange-600 text-orange-300 hover:text-white font-semibold py-1.5 px-2 rounded-lg text-[10px] flex items-center justify-center gap-1 border border-orange-500/30 transition cursor-pointer" title="Activar cámara">
+                  <i class="fa-solid fa-camera"></i> Cámara
+                </button>
               </div>
             </div>
 
             <div class="flex items-center justify-between pt-1">
-              <span class="text-[10px] text-zinc-500">ID: ${p.id || indexReal}</span>
+              <span class="text-[9px] text-zinc-500">
+                ${p.image && p.image.startsWith('data:') ? '📸 Foto tomada en vivo' : (p.image || 'Sin foto')}
+              </span>
               <button onclick="eliminarProductoCatalogo(${indexReal})" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 transition cursor-pointer">
                 <i class="fa-solid fa-trash-can"></i> Eliminar
               </button>
@@ -434,8 +503,143 @@
       }
     }
 
+    // ================= FUNCIONES DE SUBIDA DE FOTOS Y COMPRESIÓN =================
+    function dispararSubidaParaIndex(index) {
+      indiceProductoFotoActivo = index;
+      document.getElementById('inputArchivoOculto').click();
+    }
+
+    function dispararSubidaParaNuevo() {
+      indiceProductoFotoActivo = null;
+      document.getElementById('inputArchivoOculto').click();
+    }
+
+    function procesarArchivoSeleccionado(event) {
+      const archivo = event.target.files[0];
+      if (!archivo) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        optimizarImagenYGuardar(e.target.result);
+      };
+      reader.readAsDataURL(archivo);
+      event.target.value = ''; // Reset input
+    }
+
+    // Reduce resolución a max 400x400 JPG calidad 0.65 para que quepa en Google Sheets (<15KB)
+    function optimizarImagenYGuardar(dataUrlOriginal) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const maxLado = 400;
+        let w = img.width;
+        let h = img.height;
+
+        if (w > h) {
+          if (w > maxLado) {
+            h *= maxLado / w;
+            w = maxLado;
+          }
+        } else {
+          if (h > maxLado) {
+            w *= maxLado / h;
+            h = maxLado;
+          }
+        }
+
+        canvas.width = w;
+        canvas.height = h;
+        ctx.drawImage(img, 0, 0, w, h);
+
+        const dataUrlOptimizada = canvas.toDataURL('image/jpeg', 0.65);
+
+        if (indiceProductoFotoActivo === null) {
+          // Asignar al modal de nuevo producto
+          document.getElementById('nuevoImagen').value = dataUrlOptimizada;
+          document.getElementById('previewNuevoImg').src = dataUrlOptimizada;
+          document.getElementById('previewNuevoCont').classList.remove('hidden');
+        } else {
+          // Asignar al producto existente
+          catalogoProductos[indiceProductoFotoActivo].image = dataUrlOptimizada;
+          renderizarCatalogoEditable();
+        }
+      };
+      img.src = dataUrlOriginal;
+    }
+
+    // ================= MÓDULO DE CÁMARA EN VIVO =================
+    async function abrirCamaraParaIndex(index) {
+      indiceProductoFotoActivo = index;
+      await iniciarTransmisionCamara();
+    }
+
+    async function abrirCamaraParaNuevo() {
+      indiceProductoFotoActivo = null;
+      await iniciarTransmisionCamara();
+    }
+
+    async function iniciarTransmisionCamara() {
+      const modal = document.getElementById('modalCamara');
+      const video = document.getElementById('videoElemento');
+
+      try {
+        streamCamaraActivo = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 640 }, height: { ideal: 640 } },
+          audio: false
+        });
+        video.srcObject = streamCamaraActivo;
+        modal.classList.remove('hidden');
+      } catch (err) {
+        console.warn("No se pudo iniciar cámara por getUserMedia:", err);
+        // Fallback nativo: abre directamente la cámara mediante input capture
+        const inputFallback = document.createElement('input');
+        inputFallback.type = 'file';
+        inputFallback.accept = 'image/*';
+        inputFallback.setAttribute('capture', 'environment');
+        inputFallback.onchange = procesarArchivoSeleccionado;
+        inputFallback.click();
+      }
+    }
+
+    function capturarFotoCamara() {
+      const video = document.getElementById('videoElemento');
+      if (!video || !video.videoWidth) return;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const frameDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      cerrarModalCamara();
+
+      // Pasa por el optimizador
+      optimizarImagenYGuardar(frameDataUrl);
+    }
+
+    function cerrarModalCamara() {
+      const modal = document.getElementById('modalCamara');
+      const video = document.getElementById('videoElemento');
+
+      if (streamCamaraActivo) {
+        streamCamaraActivo.getTracks().forEach(track => track.stop());
+        streamCamaraActivo = null;
+      }
+      if (video) video.srcObject = null;
+      modal.classList.add('hidden');
+    }
+
+    // ================= MODAL DE NUEVO PRODUCTO =================
     function abrirModalNuevoProducto() {
       document.getElementById('modalNuevoProducto').classList.remove('hidden');
+      document.getElementById('nuevoNombre').value = '';
+      document.getElementById('nuevoDetalle').value = '';
+      document.getElementById('nuevoPrecio').value = '';
+      document.getElementById('nuevoImagen').value = '';
+      document.getElementById('previewNuevoCont').classList.add('hidden');
     }
 
     function cerrarModalNuevoProducto() {
@@ -486,7 +690,7 @@
           body: JSON.stringify(payload)
         });
 
-        alert("¡Catálogo y precios actualizados con éxito en Google Sheets y en la web!");
+        alert("¡Catálogo, fotos y precios actualizados con éxito en Google Sheets y en la web!");
       } catch (err) {
         console.error("Error al guardar:", err);
         alert("Ocurrió un error al guardar. Revisa la conexión de Apps Script.");
@@ -498,11 +702,24 @@
 
     function cargarCatalogoPorDefecto() {
       catalogoProductos = [
+        // Hamburguesas
+        { category: "Hamburguesas", name: "Al Vino Burger", detail: "Muchacho al vino, queso crema, cebolla caramelizada + Papas", price: 30000, image: "al vino burguer.jpg" },
+        { category: "Hamburguesas", name: "Bacon Kubrick", detail: "Croqueta de solomillo, tocineta, cheddar, relish + Papas", price: 30000, image: "Bacon cubrick.jpg" },
+        { category: "Hamburguesas", name: "Pollo Crispy", detail: "Pollo crujiente, tocineta, queso crema, vegetales + Papas", price: 30000, image: "Pollo crispy.jpg" },
+        // Restaurant
         { category: "Restaurant", name: "Pasticho Tradicional", detail: "Personal con salsa bolognesa y bechamel", price: 25000, image: "pasticho.jpg" },
         { category: "Restaurant", name: "Churrasco de Solomo", detail: "Solomo madurado + Ensalada + Papas fritas", price: 45000, image: "Churrasco de Solomo.jpg" },
+        { category: "Restaurant", name: "Pechuga a la Meuniér", detail: "Suprema a la meunier + Ensalada + Papas", price: 35000, image: "Pechuga a la Meunier.jpg" },
+        // Pizzas
         { category: "Pizzas", name: "Pizza Margarita", detail: "Queso mozzarella, jamón, cebolla, pimentón", price: 35000, image: "PIZZAS.jpg" },
+        { category: "Pizzas", name: "Pizza Wins", detail: "Mozzarella, pollo, tocineta, maíz, champiñón", price: 55000, image: "PIZZAS.jpg" },
+        // Cócteles
         { category: "Cócteles", name: "Cóctel Laguna Azul", detail: "Vodka, curaçao azul, limón y soda", price: 18000, image: "" },
+        { category: "Cócteles", name: "Cóctel Mojito Cubano", detail: "Ron blanco, hierbabuena fresca, lima", price: 18000, image: "" },
+        // Helados
         { category: "Helados", name: "Helado Flips", detail: "Cremoso con cereal Flips chocolate", price: 12000, image: "FLIPS.jpg" },
+        { category: "Helados", name: "Helado Pirulin", detail: "Barquillas crujientes rellenas de avellana", price: 13000, image: "PIRULIN.jpg" },
+        // Parque
         { category: "Parque", name: "Pase Parque (Tiempo Libre)", detail: "Acceso ilimitado por niño a los 2 niveles + carros", price: 20000, image: "" }
       ];
       renderizarCatalogoEditable();
