@@ -158,7 +158,7 @@
       <div class="bg-[#161824] p-5 rounded-2xl border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
         <div>
           <h2 class="text-xl font-black text-white font-heading">Gestión de Productos, Fotos & Precios</h2>
-          <p class="text-xs text-zinc-400 mt-0.5">Toma fotos en vivo con la cámara o sube desde la galería. Pulsa "Guardar Cambios" para publicarlo en la web del restaurante.</p>
+          <p class="text-xs text-zinc-400 mt-0.5">Toma fotos en vivo con la cámara o sube desde la galería. Pulsa "Guardar Cambios en la Web" para actualizar los precios.</p>
         </div>
 
         <div class="flex items-center gap-2">
@@ -258,7 +258,7 @@
         <div>
           <label class="block text-zinc-400 font-semibold mb-1">Imagen del Producto</label>
           <div class="flex items-center gap-2">
-            <input type="text" id="nuevoImagen" placeholder="Nombre de archivo o toma foto" class="flex-1 bg-black/60 border border-white/15 rounded-xl p-2 text-white text-[11px]">
+            <input type="text" id="nuevoImagen" placeholder="Nombre de archivo, URL o sube foto" class="flex-1 bg-black/60 border border-white/15 rounded-xl p-2 text-white text-[11px]">
             <button type="button" onclick="dispararSubidaParaNuevo()" class="p-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs transition" title="Subir desde archivos">
               <i class="fa-solid fa-folder-open"></i>
             </button>
@@ -291,6 +291,75 @@
   <script>
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
 
+    // Catálogo maestro con fotos de referencia reales
+    const FOTOS_REFERENCIA = {
+      // Hamburguesas
+      "al vino burger": "al vino burguer.jpg",
+      "bacon kubrick": "Bacon cubrick.jpg",
+      "pollo crispy": "Pollo crispy.jpg",
+      // Restaurant
+      "pasticho tradicional": "pasticho.jpg",
+      "churrasco de solomo": "Churrasco de Solomo.jpg",
+      "pechuga a la meuniér": "Pechuga a la Meunier.jpg",
+      "pechuga a la meunier": "Pechuga a la Meunier.jpg",
+      "mar y tierra": "Mar y tierra.jpg",
+      "parrilla mixta": "Parrilla.jpg",
+      "cazuela de mariscos": "Cazuela de Mariscos.jpg",
+      "ceviche peruano": "ceviche peruano.jpg",
+      // Pizzas
+      "pizza margarita": "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?q=80&w=600&auto=format&fit=crop",
+      "pizza hawaina": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=600&auto=format&fit=crop",
+      "pizza italiana": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?q=80&w=600&auto=format&fit=crop",
+      "pizza ranchera": "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?q=80&w=600&auto=format&fit=crop",
+      "pizza wins": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop",
+      "borde de queso adicional": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=600&auto=format&fit=crop",
+      // Cócteles
+      "cóctel laguna azul": "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop",
+      "cóctel mai tai": "https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=600&auto=format&fit=crop",
+      "cóctel mojito cubano": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=600&auto=format&fit=crop",
+      "cóctel cuba libre": "https://images.unsplash.com/photo-1556881286-fc6915169721?q=80&w=600&auto=format&fit=crop",
+      "cóctel laguna roja": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=600&auto=format&fit=crop",
+      // Bebidas
+      "granizado de frutas": "https://images.unsplash.com/photo-1505252585461-04db1eb84625?q=80&w=600&auto=format&fit=crop",
+      "refresco personal": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=600&auto=format&fit=crop",
+      "agua mineral 600ml": "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?q=80&w=600&auto=format&fit=crop",
+      "refresco de litro": "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop",
+      // Helados
+      "helado flips": "FLIPS.jpg",
+      "helado pirulin": "PIRULIN.jpg",
+      "helado oreo": "OREO.jpg",
+      "helado kiwi": "KIWI.jpg",
+      "helado fresa": "FRESA..jpg",
+      "helado guanábana": "GUANABANA.jpg",
+      "helado piña": "PIÑA.jpg",
+      "helado mora": "MORA.jpg",
+      "helado cereza": "CEREZA.jpg",
+      // Parque & Promos
+      "pase parque (tiempo libre)": "https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=600&auto=format&fit=crop",
+      "promo 1# combo burger & parque": "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=600&auto=format&fit=crop",
+      "promo 2# dúo pizza & parque": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop",
+      "promo 3# super familiar festivo": "https://images.unsplash.com/photo-1579684947550-22e945225d9a?q=80&w=600&auto=format&fit=crop"
+    };
+
+    function obtenerFotoReferencia(nombre, cat) {
+      const limpio = (nombre || '').toLowerCase().trim();
+      if (FOTOS_REFERENCIA[limpio]) return FOTOS_REFERENCIA[limpio];
+
+      for (let k in FOTOS_REFERENCIA) {
+        if (limpio.includes(k) || k.includes(limpio)) return FOTOS_REFERENCIA[k];
+      }
+
+      // Fallbacks temáticos si es un producto nuevo sin foto
+      const c = (cat || '').toLowerCase();
+      if (c.includes('burger') || c.includes('hamburguesa')) return "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600&auto=format&fit=crop";
+      if (c.includes('pizza')) return "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop";
+      if (c.includes('coctel') || c.includes('cóctel')) return "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop";
+      if (c.includes('helado')) return "https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=600&auto=format&fit=crop";
+      if (c.includes('bebida')) return "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=600&auto=format&fit=crop";
+      if (c.includes('parque')) return "https://images.unsplash.com/photo-1596838132731-3301c3fd4317?q=80&w=600&auto=format&fit=crop";
+      return "Churrasco de Solomo.jpg";
+    }
+
     let rawVentas = [];
     let catalogoProductos = [];
     let categoriaActivaMenu = 'todos';
@@ -305,7 +374,7 @@
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    // Normalizador universal de fechas (resuelve ISO, DD/MM/AAAA y desfases)
+    // Normalizador universal de fechas (resuelve desfase de ISO y formato DD/MM/AAAA)
     function normalizarFecha(val) {
       if (!val) return '';
       const str = String(val).trim();
@@ -349,7 +418,7 @@
         osc2.start(audioCtx.currentTime + 0.2);
         osc2.stop(audioCtx.currentTime + 0.9);
       } catch (e) {
-        console.warn("AudioContext bloqueado:", e);
+        console.warn("AudioContext:", e);
       }
     }
 
@@ -382,7 +451,7 @@
       if (timerAutoSync) clearInterval(timerAutoSync);
     }
 
-    // Fija la fecha exacta local (sin el salto de día de toISOString)
+    // Fija la fecha local exacta de Venezuela
     function establecerFechaHoy() {
       const ahora = new Date();
       const y = ahora.getFullYear();
@@ -435,7 +504,10 @@
 
           rawVentas = nuevasVentas;
           if (Array.isArray(data.catalogo) && data.catalogo.length > 0) {
-            catalogoProductos = data.catalogo;
+            catalogoProductos = data.catalogo.map(p => ({
+              ...p,
+              image: p.image || obtenerFotoReferencia(p.name, p.category)
+            }));
           }
 
           aplicarFiltrosVentas();
@@ -444,7 +516,7 @@
           }
 
           if (manual) {
-            alert(`¡Sincronizado! Se cargaron ${rawVentas.length} registros de ventas.`);
+            alert(`¡Sincronizado! Se cargaron ${rawVentas.length} registros de comandas.`);
           }
         }
       } catch (err) {
@@ -561,8 +633,7 @@
 
       container.innerHTML = lista.map((p) => {
         const indexReal = catalogoProductos.indexOf(p);
-        const imagenValida = p.image && (p.image.startsWith('data:') || p.image.startsWith('http') || p.image.includes('.jpg') || p.image.includes('.png'));
-        const srcFoto = imagenValida ? p.image : 'Churrasco de Solomo.jpg';
+        const srcFoto = p.image || obtenerFotoReferencia(p.name, p.category);
 
         return `
           <div class="bg-[#161824] border border-white/10 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-lg">
@@ -604,8 +675,8 @@
             </div>
 
             <div class="flex items-center justify-between pt-1">
-              <span class="text-[9px] text-zinc-500">
-                ${p.image && p.image.startsWith('data:') ? '📸 Foto tomada en vivo' : (p.image || 'Sin imagen')}
+              <span class="text-[9px] text-zinc-500 truncate max-w-[200px]">
+                ${p.image && p.image.startsWith('data:') ? '📸 Foto en Base64' : (p.image || 'Referencia estándar')}
               </span>
               <button onclick="eliminarProductoCatalogo(${indexReal})" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 transition cursor-pointer">
                 <i class="fa-solid fa-trash-can"></i> Eliminar
@@ -767,7 +838,7 @@
       const nom = document.getElementById('nuevoNombre').value.trim();
       const det = document.getElementById('nuevoDetalle').value.trim();
       const pre = Number(document.getElementById('nuevoPrecio').value) || 0;
-      const img = document.getElementById('nuevoImagen').value.trim();
+      const img = document.getElementById('nuevoImagen').value.trim() || obtenerFotoReferencia(nom, cat);
 
       if (!nom || pre <= 0) {
         alert("Ingresa al menos el nombre y un precio válido.");
