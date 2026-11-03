@@ -108,8 +108,8 @@
           <button onclick="mostrarSeccion('promos')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
             <i class="fa-solid fa-gift mr-1 text-red-500"></i> Navidad
           </button>
-          <button onclick="mostrarSeccion('hamburguesas')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-orange-400 hover:bg-orange-500/20 transition-colors cursor-pointer">
-            <i class="fa-solid fa-burger mr-1 text-amber-500"></i> Hamburguesas
+          <button onclick="mostrarSeccion('hamburguesas')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
+            <i class="fa-solid fa-burger mr-1 text-orange-500"></i> Hamburguesas
           </button>
           <button onclick="mostrarSeccion('restaurant')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
             <i class="fa-solid fa-utensils mr-1 text-amber-500"></i> Restaurant
@@ -152,7 +152,6 @@
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       
-      <!-- Logotipo de Bienvenida en gran formato -->
       <div class="flex justify-center mb-6">
         <img 
           src="LOGO HAARU BLANCO.png" 
@@ -175,7 +174,6 @@
       <!-- Selector de Experiencia -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4 max-w-7xl mx-auto">
         
-        <!-- Tarjeta Promos Navidad -->
         <button 
           onclick="mostrarSeccion('promos')"
           class="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-red-950/40 to-brand-card border border-red-500/50 p-4 text-left hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
@@ -187,7 +185,6 @@
           <p class="text-[10px] text-zinc-400 mt-0.5">Navideñas</p>
         </button>
 
-        <!-- Tarjeta Hamburguesas -->
         <button 
           onclick="mostrarSeccion('hamburguesas')"
           class="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-amber-950/40 to-brand-card border border-amber-500/50 p-4 text-left hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
@@ -199,7 +196,6 @@
           <p class="text-[10px] text-amber-400 font-semibold mt-0.5">Solomillo & Pollo</p>
         </button>
 
-        <!-- Tarjeta Restaurant -->
         <button 
           onclick="mostrarSeccion('restaurant')"
           class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-amber-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
@@ -211,7 +207,6 @@
           <p class="text-[10px] text-zinc-400 mt-0.5">Cortes & Pasticho</p>
         </button>
 
-        <!-- Tarjeta Pizzas -->
         <button 
           onclick="mostrarSeccion('pizzas')"
           class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-red-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
@@ -223,7 +218,6 @@
           <p class="text-[10px] text-zinc-400 mt-0.5">Borde de Queso</p>
         </button>
 
-        <!-- Tarjeta Bebidas & Cócteles -->
         <button 
           onclick="mostrarSeccion('bebidas')"
           class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-cyan-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
@@ -235,7 +229,6 @@
           <p class="text-[10px] text-zinc-400 mt-0.5">Cócteles 18K</p>
         </button>
 
-        <!-- Tarjeta Heladería -->
         <button 
           onclick="mostrarSeccion('heladeria')"
           class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-pink-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
@@ -247,7 +240,6 @@
           <p class="text-[10px] text-zinc-400 mt-0.5">Toppings & Fruta</p>
         </button>
 
-        <!-- Tarjeta Parque -->
         <button 
           onclick="mostrarSeccion('parque')"
           class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-blue-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
@@ -277,7 +269,7 @@
             Promos Especiales de Navidad
           </h2>
           <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            Combos completos diseñados para compartir que incluyen comida, postre, bebidas y entrada al parque.
+            Combos completos que incluyen comida, postre, bebidas y entrada al parque.
           </p>
         </div>
         <div class="text-xs text-amber-400 font-bold bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl flex items-center gap-2">
@@ -286,7 +278,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8" id="grid-promos">
-        <!-- Renderizado dinámico vía JavaScript -->
+        <!-- Inyectado vía JS -->
       </div>
     </section>
 
@@ -310,16 +302,16 @@
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-hamburguesas">
-        <!-- Renderizado dinámico de Burgers -->
+        <!-- Inyectado vía JS -->
       </div>
     </section>
 
-    <!-- ================= SECCIÓN 2: RESTAURANT GOURMET ================= -->
+    <!-- ================= SECCIÓN 2: RESTAURANT GOURMET (SIN BURGERS) ================= -->
     <section id="sec-restaurant" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold uppercase tracking-wider mb-2">
-            <i class="fa-solid fa-fire"></i> Cocina de Autor, Cortes & Mariscos
+            <i class="fa-solid fa-fire"></i> Cocina de Autor, Cortes & Brasas
           </div>
           <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
             Cartelera de Platos
@@ -339,8 +331,8 @@
           <span class="bg-brand-orange text-white text-xs font-black uppercase px-3 py-1 rounded-md tracking-wider">
             Plato Insignia
           </span>
-          <h3 id="hero-plato-titulo" class="text-3xl sm:text-4xl font-black text-white font-heading">Churrasco de Solomo</h3>
-          <p id="hero-plato-desc" class="text-zinc-300 text-sm sm:text-base leading-relaxed">
+          <h3 class="text-3xl sm:text-4xl font-black text-white font-heading">Churrasco de Solomo</h3>
+          <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">
             Corte tierno y jugoso de solomo madurado a la brasa con el término exacto del chef, acompañado de ensalada fresca de la casa y crujientes papas fritas doradas.
           </p>
           <div class="flex items-center gap-4 text-xs text-zinc-400 pt-1">
@@ -349,9 +341,9 @@
             <span class="text-green-400 font-bold"><i class="fa-solid fa-leaf mr-1"></i> Ingredientes frescos</span>
           </div>
           <div class="pt-4 flex items-center gap-4">
-            <div id="hero-plato-precio" class="text-3xl font-black text-amber-400 font-heading">$45.000 <span class="text-xs text-zinc-400 font-normal">COP</span></div>
+            <div class="text-3xl font-black text-amber-400 font-heading">$45.000 <span class="text-xs text-zinc-400 font-normal">COP</span></div>
             <button 
-              onclick="ordenarHeroPlato()"
+              onclick="agregarPlatoSimple('Churrasco de Solomo', 45000, 'Churrasco de Solomo + Ensalada de la casa + Papas fritas')"
               class="bg-white hover:bg-zinc-200 text-brand-dark font-extrabold px-6 py-3 rounded-2xl flex items-center gap-2 active:scale-95 transition-all shadow-lg cursor-pointer"
             >
               <i class="fa-solid fa-plus"></i> Ordenar Plato
@@ -360,14 +352,13 @@
         </div>
         <div class="w-full lg:w-1/2 relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-brand-border/80 group">
           <img 
-            id="hero-plato-img"
             src="Churrasco de Solomo.jpg" 
             alt="Churrasco de Solomo" 
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1000&auto=format&fit=crop'"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
-            <span id="hero-plato-badge" class="text-xs font-semibold text-zinc-200 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
+            <span class="text-xs font-semibold text-zinc-200 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
               Churrasco de Solomo + Ensalada 45K
             </span>
           </div>
@@ -376,7 +367,7 @@
 
       <!-- Cuadrícula de Platos Restaurant -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-restaurant">
-        <!-- Renderizado dinámico vía JavaScript -->
+        <!-- Inyectado vía JS -->
       </div>
     </section>
 
@@ -396,7 +387,6 @@
         </div>
       </div>
 
-      <!-- Banner de la Pizza -->
       <div class="relative overflow-hidden rounded-3xl bg-brand-card border border-brand-border h-64 sm:h-80 shadow-2xl flex items-center">
         <img 
           src="PIZZAS.jpg" 
@@ -418,7 +408,7 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-pizzas">
-        <!-- Renderizado dinámico vía JavaScript -->
+        <!-- Inyectado vía JS -->
       </div>
     </section>
 
@@ -443,7 +433,7 @@
 
       <div class="space-y-4">
         <h3 class="text-xl font-black text-white font-heading flex items-center gap-2">
-          <i class="fa-solid fa-cocktail text-cyan-400"></i> Cócteles de la Casa
+          <i class="fa-solid fa-cocktail text-cyan-400"></i> Cócteles de la Casa (18.000 COP)
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="grid-cocteles">
           <!-- Inyectado vía JS -->
@@ -477,7 +467,7 @@
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-helados">
-        <!-- Renderizado dinámico vía JavaScript -->
+        <!-- Inyectado vía JS -->
       </div>
     </section>
 
@@ -544,7 +534,7 @@
 
           <div class="lg:col-span-5 bg-black/40 border border-brand-border p-6 sm:p-8 rounded-3xl text-center flex flex-col justify-center items-center shadow-inner">
             <span class="text-xs uppercase tracking-widest text-zinc-400 font-bold mb-2">Entrada por Niño</span>
-            <div id="parque-tarifa-display" class="text-4xl sm:text-5xl font-black text-white font-heading mb-1">
+            <div class="text-4xl sm:text-5xl font-black text-white font-heading mb-1">
               $20.000 <span class="text-sm font-semibold text-zinc-400">COP</span>
             </div>
             <p class="text-xs text-blue-400 font-bold mb-6">Incluye 2 Niveles + Carros Eléctricos (Tiempo Libre)</p>
@@ -649,14 +639,15 @@
       </div>
 
       <button 
-        onclick="enviarPedidoWhatsApp()" 
+        id="btnEnviarPedidoWhatsApp"
+        onclick="enviarPedidoWhatsApp(event)" 
         class="w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white font-black py-4 rounded-2xl shadow-xl shadow-green-600/25 flex items-center justify-center gap-3 text-base uppercase tracking-wider active:scale-95 transition-all cursor-pointer"
       >
         <i class="fa-brands fa-whatsapp text-2xl"></i> Enviar Pedido a WhatsApp
       </button>
 
       <p class="text-[11px] text-center text-zinc-500 leading-tight">
-        Se enviará tu comanda a WhatsApp y se sincronizará automáticamente en la base de datos de control de ventas.
+        Se registrará la comanda en la base de datos central antes de abrir WhatsApp.
       </p>
     </div>
   </aside>
@@ -710,8 +701,8 @@
   <script>
     const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
 
-    // ================= DATA LOCAL DE RESPALDO =================
-    let promosNavidadData = [
+    // ================= 1. PROMOS DE NAVIDAD =================
+    const promosNavidadData = [
       {
         id: 'promo-1',
         numero: '1#',
@@ -738,8 +729,8 @@
       }
     ];
 
-    // HAMBURGUESAS (SECCIÓN INDEPENDIENTE)
-    let burgersData = [
+    // ================= 2. HAMBURGUESAS GOURMET (SECCIÓN INDEPENDIENTE) =================
+    const burgersData = [
       {
         id: 'vino-burger',
         title: 'Al Vino Burger',
@@ -769,8 +760,8 @@
       }
     ];
 
-    // RESTAURANT GOURMET (SIN HAMBURGUESAS)
-    let dishesData = [
+    // ================= 3. RESTAURANT GOURMET =================
+    const dishesData = [
       {
         id: 'pasticho',
         title: 'Pasticho Tradicional',
@@ -850,7 +841,8 @@
       }
     ];
 
-    let pizzasData = [
+    // ================= 4. PIZZAS ARTESANALES =================
+    const pizzasData = [
       {
         id: 'pizza-margarita',
         name: 'Pizza Margarita',
@@ -888,7 +880,8 @@
       }
     ];
 
-    let coctelesData = [
+    // ================= 5. CÓCTELES Y BEBIDAS =================
+    const coctelesData = [
       { id: 'laguna-azul', name: 'Laguna Azul', desc: 'Vodka, curaçao azul, limón y soda refrescante.', price: 18000 },
       { id: 'mai-tai', name: 'Mai Tai', desc: 'Ron añejo y blanco, licor de naranja, amaretto y jugo tropical.', price: 18000 },
       { id: 'mojito-cubano', name: 'Mojito Cubano', desc: 'Ron blanco, hierbabuena fresca, azúcar de caña y lima.', price: 18000 },
@@ -896,14 +889,15 @@
       { id: 'laguna-roja', name: 'Laguna Roja', desc: 'Bebida vibrante de frutos rojos, vodka y licor dulce.', price: 18000 }
     ];
 
-    let bebidasData = [
+    const bebidasData = [
       { id: 'granizado', name: 'Granizado de Frutas', detail: 'Frappé con pulpa fresca a elección', price: 10000, icon: 'fa-blender' },
       { id: 'refresco-personal', name: 'Refresco Personal', detail: 'Botella individual fría', price: 5000, icon: 'fa-bottle-droplet' },
       { id: 'agua-mineral', name: 'Agua Mineral 600ml', detail: 'Agua pura sin gas', price: 5000, icon: 'fa-bottle-water' },
       { id: 'refresco-litro', name: 'Refresco de Litro', detail: 'Formato familiar para compartir', price: 10000, icon: 'fa-champagne-glasses' }
     ];
 
-    let heladosData = [
+    // ================= 6. HELADOS =================
+    const heladosData = [
       {
         id: 'flips',
         name: 'Flips',
@@ -1002,13 +996,6 @@
       }
     ];
 
-    let precioParqueActual = 20000;
-    let heroPlatoActual = {
-      nombre: "Churrasco de Solomo",
-      precio: 45000,
-      detalle: "Churrasco de Solomo madurado + Ensalada de la casa + Papas fritas"
-    };
-
     let cart = [];
     let parqueCant = 1;
 
@@ -1016,159 +1003,9 @@
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    // ================= SINCRONIZACIÓN DE MENÚ EN VIVO CON GOOGLE SHEETS =================
-    async function sincronizarMenuEnVivo() {
-      try {
-        const respuesta = await fetch(`${GOOGLE_SHEETS_WEBHOOK_URL}?tipo=catalogo&t=${Date.now()}`);
-        const data = await respuesta.json();
-
-        if (data.status === "success" && Array.isArray(data.catalogo) && data.catalogo.length > 0) {
-          const cat = data.catalogo;
-
-          // 1. Parque
-          const itemParque = cat.find(x => (x.category || '').toLowerCase() === 'parque');
-          if (itemParque && itemParque.price > 0) {
-            precioParqueActual = itemParque.price;
-            const elTarifa = document.getElementById('parque-tarifa-display');
-            if (elTarifa) {
-              elTarifa.innerHTML = `${formatCOP(precioParqueActual)} <span class="text-sm font-semibold text-zinc-400">COP</span>`;
-            }
-          }
-
-          // 2. Hamburguesas
-          const itemsBurgers = cat.filter(x => (x.category || '').toLowerCase() === 'hamburguesas');
-          if (itemsBurgers.length > 0) {
-            burgersData = itemsBurgers.map((b, idx) => {
-              const localEx = burgersData.find(x => x.title.toLowerCase() === b.name.toLowerCase()) || {};
-              return {
-                id: localEx.id || ('burger-dyn-' + idx),
-                title: b.name,
-                file: b.image || localEx.file || 'al vino burguer.jpg',
-                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
-                subtitle: b.detail || localEx.subtitle || `${b.name} ${formatCOP(b.price)}`,
-                ingredients: b.detail || localEx.ingredients || '',
-                price: Number(b.price) || 30000
-              };
-            });
-            renderHamburguesas();
-          }
-
-          // 3. Restaurant
-          const itemsRest = cat.filter(x => (x.category || '').toLowerCase() === 'restaurant');
-          if (itemsRest.length > 0) {
-            const churrascoItem = itemsRest.find(x => x.name.toLowerCase().includes('solomo') || x.name.toLowerCase().includes('churrasco'));
-            if (churrascoItem) {
-              heroPlatoActual.nombre = churrascoItem.name;
-              heroPlatoActual.precio = churrascoItem.price;
-              heroPlatoActual.detalle = churrascoItem.detail || heroPlatoActual.detalle;
-              
-              const hTitle = document.getElementById('hero-plato-titulo');
-              const hPre = document.getElementById('hero-plato-precio');
-              const hDesc = document.getElementById('hero-plato-desc');
-              const hBadge = document.getElementById('hero-plato-badge');
-              const hImg = document.getElementById('hero-plato-img');
-
-              if (hTitle) hTitle.innerText = churrascoItem.name;
-              if (hPre) hPre.innerHTML = `${formatCOP(churrascoItem.price)} <span class="text-xs text-zinc-400 font-normal">COP</span>`;
-              if (hDesc && churrascoItem.detail) hDesc.innerText = churrascoItem.detail;
-              if (hBadge) hBadge.innerText = `${churrascoItem.name} ${formatCOP(churrascoItem.price)}`;
-              if (hImg && churrascoItem.image) hImg.src = churrascoItem.image;
-            }
-
-            dishesData = itemsRest.map((item, idx) => {
-              const localExistente = dishesData.find(d => d.title.toLowerCase() === item.name.toLowerCase()) || {};
-              return {
-                id: localExistente.id || ('dish-dyn-' + idx),
-                title: item.name,
-                file: item.image || localExistente.file || 'Churrasco de Solomo.jpg',
-                fallback: localExistente.fallback || 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
-                subtitle: item.detail || localExistente.subtitle || `${item.name} ${formatCOP(item.price)}`,
-                ingredients: item.detail || localExistente.ingredients || '',
-                price: Number(item.price) || 35000,
-                type: localExistente.type || 'simple',
-                portions: localExistente.portions || null
-              };
-            });
-            renderRestaurant();
-          }
-
-          // 4. Promos Navidad
-          const itemsNav = cat.filter(x => (x.category || '').toLowerCase() === 'navidad');
-          if (itemsNav.length > 0) {
-            promosNavidadData = itemsNav.map((item, idx) => {
-              const localEx = promosNavidadData[idx] || {};
-              const bulletItems = item.detail ? item.detail.split('+').map(s => s.trim()) : (localEx.items || []);
-              return {
-                id: localEx.id || ('promo-dyn-' + idx),
-                numero: localEx.numero || `${idx + 1}#`,
-                title: item.name,
-                items: bulletItems.length > 0 ? bulletItems : ['Plato principal', 'Papas fritas', 'Bebida', 'Entrada al parque'],
-                price: Number(item.price) || 40000,
-                badge: localEx.badge || 'Edición Navidad'
-              };
-            });
-            renderPromosNavidad();
-          }
-
-          // 5. Cócteles y Bebidas
-          const itemsCoctel = cat.filter(x => (x.category || '').toLowerCase() === 'cócteles');
-          if (itemsCoctel.length > 0) {
-            coctelesData = itemsCoctel.map((c, idx) => ({
-              id: 'coctel-dyn-' + idx,
-              name: c.name,
-              desc: c.detail || 'Preparación especial con hielo frappé y licores selectos.',
-              price: Number(c.price) || 18000
-            }));
-          }
-
-          const itemsBeb = cat.filter(x => (x.category || '').toLowerCase() === 'bebidas');
-          if (itemsBeb.length > 0) {
-            bebidasData = itemsBeb.map((b, idx) => {
-              const localEx = bebidasData.find(x => x.name.toLowerCase() === b.name.toLowerCase()) || {};
-              return {
-                id: 'beb-dyn-' + idx,
-                name: b.name,
-                detail: b.detail || 'Bebida fría',
-                price: Number(b.price) || 5000,
-                icon: localEx.icon || 'fa-bottle-water'
-              };
-            });
-          }
-          renderBebidasYCocteles();
-
-          // 6. Helados
-          const itemsHel = cat.filter(x => (x.category || '').toLowerCase() === 'helados');
-          if (itemsHel.length > 0) {
-            heladosData = itemsHel.map((h, idx) => {
-              const localEx = heladosData.find(x => x.name.toLowerCase() === h.name.toLowerCase()) || {};
-              return {
-                id: localEx.id || ('ice-dyn-' + idx),
-                name: h.name,
-                file: h.image || localEx.file || 'FLIPS.jpg',
-                altFile: localEx.altFile || '',
-                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop',
-                type: localEx.type || 'special',
-                price: Number(h.price) || 12000,
-                clasico: Number(h.price) || 12000,
-                junior: Math.round(Number(h.price) * 0.75) || 9000,
-                desc: h.detail || localEx.desc || 'Helado suave artesanal con ingredientes frescos.'
-              };
-            });
-            renderHelados();
-          }
-
-          console.log("Menú Haaru Park sincronizado en vivo desde Google Sheets.");
-        }
-      } catch (err) {
-        console.warn("Usando catálogo de respaldo:", err);
-      }
-    }
-
-    // ================= RENDERIZADO: HAMBURGUESAS (NUEVO) =================
+    // ================= RENDERIZADO: HAMBURGUESAS (SECCIÓN INDEPENDIENTE) =================
     function renderHamburguesas() {
       const container = document.getElementById('grid-hamburguesas');
-      if (!container) return;
-
       container.innerHTML = burgersData.map(b => `
         <div class="poster-card rounded-3xl bg-brand-card border border-brand-border overflow-hidden flex flex-col justify-between shadow-xl">
           <div class="relative h-60 w-full overflow-hidden bg-black/40">
@@ -1372,10 +1209,6 @@
           </div>
         `;
       }).join('');
-    }
-
-    function ordenarHeroPlato() {
-      agregarPlatoSimple(heroPlatoActual.nombre, heroPlatoActual.precio, heroPlatoActual.detalle);
     }
 
     // ================= RENDERIZADO: PIZZAS =================
@@ -1689,7 +1522,7 @@
     }
 
     function agregarPaseParque() {
-      const total = precioParqueActual * parqueCant;
+      const total = 20000 * parqueCant;
       cart.push({
         id: 'parque-' + Date.now(),
         name: `Pase Parque (${parqueCant} ${parqueCant === 1 ? 'Niño' : 'Niños'})`,
@@ -1705,7 +1538,6 @@
       showToast('¡Pases del parque (Tiempo Libre) agregados!');
     }
 
-    // Modal para platos con porciones (Parrillas, Cazuelas)
     function abrirModalPlato(dishId) {
       const d = dishesData.find(x => x.id === dishId);
       const modal = document.getElementById('dish-modal');
@@ -1854,7 +1686,6 @@
               </button>
             </div>
 
-            <!-- Cajita de Sugerencia Especial por Producto -->
             <div class="pt-1.5">
               <input 
                 type="text" 
@@ -1872,8 +1703,8 @@
       totalEl.innerText = formatCOP(total);
     }
 
-    // ================= ENLACE A WHATSAPP Y SINCRONIZACIÓN CON GOOGLE SHEETS =================
-    function enviarPedidoWhatsApp() {
+    // ================= ENVÍO ASEGURADO A SHEETS Y APERTURA DE WHATSAPP =================
+    async function enviarPedidoWhatsApp(e) {
       if (cart.length === 0) {
         alert('Agrega al menos un producto a la comanda antes de enviar.');
         return;
@@ -1888,12 +1719,17 @@
         return;
       }
 
+      const btn = document.getElementById('btnEnviarPedidoWhatsApp');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-xl"></i> Registrando Comanda...`;
+      btn.disabled = true;
+
       let total = 0;
       cart.forEach(item => { total += item.price; });
 
       const idComandaGenerado = "CMD-" + Math.floor(1000 + Math.random() * 9000);
 
-      // Sincronización con Google Sheets en segundo plano
+      // Enviar a Google Sheets esperando confirmación de salida
       if (typeof GOOGLE_SHEETS_WEBHOOK_URL !== 'undefined' && GOOGLE_SHEETS_WEBHOOK_URL.startsWith('http')) {
         const payload = {
           idComanda: idComandaGenerado,
@@ -1903,15 +1739,23 @@
           total: total
         };
 
-        fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        }).catch(err => console.warn("Error enviando datos a Google Sheets:", err));
+        try {
+          await Promise.race([
+            fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+              method: "POST",
+              mode: "no-cors",
+              keepalive: true,
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              body: JSON.stringify(payload)
+            }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 2000))
+          ]);
+        } catch (err) {
+          console.warn("Aviso de conexión con Google Sheets:", err);
+        }
       }
 
-      // Mensaje de WhatsApp
+      // Construcción del mensaje para WhatsApp
       let mensaje = `*¡HOLA HAARU PARK! QUIERO REALIZAR ESTE PEDIDO:*%0A%0A`;
       mensaje += `🎟️ *N° Comanda:* ${idComandaGenerado}%0A`;
       mensaje += `👤 *Cliente:* ${encodeURIComponent(nombreCliente)}%0A`;
@@ -1937,7 +1781,11 @@
 
       const telefonoDestino = "584129315743";
       const url = `https://wa.me/${telefonoDestino}?text=${mensaje}`;
-      window.open(url, '_blank');
+
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+
+      window.location.href = url;
     }
 
     // ================= FILTRO Y NAVEGACIÓN =================
@@ -1984,8 +1832,6 @@
       renderBebidasYCocteles();
       renderHelados();
       renderCart();
-
-      sincronizarMenuEnVivo();
     });
   </script>
 </body>
