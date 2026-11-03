@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <!-- Selector de Pestañas -->
+      <!-- Pestañas Principales -->
       <div class="flex bg-black/50 p-1 rounded-xl border border-white/10 text-xs">
         <button onclick="cambiarVista('comandas')" id="btn-tab-comandas" class="px-4 py-2 rounded-lg font-bold transition-all bg-orange-600 text-white cursor-pointer">
           <i class="fa-solid fa-receipt mr-1.5"></i> Comandas & Caja
@@ -54,9 +54,9 @@
         </button>
       </div>
 
-      <!-- Controles de Sincronización y Audio -->
+      <!-- Controles de Actualización -->
       <div class="flex items-center gap-2">
-        <button onclick="toggleAutoSync()" id="btnAutoSync" class="bg-white/10 hover:bg-white/20 text-emerald-400 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-white/15 transition cursor-pointer" title="Auto-actualización cada 15 segundos">
+        <button onclick="toggleAutoSync()" id="btnAutoSync" class="bg-white/10 hover:bg-white/20 text-emerald-400 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-white/15 transition cursor-pointer" title="Auto-actualizar cada 15 segundos">
           <i class="fa-solid fa-tower-broadcast animate-pulse"></i>
           <span class="hidden md:inline">Auto (15s)</span>
         </button>
@@ -171,7 +171,7 @@
         </div>
       </div>
 
-      <!-- Barra de Filtro de Categoría -->
+      <!-- Filtro de Categoría -->
       <div class="flex flex-wrap gap-2 text-xs" id="filtrosCategoriasMenu">
         <button onclick="filtrarCatalogo('todos')" class="cat-btn active bg-orange-600 text-white px-3.5 py-1.5 rounded-xl font-bold cursor-pointer">Todos</button>
         <button onclick="filtrarCatalogo('Hamburguesas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Hamburguesas</button>
@@ -192,7 +192,7 @@
 
   </main>
 
-  <!-- ================= MODAL DE CÁMARA EN VIVO ================= -->
+  <!-- ================= MODAL DE CÁMARA ================= -->
   <div id="modalCamara" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-[#161824] border border-white/15 rounded-3xl max-w-lg w-full p-5 space-y-4 shadow-2xl flex flex-col items-center">
       <div class="w-full flex items-center justify-between border-b border-white/10 pb-3">
@@ -258,7 +258,7 @@
         <div>
           <label class="block text-zinc-400 font-semibold mb-1">Imagen del Producto</label>
           <div class="flex items-center gap-2">
-            <input type="text" id="nuevoImagen" placeholder="Nombre de archivo, URL o sube foto" class="flex-1 bg-black/60 border border-white/15 rounded-xl p-2 text-white text-[11px]">
+            <input type="text" id="nuevoImagen" placeholder="Nombre de archivo o toma foto" class="flex-1 bg-black/60 border border-white/15 rounded-xl p-2 text-white text-[11px]">
             <button type="button" onclick="dispararSubidaParaNuevo()" class="p-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs transition" title="Subir desde archivos">
               <i class="fa-solid fa-folder-open"></i>
             </button>
@@ -297,7 +297,6 @@
     let indiceProductoFotoActivo = null;
     let streamCamaraActivo = null;
 
-    // Control de auto-sincronización y alertas sonoras
     let timerAutoSync = null;
     let autoSyncActivo = true;
     let totalComandasConocidas = 0;
@@ -306,16 +305,32 @@
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    // Alarma Sonora sintética (Ding-Dong de Restaurante)
+    // Normalizador universal de fechas (resuelve ISO, DD/MM/AAAA y desfases)
+    function normalizarFecha(val) {
+      if (!val) return '';
+      const str = String(val).trim();
+
+      const mIso = str.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+      if (mIso) {
+        return `${mIso[1]}-${mIso[2].padStart(2, '0')}-${mIso[3].padStart(2, '0')}`;
+      }
+
+      const mLatam = str.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
+      if (mLatam) {
+        return `${mLatam[3]}-${mLatam[2].padStart(2, '0')}-${mLatam[1].padStart(2, '0')}`;
+      }
+
+      return str.split('T')[0];
+    }
+
     function reproducirAlarmaComanda() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
-        // Tono 1 (Agudo)
         const osc1 = audioCtx.createOscillator();
         const gain1 = audioCtx.createGain();
         osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+        osc1.frequency.setValueAtTime(880, audioCtx.currentTime);
         gain1.gain.setValueAtTime(0.3, audioCtx.currentTime);
         gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
         osc1.connect(gain1);
@@ -323,11 +338,10 @@
         osc1.start();
         osc1.stop(audioCtx.currentTime + 0.5);
 
-        // Tono 2 (Grave)
         const osc2 = audioCtx.createOscillator();
         const gain2 = audioCtx.createGain();
         osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(587.33, audioCtx.currentTime + 0.2); // D5
+        osc2.frequency.setValueAtTime(587.33, audioCtx.currentTime + 0.2);
         gain2.gain.setValueAtTime(0.35, audioCtx.currentTime + 0.2);
         gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.9);
         osc2.connect(gain2);
@@ -335,7 +349,7 @@
         osc2.start(audioCtx.currentTime + 0.2);
         osc2.stop(audioCtx.currentTime + 0.9);
       } catch (e) {
-        console.warn("AudioContext no habilitado aún en el navegador:", e);
+        console.warn("AudioContext bloqueado:", e);
       }
     }
 
@@ -368,9 +382,13 @@
       if (timerAutoSync) clearInterval(timerAutoSync);
     }
 
+    // Fija la fecha exacta local (sin el salto de día de toISOString)
     function establecerFechaHoy() {
-      const hoy = new Date().toISOString().split('T')[0];
-      document.getElementById('filtroFecha').value = hoy;
+      const ahora = new Date();
+      const y = ahora.getFullYear();
+      const m = String(ahora.getMonth() + 1).padStart(2, '0');
+      const d = String(ahora.getDate()).padStart(2, '0');
+      document.getElementById('filtroFecha').value = `${y}-${m}-${d}`;
       aplicarFiltrosVentas();
     }
 
@@ -410,7 +428,6 @@
         if (data.status === "success") {
           const nuevasVentas = data.ventas || [];
 
-          // Detección de nueva comanda entrante
           if (totalComandasConocidas > 0 && nuevasVentas.length > totalComandasConocidas) {
             reproducirAlarmaComanda();
           }
@@ -427,10 +444,8 @@
           }
 
           if (manual) {
-            alert(`¡Sincronizado! Se encontraron ${rawVentas.length} registros de ventas.`);
+            alert(`¡Sincronizado! Se cargaron ${rawVentas.length} registros de ventas.`);
           }
-        } else {
-          throw new Error(data.error || "Error al leer datos");
         }
       } catch (err) {
         console.warn("Aviso de sincronización:", err);
@@ -440,13 +455,12 @@
     }
 
     function aplicarFiltrosVentas() {
-      const fechaFiltro = document.getElementById('filtroFecha').value;
+      const fechaFiltro = normalizarFecha(document.getElementById('filtroFecha').value);
       const busqueda = document.getElementById('filtroBusqueda').value.toLowerCase().trim();
 
       const filtradas = rawVentas.filter(v => {
-        // Normalización de fecha para evitar desfases
-        const fechaVentaLimpia = (v.fecha || "").split("T")[0].trim();
-        const coincideFecha = !fechaFiltro || fechaVentaLimpia === fechaFiltro;
+        const fechaVenta = normalizarFecha(v.fecha);
+        const coincideFecha = !fechaFiltro || fechaVenta === fechaFiltro;
 
         const coincideBusqueda = 
           (v.cliente || "").toLowerCase().includes(busqueda) ||
@@ -474,21 +488,20 @@
       document.getElementById('kpiNumComandas').innerText = numComandas;
       document.getElementById('kpiItemsTotal').innerText = totalItems;
       document.getElementById('kpiTicketPromedio').innerText = formatCOP(ticketPromedio);
-      document.getElementById('conteoRegistros').innerText = `${filtradas.length} ítems en comanda`;
+      document.getElementById('conteoRegistros').innerText = `${filtradas.length} ítems`;
 
       const tbody = document.getElementById('tablaComandasBody');
       if (filtradas.length === 0) {
         tbody.innerHTML = `
           <tr>
             <td colspan="9" class="text-center py-10 text-zinc-500">
-              No hay comandas registradas para esta fecha. 
+              No hay comandas registradas para la fecha seleccionada (${fechaFiltro || 'todas'}).
               <button onclick="limpiarFiltroFecha()" class="text-orange-400 underline font-bold ml-1 cursor-pointer">Ver todas las fechas</button>
             </td>
           </tr>`;
         return;
       }
 
-      // Orden descendente (las más recientes arriba)
       const ordenadas = [...filtradas].reverse();
 
       tbody.innerHTML = ordenadas.map(v => {
@@ -499,7 +512,7 @@
           <tr class="hover:bg-white/5 transition">
             <td class="py-3 px-4 font-mono text-[11px] text-zinc-400">
               <div>${v.hora || "--:--"}</div>
-              <span class="text-[9px] text-zinc-500">${v.fecha || ""}</span>
+              <span class="text-[9px] text-zinc-500">${normalizarFecha(v.fecha)}</span>
             </td>
             <td class="py-3 px-4 font-mono font-bold text-orange-400">${v.idComanda}</td>
             <td class="py-3 px-4">
@@ -536,7 +549,10 @@
 
     function renderizarCatalogoEditable() {
       const container = document.getElementById('contenedorCatalogoEditable');
-      const lista = catalogoProductos.filter(p => categoriaActivaMenu === 'todos' || p.category === categoriaActivaMenu);
+      const lista = catalogoProductos.filter(p => {
+        if (categoriaActivaMenu === 'todos') return true;
+        return (p.category || '').toLowerCase() === categoriaActivaMenu.toLowerCase();
+      });
 
       if (lista.length === 0) {
         container.innerHTML = `<div class="col-span-full text-center py-12 text-zinc-500">No hay productos en esta categoría. Agrega uno con el botón superior.</div>`;
@@ -589,7 +605,7 @@
 
             <div class="flex items-center justify-between pt-1">
               <span class="text-[9px] text-zinc-500">
-                ${p.image && p.image.startsWith('data:') ? '📸 Foto en Base64' : (p.image || 'Sin imagen')}
+                ${p.image && p.image.startsWith('data:') ? '📸 Foto tomada en vivo' : (p.image || 'Sin imagen')}
               </span>
               <button onclick="eliminarProductoCatalogo(${indexReal})" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 transition cursor-pointer">
                 <i class="fa-solid fa-trash-can"></i> Eliminar
@@ -611,7 +627,7 @@
       }
     }
 
-    // ================= SUBIDA DE FOTOS Y CÁMARA =================
+    // ================= FOTOS Y CÁMARA =================
     function dispararSubidaParaIndex(index) {
       indiceProductoFotoActivo = index;
       document.getElementById('inputArchivoOculto').click();
@@ -695,7 +711,7 @@
         video.srcObject = streamCamaraActivo;
         modal.classList.remove('hidden');
       } catch (err) {
-        console.warn("Fallo getUserMedia, usando selector de cámara nativo:", err);
+        console.warn("Fallo getUserMedia, usando cámara nativa:", err);
         const inputFallback = document.createElement('input');
         inputFallback.type = 'file';
         inputFallback.accept = 'image/*';
