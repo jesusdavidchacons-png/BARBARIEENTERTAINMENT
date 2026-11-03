@@ -1,733 +1,2005 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centro de Mando & Control de Menú — Haaru Park</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haaru Park | GastroPark, Gelatería y Aventura</title>
+  
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#e50914',
+              orange: '#ff5a1f',
+              gold: '#f59e0b',
+              dark: '#0c0d14',
+              card: '#161824',
+              cardHover: '#1f2233',
+              border: '#2a2d42'
+            }
+          },
+          fontFamily: {
+            display: ['Outfit', 'sans-serif'],
+            body: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
 
   <style>
     body {
       background-color: #0c0d14;
       color: #f3f4f6;
       font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
     }
-    h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
-    .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #0f101a; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #2a2d42; border-radius: 9999px; }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Outfit', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 8px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f101a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #2a2d42;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #ff5a1f;
+    }
+    .glow-orange {
+      filter: drop-shadow(0 0 25px rgba(255, 90, 31, 0.35));
+    }
+    .poster-card {
+      transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.35s ease;
+    }
+    .poster-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 90, 31, 0.25);
+    }
   </style>
 </head>
-<body class="min-h-full flex flex-col justify-between selection:bg-orange-600 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-orange selection:text-white">
 
-  <!-- ================= BARRA SUPERIOR ================= -->
-  <header class="bg-[#121420]/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between py-3">
-      
-      <div class="flex items-center gap-3">
-        <img src="LOGO HAARU BLANCO.png" alt="Haaru" class="h-9 w-auto object-contain" onerror="this.style.display='none'">
-        <div>
-          <h1 class="text-base font-black uppercase tracking-wider text-white font-heading">
-            HAARU <span class="text-orange-500">CONTROL</span>
-          </h1>
-          <p class="text-[10px] text-zinc-400">Comandas en Vivo & Administrador de Menú</p>
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-50 bg-[#0c0d14]/90 backdrop-blur-md border-b border-brand-border/60 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-24 sm:h-28">
+        
+        <!-- Logo Principal -->
+        <a href="#portal" onclick="mostrarSeccion('todos')" class="flex items-center gap-3 group py-2">
+          <img 
+            src="LOGO HAARU BLANCO.png" 
+            alt="Haaru Park Logo" 
+            class="h-16 sm:h-20 md:h-22 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            onerror="this.style.display='none'; document.getElementById('nav-logo-fallback').classList.remove('hidden');"
+          />
+          <div id="nav-logo-fallback" class="hidden flex-col">
+            <span class="text-2xl sm:text-3xl font-black tracking-wider text-white uppercase font-heading">
+              HAARU <span class="text-brand-orange">PARK</span>
+            </span>
+            <span class="text-[10px] tracking-widest text-zinc-400 font-semibold uppercase">Gastro • Gelato • Play</span>
+          </div>
+        </a>
+
+        <!-- Botones de Navegación Rápida -->
+        <nav class="hidden 2xl:flex items-center gap-1.5 bg-brand-card/80 p-1.5 rounded-full border border-brand-border/60">
+          <button onclick="mostrarSeccion('todos')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white hover:bg-white/10 transition-colors cursor-pointer">
+            <i class="fa-solid fa-compass mr-1 text-brand-orange"></i> Todo
+          </button>
+          <button onclick="mostrarSeccion('promos')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
+            <i class="fa-solid fa-gift mr-1 text-red-500"></i> Navidad
+          </button>
+          <button onclick="mostrarSeccion('hamburguesas')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-orange-400 hover:bg-orange-500/20 transition-colors cursor-pointer">
+            <i class="fa-solid fa-burger mr-1 text-amber-500"></i> Hamburguesas
+          </button>
+          <button onclick="mostrarSeccion('restaurant')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+            <i class="fa-solid fa-utensils mr-1 text-amber-500"></i> Restaurant
+          </button>
+          <button onclick="mostrarSeccion('pizzas')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+            <i class="fa-solid fa-pizza-slice mr-1 text-red-500"></i> Pizzas
+          </button>
+          <button onclick="mostrarSeccion('bebidas')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+            <i class="fa-solid fa-martini-glass-citrus mr-1 text-cyan-400"></i> Bar & Cócteles
+          </button>
+          <button onclick="mostrarSeccion('heladeria')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+            <i class="fa-solid fa-ice-cream mr-1 text-pink-500"></i> Heladería
+          </button>
+          <button onclick="mostrarSeccion('parque')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+            <i class="fa-solid fa-car-side mr-1 text-blue-500"></i> Parque
+          </button>
+        </nav>
+
+        <!-- Botón Comanda / Carrito -->
+        <div class="flex items-center gap-3">
+          <button 
+            onclick="toggleCart()" 
+            class="relative flex items-center gap-2.5 bg-gradient-to-r from-brand-orange to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl shadow-lg shadow-brand-orange/20 active:scale-95 transition-all cursor-pointer"
+          >
+            <i class="fa-solid fa-receipt text-lg"></i>
+            <span class="hidden sm:inline font-heading text-sm tracking-wide">Comanda</span>
+            <span id="cart-badge" class="bg-white text-brand-dark text-xs font-black rounded-full h-6 w-6 flex items-center justify-center ml-1 shadow">
+              0
+            </span>
+          </button>
         </div>
-      </div>
 
-      <!-- Selector de Pestañas Principales -->
-      <div class="flex bg-black/50 p-1 rounded-xl border border-white/10 text-xs">
-        <button onclick="cambiarVista('comandas')" id="btn-tab-comandas" class="px-4 py-2 rounded-lg font-bold transition-all bg-orange-600 text-white cursor-pointer">
-          <i class="fa-solid fa-receipt mr-1.5"></i> Comandas & Caja
-        </button>
-        <button onclick="cambiarVista('menu')" id="btn-tab-menu" class="px-4 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition-all cursor-pointer">
-          <i class="fa-solid fa-pen-to-square mr-1.5"></i> Editar Menú & Precios
-        </button>
       </div>
-
-      <div class="flex items-center gap-2">
-        <button onclick="cargarDatosServidor(true)" id="btnSincronizar" class="bg-white/10 hover:bg-white/20 text-white px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-white/15 transition cursor-pointer">
-          <i id="iconoSync" class="fa-solid fa-rotate"></i>
-          <span class="hidden sm:inline">Sincronizar</span>
-        </button>
-      </div>
-
     </div>
   </header>
 
-  <!-- ================= CONTENIDO ================= -->
-  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex-1 space-y-6">
-
-    <!-- ================= VISTA 1: COMANDAS & VENTAS ================= -->
-    <section id="vista-comandas" class="space-y-6">
+  <!-- ================= PORTAL DE ENTRADA ================= -->
+  <section id="portal" class="relative overflow-hidden py-10 sm:py-16 border-b border-brand-border/40">
+    <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-orange/15 via-[#0c0d14] to-[#0c0d14]"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       
-      <!-- Selector de Fecha y Filtros -->
-      <div class="bg-[#161824] p-4 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="flex items-center gap-3 w-full sm:w-auto">
-          <label class="text-xs font-bold text-zinc-400 uppercase tracking-wider shrink-0">
-            <i class="fa-solid fa-calendar-day text-orange-500 mr-1"></i> Fecha de Cierre:
-          </label>
-          <input type="date" id="filtroFecha" onchange="aplicarFiltrosVentas()" class="bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:ring-1 focus:ring-orange-500 transition">
-          <button onclick="establecerFechaHoy()" class="bg-white/10 hover:bg-white/20 text-xs text-zinc-300 px-3 py-2 rounded-xl font-medium transition cursor-pointer">Hoy</button>
-        </div>
-
-        <div class="w-full sm:w-72 relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-zinc-500"></i>
-          <input type="text" id="filtroBusqueda" onkeyup="aplicarFiltrosVentas()" placeholder="Buscar cliente, comanda o ítem..." class="w-full bg-black/60 border border-white/15 rounded-xl pl-8 pr-3 py-2 text-xs text-white focus:ring-1 focus:ring-orange-500 transition">
-        </div>
-      </div>
-
-      <!-- Tarjetas de Métricas -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        <div class="bg-[#161824] p-4 rounded-2xl border border-white/10">
-          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Total del Día</span>
-          <div id="kpiTotalDia" class="text-2xl font-black text-emerald-400 font-heading mt-1">$0 COP</div>
-          <span class="text-[10px] text-zinc-500">Ventas brutas registradas</span>
-        </div>
-        <div class="bg-[#161824] p-4 rounded-2xl border border-white/10">
-          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Comandas Recibidas</span>
-          <div id="kpiNumComandas" class="text-2xl font-black text-white font-heading mt-1">0</div>
-          <span class="text-[10px] text-zinc-500">Mesas y despachos</span>
-        </div>
-        <div class="bg-[#161824] p-4 rounded-2xl border border-white/10">
-          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Productos Despachados</span>
-          <div id="kpiItemsTotal" class="text-2xl font-black text-amber-400 font-heading mt-1">0</div>
-          <span class="text-[10px] text-zinc-500">Unidades vendidas</span>
-        </div>
-        <div class="bg-[#161824] p-4 rounded-2xl border border-white/10">
-          <span class="text-[10px] uppercase font-bold text-zinc-400 tracking-wider">Ticket Promedio</span>
-          <div id="kpiTicketPromedio" class="text-2xl font-black text-cyan-400 font-heading mt-1">$0 COP</div>
-          <span class="text-[10px] text-zinc-500">Promedio por orden</span>
+      <!-- Logotipo de Bienvenida en gran formato -->
+      <div class="flex justify-center mb-6">
+        <img 
+          src="LOGO HAARU BLANCO.png" 
+          alt="Haaru Park" 
+          class="h-28 sm:h-40 md:h-52 w-auto object-contain glow-orange transition-transform duration-500 hover:scale-105"
+          onerror="this.style.display='none'; document.getElementById('portal-logo-fallback').classList.remove('hidden');"
+        />
+        <div id="portal-logo-fallback" class="hidden text-center py-4">
+          <h1 class="text-4xl sm:text-6xl font-black text-white uppercase tracking-wider font-heading">
+            HAARU <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-red-500">PARK</span>
+          </h1>
+          <p class="text-sm sm:text-base text-zinc-400 uppercase tracking-widest mt-2 font-medium">Gastronomía • Heladería • Diversión</p>
         </div>
       </div>
 
-      <!-- Tabla de Comandas -->
-      <div class="bg-[#161824] rounded-2xl border border-white/10 overflow-hidden shadow-xl">
-        <div class="p-4 border-b border-white/10 flex items-center justify-between">
-          <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-            <i class="fa-solid fa-list-check text-orange-500"></i> Desglose de Comandas Recibidas
+      <p class="max-w-2xl mx-auto text-base sm:text-lg text-zinc-300 font-light mb-8 leading-relaxed">
+        Elige tu destino favorito, personaliza cada plato y disfruta del parque por tiempo libre.
+      </p>
+
+      <!-- Selector de Experiencia -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4 max-w-7xl mx-auto">
+        
+        <!-- Tarjeta Promos Navidad -->
+        <button 
+          onclick="mostrarSeccion('promos')"
+          class="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-red-950/40 to-brand-card border border-red-500/50 p-4 text-left hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
+        >
+          <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-gift"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Promos</h3>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Navideñas</p>
+        </button>
+
+        <!-- Tarjeta Hamburguesas -->
+        <button 
+          onclick="mostrarSeccion('hamburguesas')"
+          class="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-amber-950/40 to-brand-card border border-amber-500/50 p-4 text-left hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
+        >
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-burger"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Burgers</h3>
+          <p class="text-[10px] text-amber-400 font-semibold mt-0.5">Solomillo & Pollo</p>
+        </button>
+
+        <!-- Tarjeta Restaurant -->
+        <button 
+          onclick="mostrarSeccion('restaurant')"
+          class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-amber-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
+        >
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Restaurant</h3>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Cortes & Pasticho</p>
+        </button>
+
+        <!-- Tarjeta Pizzas -->
+        <button 
+          onclick="mostrarSeccion('pizzas')"
+          class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-red-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
+        >
+          <div class="w-10 h-10 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-pizza-slice"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white font-heading group-hover:text-red-400">Pizzas</h3>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Borde de Queso</p>
+        </button>
+
+        <!-- Tarjeta Bebidas & Cócteles -->
+        <button 
+          onclick="mostrarSeccion('bebidas')"
+          class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-cyan-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
+        >
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-martini-glass-citrus"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white font-heading group-hover:text-cyan-400">Bar</h3>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Cócteles 18K</p>
+        </button>
+
+        <!-- Tarjeta Heladería -->
+        <button 
+          onclick="mostrarSeccion('heladeria')"
+          class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-pink-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
+        >
+          <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-ice-cream"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white font-heading group-hover:text-pink-400">Heladería</h3>
+          <p class="text-[10px] text-zinc-400 mt-0.5">Toppings & Fruta</p>
+        </button>
+
+        <!-- Tarjeta Parque -->
+        <button 
+          onclick="mostrarSeccion('parque')"
+          class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-blue-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer"
+        >
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-car-side"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white font-heading group-hover:text-blue-400">Parque</h3>
+          <p class="text-[10px] text-blue-400 font-semibold mt-0.5">Tiempo Libre</p>
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTENEDOR PRINCIPAL ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-24">
+
+    <!-- ================= SECCIÓN 0: PROMOS ESPECIALES DE NAVIDAD ================= -->
+    <section id="sec-promos" class="space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/20 text-red-400 border border-red-500/40 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-tree text-emerald-400"></i> Edición Festiva 2026
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
+            Promos Especiales de Navidad
+          </h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">
+            Combos completos diseñados para compartir que incluyen comida, postre, bebidas y entrada al parque.
+          </p>
+        </div>
+        <div class="text-xs text-amber-400 font-bold bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl flex items-center gap-2">
+          <i class="fa-solid fa-sparkles"></i> ¡Incluyen Entrada al Parque Tiempo Libre!
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8" id="grid-promos">
+        <!-- Inyectado vía JS -->
+      </div>
+    </section>
+
+    <!-- ================= SECCIÓN 1: HAMBURGUESAS GOURMET (SEPARADA) ================= -->
+    <section id="sec-hamburguesas" class="space-y-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-burger"></i> Línea Artesanal & Croquetas de Solomillo
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
+            Hamburguesas Haaru
+          </h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">
+            Pan brioche artesanal, cortes madurados y papas fritas. Añade croqueta de carne adicional por +$5.000 COP.
+          </p>
+        </div>
+        <div class="text-xs text-amber-400 font-semibold bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl">
+          🍔 + Croqueta Adicional (+5K)
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-hamburguesas">
+        <!-- Inyectado vía JS -->
+      </div>
+    </section>
+
+    <!-- ================= SECCIÓN 2: RESTAURANT GOURMET ================= -->
+    <section id="sec-restaurant" class="space-y-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-fire"></i> Cocina de Autor, Cortes & Mariscos
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
+            Cartelera de Platos
+          </h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">
+            Cortes a la brasa, pasticho tradicional, cazuelas de mariscos y platos gourmet.
+          </p>
+        </div>
+        <div class="text-xs text-zinc-500 font-mono flex items-center gap-2">
+          <i class="fa-solid fa-circle-check text-green-500"></i> Precios en Pesos Colombianos (COP)
+        </div>
+      </div>
+
+      <!-- Hero Featured Dish: Churrasco de Solomo -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-card to-[#12131d] border border-brand-border p-6 sm:p-10 flex flex-col lg:flex-row items-center gap-8 shadow-2xl">
+        <div class="w-full lg:w-1/2 space-y-4">
+          <span class="bg-brand-orange text-white text-xs font-black uppercase px-3 py-1 rounded-md tracking-wider">
+            Plato Insignia
+          </span>
+          <h3 id="hero-plato-titulo" class="text-3xl sm:text-4xl font-black text-white font-heading">Churrasco de Solomo</h3>
+          <p id="hero-plato-desc" class="text-zinc-300 text-sm sm:text-base leading-relaxed">
+            Corte tierno y jugoso de solomo madurado a la brasa con el término exacto del chef, acompañado de ensalada fresca de la casa y crujientes papas fritas doradas.
+          </p>
+          <div class="flex items-center gap-4 text-xs text-zinc-400 pt-1">
+            <span><i class="fa-solid fa-clock text-amber-500 mr-1"></i> 20 - 25 min</span>
+            <span><i class="fa-solid fa-star text-amber-500 mr-1"></i> 4.9 de 5</span>
+            <span class="text-green-400 font-bold"><i class="fa-solid fa-leaf mr-1"></i> Ingredientes frescos</span>
+          </div>
+          <div class="pt-4 flex items-center gap-4">
+            <div id="hero-plato-precio" class="text-3xl font-black text-amber-400 font-heading">$45.000 <span class="text-xs text-zinc-400 font-normal">COP</span></div>
+            <button 
+              onclick="ordenarHeroPlato()"
+              class="bg-white hover:bg-zinc-200 text-brand-dark font-extrabold px-6 py-3 rounded-2xl flex items-center gap-2 active:scale-95 transition-all shadow-lg cursor-pointer"
+            >
+              <i class="fa-solid fa-plus"></i> Ordenar Plato
+            </button>
+          </div>
+        </div>
+        <div class="w-full lg:w-1/2 relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-brand-border/80 group">
+          <img 
+            id="hero-plato-img"
+            src="Churrasco de Solomo.jpg" 
+            alt="Churrasco de Solomo" 
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1000&auto=format&fit=crop'"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+            <span id="hero-plato-badge" class="text-xs font-semibold text-zinc-200 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
+              Churrasco de Solomo + Ensalada 45K
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuadrícula de Platos Restaurant -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-restaurant">
+        <!-- Inyectado vía JS -->
+      </div>
+    </section>
+
+    <!-- ================= SECCIÓN 3: PIZZAS ARTESANALES ================= -->
+    <section id="sec-pizzas" class="space-y-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-pizza-slice"></i> Masa Madre & Horno Caliente
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
+            Pizzas Artesanales
+          </h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">
+            5 recetas artesanales. Elige tamaño Mediana o Grande y agrega Borde de Queso (+12K).
+          </p>
+        </div>
+      </div>
+
+      <div class="relative overflow-hidden rounded-3xl bg-brand-card border border-brand-border h-64 sm:h-80 shadow-2xl flex items-center">
+        <img 
+          src="PIZZAS.jpg" 
+          alt="Variedad de Pizzas Haaru" 
+          class="w-full h-full object-cover object-center filter brightness-90 hover:scale-105 transition-transform duration-700"
+          onerror="this.src='https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop'"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent flex flex-col justify-center p-6 sm:p-12 max-w-xl">
+          <span class="bg-red-600 text-white text-[11px] font-black uppercase px-3 py-1 rounded-md tracking-wider w-max mb-3">
+            Receta Tradicional
+          </span>
+          <h3 class="text-2xl sm:text-4xl font-black text-white font-heading leading-tight">
+            Masa crujiente y queso fundido al punto
           </h3>
-          <span id="conteoRegistros" class="text-xs text-zinc-400">0 registros</span>
+          <p class="text-zinc-300 text-xs sm:text-sm mt-2">
+            Añade opcionalmente a cualquier pizza nuestro icónico <strong>Borde de Queso por +$12.000 COP</strong>.
+          </p>
         </div>
+      </div>
 
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="w-full text-left text-xs whitespace-nowrap">
-            <thead class="bg-black/40 border-b border-white/10 text-zinc-400 uppercase text-[10px]">
-              <tr>
-                <th class="py-3 px-4">Hora</th>
-                <th class="py-3 px-4">N° Comanda</th>
-                <th class="py-3 px-4">Cliente / Contacto</th>
-                <th class="py-3 px-4">Categoría</th>
-                <th class="py-3 px-4">Producto & Detalle</th>
-                <th class="py-3 px-4 text-center">Cant.</th>
-                <th class="py-3 px-4 text-right">Unitario</th>
-                <th class="py-3 px-4 text-right">Subtotal</th>
-                <th class="py-3 px-4">Nota Especial</th>
-              </tr>
-            </thead>
-            <tbody id="tablaComandasBody" class="divide-y divide-white/5 text-zinc-300">
-              <tr>
-                <td colspan="9" class="text-center py-10 text-zinc-500">Conectando con Google Sheets...</td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-pizzas">
+        <!-- Inyectado vía JS -->
+      </div>
+    </section>
+
+    <!-- ================= SECCIÓN 4: BEBIDAS, REFRESCOS Y CÓCTELES ================= -->
+    <section id="sec-bebidas" class="space-y-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-wine-glass"></i> Barra & Coctelería
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
+            Bebidas, Granizados & Cócteles
+          </h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">
+            Refrescantes cócteles tropicales clásicos y bebidas frías para acompañar tu mesa.
+          </p>
+        </div>
+        <div class="text-xs text-cyan-400 font-semibold bg-cyan-500/10 border border-cyan-500/30 px-3 py-1.5 rounded-xl">
+          🍹 Cócteles a $18.000 COP c/u
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h3 class="text-xl font-black text-white font-heading flex items-center gap-2">
+          <i class="fa-solid fa-cocktail text-cyan-400"></i> Cócteles de la Casa
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="grid-cocteles">
+          <!-- Inyectado vía JS -->
+        </div>
+      </div>
+
+      <div class="space-y-4 pt-4">
+        <h3 class="text-xl font-black text-white font-heading flex items-center gap-2">
+          <i class="fa-solid fa-bottle-water text-emerald-400"></i> Bebidas & Granizados
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="grid-bebidas">
+          <!-- Inyectado vía JS -->
         </div>
       </div>
     </section>
 
-    <!-- ================= VISTA 2: GESTOR DE MENÚ & PRECIOS ================= -->
-    <section id="vista-menu" class="space-y-6 hidden">
-      
-      <div class="bg-[#161824] p-5 rounded-2xl border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <!-- ================= SECCIÓN 5: HELADERÍA ARTESANAL ================= -->
+    <section id="sec-heladeria" class="space-y-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
-          <h2 class="text-xl font-black text-white font-heading">Catálogo de Productos & Precios</h2>
-          <p class="text-xs text-zinc-400 mt-0.5">Modifica precios, nombres, toma fotos con la cámara o sube imágenes de tu galería. Pulsa "Guardar Cambios" para sincronizar.</p>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <button onclick="abrirModalNuevoProducto()" class="bg-white/10 hover:bg-white/20 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 border border-white/15 transition cursor-pointer">
-            <i class="fa-solid fa-plus text-orange-500"></i> Nuevo Producto
-          </button>
-          <button onclick="guardarCatalogoEnServidor()" id="btnGuardarMenu" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-emerald-600/30 transition active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Guardar Cambios en la Web
-          </button>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 text-pink-400 border border-pink-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-ice-cream"></i> Gelatería Cremosa & Frutas Naturales
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
+            Helados Haaru
+          </h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">
+            Sabores Crunch Especiales y copas con fruta natural en tamaño Clásico o Junior.
+          </p>
         </div>
       </div>
 
-      <!-- Barra de Filtro de Categoría -->
-      <div class="flex flex-wrap gap-2 text-xs" id="filtrosCategoriasMenu">
-        <button onclick="filtrarCatalogo('todos')" class="cat-btn active bg-orange-600 text-white px-3.5 py-1.5 rounded-xl font-bold cursor-pointer">Todos</button>
-        <button onclick="filtrarCatalogo('Hamburguesas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Hamburguesas</button>
-        <button onclick="filtrarCatalogo('Restaurant')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Restaurant</button>
-        <button onclick="filtrarCatalogo('Pizzas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Pizzas</button>
-        <button onclick="filtrarCatalogo('Navidad')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Navidad</button>
-        <button onclick="filtrarCatalogo('Cócteles')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Cócteles</button>
-        <button onclick="filtrarCatalogo('Bebidas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Bebidas</button>
-        <button onclick="filtrarCatalogo('Helados')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Helados</button>
-        <button onclick="filtrarCatalogo('Parque')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Parque</button>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-helados">
+        <!-- Inyectado vía JS -->
+      </div>
+    </section>
+
+    <!-- ================= SECCIÓN 6: PARQUE INFANTIL (TIEMPO LIBRE) ================= -->
+    <section id="sec-parque" class="space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-gamepad"></i> Zona de Aventura Familiar
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
+            Parque Infantil & Carros Eléctricos
+          </h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">
+            Diversión total sin límite de tiempo: juega, explora y maneja en un espacio seguro y climatizado.
+          </p>
+        </div>
       </div>
 
-      <!-- Cuadrícula de Edición de Productos -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="contenedorCatalogoEditable">
-        <!-- Inyectado dinámicamente -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#121424] via-brand-card to-[#0d0f1b] border-2 border-blue-500/40 p-6 sm:p-10 shadow-2xl">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex items-center gap-2 bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-xl border border-blue-500/40 uppercase tracking-wider">
+              <i class="fa-solid fa-infinity"></i> Pase Tiempo Libre
+            </div>
+
+            <h3 class="text-3xl sm:text-5xl font-black text-white font-heading leading-tight">
+              Diversión Ilimitada en Tiempo Libre
+            </h3>
+
+            <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">
+              El boleto otorga acceso ilimitado sin límite de reloj a las dos atracciones estelares de Haaru Park:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div class="bg-black/30 border border-brand-border p-4 rounded-2xl flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0 text-lg">
+                  <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-sm">Dos Niveles de Parque</h4>
+                  <p class="text-zinc-400 text-xs mt-1">Obstáculos acolchados, piscina de pelotas, toboganes y puentes colgantes.</p>
+                </div>
+              </div>
+
+              <div class="bg-black/30 border border-brand-border p-4 rounded-2xl flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0 text-lg">
+                  <i class="fa-solid fa-car-battery"></i>
+                </div>
+                <div>
+                  <h4 class="text-white font-bold text-sm">Pista de Carros Eléctricos</h4>
+                  <p class="text-zinc-400 text-xs mt-1">Manejo interactivo y seguro supervisado por operadores del parque.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center gap-6 text-zinc-400 text-xs">
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-blue-400"></i> Espacio protegido</span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-user-check text-blue-400"></i> Personal de apoyo</span>
+              <span class="flex items-center gap-1.5 text-blue-400 font-bold"><i class="fa-solid fa-infinity"></i> Acceso por Tiempo Libre</span>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 bg-black/40 border border-brand-border p-6 sm:p-8 rounded-3xl text-center flex flex-col justify-center items-center shadow-inner">
+            <span class="text-xs uppercase tracking-widest text-zinc-400 font-bold mb-2">Entrada por Niño</span>
+            <div id="parque-tarifa-display" class="text-4xl sm:text-5xl font-black text-white font-heading mb-1">
+              $20.000 <span class="text-sm font-semibold text-zinc-400">COP</span>
+            </div>
+            <p class="text-xs text-blue-400 font-bold mb-6">Incluye 2 Niveles + Carros Eléctricos (Tiempo Libre)</p>
+
+            <div class="flex items-center justify-center gap-4 mb-6 bg-brand-card/80 p-2 rounded-2xl border border-brand-border">
+              <button 
+                onclick="cambiarCantidadParque(-1)" 
+                class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold flex items-center justify-center text-lg active:scale-90 transition-all cursor-pointer"
+              >
+                -
+              </button>
+              <span id="parque-cant" class="text-2xl font-black font-heading text-white w-12 text-center">1</span>
+              <button 
+                onclick="cambiarCantidadParque(1)" 
+                class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold flex items-center justify-center text-lg active:scale-90 transition-all cursor-pointer"
+              >
+                +
+              </button>
+            </div>
+
+            <button 
+              onclick="agregarPaseParque()" 
+              class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 rounded-2xl shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 active:scale-95 transition-all text-sm uppercase tracking-wider cursor-pointer"
+            >
+              <i class="fa-solid fa-cart-plus"></i> Agregar Pases al Pedido
+            </button>
+          </div>
+
+        </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ================= MODAL DE CÁMARA EN VIVO ================= -->
-  <div id="modalCamara" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-[#161824] border border-white/15 rounded-3xl max-w-lg w-full p-5 space-y-4 shadow-2xl flex flex-col items-center">
-      <div class="w-full flex items-center justify-between border-b border-white/10 pb-3">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-camera text-orange-500 text-base"></i>
-          <h3 class="text-sm font-black text-white font-heading">Tomar Foto del Producto</h3>
+  <!-- ================= DRAWER LATERAL DE COMANDA ================= -->
+  <div id="cart-drawer-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+  
+  <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[500px] bg-brand-card border-l border-brand-border z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+    
+    <div class="p-5 border-b border-brand-border flex items-center justify-between bg-[#0e0f18]">
+      <div class="flex items-center gap-3">
+        <img 
+          src="LOGO HAARU BLANCO.png" 
+          alt="Haaru Logo" 
+          class="h-8 w-auto object-contain"
+          onerror="this.style.display='none'"
+        />
+        <div>
+          <h3 class="text-xl font-black text-white font-heading">Tu Comanda</h3>
+          <p class="text-xs text-zinc-400">Haaru Park • Detalle & Sugerencias</p>
         </div>
-        <button onclick="cerrarModalCamara()" class="text-zinc-400 hover:text-white cursor-pointer">✕</button>
+      </div>
+      <button onclick="toggleCart()" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar">
+      <!-- Inyectado por renderCart() -->
+    </div>
+
+    <div class="p-5 border-t border-brand-border bg-[#0e0f18] space-y-4">
+      <div class="bg-gradient-to-br from-brand-orange/15 to-amber-500/10 border border-brand-orange/30 p-3.5 rounded-2xl space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-brand-orange uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-gift animate-pulse"></i> Participa por Premios Sorpresa
+          </span>
+          <span class="text-[10px] bg-brand-orange/20 text-brand-orange px-2 py-0.5 rounded-full font-bold">Gratis</span>
+        </div>
+        <p class="text-[11px] text-zinc-300 leading-snug">
+          Ingresa tus datos para identificar tu orden y quedas participando automáticamente en nuestros sorteos y cortesías sorpresa.
+        </p>
+        <div class="grid grid-cols-1 gap-2 pt-1">
+          <input 
+            type="text" 
+            id="cliente-nombre" 
+            placeholder="Tu Nombre y Apellido *" 
+            class="w-full bg-black/60 border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition"
+          />
+          <input 
+            type="tel" 
+            id="cliente-telefono" 
+            placeholder="Número de WhatsApp (ej: 04141234567) *" 
+            class="w-full bg-black/60 border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition"
+          />
+        </div>
       </div>
 
-      <!-- Visor de Video en Directo -->
-      <div class="relative w-full aspect-square max-h-[340px] bg-black rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center">
-        <video id="videoElemento" autoplay playsinline class="w-full h-full object-cover"></video>
-        <div class="absolute inset-0 border-2 border-dashed border-white/30 rounded-2xl pointer-events-none"></div>
+      <div class="space-y-1.5 text-sm text-zinc-300">
+        <div class="flex justify-between">
+          <span class="text-zinc-400">Subtotal</span>
+          <span id="cart-subtotal" class="font-bold text-white">$0 COP</span>
+        </div>
+        <div class="flex justify-between text-xs text-zinc-400">
+          <span>Servicio & Empaque</span>
+          <span class="text-emerald-400 font-semibold">Incluido</span>
+        </div>
+        <div class="flex justify-between text-lg font-black font-heading text-white pt-2 border-t border-brand-border/60">
+          <span>Total a Pagar</span>
+          <span id="cart-total" class="text-amber-400">$0 COP</span>
+        </div>
       </div>
 
-      <!-- Botones de Acción de Cámara -->
-      <div class="w-full flex gap-3">
-        <button onclick="capturarFotoCamara()" class="flex-1 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/30 transition active:scale-95 cursor-pointer">
-          <i class="fa-solid fa-circle-dot text-sm"></i> Capturar Foto
-        </button>
-        <button onclick="cerrarModalCamara()" class="bg-white/10 hover:bg-white/20 text-zinc-300 font-bold px-4 py-3 rounded-xl text-xs transition cursor-pointer">
-          Cancelar
-        </button>
-      </div>
+      <button 
+        id="btnEnviarPedidoWhatsApp"
+        onclick="enviarPedidoWhatsApp(event)" 
+        class="w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white font-black py-4 rounded-2xl shadow-xl shadow-green-600/25 flex items-center justify-center gap-3 text-base uppercase tracking-wider active:scale-95 transition-all cursor-pointer"
+      >
+        <i class="fa-brands fa-whatsapp text-2xl"></i> Enviar Pedido a WhatsApp
+      </button>
+
+      <p class="text-[11px] text-center text-zinc-500 leading-tight">
+        Se registrará la comanda en la base de datos central antes de abrir WhatsApp.
+      </p>
+    </div>
+  </aside>
+
+  <!-- ================= MODAL DETALLES DE PLATOS ================= -->
+  <div id="dish-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="dish-modal-content" class="bg-brand-card border border-brand-border rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+      <!-- Inyectado dinámicamente -->
     </div>
   </div>
 
-  <!-- Input oculto para subir fotos desde galería/archivos -->
-  <input type="file" id="inputArchivoOculto" accept="image/*" class="hidden" onchange="procesarArchivoSeleccionado(event)">
-
-  <!-- ================= MODAL: NUEVO PRODUCTO ================= -->
-  <div id="modalNuevoProducto" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-[#161824] border border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <h3 class="text-base font-black text-white font-heading">Agregar Nuevo Producto</h3>
-        <button onclick="cerrarModalNuevoProducto()" class="text-zinc-400 hover:text-white">✕</button>
-      </div>
-
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block text-zinc-400 font-semibold mb-1">Categoría</label>
-          <select id="nuevoCat" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white">
-            <option value="Hamburguesas">Hamburguesas</option>
-            <option value="Restaurant">Restaurant</option>
-            <option value="Pizzas">Pizzas</option>
-            <option value="Cócteles">Cócteles</option>
-            <option value="Bebidas">Bebidas</option>
-            <option value="Helados">Helados</option>
-            <option value="Navidad">Navidad</option>
-            <option value="Parque">Parque</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-zinc-400 font-semibold mb-1">Nombre del Producto</label>
-          <input type="text" id="nuevoNombre" placeholder="Ej: Bacon Burger Doble" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white">
-        </div>
-        <div>
-          <label class="block text-zinc-400 font-semibold mb-1">Descripción / Ingredientes</label>
-          <textarea id="nuevoDetalle" rows="2" placeholder="Detalles de la preparación..." class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white"></textarea>
-        </div>
-        <div>
-          <label class="block text-zinc-400 font-semibold mb-1">Precio en COP</label>
-          <input type="number" id="nuevoPrecio" placeholder="30000" class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white font-mono">
-        </div>
-        
-        <!-- Opciones de Imagen para Nuevo Producto -->
-        <div>
-          <label class="block text-zinc-400 font-semibold mb-1">Imagen del Producto</label>
-          <div class="flex items-center gap-2">
-            <input type="text" id="nuevoImagen" placeholder="Nombre de archivo, URL o sube foto" class="flex-1 bg-black/60 border border-white/15 rounded-xl p-2 text-white text-[11px]">
-            <button type="button" onclick="dispararSubidaParaNuevo()" class="p-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs transition" title="Subir desde archivos">
-              <i class="fa-solid fa-folder-open"></i>
-            </button>
-            <button type="button" onclick="abrirCamaraParaNuevo()" class="p-2 bg-orange-600/30 hover:bg-orange-600 text-orange-400 hover:text-white rounded-xl text-xs transition" title="Tomar foto con cámara">
-              <i class="fa-solid fa-camera"></i>
-            </button>
-          </div>
-          <div id="previewNuevoCont" class="mt-2 hidden">
-            <img id="previewNuevoImg" src="" class="h-16 w-16 object-cover rounded-xl border border-white/20">
-          </div>
-        </div>
-      </div>
-
-      <div class="flex gap-2 pt-2">
-        <button onclick="guardarNuevoProductoEnMemoria()" class="flex-1 bg-orange-600 hover:bg-orange-500 text-white font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
-          Agregar a la Lista
-        </button>
-        <button onclick="cerrarModalNuevoProducto()" class="flex-1 bg-white/10 hover:bg-white/20 text-zinc-300 font-bold py-2.5 rounded-xl text-xs transition cursor-pointer">
-          Cancelar
-        </button>
-      </div>
-    </div>
+  <!-- ================= NOTIFICACIÓN TOAST ================= -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-brand-orange text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-2xl shadow-2xl opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toast-text">Producto agregado</span>
   </div>
 
-  <footer class="py-4 text-center text-[11px] text-zinc-500 border-t border-white/10">
-    Haaru Park &copy; 2026. Centro de Mando Administrativo.
+  <!-- ================= FOOTER ================= -->
+  <footer class="mt-20 border-t border-brand-border/50 bg-[#08090e] py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+      <div class="flex justify-center">
+        <img 
+          src="LOGO HAARU BLANCO.png" 
+          alt="Haaru Park" 
+          class="h-16 w-auto object-contain opacity-80"
+          onerror="this.style.display='none'"
+        />
+      </div>
+
+      <p class="text-xs sm:text-sm text-zinc-400 max-w-md mx-auto">
+        Haaru Park: Gastronomía gourmet, hamburguesas con croqueta de solomillo, cócteles, heladería y parque infantil por tiempo libre.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-6 text-zinc-400 text-sm">
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('promos')">Promos</span>
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('hamburguesas')">Hamburguesas</span>
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('restaurant')">Restaurant</span>
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('pizzas')">Pizzas</span>
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('bebidas')">Bebidas & Bar</span>
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('heladeria')">Helados</span>
+        <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('parque')">Parque</span>
+      </div>
+
+      <div class="text-[11px] text-zinc-600 border-t border-brand-border/30 pt-6">
+        &copy; 2026 Haaru Park. Todos los derechos reservados. Precios expresados en Pesos Colombianos (COP).
+      </div>
+    </div>
   </footer>
 
-  <!-- ================= SCRIPT OPERATIVO ================= -->
+  <!-- ================= SCRIPT PRINCIPAL ================= -->
   <script>
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
+    const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
 
-    let rawVentas = [];
-    let catalogoProductos = [];
-    let categoriaActivaMenu = 'todos';
+    // ================= DATA LOCAL DE RESPALDO =================
+    let promosNavidadData = [
+      {
+        id: 'promo-1',
+        numero: '1#',
+        title: 'Combo Burger & Parque',
+        items: ['Bacon Kubrick', 'Papas a la francesa', 'Refresco personal', 'Helado soft', 'Entrada al parque (Tiempo libre)'],
+        price: 40000,
+        badge: 'Individual Completo'
+      },
+      {
+        id: 'promo-2',
+        numero: '2#',
+        title: 'Dúo Pizza & Parque',
+        items: ['Pizza margarita mediana', '2 Refrescos', '2 Helados soft', 'Entrada al parque (Tiempo libre)'],
+        price: 50000,
+        badge: 'Dúo Familiar'
+      },
+      {
+        id: 'promo-3',
+        numero: '3#',
+        title: 'Super Familiar Festivo',
+        items: ['Pizza margarita familiar', 'Litro de refresco', '3 Helados soft', 'Entrada al parque (Tiempo libre)'],
+        price: 90000,
+        badge: 'Familiar Premium'
+      }
+    ];
 
-    // Variables de control de cámara y fotos
-    let indiceProductoFotoActivo = null; // null = nuevo producto, number = producto existente
-    let streamCamaraActivo = null;
+    let burgersData = [
+      {
+        id: 'vino-burger',
+        title: 'Al Vino Burger',
+        file: 'al vino burguer.jpg',
+        fallback: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Al vino burguer + Papas a la francesa 30K',
+        ingredients: 'Muchacho al vino madurado, queso crema, cebolla caramelizada, vegetales frescos, papas rufles crujientes.',
+        price: 30000
+      },
+      {
+        id: 'bacon-kubrick',
+        title: 'Bacon Kubrick',
+        file: 'Bacon cubrick.jpg',
+        fallback: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Bacon Kubrick + Papas a la francesa 30K',
+        ingredients: 'Croqueta de solomillo, tocineta crujiente, relish de pepinillo, vegetales frescos, queso cheddar fundido, papas francesas.',
+        price: 30000
+      },
+      {
+        id: 'pollo-crispy',
+        title: 'Pollo Crispy',
+        file: 'Pollo crispy.jpg',
+        fallback: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Pollo Crispy + Papas a la francesa 30K',
+        ingredients: 'Suprema de pollo crujiente rebozada, tocineta, queso crema, vegetales frescos de temporada, salsas de la casa, papas.',
+        price: 30000
+      }
+    ];
+
+    let dishesData = [
+      {
+        id: 'pasticho',
+        title: 'Pasticho Tradicional',
+        file: 'pasticho.jpg',
+        fallback: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Pasticho personal horneado al momento 25K',
+        ingredients: 'Láminas de pasta artesanal, salsa bolognesa de la casa, bechamel cremosa y abundante queso gratinado.',
+        price: 25000,
+        type: 'simple'
+      },
+      {
+        id: 'meunier',
+        title: 'Pechuga a la Meuniér',
+        file: 'Pechuga a la Meunier.jpg',
+        fallback: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Pechuga a la Meunier + Ensalada de la casa 35K',
+        ingredients: 'Suprema de pollo, Ensalada cesar, Papas a la francesa',
+        price: 35000,
+        type: 'simple'
+      },
+      {
+        id: 'mar-tierra',
+        title: 'Mar y Tierra',
+        file: 'Mar y tierra.jpg',
+        fallback: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Mar y Tierra + Papas a la francesa 55K',
+        ingredients: 'Camarones seleccionados, suprema de pollo, queso crema, vegetales frescos, salsas de la casa, papas a la francesa.',
+        price: 55000,
+        type: 'simple'
+      },
+      {
+        id: 'parrilla',
+        title: 'Parrilla Mixta',
+        file: 'Parrilla.jpg',
+        fallback: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Solomo, Pechuga, Cochino, Salsas, Papas a la francesa',
+        ingredients: 'Solomo madurado, pechuga, cochino, salsas caseras, papas a la francesa.',
+        type: 'portion',
+        portions: [
+          { name: 'Personal (+ Papas)', price: 35000 },
+          { name: 'Mediana (+ Papas)', price: 60000 },
+          { name: 'Grande (+ Papas)', price: 95000 }
+        ]
+      },
+      {
+        id: 'cazuela-mariscos',
+        title: 'Cazuela de Mariscos',
+        file: 'Cazuela de Mariscos.jpg',
+        fallback: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Camarones, Calamares, Langostino, Almejas, Chipichipi',
+        ingredients: 'Camarones, calamares, langostino, almejas, chipichipi en bisque criollo + pan tostado al horno.',
+        type: 'portion',
+        portions: [
+          { name: 'Mediana (+ Pan tostado)', price: 45000 },
+          { name: 'Grande (+ Pan tostado)', price: 75000 }
+        ]
+      },
+      {
+        id: 'ceviche',
+        title: 'Ceviche Peruano',
+        file: 'ceviche peruano.jpg',
+        fallback: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Ceviche peruano + tostones de la casa 45K',
+        ingredients: 'Pescado fresco marinado en leche de tigre, camarones, cebolla morada, cilantro y tostones crujientes.',
+        price: 45000,
+        type: 'simple'
+      },
+      {
+        id: 'churrasco-solomo',
+        title: 'Churrasco de Solomo',
+        file: 'Churrasco de Solomo.jpg',
+        fallback: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
+        subtitle: 'Churrasco de Solomo + Ensalada de la casa 45K',
+        ingredients: 'Solomo madurado a la brasa, ensalada fresca, papas fritas doradas.',
+        price: 45000,
+        type: 'simple'
+      }
+    ];
+
+    let pizzasData = [
+      {
+        id: 'pizza-margarita',
+        name: 'Pizza Margarita',
+        ingredients: 'Queso mozzarella, jamón, cebolla, pimentón',
+        mediana: 35000,
+        grande: 55000
+      },
+      {
+        id: 'pizza-hawaina',
+        name: 'Pizza Hawaina',
+        ingredients: 'Queso mozzarella, piña dorada, jamón, cebolla, pimentón',
+        mediana: 45000,
+        grande: 70000
+      },
+      {
+        id: 'pizza-italiana',
+        name: 'Pizza Italiana',
+        ingredients: 'Queso mozzarella, pepperoni, jamón, cebolla, pimentón',
+        mediana: 48000,
+        grande: 74000
+      },
+      {
+        id: 'pizza-ranchera',
+        name: 'Pizza Ranchera',
+        ingredients: 'Queso mozzarella, chorizo parrillero, pollo, jamón, cebolla, pimentón',
+        mediana: 48000,
+        grande: 74000
+      },
+      {
+        id: 'pizza-wins',
+        name: 'Pizza Wins',
+        ingredients: 'Queso mozzarella, pollo, jamón, pepperoni, tocineta, maíz, champiñón, pimentón, cebolla',
+        mediana: 55000,
+        grande: 85000
+      }
+    ];
+
+    let coctelesData = [
+      { id: 'laguna-azul', name: 'Laguna Azul', desc: 'Vodka, curaçao azul, limón y soda refrescante.', price: 18000 },
+      { id: 'mai-tai', name: 'Mai Tai', desc: 'Ron añejo y blanco, licor de naranja, amaretto y jugo tropical.', price: 18000 },
+      { id: 'mojito-cubano', name: 'Mojito Cubano', desc: 'Ron blanco, hierbabuena fresca, azúcar de caña y lima.', price: 18000 },
+      { id: 'cuba-libre', name: 'Cuba Libre', desc: 'Ron dorado, refresco cola, limón y hielo frappé.', price: 18000 },
+      { id: 'laguna-roja', name: 'Laguna Roja', desc: 'Bebida vibrante de frutos rojos, vodka y licor dulce.', price: 18000 }
+    ];
+
+    let bebidasData = [
+      { id: 'granizado', name: 'Granizado de Frutas', detail: 'Frappé con pulpa fresca a elección', price: 10000, icon: 'fa-blender' },
+      { id: 'refresco-personal', name: 'Refresco Personal', detail: 'Botella individual fría', price: 5000, icon: 'fa-bottle-droplet' },
+      { id: 'agua-mineral', name: 'Agua Mineral 600ml', detail: 'Agua pura sin gas', price: 5000, icon: 'fa-bottle-water' },
+      { id: 'refresco-litro', name: 'Refresco de Litro', detail: 'Formato familiar para compartir', price: 10000, icon: 'fa-champagne-glasses' }
+    ];
+
+    let heladosData = [
+      {
+        id: 'flips',
+        name: 'Flips',
+        file: 'FLIPS.jpg',
+        altFile: '',
+        fallback: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop',
+        type: 'special',
+        price: 12000,
+        desc: 'Cremoso helado con cobertura abundante de cereal Flips de chocolate.'
+      },
+      {
+        id: 'pirulin',
+        name: 'Pirulin',
+        file: 'PIRULIN.jpg',
+        altFile: '',
+        fallback: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371?q=80&w=800&auto=format&fit=crop',
+        type: 'special',
+        price: 13000,
+        desc: 'Base artesanal con crujientes barquillas rellenas de avellana Pirulin.'
+      },
+      {
+        id: 'oreo',
+        name: 'Oreo',
+        file: 'OREO.jpg',
+        altFile: '',
+        fallback: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?q=80&w=800&auto=format&fit=crop',
+        type: 'special',
+        price: 12000,
+        desc: 'Helado cremoso combinado con trozos y polvo crocante de galleta Oreo.'
+      },
+      {
+        id: 'kiwi',
+        name: 'Kiwi',
+        file: 'KIWI.jpg',
+        altFile: '',
+        fallback: 'https://images.unsplash.com/photo-1505394033641-40c6ad1178d7?q=80&w=800&auto=format&fit=crop',
+        type: 'fruit',
+        clasico: 15000,
+        junior: 12000,
+        desc: 'Elaborado con pulpa natural de kiwi fresco. Toque cítrico y dulce.'
+      },
+      {
+        id: 'fresa',
+        name: 'Fresa',
+        file: 'FRESA..jpg',
+        altFile: 'FRESA.jpg',
+        fallback: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?q=80&w=800&auto=format&fit=crop',
+        type: 'fruit',
+        clasico: 12000,
+        junior: 9000,
+        desc: 'Fresas selectas trituradas en crema suave. Un clásico irresistible.'
+      },
+      {
+        id: 'guanabana',
+        name: 'Guanábana',
+        file: 'GUANABANA.jpg',
+        altFile: '',
+        fallback: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?q=80&w=800&auto=format&fit=crop',
+        type: 'fruit',
+        clasico: 13000,
+        junior: 10000,
+        desc: 'Guanábana pura de textura sedosa y sabor tropical inconfundible.'
+      },
+      {
+        id: 'pina',
+        name: 'Piña',
+        file: 'PIÑA.jpg',
+        altFile: 'PINA.jpg',
+        fallback: 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?q=80&w=800&auto=format&fit=crop',
+        type: 'fruit',
+        clasico: 13000,
+        junior: 10000,
+        desc: 'Piña madura seleccionada con notas refrescantes de verano.'
+      },
+      {
+        id: 'mora',
+        name: 'Mora',
+        file: 'MORA.jpg',
+        altFile: '',
+        fallback: 'https://images.unsplash.com/photo-1629385597457-61c479424e86?q=80&w=800&auto=format&fit=crop',
+        type: 'fruit',
+        clasico: 12000,
+        junior: 9000,
+        desc: 'Moras andinas silvestres con equilibrio exacto de acidez.'
+      },
+      {
+        id: 'cereza',
+        name: 'Cereza',
+        file: 'CEREZA.jpg',
+        altFile: '',
+        fallback: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?q=80&w=800&auto=format&fit=crop',
+        type: 'fruit',
+        clasico: 15000,
+        junior: 12000,
+        desc: 'Intenso helado de cerezas con syrup natural y color vibrante.'
+      }
+    ];
+
+    let precioParqueActual = 20000;
+    let heroPlatoActual = {
+      nombre: "Churrasco de Solomo",
+      precio: 45000,
+      detalle: "Churrasco de Solomo madurado + Ensalada de la casa + Papas fritas"
+    };
+
+    let cart = [];
+    let parqueCant = 1;
 
     function formatCOP(num) {
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    function establecerFechaHoy() {
-      const hoy = new Date().toISOString().split('T')[0];
-      document.getElementById('filtroFecha').value = hoy;
-      aplicarFiltrosVentas();
-    }
-
-    function cambiarVista(vista) {
-      const vCom = document.getElementById('vista-comandas');
-      const vMen = document.getElementById('vista-menu');
-      const bCom = document.getElementById('btn-tab-comandas');
-      const bMen = document.getElementById('btn-tab-menu');
-
-      if (vista === 'comandas') {
-        vCom.classList.remove('hidden');
-        vMen.classList.add('hidden');
-        bCom.className = "px-4 py-2 rounded-lg font-bold transition-all bg-orange-600 text-white cursor-pointer";
-        bMen.className = "px-4 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition-all cursor-pointer";
-      } else {
-        vCom.classList.add('hidden');
-        vMen.classList.remove('hidden');
-        bMen.className = "px-4 py-2 rounded-lg font-bold transition-all bg-orange-600 text-white cursor-pointer";
-        bCom.className = "px-4 py-2 rounded-lg font-bold text-zinc-400 hover:text-white transition-all cursor-pointer";
-        renderizarCatalogoEditable();
-      }
-    }
-
-    async function cargarDatosServidor(manual = false) {
-      const icono = document.getElementById('iconoSync');
-      icono.classList.add('fa-spin');
-
+    // ================= SINCRONIZACIÓN DE MENÚ EN VIVO CON GOOGLE SHEETS =================
+    async function sincronizarMenuEnVivo() {
       try {
-        const respuesta = await fetch(`${APPS_SCRIPT_URL}?t=${Date.now()}`);
+        const respuesta = await fetch(`${GOOGLE_SHEETS_WEBHOOK_URL}?tipo=catalogo&t=${Date.now()}`);
         const data = await respuesta.json();
 
-        if (data.status === "success") {
-          rawVentas = data.ventas || [];
-          catalogoProductos = data.catalogo || [];
+        if (data.status === "success" && Array.isArray(data.catalogo) && data.catalogo.length > 0) {
+          const cat = data.catalogo;
 
-          aplicarFiltrosVentas();
-          renderizarCatalogoEditable();
-          if (manual) alert("¡Datos sincronizados correctamente con Google Sheets!");
-        } else {
-          throw new Error(data.error || "Error al leer datos");
+          // 1. Parque
+          const itemParque = cat.find(x => (x.category || '').toLowerCase() === 'parque');
+          if (itemParque && itemParque.price > 0) {
+            precioParqueActual = itemParque.price;
+            const elTarifa = document.getElementById('parque-tarifa-display');
+            if (elTarifa) {
+              elTarifa.innerHTML = `${formatCOP(precioParqueActual)} <span class="text-sm font-semibold text-zinc-400">COP</span>`;
+            }
+          }
+
+          // 2. Hamburguesas
+          const itemsBurgers = cat.filter(x => (x.category || '').toLowerCase() === 'hamburguesas');
+          if (itemsBurgers.length > 0) {
+            burgersData = itemsBurgers.map((b, idx) => {
+              const localEx = burgersData.find(x => x.title.toLowerCase() === b.name.toLowerCase()) || {};
+              return {
+                id: localEx.id || ('burger-dyn-' + idx),
+                title: b.name,
+                file: b.image || localEx.file || 'al vino burguer.jpg',
+                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
+                subtitle: b.detail || localEx.subtitle || `${b.name} ${formatCOP(b.price)}`,
+                ingredients: b.detail || localEx.ingredients || '',
+                price: Number(b.price) || 30000
+              };
+            });
+            renderHamburguesas();
+          }
+
+          // 3. Restaurant
+          const itemsRest = cat.filter(x => (x.category || '').toLowerCase() === 'restaurant');
+          if (itemsRest.length > 0) {
+            const churrascoItem = itemsRest.find(x => x.name.toLowerCase().includes('solomo') || x.name.toLowerCase().includes('churrasco'));
+            if (churrascoItem) {
+              heroPlatoActual.nombre = churrascoItem.name;
+              heroPlatoActual.precio = churrascoItem.price;
+              heroPlatoActual.detalle = churrascoItem.detail || heroPlatoActual.detalle;
+              
+              const hTitle = document.getElementById('hero-plato-titulo');
+              const hPre = document.getElementById('hero-plato-precio');
+              const hDesc = document.getElementById('hero-plato-desc');
+              const hBadge = document.getElementById('hero-plato-badge');
+              const hImg = document.getElementById('hero-plato-img');
+
+              if (hTitle) hTitle.innerText = churrascoItem.name;
+              if (hPre) hPre.innerHTML = `${formatCOP(churrascoItem.price)} <span class="text-xs text-zinc-400 font-normal">COP</span>`;
+              if (hDesc && churrascoItem.detail) hDesc.innerText = churrascoItem.detail;
+              if (hBadge) hBadge.innerText = `${churrascoItem.name} ${formatCOP(churrascoItem.price)}`;
+              if (hImg && churrascoItem.image) hImg.src = churrascoItem.image;
+            }
+
+            dishesData = itemsRest.map((item, idx) => {
+              const localExistente = dishesData.find(d => d.title.toLowerCase() === item.name.toLowerCase()) || {};
+              return {
+                id: localExistente.id || ('dish-dyn-' + idx),
+                title: item.name,
+                file: item.image || localExistente.file || 'Churrasco de Solomo.jpg',
+                fallback: localExistente.fallback || 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
+                subtitle: item.detail || localExistente.subtitle || `${item.name} ${formatCOP(item.price)}`,
+                ingredients: item.detail || localExistente.ingredients || '',
+                price: Number(item.price) || 35000,
+                type: localExistente.type || 'simple',
+                portions: localExistente.portions || null
+              };
+            });
+            renderRestaurant();
+          }
+
+          // 4. Promos Navidad
+          const itemsNav = cat.filter(x => (x.category || '').toLowerCase() === 'navidad');
+          if (itemsNav.length > 0) {
+            promosNavidadData = itemsNav.map((item, idx) => {
+              const localEx = promosNavidadData[idx] || {};
+              const bulletItems = item.detail ? item.detail.split('+').map(s => s.trim()) : (localEx.items || []);
+              return {
+                id: localEx.id || ('promo-dyn-' + idx),
+                numero: localEx.numero || `${idx + 1}#`,
+                title: item.name,
+                items: bulletItems.length > 0 ? bulletItems : ['Plato principal', 'Papas fritas', 'Bebida', 'Entrada al parque'],
+                price: Number(item.price) || 40000,
+                badge: localEx.badge || 'Edición Navidad'
+              };
+            });
+            renderPromosNavidad();
+          }
+
+          // 5. Cócteles y Bebidas
+          const itemsCoctel = cat.filter(x => (x.category || '').toLowerCase() === 'cócteles');
+          if (itemsCoctel.length > 0) {
+            coctelesData = itemsCoctel.map((c, idx) => ({
+              id: 'coctel-dyn-' + idx,
+              name: c.name,
+              desc: c.detail || 'Preparación especial con hielo frappé y licores selectos.',
+              price: Number(c.price) || 18000
+            }));
+          }
+
+          const itemsBeb = cat.filter(x => (x.category || '').toLowerCase() === 'bebidas');
+          if (itemsBeb.length > 0) {
+            bebidasData = itemsBeb.map((b, idx) => {
+              const localEx = bebidasData.find(x => x.name.toLowerCase() === b.name.toLowerCase()) || {};
+              return {
+                id: 'beb-dyn-' + idx,
+                name: b.name,
+                detail: b.detail || 'Bebida fría',
+                price: Number(b.price) || 5000,
+                icon: localEx.icon || 'fa-bottle-water'
+              };
+            });
+          }
+          renderBebidasYCocteles();
+
+          // 6. Helados
+          const itemsHel = cat.filter(x => (x.category || '').toLowerCase() === 'helados');
+          if (itemsHel.length > 0) {
+            heladosData = itemsHel.map((h, idx) => {
+              const localEx = heladosData.find(x => x.name.toLowerCase() === h.name.toLowerCase()) || {};
+              return {
+                id: localEx.id || ('ice-dyn-' + idx),
+                name: h.name,
+                file: h.image || localEx.file || 'FLIPS.jpg',
+                altFile: localEx.altFile || '',
+                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop',
+                type: localEx.type || 'special',
+                price: Number(h.price) || 12000,
+                clasico: Number(h.price) || 12000,
+                junior: Math.round(Number(h.price) * 0.75) || 9000,
+                desc: h.detail || localEx.desc || 'Helado suave artesanal con ingredientes frescos.'
+              };
+            });
+            renderHelados();
+          }
+
+          console.log("Menú Haaru Park sincronizado en vivo desde Google Sheets.");
         }
       } catch (err) {
-        console.warn("Fallo de conexión, cargando respaldo local...", err);
-        if (catalogoProductos.length === 0) {
-          cargarCatalogoPorDefecto();
-        }
-      } finally {
-        icono.classList.remove('fa-spin');
+        console.warn("Usando catálogo de respaldo:", err);
       }
     }
 
-    function aplicarFiltrosVentas() {
-      const fechaFiltro = document.getElementById('filtroFecha').value;
-      const busqueda = document.getElementById('filtroBusqueda').value.toLowerCase().trim();
+    // ================= RENDERIZADO: HAMBURGUESAS (SEPARADA) =================
+    function renderHamburguesas() {
+      const container = document.getElementById('grid-hamburguesas');
+      if (!container) return;
 
-      const filtradas = rawVentas.filter(v => {
-        const coincideFecha = !fechaFiltro || v.fecha === fechaFiltro;
-        const coincideBusqueda = 
-          (v.cliente || "").toLowerCase().includes(busqueda) ||
-          (v.idComanda || "").toLowerCase().includes(busqueda) ||
-          (v.name || "").toLowerCase().includes(busqueda) ||
-          (v.category || "").toLowerCase().includes(busqueda);
+      container.innerHTML = burgersData.map(b => `
+        <div class="poster-card rounded-3xl bg-brand-card border border-brand-border overflow-hidden flex flex-col justify-between shadow-xl">
+          <div class="relative h-60 w-full overflow-hidden bg-black/40">
+            <img 
+              src="${b.file}" 
+              alt="${b.title}" 
+              class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              onerror="this.src='${b.fallback}'"
+            />
+            <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-amber-400 border border-amber-500/30">
+              Burger Gourmet
+            </div>
+          </div>
+          
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div>
+              <h4 class="text-xl font-black text-white font-heading">${b.title}</h4>
+              <p class="text-xs text-brand-orange font-semibold mt-0.5">${b.subtitle}</p>
+              <p class="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">${b.ingredients}</p>
+            </div>
 
-        return coincideFecha && coincideBusqueda;
-      });
-
-      let totalDinero = 0;
-      let totalItems = 0;
-      const comandasUnicas = new Set();
-
-      filtradas.forEach(v => {
-        totalDinero += (v.total || 0);
-        totalItems += (v.quantity || 1);
-        if (v.idComanda) comandasUnicas.add(v.idComanda);
-      });
-
-      const numComandas = comandasUnicas.size || (filtradas.length > 0 ? 1 : 0);
-      const ticketPromedio = numComandas > 0 ? Math.round(totalDinero / numComandas) : 0;
-
-      document.getElementById('kpiTotalDia').innerText = formatCOP(totalDinero);
-      document.getElementById('kpiNumComandas').innerText = numComandas;
-      document.getElementById('kpiItemsTotal').innerText = totalItems;
-      document.getElementById('kpiTicketPromedio').innerText = formatCOP(ticketPromedio);
-      document.getElementById('conteoRegistros').innerText = `${filtradas.length} ítems en comanda`;
-
-      const tbody = document.getElementById('tablaComandasBody');
-      if (filtradas.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-zinc-500">No hay ventas registradas para esta fecha.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = filtradas.map(v => `
-        <tr class="hover:bg-white/5 transition">
-          <td class="py-3 px-4 font-mono text-[11px] text-zinc-400">${v.hora || "--:--"}</td>
-          <td class="py-3 px-4 font-mono font-bold text-orange-400">${v.idComanda}</td>
-          <td class="py-3 px-4">
-            <div class="font-bold text-white">${v.cliente}</div>
-            <span class="text-[10px] text-zinc-500">${v.telefono || "Sin tel"}</span>
-          </td>
-          <td class="py-3 px-4">
-            <span class="bg-white/10 text-zinc-300 px-2 py-0.5 rounded text-[10px] uppercase font-semibold">${v.category}</span>
-          </td>
-          <td class="py-3 px-4 font-medium text-white">
-            <div>${v.name}</div>
-            <span class="text-[10px] text-zinc-500">${v.detail || ""}</span>
-          </td>
-          <td class="py-3 px-4 text-center font-bold">${v.quantity}</td>
-          <td class="py-3 px-4 text-right font-mono text-zinc-400">${formatCOP(v.price)}</td>
-          <td class="py-3 px-4 text-right font-mono font-bold text-emerald-400">${formatCOP(v.total)}</td>
-          <td class="py-3 px-4 text-zinc-400 italic">${v.note ? '✍️ ' + v.note : '--'}</td>
-        </tr>
+            <div class="pt-3 border-t border-brand-border/60 flex items-center justify-between">
+              <span class="text-xl font-black text-amber-400 font-heading">${formatCOP(b.price)}</span>
+              <button 
+                onclick="abrirModalBurger('${b.id}')"
+                class="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 active:scale-95 transition-all shadow-md shadow-amber-500/20 cursor-pointer"
+              >
+                <i class="fa-solid fa-plus"></i> Elegir
+              </button>
+            </div>
+          </div>
+        </div>
       `).join('');
     }
 
-    // ================= GESTOR DE MENÚ & PRECIOS =================
-    function filtrarCatalogo(cat) {
-      categoriaActivaMenu = cat;
-      document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.classList.remove('active', 'bg-orange-600', 'text-white');
-        btn.classList.add('bg-black/40', 'text-zinc-400');
-      });
-      event.target.classList.add('active', 'bg-orange-600', 'text-white');
-      event.target.classList.remove('bg-black/40', 'text-zinc-400');
-      renderizarCatalogoEditable();
+    function abrirModalBurger(burgerId) {
+      const b = burgersData.find(x => x.id === burgerId);
+      const modal = document.getElementById('dish-modal');
+      const content = document.getElementById('dish-modal-content');
+
+      content.innerHTML = `
+        <div class="relative h-48 w-full bg-black/60">
+          <img src="${b.file}" alt="${b.title}" class="w-full h-full object-cover" onerror="this.src='${b.fallback}'" />
+          <button onclick="cerrarModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div>
+            <h3 class="text-2xl font-black text-white font-heading">${b.title}</h3>
+            <p class="text-xs text-brand-orange font-semibold mt-1">${b.subtitle}</p>
+            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">${b.ingredients}</p>
+          </div>
+          
+          <div class="p-4 rounded-2xl bg-black/40 border border-brand-border space-y-3">
+            <span class="text-xs uppercase font-bold text-zinc-400">Adicional Recomendado</span>
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="text-sm font-semibold text-white flex items-center gap-2">
+                <i class="fa-solid fa-burger text-amber-500"></i> Croqueta de carne adicional
+              </span>
+              <input type="checkbox" id="modal-croqueta" class="w-5 h-5 rounded text-amber-500 bg-brand-card border-brand-border focus:ring-0" onchange="actualizarTotalModalBurger(${b.price})">
+            </label>
+            <p class="text-[11px] text-zinc-400">Agrega otra croqueta de solomillo por <strong>+$5.000 COP</strong>.</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3">
+            <span class="text-xs text-zinc-400">Total:</span>
+            <span id="modal-burger-total" class="text-2xl font-black text-amber-400 font-heading">${formatCOP(b.price)}</span>
+          </div>
+
+          <button onclick="confirmarBurger('${b.id}')" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold py-3.5 rounded-2xl active:scale-95 transition-all text-sm cursor-pointer">
+            Agregar a la Comanda
+          </button>
+        </div>
+      `;
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-95');
+      content.classList.add('scale-100');
     }
 
-    function renderizarCatalogoEditable() {
-      const container = document.getElementById('contenedorCatalogoEditable');
-      const lista = catalogoProductos.filter(p => categoriaActivaMenu === 'todos' || p.category === categoriaActivaMenu);
+    function actualizarTotalModalBurger(precioBase) {
+      const croqueta = document.getElementById('modal-croqueta').checked;
+      const total = precioBase + (croqueta ? 5000 : 0);
+      document.getElementById('modal-burger-total').innerText = formatCOP(total);
+    }
 
-      if (lista.length === 0) {
-        container.innerHTML = `<div class="col-span-full text-center py-12 text-zinc-500">No hay productos en esta categoría. Puedes agregar uno con el botón superior.</div>`;
-        return;
-      }
+    function confirmarBurger(burgerId) {
+      const b = burgersData.find(x => x.id === burgerId);
+      const croqueta = document.getElementById('modal-croqueta').checked;
+      const precio = b.price + (croqueta ? 5000 : 0);
+      const detalle = `${b.subtitle}${croqueta ? ' + Croqueta adicional (+5K)' : ''}`;
 
-      container.innerHTML = lista.map((p) => {
-        const indexReal = catalogoProductos.indexOf(p);
-        const imagenValida = p.image && (p.image.startsWith('data:') || p.image.startsWith('http') || p.image.includes('.jpg') || p.image.includes('.png'));
-        const srcFoto = imagenValida ? p.image : 'Churrasco de Solomo.jpg';
+      cart.push({
+        id: 'burger-' + Date.now(),
+        name: b.title,
+        detail: detalle,
+        price: precio,
+        category: 'Hamburguesas',
+        quantity: 1,
+        note: ''
+      });
+
+      cerrarModal();
+      renderCart();
+      showToast(`¡${b.title} agregada!`);
+    }
+
+    // ================= RENDERIZADO: PROMOS NAVIDEÑAS =================
+    function renderPromosNavidad() {
+      const container = document.getElementById('grid-promos');
+      container.innerHTML = promosNavidadData.map(p => `
+        <div class="poster-card rounded-3xl bg-gradient-to-b from-brand-card to-[#121320] border-2 border-red-500/50 p-6 flex flex-col justify-between space-y-5 shadow-2xl relative overflow-hidden group">
+          <div class="absolute -right-8 -top-8 w-24 h-24 bg-red-600/10 rounded-full blur-2xl group-hover:bg-red-600/30 transition-all"></div>
+          
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs uppercase font-black tracking-widest text-red-400 bg-red-500/20 px-2.5 py-1 rounded-lg border border-red-500/30">
+                PROMO ${p.numero}
+              </span>
+              <span class="text-[11px] font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
+                ${p.badge}
+              </span>
+            </div>
+
+            <h4 class="text-2xl font-black text-white font-heading mt-3">${p.title}</h4>
+            
+            <ul class="mt-4 space-y-2 text-xs text-zinc-300">
+              ${p.items.map(it => `
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-circle-check text-emerald-400 text-xs mt-0.5 shrink-0"></i>
+                  <span>${it}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <div class="pt-4 border-t border-brand-border/60 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] text-zinc-400 uppercase block font-semibold">Todo por</span>
+              <span class="text-2xl font-black text-amber-400 font-heading">${formatCOP(p.price)}</span>
+            </div>
+            <button 
+              onclick="agregarPromoNavidad('${p.id}')"
+              class="bg-gradient-to-r from-red-600 to-brand-orange hover:from-red-500 hover:to-orange-500 text-white font-black px-4 py-3 rounded-xl text-xs flex items-center gap-2 active:scale-95 transition-all shadow-lg shadow-red-600/25 cursor-pointer"
+            >
+              <i class="fa-solid fa-gift"></i> Pedir Promo
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ================= RENDERIZADO: RESTAURANT =================
+    function renderRestaurant() {
+      const container = document.getElementById('grid-restaurant');
+      container.innerHTML = dishesData.map(d => {
+        let priceTag = '';
+        let buttonAction = '';
+
+        if (d.type === 'simple') {
+          priceTag = `<span class="text-xl font-black text-amber-400 font-heading">${formatCOP(d.price)}</span>`;
+          buttonAction = `onclick="agregarPlatoSimple('${d.title}', ${d.price}, '${d.subtitle}')"`;
+        } else if (d.type === 'portion') {
+          const minPrice = Math.min(...d.portions.map(p => p.price));
+          priceTag = `<span class="text-sm text-zinc-400">Desde <strong class="text-lg text-amber-400 font-heading font-black">${formatCOP(minPrice)}</strong></span>`;
+          buttonAction = `onclick="abrirModalPlato('${d.id}')"`;
+        }
 
         return `
-          <div class="bg-[#161824] border border-white/10 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-lg">
+          <div class="poster-card rounded-3xl bg-brand-card border border-brand-border overflow-hidden flex flex-col justify-between shadow-xl">
+            <div class="relative h-60 w-full overflow-hidden bg-black/40">
+              <img 
+                src="${d.file}" 
+                alt="${d.title}" 
+                class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                onerror="this.src='${d.fallback}'"
+              />
+              <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-zinc-200 border border-white/10">
+                ${d.type === 'portion' ? 'Porciones' : 'Plato Principal'}
+              </div>
+            </div>
             
-            <div class="flex items-start gap-3">
-              <!-- Contenedor de la foto con overlay para cambiar -->
-              <div class="w-20 h-20 rounded-xl bg-black/60 border border-white/10 overflow-hidden shrink-0 relative group">
-                <img id="img-prod-${indexReal}" src="${srcFoto}" alt="${p.name}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=200&auto=format&fit=crop'">
-                
-                <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1">
-                  <button onclick="dispararSubidaParaIndex(${indexReal})" class="text-[9px] bg-white/20 hover:bg-white text-white hover:text-black font-bold px-2 py-0.5 rounded transition" title="Subir archivo">
-                    <i class="fa-solid fa-folder-open"></i> Subir
-                  </button>
-                  <button onclick="abrirCamaraParaIndex(${indexReal})" class="text-[9px] bg-orange-600/80 hover:bg-orange-600 text-white font-bold px-2 py-0.5 rounded transition" title="Tomar foto con cámara">
-                    <i class="fa-solid fa-camera"></i> Cámara
-                  </button>
-                </div>
-              </div>
-
-              <div class="flex-1 min-w-0">
-                <span class="text-[9px] uppercase font-bold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">${p.category}</span>
-                <input type="text" value="${p.name}" onchange="actualizarDatoProducto(${indexReal}, 'name', this.value)" class="w-full bg-transparent border-b border-transparent hover:border-white/20 focus:border-orange-500 text-sm font-bold text-white mt-1 py-0.5 focus:outline-none transition">
-                <input type="text" value="${p.detail}" onchange="actualizarDatoProducto(${indexReal}, 'detail', this.value)" class="w-full bg-transparent border-b border-transparent hover:border-white/20 focus:border-orange-500 text-[11px] text-zinc-400 py-0.5 focus:outline-none transition">
-              </div>
-            </div>
-
-            <!-- Edición de Precio y Botones de Fotos -->
-            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/5 text-xs items-end">
+            <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
               <div>
-                <label class="block text-[10px] text-zinc-500 font-bold uppercase">Precio (COP):</label>
-                <input type="number" value="${p.price}" onchange="actualizarDatoProducto(${indexReal}, 'price', Number(this.value))" class="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1.5 text-white font-mono font-bold focus:ring-1 focus:ring-orange-500">
+                <h4 class="text-xl font-black text-white font-heading">${d.title}</h4>
+                <p class="text-xs text-brand-orange font-semibold mt-0.5">${d.subtitle}</p>
+                <p class="text-xs text-zinc-400 mt-2 line-clamp-2 leading-relaxed">${d.ingredients}</p>
               </div>
-              <div class="flex items-center gap-1.5">
-                <button onclick="dispararSubidaParaIndex(${indexReal})" class="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-1.5 px-2 rounded-lg text-[10px] flex items-center justify-center gap-1 border border-white/10 transition cursor-pointer" title="Subir desde archivos">
-                  <i class="fa-solid fa-folder-open text-orange-400"></i> Archivo
-                </button>
-                <button onclick="abrirCamaraParaIndex(${indexReal})" class="flex-1 bg-orange-600/30 hover:bg-orange-600 text-orange-300 hover:text-white font-semibold py-1.5 px-2 rounded-lg text-[10px] flex items-center justify-center gap-1 border border-orange-500/30 transition cursor-pointer" title="Activar cámara">
-                  <i class="fa-solid fa-camera"></i> Cámara
-                </button>
-              </div>
-            </div>
 
-            <div class="flex items-center justify-between pt-1">
-              <span class="text-[9px] text-zinc-500">
-                ${p.image && p.image.startsWith('data:') ? '📸 Foto tomada en vivo' : (p.image || 'Sin foto')}
-              </span>
-              <button onclick="eliminarProductoCatalogo(${indexReal})" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 transition cursor-pointer">
-                <i class="fa-solid fa-trash-can"></i> Eliminar
-              </button>
+              <div class="pt-3 border-t border-brand-border/60 flex items-center justify-between">
+                <div>${priceTag}</div>
+                <button 
+                  ${buttonAction}
+                  class="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 active:scale-95 transition-all shadow-md shadow-amber-500/20 cursor-pointer"
+                >
+                  <i class="fa-solid fa-plus"></i> ${d.type === 'simple' ? 'Ordenar' : 'Elegir'}
+                </button>
+              </div>
             </div>
           </div>
         `;
       }).join('');
     }
 
-    function actualizarDatoProducto(index, campo, valor) {
-      catalogoProductos[index][campo] = valor;
+    function ordenarHeroPlato() {
+      agregarPlatoSimple(heroPlatoActual.nombre, heroPlatoActual.precio, heroPlatoActual.detalle);
     }
 
-    function eliminarProductoCatalogo(index) {
-      if (confirm(`¿Seguro que deseas eliminar "${catalogoProductos[index].name}" del menú?`)) {
-        catalogoProductos.splice(index, 1);
-        renderizarCatalogoEditable();
-      }
+    // ================= RENDERIZADO: PIZZAS =================
+    function renderPizzas() {
+      const container = document.getElementById('grid-pizzas');
+      container.innerHTML = pizzasData.map(p => `
+        <div class="poster-card rounded-3xl bg-brand-card border border-brand-border p-6 flex flex-col justify-between space-y-5 shadow-xl">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] uppercase font-bold tracking-wider text-red-400 bg-red-500/10 px-2.5 py-1 rounded-md border border-red-500/20">Pizza Especial</span>
+              <i class="fa-solid fa-fire-burner text-zinc-500"></i>
+            </div>
+            <h4 class="text-2xl font-black text-white font-heading mt-2">${p.name}</h4>
+            <p class="text-xs text-zinc-400 mt-1 leading-relaxed">${p.ingredients}</p>
+          </div>
+
+          <div class="space-y-4 pt-2">
+            <div class="grid grid-cols-2 gap-2 bg-black/40 p-1.5 rounded-2xl border border-brand-border text-xs">
+              <label class="cursor-pointer">
+                <input type="radio" name="size-${p.id}" value="mediana" checked class="peer sr-only" onchange="actualizarPrecioPizza('${p.id}')">
+                <div class="text-center py-2 rounded-xl text-zinc-400 peer-checked:bg-white/10 peer-checked:text-white peer-checked:font-bold transition-all">
+                  Mediana <br><strong class="text-red-400 text-xs">${formatCOP(p.mediana)}</strong>
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="size-${p.id}" value="grande" class="peer sr-only" onchange="actualizarPrecioPizza('${p.id}')">
+                <div class="text-center py-2 rounded-xl text-zinc-400 peer-checked:bg-white/10 peer-checked:text-white peer-checked:font-bold transition-all">
+                  Grande <br><strong class="text-red-400 text-xs">${formatCOP(p.grande)}</strong>
+                </div>
+              </label>
+            </div>
+
+            <label class="flex items-center justify-between p-3 rounded-2xl bg-black/20 border border-brand-border hover:border-red-500/50 cursor-pointer text-xs transition-colors">
+              <span class="flex items-center gap-2 text-zinc-300">
+                <i class="fa-solid fa-cheese text-amber-400"></i> Borde de Queso (+12K)
+              </span>
+              <input type="checkbox" id="borde-${p.id}" onchange="actualizarPrecioPizza('${p.id}')" class="w-4 h-4 rounded text-red-600 focus:ring-0 bg-brand-card border-brand-border">
+            </label>
+
+            <button 
+              onclick="agregarPizza('${p.id}')"
+              class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl flex items-center justify-between px-4 text-xs active:scale-95 transition-all shadow-lg shadow-red-600/20 cursor-pointer"
+            >
+              <span>Ordenar Pizza</span>
+              <span id="price-btn-${p.id}" class="font-heading font-black text-sm">${formatCOP(p.mediana)}</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
-    // ================= FUNCIONES DE SUBIDA DE FOTOS Y COMPRESIÓN =================
-    function dispararSubidaParaIndex(index) {
-      indiceProductoFotoActivo = index;
-      document.getElementById('inputArchivoOculto').click();
+    function actualizarPrecioPizza(pizzaId) {
+      const p = pizzasData.find(x => x.id === pizzaId);
+      const isGrande = document.querySelector(`input[name="size-${pizzaId}"]:checked`).value === 'grande';
+      const conBorde = document.getElementById(`borde-${pizzaId}`).checked;
+      
+      let total = isGrande ? p.grande : p.mediana;
+      if (conBorde) total += 12000;
+
+      document.getElementById(`price-btn-${pizzaId}`).innerText = formatCOP(total);
     }
 
-    function dispararSubidaParaNuevo() {
-      indiceProductoFotoActivo = null;
-      document.getElementById('inputArchivoOculto').click();
+    // ================= RENDERIZADO: CÓCTELES Y BEBIDAS =================
+    function renderBebidasYCocteles() {
+      const cContainer = document.getElementById('grid-cocteles');
+      cContainer.innerHTML = coctelesData.map(c => `
+        <div class="poster-card rounded-2xl bg-brand-card border border-brand-border p-4 flex flex-col justify-between space-y-3 shadow-lg">
+          <div>
+            <div class="flex items-center justify-between text-cyan-400 text-xs font-bold mb-1">
+              <span>Cóctel</span>
+              <i class="fa-solid fa-martini-glass"></i>
+            </div>
+            <h4 class="text-base font-black text-white font-heading">${c.name}</h4>
+            <p class="text-[11px] text-zinc-400 mt-1 leading-relaxed">${c.desc}</p>
+          </div>
+          <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between">
+            <span class="text-sm font-black text-cyan-300 font-heading">${formatCOP(c.price)}</span>
+            <button 
+              onclick="agregarCoctel('${c.name}', ${c.price})"
+              class="bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+            >
+              <i class="fa-solid fa-plus"></i> Pedir
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      const bContainer = document.getElementById('grid-bebidas');
+      bContainer.innerHTML = bebidasData.map(b => `
+        <div class="poster-card rounded-2xl bg-brand-card border border-brand-border p-4 flex flex-col justify-between space-y-3 shadow-lg">
+          <div>
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm mb-2">
+              <i class="fa-solid ${b.icon}"></i>
+            </div>
+            <h4 class="text-base font-black text-white font-heading">${b.name}</h4>
+            <p class="text-[11px] text-zinc-400 mt-0.5">${b.detail}</p>
+          </div>
+          <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between">
+            <span class="text-sm font-black text-emerald-400 font-heading">${formatCOP(b.price)}</span>
+            <button 
+              onclick="agregarBebida('${b.name}', ${b.price}, '${b.detail}')"
+              class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+            >
+              <i class="fa-solid fa-plus"></i> Sumar
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
-    function procesarArchivoSeleccionado(event) {
-      const archivo = event.target.files[0];
-      if (!archivo) return;
+    // ================= RENDERIZADO: HELADOS =================
+    function renderHelados() {
+      const container = document.getElementById('grid-helados');
+      container.innerHTML = heladosData.map(h => {
+        let sizeSelector = '';
+        let buttonAction = '';
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        optimizarImagenYGuardar(e.target.result);
-      };
-      reader.readAsDataURL(archivo);
-      event.target.value = ''; // Reset input
-    }
-
-    // Reduce resolución a max 400x400 JPG calidad 0.65 para que quepa en Google Sheets (<15KB)
-    function optimizarImagenYGuardar(dataUrlOriginal) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-
-        const maxLado = 400;
-        let w = img.width;
-        let h = img.height;
-
-        if (w > h) {
-          if (w > maxLado) {
-            h *= maxLado / w;
-            w = maxLado;
-          }
+        if (h.type === 'special') {
+          sizeSelector = `
+            <div class="flex items-center justify-between py-2 text-xs">
+              <span class="text-zinc-400">Tamaño Único Especial</span>
+              <strong class="text-pink-400 font-heading text-lg">${formatCOP(h.price)}</strong>
+            </div>
+          `;
+          buttonAction = `onclick="agregarHeladoEspecial('${h.name}', ${h.price})"`;
         } else {
-          if (h > maxLado) {
-            w *= maxLado / h;
-            h = maxLado;
-          }
+          sizeSelector = `
+            <div class="grid grid-cols-2 gap-2 bg-black/40 p-1.5 rounded-2xl border border-brand-border text-xs mb-1">
+              <label class="cursor-pointer">
+                <input type="radio" name="size-ice-${h.id}" value="clasico" checked class="peer sr-only" onchange="document.getElementById('btn-ice-price-${h.id}').innerText = '${formatCOP(h.clasico)}'">
+                <div class="text-center py-2 rounded-xl text-zinc-400 peer-checked:bg-white/10 peer-checked:text-white peer-checked:font-bold transition-all">
+                  Clásico <br><strong class="text-pink-400 text-xs">${formatCOP(h.clasico)}</strong>
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="size-ice-${h.id}" value="junior" class="peer sr-only" onchange="document.getElementById('btn-ice-price-${h.id}').innerText = '${formatCOP(h.junior)}'">
+                <div class="text-center py-2 rounded-xl text-zinc-400 peer-checked:bg-white/10 peer-checked:text-white peer-checked:font-bold transition-all">
+                  Junior <br><strong class="text-pink-400 text-xs">${formatCOP(h.junior)}</strong>
+                </div>
+              </label>
+            </div>
+          `;
+          buttonAction = `onclick="agregarHeladoFruta('${h.id}')"`;
         }
 
-        canvas.width = w;
-        canvas.height = h;
-        ctx.drawImage(img, 0, 0, w, h);
+        return `
+          <div class="poster-card rounded-3xl bg-brand-card border border-brand-border overflow-hidden flex flex-col justify-between shadow-xl">
+            <div class="relative h-60 w-full overflow-hidden bg-black/40">
+              <img 
+                src="${h.file}" 
+                alt="Helado ${h.name}" 
+                class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                onerror="if(!this.dataset.tried && '${h.altFile || ''}') { this.dataset.tried = '1'; this.src = '${h.altFile || ''}'; } else { this.src = '${h.fallback}'; }"
+              />
+              <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold text-pink-300 border border-pink-500/30">
+                ${h.type === 'special' ? 'Topping Crujiente' : '100% Fruta'}
+              </div>
+            </div>
 
-        const dataUrlOptimizada = canvas.toDataURL('image/jpeg', 0.65);
+            <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+              <div>
+                <h4 class="text-2xl font-black text-white font-heading">${h.name}</h4>
+                <p class="text-xs text-zinc-400 mt-1 leading-relaxed">${h.desc}</p>
+              </div>
 
-        if (indiceProductoFotoActivo === null) {
-          // Asignar al modal de nuevo producto
-          document.getElementById('nuevoImagen').value = dataUrlOptimizada;
-          document.getElementById('previewNuevoImg').src = dataUrlOptimizada;
-          document.getElementById('previewNuevoCont').classList.remove('hidden');
-        } else {
-          // Asignar al producto existente
-          catalogoProductos[indiceProductoFotoActivo].image = dataUrlOptimizada;
-          renderizarCatalogoEditable();
-        }
-      };
-      img.src = dataUrlOriginal;
+              <div class="space-y-3 pt-2">
+                ${sizeSelector}
+
+                <button 
+                  ${buttonAction}
+                  class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-xl flex items-center justify-between px-4 text-xs active:scale-95 transition-all shadow-md shadow-pink-600/20 cursor-pointer"
+                >
+                  <span>Pedir Helado</span>
+                  <span id="btn-ice-price-${h.id}" class="font-heading font-black text-sm">
+                    ${h.type === 'special' ? formatCOP(h.price) : formatCOP(h.clasico)}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    // ================= MÓDULO DE CÁMARA EN VIVO =================
-    async function abrirCamaraParaIndex(index) {
-      indiceProductoFotoActivo = index;
-      await iniciarTransmisionCamara();
+    // ================= FUNCIONES DE AGREGADO A COMANDA =================
+    function showToast(msj) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-text').innerText = msj;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2300);
     }
 
-    async function abrirCamaraParaNuevo() {
-      indiceProductoFotoActivo = null;
-      await iniciarTransmisionCamara();
+    function agregarPromoNavidad(promoId) {
+      const p = promosNavidadData.find(x => x.id === promoId);
+      cart.push({
+        id: 'promo-' + Date.now(),
+        name: `Promo Navideña ${p.numero} (${p.title})`,
+        detail: p.items.join(' + '),
+        price: p.price,
+        category: 'Navidad',
+        quantity: 1,
+        note: ''
+      });
+      renderCart();
+      showToast(`¡Promo ${p.numero} agregada a la comanda!`);
     }
 
-    async function iniciarTransmisionCamara() {
-      const modal = document.getElementById('modalCamara');
-      const video = document.getElementById('videoElemento');
+    function agregarPlatoSimple(nombre, precio, detalle) {
+      cart.push({
+        id: 'simple-' + Date.now(),
+        name: nombre,
+        detail: detalle,
+        price: precio,
+        category: 'Restaurant',
+        quantity: 1,
+        note: ''
+      });
+      renderCart();
+      showToast(`¡${nombre} agregado!`);
+    }
 
-      try {
-        streamCamaraActivo = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" }, width: { ideal: 640 }, height: { ideal: 640 } },
-          audio: false
-        });
-        video.srcObject = streamCamaraActivo;
-        modal.classList.remove('hidden');
-      } catch (err) {
-        console.warn("No se pudo iniciar cámara por getUserMedia:", err);
-        // Fallback nativo: abre directamente la cámara mediante input capture
-        const inputFallback = document.createElement('input');
-        inputFallback.type = 'file';
-        inputFallback.accept = 'image/*';
-        inputFallback.setAttribute('capture', 'environment');
-        inputFallback.onchange = procesarArchivoSeleccionado;
-        inputFallback.click();
+    function agregarCoctel(nombre, precio) {
+      cart.push({
+        id: 'coctel-' + Date.now(),
+        name: `Cóctel ${nombre}`,
+        detail: 'Preparación especial con hielo frappé',
+        price: precio,
+        category: 'Cócteles',
+        quantity: 1,
+        note: ''
+      });
+      renderCart();
+      showToast(`¡Cóctel ${nombre} agregado!`);
+    }
+
+    function agregarBebida(nombre, precio, detalle) {
+      cart.push({
+        id: 'bebida-' + Date.now(),
+        name: nombre,
+        detail: detalle,
+        price: precio,
+        category: 'Bebidas',
+        quantity: 1,
+        note: ''
+      });
+      renderCart();
+      showToast(`¡${nombre} agregada!`);
+    }
+
+    function agregarPizza(pizzaId) {
+      const p = pizzasData.find(x => x.id === pizzaId);
+      const isGrande = document.querySelector(`input[name="size-${pizzaId}"]:checked`).value === 'grande';
+      const conBorde = document.getElementById(`borde-${pizzaId}`).checked;
+      
+      let basePrice = isGrande ? p.grande : p.mediana;
+      let finalPrice = basePrice + (conBorde ? 12000 : 0);
+      let detalle = `${isGrande ? 'Grande' : 'Mediana'}${conBorde ? ' + Borde de Queso (+12K)' : ''}`;
+
+      cart.push({
+        id: 'pizza-' + Date.now(),
+        name: p.name,
+        detail: detalle,
+        price: finalPrice,
+        category: 'Pizzas',
+        quantity: 1,
+        note: ''
+      });
+
+      renderCart();
+      showToast(`¡${p.name} (${isGrande ? 'Grande' : 'Mediana'}) agregada!`);
+    }
+
+    function agregarHeladoEspecial(nombre, precio) {
+      cart.push({
+        id: 'ice-spec-' + Date.now(),
+        name: `Helado ${nombre}`,
+        detail: 'Tamaño Especial Topping Crujiente',
+        price: precio,
+        category: 'Helados',
+        quantity: 1,
+        note: ''
+      });
+      renderCart();
+      showToast(`¡Helado de ${nombre} agregado!`);
+    }
+
+    function agregarHeladoFruta(heladoId) {
+      const h = heladosData.find(x => x.id === heladoId);
+      const isJunior = document.querySelector(`input[name="size-ice-${heladoId}"]:checked`).value === 'junior';
+      const price = isJunior ? h.junior : h.clasico;
+      const tamano = isJunior ? 'Junior' : 'Clásico';
+
+      cart.push({
+        id: 'ice-fruit-' + Date.now(),
+        name: `Helado ${h.name}`,
+        detail: `Tamaño ${tamano}`,
+        price: price,
+        category: 'Helados',
+        quantity: 1,
+        note: ''
+      });
+      renderCart();
+      showToast(`¡Helado ${h.name} (${tamano}) agregado!`);
+    }
+
+    function cambiarCantidadParque(delta) {
+      parqueCant = Math.max(1, parqueCant + delta);
+      document.getElementById('parque-cant').innerText = parqueCant;
+    }
+
+    function agregarPaseParque() {
+      const total = precioParqueActual * parqueCant;
+      cart.push({
+        id: 'parque-' + Date.now(),
+        name: `Pase Parque (${parqueCant} ${parqueCant === 1 ? 'Niño' : 'Niños'})`,
+        detail: 'Acceso por TIEMPO LIBRE • 2 Niveles + Carros Eléctricos',
+        price: total,
+        category: 'Parque',
+        quantity: parqueCant,
+        note: ''
+      });
+      parqueCant = 1;
+      document.getElementById('parque-cant').innerText = 1;
+      renderCart();
+      showToast('¡Pases del parque (Tiempo Libre) agregados!');
+    }
+
+    function abrirModalPlato(dishId) {
+      const d = dishesData.find(x => x.id === dishId);
+      const modal = document.getElementById('dish-modal');
+      const content = document.getElementById('dish-modal-content');
+
+      content.innerHTML = `
+        <div class="relative h-48 w-full bg-black/60">
+          <img src="${d.file}" alt="${d.title}" class="w-full h-full object-cover" onerror="this.src='${d.fallback}'" />
+          <button onclick="cerrarModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4">
+          <div>
+            <h3 class="text-2xl font-black text-white font-heading">${d.title}</h3>
+            <p class="text-xs text-brand-orange font-semibold mt-1">${d.subtitle}</p>
+            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">${d.ingredients}</p>
+          </div>
+          
+          <div class="space-y-3">
+            <span class="text-xs uppercase font-bold text-zinc-400">Selecciona el tamaño:</span>
+            <div class="space-y-2">
+              ${d.portions.map((p, idx) => `
+                <label class="flex items-center justify-between p-3.5 rounded-2xl bg-black/40 border border-brand-border hover:border-amber-500/50 cursor-pointer transition-all">
+                  <div class="flex items-center gap-3">
+                    <input type="radio" name="modal-portion" value="${p.price}" data-name="${p.name}" ${idx === 0 ? 'checked' : ''} class="w-4 h-4 text-amber-500">
+                    <span class="text-sm font-bold text-white">${p.name}</span>
+                  </div>
+                  <strong class="text-amber-400 font-heading">${formatCOP(p.price)}</strong>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+          <button onclick="confirmarPorcion('${d.id}')" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-extrabold py-3.5 rounded-2xl active:scale-95 transition-all text-sm mt-4 cursor-pointer">
+            Agregar a la Comanda
+          </button>
+        </div>
+      `;
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-95');
+      content.classList.add('scale-100');
+    }
+
+    function confirmarPorcion(dishId) {
+      const d = dishesData.find(x => x.id === dishId);
+      const selected = document.querySelector('input[name="modal-portion"]:checked');
+      const precio = parseInt(selected.value);
+      const nombrePorcion = selected.getAttribute('data-name');
+
+      cart.push({
+        id: 'portion-' + Date.now(),
+        name: `${d.title} (${nombrePorcion})`,
+        detail: d.subtitle,
+        price: precio,
+        category: 'Restaurant',
+        quantity: 1,
+        note: ''
+      });
+
+      cerrarModal();
+      renderCart();
+      showToast(`¡${d.title} agregada!`);
+    }
+
+    function cerrarModal() {
+      const modal = document.getElementById('dish-modal');
+      const content = document.getElementById('dish-modal-content');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-95');
+    }
+
+    // ================= CARRITO, NOTAS & COMANDA =================
+    function toggleCart() {
+      const drawer = document.getElementById('cart-drawer');
+      const overlay = document.getElementById('cart-drawer-overlay');
+      const isOpen = !drawer.classList.contains('translate-x-full');
+
+      if (isOpen) {
+        drawer.classList.add('translate-x-full');
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+      } else {
+        drawer.classList.remove('translate-x-full');
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
       }
     }
 
-    function capturarFotoCamara() {
-      const video = document.getElementById('videoElemento');
-      if (!video || !video.videoWidth) return;
-
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      const frameDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-      cerrarModalCamara();
-
-      // Pasa por el optimizador
-      optimizarImagenYGuardar(frameDataUrl);
+    function eliminarItemCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      renderCart();
     }
 
-    function cerrarModalCamara() {
-      const modal = document.getElementById('modalCamara');
-      const video = document.getElementById('videoElemento');
-
-      if (streamCamaraActivo) {
-        streamCamaraActivo.getTracks().forEach(track => track.stop());
-        streamCamaraActivo = null;
+    function actualizarNotaItem(id, valor) {
+      const item = cart.find(x => x.id === id);
+      if (item) {
+        item.note = valor;
       }
-      if (video) video.srcObject = null;
-      modal.classList.add('hidden');
     }
 
-    // ================= MODAL DE NUEVO PRODUCTO =================
-    function abrirModalNuevoProducto() {
-      document.getElementById('modalNuevoProducto').classList.remove('hidden');
-      document.getElementById('nuevoNombre').value = '';
-      document.getElementById('nuevoDetalle').value = '';
-      document.getElementById('nuevoPrecio').value = '';
-      document.getElementById('nuevoImagen').value = '';
-      document.getElementById('previewNuevoCont').classList.add('hidden');
-    }
+    function renderCart() {
+      const container = document.getElementById('cart-items-container');
+      const badge = document.getElementById('cart-badge');
+      const subtotalEl = document.getElementById('cart-subtotal');
+      const totalEl = document.getElementById('cart-total');
 
-    function cerrarModalNuevoProducto() {
-      document.getElementById('modalNuevoProducto').classList.add('hidden');
-    }
+      badge.innerText = cart.length;
 
-    function guardarNuevoProductoEnMemoria() {
-      const cat = document.getElementById('nuevoCat').value;
-      const nom = document.getElementById('nuevoNombre').value.trim();
-      const det = document.getElementById('nuevoDetalle').value.trim();
-      const pre = Number(document.getElementById('nuevoPrecio').value) || 0;
-      const img = document.getElementById('nuevoImagen').value.trim();
-
-      if (!nom || pre <= 0) {
-        alert("Ingresa al menos el nombre y un precio válido.");
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center py-12 space-y-4">
+            <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-zinc-500 text-2xl">
+              <i class="fa-solid fa-receipt"></i>
+            </div>
+            <div>
+              <p class="text-white font-bold text-base font-heading">Tu comanda está vacía</p>
+              <p class="text-xs text-zinc-400 mt-1 max-w-[240px]">Agrega hamburguesas, platos, pizzas, helados, cócteles o pases al parque.</p>
+            </div>
+          </div>
+        `;
+        subtotalEl.innerText = '$0 COP';
+        totalEl.innerText = '$0 COP';
         return;
       }
 
-      catalogoProductos.push({
-        id: "prod-" + Date.now(),
-        category: cat,
-        name: nom,
-        detail: det,
-        price: pre,
-        image: img
-      });
+      let total = 0;
+      container.innerHTML = cart.map(item => {
+        total += item.price;
+        return `
+          <div class="p-4 rounded-2xl bg-black/40 border border-brand-border space-y-2 group">
+            <div class="flex items-start justify-between gap-3">
+              <div class="space-y-1">
+                <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-brand-border/60 text-zinc-300">
+                  ${item.category}
+                </span>
+                <h5 class="text-sm font-black text-white font-heading">${item.name}</h5>
+                <p class="text-xs text-zinc-400">${item.detail}</p>
+                <div class="text-xs font-black text-amber-400 font-heading pt-0.5">${formatCOP(item.price)}</div>
+              </div>
+              <button 
+                onclick="eliminarItemCart('${item.id}')"
+                class="text-zinc-500 hover:text-red-400 p-2 transition-colors cursor-pointer"
+                title="Eliminar"
+              >
+                <i class="fa-solid fa-trash-can text-sm"></i>
+              </button>
+            </div>
 
-      cerrarModalNuevoProducto();
-      renderizarCatalogoEditable();
-      alert("Producto añadido a la lista temporal. Pulsa 'Guardar Cambios en la Web' para publicarlo.");
+            <div class="pt-1.5">
+              <input 
+                type="text" 
+                placeholder="✍️ Sugerencia especial (ej: sin cebolla, término medio, etc.)"
+                value="${item.note || ''}"
+                oninput="actualizarNotaItem('${item.id}', this.value)"
+                class="w-full bg-[#0c0d14] border border-brand-border/70 rounded-xl px-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition"
+              />
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      subtotalEl.innerText = formatCOP(total);
+      totalEl.innerText = formatCOP(total);
     }
 
-    async function guardarCatalogoEnServidor() {
-      const btn = document.getElementById('btnGuardarMenu');
-      const textoOriginal = btn.innerHTML;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Guardando...`;
+    // ================= ENVÍO ASEGURADO A SHEETS Y APERTURA DE WHATSAPP =================
+    async function enviarPedidoWhatsApp(e) {
+      if (cart.length === 0) {
+        alert('Agrega al menos un producto a la comanda antes de enviar.');
+        return;
+      }
+
+      const nombreCliente = document.getElementById('cliente-nombre').value.trim();
+      const telefonoCliente = document.getElementById('cliente-telefono').value.trim();
+
+      if (!nombreCliente || !telefonoCliente) {
+        alert('Por favor, ingresa tu Nombre y Número de WhatsApp para participar por los premios sorpresa e identificar tu pedido.');
+        document.getElementById('cliente-nombre').focus();
+        return;
+      }
+
+      const btn = document.getElementById('btnEnviarPedidoWhatsApp');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-xl"></i> Registrando Comanda...`;
       btn.disabled = true;
 
-      try {
+      let total = 0;
+      cart.forEach(item => { total += item.price; });
+
+      const idComandaGenerado = "CMD-" + Math.floor(1000 + Math.random() * 9000);
+
+      // 1. Enviar los datos a Google Sheets esperando que salgan
+      if (typeof GOOGLE_SHEETS_WEBHOOK_URL !== 'undefined' && GOOGLE_SHEETS_WEBHOOK_URL.startsWith('http')) {
         const payload = {
-          action: "guardar_catalogo",
-          catalogo: catalogoProductos
+          idComanda: idComandaGenerado,
+          cliente: nombreCliente,
+          telefono: telefonoCliente,
+          items: cart,
+          total: total
         };
 
-        const resp = await fetch(APPS_SCRIPT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify(payload)
-        });
+        try {
+          await Promise.race([
+            fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+              method: "POST",
+              mode: "no-cors",
+              keepalive: true,
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              body: JSON.stringify(payload)
+            }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 2000))
+          ]);
+        } catch (err) {
+          console.warn("Aviso de red al enviar a Google Sheets:", err);
+        }
+      }
 
-        alert("¡Catálogo, fotos y precios actualizados con éxito en Google Sheets y en la web!");
-      } catch (err) {
-        console.error("Error al guardar:", err);
-        alert("Ocurrió un error al guardar. Revisa la conexión de Apps Script.");
-      } finally {
-        btn.innerHTML = textoOriginal;
-        btn.disabled = false;
+      // 2. Construir mensaje de WhatsApp
+      let mensaje = `*¡HOLA HAARU PARK! QUIERO REALIZAR ESTE PEDIDO:*%0A%0A`;
+      mensaje += `🎟️ *N° Comanda:* ${idComandaGenerado}%0A`;
+      mensaje += `👤 *Cliente:* ${encodeURIComponent(nombreCliente)}%0A`;
+      mensaje += `📱 *WhatsApp de Contacto:* ${encodeURIComponent(telefonoCliente)}%0A`;
+      mensaje += `━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
+
+      cart.forEach((item, idx) => {
+        mensaje += `*${idx + 1}. [${item.category.toUpperCase()}]* ${encodeURIComponent(item.name)}%0A`;
+        mensaje += `   _Detalle:_ ${encodeURIComponent(item.detail)}%0A`;
+        if (item.note && item.note.trim() !== '') {
+          mensaje += `   _Sugerencia especial:_ ${encodeURIComponent(item.note.trim())}%0A`;
+        }
+        mensaje += `   _Subtotal:_ ${encodeURIComponent(formatCOP(item.price))}%0A%0A`;
+      });
+
+      mensaje += `━━━━━━━━━━━━━━━━━━━━━%0A`;
+      mensaje += `*TOTAL A PAGAR:* ${encodeURIComponent(formatCOP(total))}%0A`;
+      mensaje += `━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
+      
+      mensaje += `✨ *¡Gracias por venir a disfrutar la experiencia Haaru Park!*%0A`;
+      mensaje += `🎁 _Al consignar este pedido con tu número de teléfono, ya quedas participando oficialmente por nuestros premios sorpresa y cortesías exclusivas._%0A%0A`;
+      mensaje += `_Enviado desde el portal web oficial de Haaru Park_`;
+
+      const telefonoDestino = "584129315743";
+      const url = `https://wa.me/${telefonoDestino}?text=${mensaje}`;
+
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+
+      // Redirección directa para compatibilidad total con dispositivos móviles
+      window.location.href = url;
+    }
+
+    // ================= FILTRO Y NAVEGACIÓN =================
+    function mostrarSeccion(sec) {
+      const sProm = document.getElementById('sec-promos');
+      const sBurg = document.getElementById('sec-hamburguesas');
+      const sRest = document.getElementById('sec-restaurant');
+      const sPizz = document.getElementById('sec-pizzas');
+      const sBebi = document.getElementById('sec-bebidas');
+      const sHela = document.getElementById('sec-heladeria');
+      const sParq = document.getElementById('sec-parque');
+
+      if (sec === 'todos') {
+        sProm.classList.remove('hidden');
+        sBurg.classList.remove('hidden');
+        sRest.classList.remove('hidden');
+        sPizz.classList.remove('hidden');
+        sBebi.classList.remove('hidden');
+        sHela.classList.remove('hidden');
+        sParq.classList.remove('hidden');
+        document.getElementById('portal').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        sProm.classList.toggle('hidden', sec !== 'promos');
+        sBurg.classList.toggle('hidden', sec !== 'hamburguesas');
+        sRest.classList.toggle('hidden', sec !== 'restaurant');
+        sPizz.classList.toggle('hidden', sec !== 'pizzas');
+        sBebi.classList.toggle('hidden', sec !== 'bebidas');
+        sHela.classList.toggle('hidden', sec !== 'heladeria');
+        sParq.classList.toggle('hidden', sec !== 'parque');
+
+        const el = document.getElementById(`sec-${sec}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
       }
     }
 
-    function cargarCatalogoPorDefecto() {
-      catalogoProductos = [
-        // Hamburguesas
-        { category: "Hamburguesas", name: "Al Vino Burger", detail: "Muchacho al vino, queso crema, cebolla caramelizada + Papas", price: 30000, image: "al vino burguer.jpg" },
-        { category: "Hamburguesas", name: "Bacon Kubrick", detail: "Croqueta de solomillo, tocineta, cheddar, relish + Papas", price: 30000, image: "Bacon cubrick.jpg" },
-        { category: "Hamburguesas", name: "Pollo Crispy", detail: "Pollo crujiente, tocineta, queso crema, vegetales + Papas", price: 30000, image: "Pollo crispy.jpg" },
-        // Restaurant
-        { category: "Restaurant", name: "Pasticho Tradicional", detail: "Personal con salsa bolognesa y bechamel", price: 25000, image: "pasticho.jpg" },
-        { category: "Restaurant", name: "Churrasco de Solomo", detail: "Solomo madurado + Ensalada + Papas fritas", price: 45000, image: "Churrasco de Solomo.jpg" },
-        { category: "Restaurant", name: "Pechuga a la Meuniér", detail: "Suprema a la meunier + Ensalada + Papas", price: 35000, image: "Pechuga a la Meunier.jpg" },
-        // Pizzas
-        { category: "Pizzas", name: "Pizza Margarita", detail: "Queso mozzarella, jamón, cebolla, pimentón", price: 35000, image: "PIZZAS.jpg" },
-        { category: "Pizzas", name: "Pizza Wins", detail: "Mozzarella, pollo, tocineta, maíz, champiñón", price: 55000, image: "PIZZAS.jpg" },
-        // Cócteles
-        { category: "Cócteles", name: "Cóctel Laguna Azul", detail: "Vodka, curaçao azul, limón y soda", price: 18000, image: "" },
-        { category: "Cócteles", name: "Cóctel Mojito Cubano", detail: "Ron blanco, hierbabuena fresca, lima", price: 18000, image: "" },
-        // Helados
-        { category: "Helados", name: "Helado Flips", detail: "Cremoso con cereal Flips chocolate", price: 12000, image: "FLIPS.jpg" },
-        { category: "Helados", name: "Helado Pirulin", detail: "Barquillas crujientes rellenas de avellana", price: 13000, image: "PIRULIN.jpg" },
-        // Parque
-        { category: "Parque", name: "Pase Parque (Tiempo Libre)", detail: "Acceso ilimitado por niño a los 2 niveles + carros", price: 20000, image: "" }
-      ];
-      renderizarCatalogoEditable();
-    }
+    // ================= INICIALIZACIÓN =================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderPromosNavidad();
+      renderHamburguesas();
+      renderRestaurant();
+      renderPizzas();
+      renderBebidasYCocteles();
+      renderHelados();
+      renderCart();
 
-    document.addEventListener('DOMContentLoaded', () => {
-      establecerFechaHoy();
-      cargarDatosServidor();
+      sincronizarMenuEnVivo();
     });
   </script>
 </body>
