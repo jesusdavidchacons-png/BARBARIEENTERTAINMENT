@@ -194,7 +194,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8" id="grid-promos"></div>
     </section>
 
-    <!-- SECCIÓN 1: HAMBURGUESAS (INCLUYE MAR Y TIERRA) -->
+    <!-- SECCIÓN 1: HAMBURGUESAS (CON MAR Y TIERRA) -->
     <section id="sec-hamburguesas" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
@@ -208,10 +208,10 @@
           🍔 + Croqueta Adicional (+5K)
         </div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-hamburguesas"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6" id="grid-hamburguesas"></div>
     </section>
 
-    <!-- SECCIÓN 2: RESTAURANT (SIN HAMBURGUESAS) -->
+    <!-- SECCIÓN 2: RESTAURANT GOURMET (EXCLUSIVAMENTE PLATOS DE COCINA Y BRASAS) -->
     <section id="sec-restaurant" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
@@ -226,7 +226,7 @@
         </div>
       </div>
 
-      <!-- Hero Plato Insignia -->
+      <!-- Hero Plato Insignia: Churrasco de Solomo -->
       <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-card to-[#12131d] border border-brand-border p-6 sm:p-10 flex flex-col lg:flex-row items-center gap-8 shadow-2xl">
         <div class="w-full lg:w-1/2 space-y-4">
           <span class="bg-brand-orange text-white text-xs font-black uppercase px-3 py-1 rounded-md tracking-wider">Plato Insignia</span>
@@ -295,7 +295,7 @@
 
       <div class="space-y-4 pt-4">
         <h3 class="text-xl font-black text-white font-heading flex items-center gap-2"><i class="fa-solid fa-bottle-water text-emerald-400"></i> Bebidas & Granizados</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="grid-bebidas"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="grid-bebidas"></div>
       </div>
     </section>
 
@@ -469,7 +469,7 @@
       return sim >= 0.65;
     }
 
-    // 1. PROMOS DE RESPALDO
+    // 1. PROMOS DE RESPALDO (CON FOTOS REALES)
     let promosNavidadData = [
       { 
         id: 'promo-1', 
@@ -503,7 +503,7 @@
       }
     ];
 
-    // 2. HAMBURGUESAS GOURMET (INCLUYE MAR Y TIERRA)
+    // 2. HAMBURGUESAS GOURMET (4 PRODUCTOS EXCLUSIVOS - INCLUYENDO MAR Y TIERRA)
     let burgersData = [
       { id: 'vino-burger', title: 'Al Vino Burger', file: 'al vino burguer.jpg', fallback: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop', subtitle: 'Al vino burguer + Papas a la francesa 30K', ingredients: 'Muchacho al vino madurado, queso crema, cebolla caramelizada, vegetales frescos, papas rufles crujientes.', price: 30000 },
       { id: 'bacon-kubrick', title: 'Bacon Kubrick', file: 'Bacon cubrick.jpg', fallback: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=800&auto=format&fit=crop', subtitle: 'Bacon Kubrick + Papas a la francesa 30K', ingredients: 'Croqueta de solomillo, tocineta crujiente, relish de pepinillo, vegetales frescos, queso cheddar fundido, papas francesas.', price: 30000 },
@@ -511,17 +511,42 @@
       { id: 'mar-tierra', title: 'Mar y Tierra', file: 'Mar y tierra.jpg', fallback: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop', subtitle: 'Mar y Tierra + Papas a la francesa 55K', ingredients: 'Camarones seleccionados, suprema de pollo, queso crema, vegetales frescos, salsas de la casa, papas a la francesa.', price: 55000 }
     ];
 
-    // 3. RESTAURANT GOURMET (SIN HAMBURGUESAS)
+    // 3. RESTAURANT GOURMET (6 PLATOS ESTRUCTURADOS - SIN HAMBURGUESAS)
     let dishesData = [
       { id: 'pasticho', title: 'Pasticho Tradicional', file: 'pasticho.jpg', fallback: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?q=80&w=800&auto=format&fit=crop', subtitle: 'Pasticho personal horneado al momento 25K', ingredients: 'Láminas de pasta artesanal, salsa bolognesa de la casa, bechamel cremosa y abundante queso gratinado.', price: 25000, type: 'simple' },
       { id: 'meunier', title: 'Pechuga a la Meuniér', file: 'Pechuga a la Meunier.jpg', fallback: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=800&auto=format&fit=crop', subtitle: 'Pechuga a la Meunier + Ensalada de la casa 35K', ingredients: 'Suprema de pollo, Ensalada cesar, Papas a la francesa', price: 35000, type: 'simple' },
-      { id: 'parrilla', title: 'Parrilla Mixta', file: 'Parrilla.jpg', fallback: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop', subtitle: 'Solomo, Pechuga, Cochino, Salsas, Papas a la francesa', ingredients: 'Solomo madurado, pechuga, cochino, salsas caseras, papas a la francesa.', type: 'portion', portions: [{ name: 'Personal (+ Papas)', price: 35000 }, { name: 'Mediana (+ Papas)', price: 60000 }, { name: 'Grande (+ Papas)', price: 95000 }] },
-      { id: 'cazuela-mariscos', title: 'Cazuela de Mariscos', file: 'Cazuela de Mariscos.jpg', fallback: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=800&auto=format&fit=crop', subtitle: 'Camarones, Calamares, Langostino, Almejas, Chipichipi', ingredients: 'Camarones, calamares, langostino, almejas, chipichipi en bisque criollo + pan tostado al horno.', type: 'portion', portions: [{ name: 'Mediana (+ Pan tostado)', price: 45000 }, { name: 'Grande (+ Pan tostado)', price: 75000 }] },
+      { 
+        id: 'parrilla', 
+        title: 'Parrilla Mixta', 
+        file: 'Parrilla.jpg', 
+        fallback: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop', 
+        subtitle: 'Solomo, Pechuga, Cochino, Salsas, Papas a la francesa', 
+        ingredients: 'Solomo madurado, pechuga, cochino, salsas caseras, papas a la francesa.', 
+        type: 'portion', 
+        portions: [
+          { name: 'Personal (+ Papas)', price: 35000 }, 
+          { name: 'Mediana (+ Papas)', price: 60000 }, 
+          { name: 'Grande (+ Papas)', price: 95000 }
+        ] 
+      },
+      { 
+        id: 'cazuela-mariscos', 
+        title: 'Cazuela de Mariscos', 
+        file: 'Cazuela de Mariscos.jpg', 
+        fallback: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=800&auto=format&fit=crop', 
+        subtitle: 'Camarones, Calamares, Langostino, Almejas, Chipichipi', 
+        ingredients: 'Camarones, calamares, langostino, almejas, chipichipi en bisque criollo + pan tostado al horno.', 
+        type: 'portion', 
+        portions: [
+          { name: 'Mediana (+ Pan tostado)', price: 45000 }, 
+          { name: 'Grande (+ Pan tostado)', price: 75000 }
+        ] 
+      },
       { id: 'ceviche', title: 'Ceviche Peruano', file: 'ceviche peruano.jpg', fallback: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?q=80&w=800&auto=format&fit=crop', subtitle: 'Ceviche peruano + tostones de la casa 45K', ingredients: 'Pescado fresco marinado en leche de tigre, camarones, cebolla morada, cilantro y tostones crujientes.', price: 45000, type: 'simple' },
       { id: 'churrasco-solomo', title: 'Churrasco de Solomo', file: 'Churrasco de Solomo.jpg', fallback: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop', subtitle: 'Churrasco de Solomo + Ensalada de la casa 45K', ingredients: 'Solomo madurado a la brasa, ensalada fresca, papas fritas doradas.', price: 45000, type: 'simple' }
     ];
 
-    // 4. PIZZAS
+    // 4. PIZZAS ARTESANALES (5 RECETAS FIJAS CON SELECTOR MEDIANA / GRANDE)
     let pizzasData = [
       { id: 'pizza-margarita', name: 'Pizza Margarita', fallback: 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?q=80&w=800&auto=format&fit=crop', ingredients: 'Queso mozzarella, jamón, cebolla, pimentón', mediana: 35000, grande: 55000 },
       { id: 'pizza-hawaina', name: 'Pizza Hawaina', fallback: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop', ingredients: 'Queso mozzarella, piña dorada, jamón, cebolla, pimentón', mediana: 45000, grande: 70000 },
@@ -539,7 +564,7 @@
       { id: 'laguna-roja', name: 'Laguna Roja', desc: 'Bebida vibrante de frutos rojos, vodka y licor dulce.', price: 18000, file: 'laguna roja.jpg', fallback: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=600&auto=format&fit=crop' }
     ];
 
-    // 6. BEBIDAS FRÍAS (SOPORTE PARA FOTOS Y NUEVAS BEBIDAS)
+    // 6. BEBIDAS FRÍAS
     let bebidasData = [
       { id: 'granizado', name: 'Granizado de Frutas', detail: 'Frappé con pulpa fresca a elección', price: 10000, file: '', icon: 'fa-blender' },
       { id: 'refresco-personal', name: 'Refresco Personal', detail: 'Botella individual fría', price: 5000, file: '', icon: 'fa-bottle-droplet' },
@@ -547,7 +572,7 @@
       { id: 'refresco-litro', name: 'Refresco de Litro', detail: 'Formato familiar para compartir', price: 10000, file: '', icon: 'fa-champagne-glasses' }
     ];
 
-    // 7. HELADOS
+    // 7. HELADOS ARTESANALES
     let heladosData = [
       { id: 'flips', name: 'Flips', file: 'FLIPS.jpg', altFile: '', fallback: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop', type: 'special', price: 12000, desc: 'Cremoso helado con cobertura abundante de cereal Flips de chocolate.' },
       { id: 'pirulin', name: 'Pirulin', file: 'PIRULIN.jpg', altFile: '', fallback: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371?q=80&w=800&auto=format&fit=crop', type: 'special', price: 13000, desc: 'Base artesanal con crujientes barquillas rellenas de avellana Pirulin.' },
@@ -574,7 +599,7 @@
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    // ================= SINCRONIZACIÓN DINÁMICA COMPLETA =================
+    // ================= SINCRONIZACIÓN EXACTA Y NO DESTRUCTIVA =================
     async function sincronizarMenuEnVivo() {
       try {
         const respuesta = await fetch(`${GOOGLE_SHEETS_WEBHOOK_URL}?tipo=catalogo&t=${Date.now()}`, { cache: "no-store" });
@@ -583,172 +608,64 @@
         if (data.status === "success" && Array.isArray(data.catalogo) && data.catalogo.length > 0) {
           const catalogo = data.catalogo;
 
-          // 1. BEBIDAS: Soporte dinámico para productos nuevos agregados desde el panel
-          const itemsBeb = catalogo.filter(x => {
-            const c = limpiarTexto(x.category);
-            return c.includes('bebida') || c.includes('refresco') || c.includes('agua') || c.includes('jugo');
-          });
+          catalogo.forEach(item => {
+            const nomLimpio = limpiarTexto(item.name);
+            const precio = limpiarPrecioNumero(item.price);
+            const tieneFotoValida = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
 
-          if (itemsBeb.length > 0) {
-            bebidasData = itemsBeb.map((b, idx) => {
-              const localEx = bebidasData.find(x => nombresCoinciden(x.name, b.name)) || {};
-              const tieneFoto = b.image && (b.image.startsWith('data:') || b.image.startsWith('http') || b.image.includes('.jpg') || b.image.includes('.png'));
-              return {
-                id: localEx.id || ('beb-dyn-' + idx),
-                name: b.name,
-                detail: b.detail || localEx.detail || 'Bebida fría',
-                price: limpiarPrecioNumero(b.price) || localEx.price || 5000,
-                file: tieneFoto ? b.image : (localEx.file || ''),
-                icon: localEx.icon || 'fa-bottle-water'
-              };
-            });
-          }
+            // 1. HAMBURGUESAS (Solo se asignan a burgersData, nunca a restaurant)
+            const b = burgersData.find(x => nombresCoinciden(x.title, item.name));
+            if (b) {
+              if (precio > 0) b.price = precio;
+              if (item.detail) b.ingredients = item.detail;
+              if (tieneFotoValida) b.file = item.image;
+              return;
+            }
 
-          // 2. PROMOCIONES
-          const promoItems = catalogo.filter(x => {
-            const c = limpiarTexto(x.category);
-            return c.includes('navidad') || c.includes('promo');
-          });
-
-          if (promoItems.length > 0) {
-            promosNavidadData = promoItems.map((item, idx) => {
-              const localEx = promosNavidadData[idx] || {};
-              let bulletList = [];
-              if (item.detail) {
-                bulletList = item.detail.split(/[+,\n•]/).map(s => s.trim()).filter(Boolean);
+            // 2. RESTAURANT: Porciones de Parrilla Mixta
+            if (nomLimpio.includes('parrilla')) {
+              const parrilla = dishesData.find(d => d.id === 'parrilla');
+              if (parrilla && parrilla.portions) {
+                if (nomLimpio.includes('personal') && precio > 0) parrilla.portions[0].price = precio;
+                else if (nomLimpio.includes('mediana') && precio > 0) parrilla.portions[1].price = precio;
+                else if (nomLimpio.includes('grande') && precio > 0) parrilla.portions[2].price = precio;
+                if (tieneFotoValida) parrilla.file = item.image;
               }
-              if (bulletList.length === 0) {
-                bulletList = localEx.items || [item.detail || item.name];
+              return;
+            }
+
+            // 3. RESTAURANT: Porciones de Cazuela de Mariscos
+            if (nomLimpio.includes('cazuela')) {
+              const cazuela = dishesData.find(d => d.id === 'cazuela-mariscos');
+              if (cazuela && cazuela.portions) {
+                if (nomLimpio.includes('mediana') && precio > 0) cazuela.portions[0].price = precio;
+                else if (nomLimpio.includes('grande') && precio > 0) cazuela.portions[1].price = precio;
+                if (tieneFotoValida) cazuela.file = item.image;
               }
-              const tieneFoto = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
-              const numMatch = item.name.match(/\d+/);
+              return;
+            }
 
-              return {
-                id: localEx.id || ('promo-' + (idx + 1)),
-                numero: numMatch ? (numMatch[0] + '#') : (localEx.numero || `${idx + 1}#`),
-                title: item.name,
-                items: bulletList,
-                price: limpiarPrecioNumero(item.price) || localEx.price || 40000,
-                badge: localEx.badge || (item.category || 'Promo Especial'),
-                file: tieneFoto ? item.image : (localEx.file || localEx.fallback || 'PIZZAS.jpg'),
-                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop'
-              };
-            });
-          }
-
-          // 3. CÓCTELES / TRAGOS
-          const coctelItems = catalogo.filter(x => {
-            const c = limpiarTexto(x.category);
-            return c.includes('coctel') || c.includes('trago') || c.includes('bar');
-          });
-
-          if (coctelItems.length > 0) {
-            coctelesData = coctelItems.map((item, idx) => {
-              const localEx = coctelesData.find(x => nombresCoinciden(x.name, item.name)) || {};
-              const tieneFoto = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
-
-              return {
-                id: localEx.id || ('coctel-dyn-' + idx),
-                name: item.name,
-                desc: item.detail || localEx.desc || 'Preparación especial con hielo frappé y licores selectos.',
-                price: limpiarPrecioNumero(item.price) || localEx.price || 18000,
-                file: tieneFoto ? item.image : (localEx.file || localEx.fallback || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop'),
-                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop'
-              };
-            });
-          }
-
-          // 4. HAMBURGUESAS (Nuevas y existentes, incluyendo Mar y Tierra)
-          const itemsBurgers = catalogo.filter(x => {
-            const c = limpiarTexto(x.category);
-            return c.includes('burger') || c.includes('hamburguesa');
-          });
-
-          if (itemsBurgers.length > 0) {
-            burgersData = itemsBurgers.map((b, idx) => {
-              const localEx = burgersData.find(x => nombresCoinciden(x.title, b.name)) || {};
-              const tieneFoto = b.image && (b.image.startsWith('data:') || b.image.startsWith('http') || b.image.includes('.jpg') || b.image.includes('.png'));
-              return {
-                id: localEx.id || ('burger-dyn-' + idx),
-                title: b.name,
-                file: tieneFoto ? b.image : (localEx.file || 'al vino burguer.jpg'),
-                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
-                subtitle: b.detail || localEx.subtitle || `${b.name} ${formatCOP(b.price)}`,
-                ingredients: b.detail || localEx.ingredients || '',
-                price: limpiarPrecioNumero(b.price) || localEx.price || 30000
-              };
-            });
-          }
-
-          // 5. RESTAURANT
-          const itemsRest = catalogo.filter(x => {
-            const c = limpiarTexto(x.category);
-            return c.includes('restaurant') || c.includes('plato') || c.includes('carne') || c.includes('cocina');
-          });
-
-          if (itemsRest.length > 0) {
-            dishesData = itemsRest.map((item, idx) => {
-              const localEx = dishesData.find(d => nombresCoinciden(d.title, item.name)) || {};
-              const tieneFoto = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
-              const nomLimpio = limpiarTexto(item.name);
+            // 4. RESTAURANT: Platos Simples (Pasticho, Meuniér, Ceviche, Solomo)
+            const d = dishesData.find(x => nombresCoinciden(x.title, item.name));
+            if (d) {
+              if (precio > 0) d.price = precio;
+              if (item.detail) d.ingredients = item.detail;
+              if (tieneFotoValida) d.file = item.image;
 
               if (nomLimpio.includes('solomo') || nomLimpio.includes('churrasco')) {
-                heroPlatoActual.nombre = item.name;
-                heroPlatoActual.precio = limpiarPrecioNumero(item.price);
+                heroPlatoActual.precio = precio;
                 if (item.detail) heroPlatoActual.detalle = item.detail;
                 const hPre = document.getElementById('hero-plato-precio');
-                if (hPre) hPre.innerHTML = `${formatCOP(heroPlatoActual.precio)} <span class="text-xs text-zinc-400 font-normal">COP</span>`;
-                if (tieneFoto) {
+                if (hPre) hPre.innerHTML = `${formatCOP(precio)} <span class="text-xs text-zinc-400 font-normal">COP</span>`;
+                if (tieneFotoValida) {
                   const hImg = document.getElementById('hero-plato-img');
                   if (hImg) hImg.src = item.image;
                 }
               }
+              return;
+            }
 
-              return {
-                id: localEx.id || ('dish-dyn-' + idx),
-                title: item.name,
-                file: tieneFoto ? item.image : (localEx.file || 'Churrasco de Solomo.jpg'),
-                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
-                subtitle: item.detail || localEx.subtitle || `${item.name} ${formatCOP(item.price)}`,
-                ingredients: item.detail || localEx.ingredients || '',
-                price: limpiarPrecioNumero(item.price) || localEx.price || 35000,
-                type: localEx.type || 'simple',
-                portions: localEx.portions || null
-              };
-            });
-          }
-
-          // 6. HELADOS
-          const itemsHel = catalogo.filter(x => {
-            const c = limpiarTexto(x.category);
-            return c.includes('helado') || c.includes('gelato');
-          });
-
-          if (itemsHel.length > 0) {
-            heladosData = itemsHel.map((h, idx) => {
-              const localEx = heladosData.find(x => nombresCoinciden(x.name, h.name)) || {};
-              const tieneFoto = h.image && (h.image.startsWith('data:') || h.image.startsWith('http') || h.image.includes('.jpg') || h.image.includes('.png'));
-              const p = limpiarPrecioNumero(h.price) || localEx.price || 12000;
-              return {
-                id: localEx.id || ('ice-dyn-' + idx),
-                name: h.name,
-                file: tieneFoto ? h.image : (localEx.file || 'FLIPS.jpg'),
-                altFile: localEx.altFile || '',
-                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop',
-                type: localEx.type || 'special',
-                price: p,
-                clasico: p,
-                junior: Math.round(p * 0.75),
-                desc: h.detail || localEx.desc || 'Helado suave artesanal con ingredientes frescos.'
-              };
-            });
-          }
-
-          // 7. PIZZAS Y PARQUE
-          catalogo.forEach(item => {
-            const nomLimpio = limpiarTexto(item.name);
-            const precio = limpiarPrecioNumero(item.price);
-
+            // 5. PIZZAS
             pizzasData.forEach(p => {
               if (nombresCoinciden(p.name, item.name)) {
                 if (nomLimpio.includes('grande')) {
@@ -759,6 +676,63 @@
               }
             });
 
+            // 6. CÓCTELES / TRAGOS
+            const c = coctelesData.find(x => nombresCoinciden(x.name, item.name));
+            if (c) {
+              if (precio > 0) c.price = precio;
+              if (item.detail) c.desc = item.detail;
+              if (tieneFotoValida) c.file = item.image;
+              return;
+            }
+
+            // 7. BEBIDAS (Actualización y soporte para nuevas bebidas)
+            const beb = bebidasData.find(x => nombresCoinciden(x.name, item.name));
+            if (beb) {
+              if (precio > 0) beb.price = precio;
+              if (item.detail) beb.detail = item.detail;
+              if (tieneFotoValida) beb.file = item.image;
+              return;
+            } else {
+              const catLimpia = (item.category || '').toLowerCase();
+              if (catLimpia.includes('bebida') && precio > 0) {
+                bebidasData.push({
+                  id: 'beb-dyn-' + Date.now(),
+                  name: item.name,
+                  detail: item.detail || 'Bebida fría',
+                  price: precio,
+                  file: tieneFotoValida ? item.image : '',
+                  icon: 'fa-bottle-water'
+                });
+                return;
+              }
+            }
+
+            // 8. HELADOS
+            const h = heladosData.find(x => nombresCoinciden(x.name, item.name));
+            if (h) {
+              if (precio > 0) {
+                h.price = precio;
+                h.clasico = precio;
+              }
+              if (item.detail) h.desc = item.detail;
+              if (tieneFotoValida) h.file = item.image;
+              return;
+            }
+
+            // 9. PROMOS
+            promosNavidadData.forEach(pr => {
+              const t = limpiarTexto(pr.title);
+              const num = limpiarTexto(pr.numero);
+              if (nomLimpio.includes(num) || nomLimpio === t) {
+                if (precio > 0) pr.price = precio;
+                if (item.detail) {
+                  pr.items = item.detail.split(/[+,\n•]/).map(s => s.trim()).filter(Boolean);
+                }
+                if (tieneFotoValida) pr.file = item.image;
+              }
+            });
+
+            // 10. PARQUE
             if (nomLimpio.includes('parque') || (item.category || '').toLowerCase() === 'parque') {
               if (precio > 0) {
                 precioParqueActual = precio;
@@ -768,11 +742,11 @@
             }
           });
 
-          // Re-renderizado
-          renderBebidasYCocteles();
+          // Re-renderizado de todas las secciones respetando el orden
           renderHamburguesas();
           renderRestaurant();
           renderPizzas();
+          renderBebidasYCocteles();
           renderHelados();
           renderPromosNavidad();
         }
@@ -830,7 +804,7 @@
       `).join('');
     }
 
-    // ================= RENDERIZADO: HAMBURGUESAS =================
+    // ================= RENDERIZADO: HAMBURGUESAS (4 PRODUCTOS EXCLUSIVOS) =================
     function renderHamburguesas() {
       const container = document.getElementById('grid-hamburguesas');
       if (!container) return;
@@ -1032,7 +1006,6 @@
 
     // ================= RENDERIZADO: BAR (TRAGOS Y BEBIDAS) =================
     function renderBebidasYCocteles() {
-      // 1. Tragos / Cócteles con Fotografía
       const cContainer = document.getElementById('grid-cocteles');
       if (cContainer) {
         cContainer.innerHTML = coctelesData.map(c => `
@@ -1064,7 +1037,6 @@
         `).join('');
       }
 
-      // 2. Bebidas Frías (Soporta imágenes de Sheets o icono si no tiene foto)
       const bContainer = document.getElementById('grid-bebidas');
       if (bContainer) {
         bContainer.innerHTML = bebidasData.map(b => {
@@ -1406,7 +1378,6 @@
 
       const idComandaGenerado = "CMD-" + Math.floor(1000 + Math.random() * 9000);
 
-      // 1. Envío a Google Sheets
       if (typeof GOOGLE_SHEETS_WEBHOOK_URL !== 'undefined' && GOOGLE_SHEETS_WEBHOOK_URL.startsWith('http')) {
         const payload = {
           idComanda: idComandaGenerado,
@@ -1432,7 +1403,6 @@
         }
       }
 
-      // 2. Mensaje para WhatsApp
       let mensaje = `*¡HOLA HAARU PARK! QUIERO REALIZAR ESTE PEDIDO:*%0A%0A`;
       mensaje += `🎟️ *N° Comanda:* ${idComandaGenerado}%0A`;
       mensaje += `👤 *Cliente:* ${encodeURIComponent(nombreCliente)}%0A`;
@@ -1451,7 +1421,6 @@
       mensaje += `━━━━━━━━━━━━━━━━━━━━━%0A`;
       mensaje += `*TOTAL A PAGAR:* ${encodeURIComponent(formatCOP(total))}%0A`;
       mensaje += `━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
-      
       mensaje += `✨ *¡Gracias por venir a disfrutar la experiencia Haaru Park!*%0A`;
       mensaje += `🎁 _Al consignar este pedido con tu número de teléfono, ya quedas participando oficialmente por nuestros premios sorpresa y cortesías exclusivas._%0A%0A`;
       mensaje += `_Enviado desde el portal web oficial de Haaru Park_`;
