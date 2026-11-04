@@ -119,22 +119,23 @@
   <!-- HERO CINEMATOGRÁFICO DE ALTA GAMA -->
   <section class="relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 px-6 overflow-hidden obsidian-glow">
     
-    <!-- Video de Fondo (Opacidad exacta al 20%) -->
+    <!-- Video de Fondo (Opacidad al 100% / sin opacidad reducida) -->
     <video 
       id="hero-video"
-      class="absolute inset-0 w-full h-full object-cover opacity-20 filter brightness-[0.5] contrast-[1.3]"
+      class="absolute inset-0 w-full h-full object-cover opacity-100 filter brightness-[0.8] contrast-[1.1]"
       autoplay muted loop playsinline
       poster="https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=1920&q=80"
     >
       <source src="./PORTADADEVIDEO.mp4" type="video/mp4">
     </video>
 
-    <div class="absolute inset-0 bg-gradient-to-t from-[#060709] via-[#060709]/60 to-[#060709]/90 pointer-events-none"></div>
+    <!-- Overlay sutil solo para contraste del texto -->
+    <div class="absolute inset-0 bg-[#060709]/40 pointer-events-none"></div>
 
     <div class="relative z-10 max-w-5xl mx-auto text-center w-full">
       
       <!-- Tag Minimalista -->
-      <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-cine-bronze/30 bg-black/50 font-mono text-xs tracking-[0.3em] text-cine-bronze uppercase mb-8 backdrop-blur-md">
+      <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-cine-bronze/30 bg-black/60 font-mono text-xs tracking-[0.3em] text-cine-bronze uppercase mb-8 backdrop-blur-md">
         <span class="w-2 h-2 rounded-full bg-cine-emerald-glow animate-pulse"></span>
         <span>DIRECCIÓN DE FOTOGRAFÍA • S-LOG3</span>
       </div>
@@ -147,16 +148,16 @@
         </span>
       </h1>
 
-      <p class="font-sans font-light text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed tracking-wide">
+      <p class="font-sans font-light text-slate-200 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed tracking-wide drop-shadow-md">
         Elevando proyectos audiovisuales independientes y comerciales a estándares cinematográficos internacionales mediante un control riguroso de color e iluminación.
       </p>
 
       <!-- Ficha Técnica -->
-      <div class="flex flex-wrap items-center justify-center gap-3 font-mono text-[11px] text-slate-400 mb-10">
-        <span class="px-3 py-1.5 rounded-md bg-white/[0.02] border border-white/10 text-cine-bronze tracking-widest">
+      <div class="flex flex-wrap items-center justify-center gap-3 font-mono text-[11px] text-slate-300 mb-10">
+        <span class="px-3 py-1.5 rounded-md bg-black/50 border border-white/20 text-cine-bronze tracking-widest backdrop-blur-sm">
           CAM: SONY FX3 // 4K OPEN GATE
         </span>
-        <span class="px-3 py-1.5 rounded-md bg-white/[0.02] border border-white/10 text-slate-300">
+        <span class="px-3 py-1.5 rounded-md bg-black/50 border border-white/20 text-slate-200 backdrop-blur-sm">
           POST: DAVINCI RESOLVE STUDIO
         </span>
       </div>
@@ -167,7 +168,7 @@
           <i class="fa-solid fa-play text-black"></i>
           <span>VER SHOWCASE</span>
         </a>
-        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-xl border border-cine-emerald-glow/40 text-cine-emerald-glow font-mono text-xs uppercase tracking-widest hover:bg-cine-emerald-glow/10 transition-all flex items-center justify-center gap-3 active:scale-95">
+        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-xl border border-cine-emerald-glow/60 bg-black/40 text-cine-emerald-glow font-mono text-xs uppercase tracking-widest hover:bg-cine-emerald-glow/20 transition-all flex items-center justify-center gap-3 backdrop-blur-sm active:scale-95">
           <i class="fa-brands fa-whatsapp text-lg"></i>
           <span>WHATSAPP DIRECTO</span>
         </a>
