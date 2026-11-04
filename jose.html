@@ -1,32 +1,30 @@
-HTML
-
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth bg-[#08090C] text-[#e2e8f0] antialiased">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Jose Barbarie | Productor Audiovisual & Director de Fotografía</title>
+  <title>Jose Barbarie | Director de Fotografía & Productor Audiovisual</title>
   
-  <meta name="description" content="Portafolio profesional y portal de entregas de Jose Barbarie. Producción cinematográfica, dirección de fotografía y postproducción.">
+  <meta name="description" content="Portafolio cinematográfico de Jose Barbarie. Dirección de fotografía, piezas de autor y postproducción de alto nivel.">
   <link rel="canonical" href="https://barbariestudios.com">
   <link rel="icon" type="image/png" href="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
 
-  <!-- Open Graph / Meta para Redes Sociales -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Jose Barbarie">
-  <meta property="og:title" content="Jose Barbarie | Productor Audiovisual">
-  <meta property="og:description" content="Productor Audiovisual & Filmmaker. Portafolio de proyectos y entregas de rodaje.">
+  <meta property="og:title" content="Jose Barbarie | Director de Fotografía">
+  <meta property="og:description" content="Portal cinematográfico y portafolio de producciones en S-Log3.">
   <meta property="og:image" content="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
 
-  <!-- Tipografías de Google Fonts -->
+  <!-- Tipografías en Tendencia y Cinematográficas (Cinzel, Syne, Inter, JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- Tailwind CSS Configurado -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -34,7 +32,7 @@ HTML
         extend: {
           fontFamily: {
             display: ['Syne', 'sans-serif'],
-            serif: ['"Cormorant Garamond"', 'serif'],
+            cinematic: ['Cinzel', 'serif'],
             sans: ['Inter', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
           },
@@ -46,13 +44,13 @@ HTML
               'red-glow': '#DC2626',
               pine: '#064E3B',
               dark: '#08090C',
-              card: '#0F1218',
-              border: '#1E2430'
+              card: '#0B0E14',
+              border: '#1A2130'
             }
           },
           boxShadow: {
-            'glow-gold': '0 0 35px -5px rgba(212, 175, 55, 0.3)',
-            'glow-red': '0 0 35px -5px rgba(220, 38, 38, 0.25)',
+            'glow-gold': '0 0 40px -10px rgba(212, 175, 55, 0.35)',
+            'cinematic-box': '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
           }
         }
       }
@@ -65,237 +63,117 @@ HTML
       width: 100%;
     }
 
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: #08090C; }
-    ::-webkit-scrollbar-thumb { background: #1E2430; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb { background: #1A2130; border-radius: 9999px; }
     ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
 
     .glass-nav {
-      background: rgba(8, 9, 12, 0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(8, 9, 12, 0.85);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .cinematic-glow {
-      background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.12) 0%, rgba(153, 27, 27, 0.08) 45%, transparent 75%);
+      background: radial-gradient(circle at 50% 15%, rgba(212, 175, 55, 0.08) 0%, rgba(153, 27, 27, 0.04) 40%, transparent 70%);
     }
 
-    .gold-border-gradient {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.45) 0%, rgba(220, 38, 38, 0.25) 50%, rgba(212, 175, 55, 0.1) 100%);
+    .film-border {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(212, 175, 55, 0.1) 100%);
       padding: 1px;
       border-radius: 1rem;
     }
   </style>
 </head>
-<body class="selection:bg-amber-400 selection:text-black bg-[#08090E] font-sans antialiased">
+<body class="selection:bg-amber-400 selection:text-black bg-[#08090E] font-sans antialiased text-slate-200">
 
-  <!-- NAVBAR PRINCIPAL -->
+  <!-- NAVBAR -->
   <header class="fixed top-0 inset-x-0 z-50 glass-nav">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between">
       
-      <!-- Marca Personal: Jose Barbarie -->
-      <a href="#" class="flex items-center gap-3 group">
-        <div class="h-9 w-9 rounded-xl bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center group-hover:border-amber-400/50 transition-colors">
+      <!-- Marca Personal -->
+      <a href="#" class="flex items-center gap-3.5 group">
+        <div class="h-10 w-10 rounded-lg bg-white/5 border border-white/10 overflow-hidden flex items-center justify-center group-hover:border-amber-400/50 transition-colors">
           <img src="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png" alt="Jose Barbarie" class="w-full h-full object-contain p-1">
         </div>
         <div class="flex flex-col">
-          <span class="font-serif font-bold text-base sm:text-lg tracking-wider text-white uppercase leading-none group-hover:text-amber-300 transition-colors">
+          <span class="font-cinzel font-bold text-base sm:text-lg tracking-[0.18em] text-white uppercase leading-none group-hover:text-amber-300 transition-colors">
             JOSE BARBARIE
           </span>
-          <span class="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-amber-400/90 uppercase font-medium mt-0.5">
-            PRODUCTOR AUDIOVISUAL // FILMMAKER
+          <span class="font-mono text-[9px] tracking-[0.3em] text-amber-400/80 uppercase mt-1">
+            DIRECTOR DE FOTOGRAFÍA
           </span>
         </div>
       </a>
 
-      <!-- Menú de Navegación -->
-      <div class="flex items-center gap-4">
-        <a href="#proyectos" class="hidden sm:inline-flex items-center gap-2 text-xs font-mono text-slate-300 hover:text-white transition-all">
+      <!-- Navegación -->
+      <div class="flex items-center gap-5">
+        <a href="#proyectos" class="hidden sm:inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-white transition-all tracking-wider uppercase">
           <i class="fa-solid fa-clapperboard text-amber-400"></i>
-          <span>Proyectos</span>
+          <span>Filmo</span>
         </a>
-        <a href="#contacto" class="bg-gradient-to-r from-amber-400 to-amber-500 text-black px-4 py-2 rounded-xl font-mono text-xs font-bold hover:brightness-110 transition-all flex items-center gap-2 shadow-glow-gold active:scale-95">
-          <i class="fa-solid fa-paper-plane"></i>
-          <span>CONTACTAR</span>
+        <a href="https://drive.google.com/drive/folders/1Gfrdd-S5EClJks61-o6kxV7_d-iPngpm?usp=sharing" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-amber-400 to-amber-500 text-black px-5 py-2.5 rounded-xl font-mono text-xs font-bold hover:brightness-110 transition-all flex items-center gap-2 shadow-glow-gold active:scale-95 uppercase tracking-wider">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Drive Master</span>
         </a>
       </div>
 
     </div>
   </header>
 
-  <!-- HERO SECTION CON VIDEO EN LOOP -->
-  <section class="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 overflow-hidden cinematic-glow">
+  <!-- HERO CINEMATOGRÁFICO -->
+  <section class="relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 px-4 sm:px-6 overflow-hidden cinematic-glow">
     
-    <!-- Video de fondo (Sustituir PORTADADEVIDEO.mp4 por tu reel) -->
+    <!-- Video de Fondo en Loop -->
     <video 
       id="hero-video"
-      class="absolute inset-0 w-full h-full object-cover opacity-30 filter brightness-[0.75] contrast-[1.2]"
+      class="absolute inset-0 w-full h-full object-cover opacity-25 filter brightness-[0.6] contrast-[1.25]"
       autoplay muted loop playsinline
       poster="https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=1920&q=80"
     >
       <source src="./PORTADADEVIDEO.mp4" type="video/mp4">
     </video>
 
-    <div class="absolute inset-0 bg-gradient-to-t from-[#08090C] via-[#08090C]/60 to-[#08090C]/85 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#08090C] via-[#08090C]/50 to-[#08090C]/90 pointer-events-none"></div>
 
-    <div class="relative z-10 max-w-4xl mx-auto text-center w-full">
+    <div class="relative z-10 max-w-5xl mx-auto text-center w-full">
       
-      <!-- Tag Profesional -->
-      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 font-mono text-xs tracking-[0.2em] text-amber-300 uppercase mb-6 backdrop-blur-md">
-        <i class="fa-solid fa-video text-amber-300"></i>
-        <span>PRODUCCIÓN & DIRECCIÓN DE FOTOGRAFÍA</span>
+      <!-- Tag Estilo Claqueta / Cine -->
+      <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-amber-400/20 bg-black/40 font-mono text-xs tracking-[0.25em] text-amber-300 uppercase mb-8 backdrop-blur-md">
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+        <span>REC // S-LOG3 MASTER REEL</span>
       </div>
 
-      <!-- Título Principal con Cormorant Garamond -->
-      <h1 class="font-serif font-bold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white leading-tight mb-6 drop-shadow-2xl">
-        Historias Visuales con Impacto <br class="hidden sm:inline">
-        <span class="bg-gradient-to-r from-amber-200 via-amber-400 to-rose-400 bg-clip-text text-transparent">
-          Cinematográfico
+      <!-- Título Principal en Cinzel (Elegancia de Cine) -->
+      <h1 class="font-cinzel font-black text-4xl sm:text-6xl lg:text-7xl tracking-[0.08em] text-white uppercase leading-[1.1] mb-6 drop-shadow-2xl">
+        VISIÓN VISUAL & <br>
+        <span class="bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 bg-clip-text text-transparent">
+          ESTÉTICA CINEMATOGRÁFICA
         </span>
       </h1>
 
-      <p class="font-sans font-light text-slate-300 text-base sm:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
-        Producción de comerciales, videoclips y contenido documental de alta gama. Gestión integral desde la ingesta hasta el corte final.
+      <p class="font-sans font-light text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed tracking-wide">
+        Rigurosidad técnica y sensibilidad artística en cada fotograma. Creación de universos visuales con ópticas nativas y color grading de alta gama.
       </p>
 
-      <!-- Ficha Técnica de Trabajo -->
-      <div class="flex flex-wrap items-center justify-center gap-3 font-mono text-xs text-slate-400 mb-10">
-        <span class="px-3 py-1.5 rounded-md bg-white/[0.04] border border-white/10 text-amber-300">
-          <i class="fa-solid fa-camera mr-1.5"></i> S-Log3 / RAW
+      <!-- Ficha de Datos Técnicos en Estilo Código de Tiempo -->
+      <div class="flex flex-wrap items-center justify-center gap-3 font-mono text-[11px] text-slate-400 mb-10">
+        <span class="px-3 py-1.5 rounded-md bg-white/[0.03] border border-white/10 text-amber-300 tracking-widest">
+          TC: 01:00:00:00
         </span>
-        <span class="px-3 py-1.5 rounded-md bg-white/[0.04] border border-white/10 text-slate-300">
-          <i class="fa-solid fa-film mr-1.5"></i> Formato 4K / DCI
+        <span class="px-3 py-1.5 rounded-md bg-white/[0.03] border border-white/10 text-slate-300">
+          FORMATO: 3840x2880 OPEN GATE
         </span>
-        <span class="px-3 py-1.5 rounded-md bg-white/[0.04] border border-white/10 text-slate-300">
-          <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Color Grading DaVinci
+        <span class="px-3 py-1.5 rounded-md bg-white/[0.03] border border-white/10 text-slate-300">
+          COLOR: S-GAMUT3.CINE
         </span>
       </div>
 
-      <!-- Botones de Acción -->
+      <!-- Botones Inmersivos -->
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="#proyectos" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-amber-300 text-black font-extrabold font-mono text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2.5 shadow-2xl hover:scale-105 active:scale-95">
+        <a href="#proyectos" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-amber-300 text-black font-extrabold font-mono text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3 shadow-2xl hover:scale-105 active:scale-95">
           <i class="fa-solid fa-play text-amber-600"></i>
-          <span>VER PROYECTOS</span>
+          <span>EXPLORAR SHOWCASE</span>
         </a>
-        <a href="https://drive.google.com/drive/folders/1Gfrdd-S5EClJks61-o6kxV7_d-iPngpm?usp=sharing" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-7 py-4 rounded-xl border border-white/20 text-white font-mono text-xs uppercase tracking-wider hover:border-amber-400/60 hover:bg-white/[0.03] transition-all flex items-center justify-center gap-2 active:scale-95">
-          <i class="fa-brands fa-google-drive text-amber-400"></i>
-          <span>PORTAL DE ENTREGAS</span>
-        </a>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- SECCIÓN DE PROYECTOS / SHOWCASE -->
-  <section id="proyectos" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-white/[0.06]">
-    
-    <div class="mb-12 text-center sm:text-left flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-      <div>
-        <span class="text-rose-400 text-xs font-mono uppercase tracking-widest block mb-1">
-          <i class="fa-solid fa-photo-film mr-1"></i> Trabajos Seleccionados
-        </span>
-        <h2 class="font-serif font-bold text-3xl sm:text-5xl text-white tracking-tight">
-          PRODUCCIONES RECIENTES
-        </h2>
-      </div>
-      <span class="font-mono text-xs text-amber-300/90 bg-amber-500/10 border border-amber-500/20 px-3.5 py-2 rounded-xl">
-        Showcase Audiovisual
-      </span>
-    </div>
-
-    <!-- Rejilla de Videos -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      
-      <!-- Card 1 -->
-      <article class="gold-border-gradient flex flex-col group">
-        <div class="bg-xmas-card rounded-[0.95rem] overflow-hidden flex flex-col h-full">
-          <div class="relative w-full aspect-video bg-black">
-            <iframe class="w-full h-full border-0" src="https://www.youtube-nocookie.com/embed/6_yPt6SKeCU?rel=0&playsinline=1" title="Proyecto 01" allowfullscreen></iframe>
-          </div>
-          <div class="p-6 flex-1 flex flex-col justify-between">
-            <div>
-              <span class="text-[10px] font-mono text-amber-400 uppercase tracking-widest font-bold block mb-1">
-                // Comercial / Spot
-              </span>
-              <h3 class="text-lg font-serif font-bold text-white mb-2">
-                Secuencia A: Producción Narrativa
-              </h3>
-              <p class="text-xs text-slate-400 font-light leading-relaxed mb-4">
-                Dirección de fotografía y tratamiento de color en S-Log3 para estética cinemática.
-              </p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 2 -->
-      <article class="gold-border-gradient flex flex-col group">
-        <div class="bg-xmas-card rounded-[0.95rem] overflow-hidden flex flex-col h-full">
-          <div class="relative w-full aspect-video bg-black">
-            <iframe class="w-full h-full border-0" src="https://www.youtube-nocookie.com/embed/ZJshrDhXMPw?rel=0&playsinline=1" title="Proyecto 02" allowfullscreen></iframe>
-          </div>
-          <div class="p-6 flex-1 flex flex-col justify-between">
-            <div>
-              <span class="text-[10px] font-mono text-rose-400 uppercase tracking-widest font-bold block mb-1">
-                // Videoclip / Musical
-              </span>
-              <h3 class="text-lg font-serif font-bold text-white mb-2">
-                Secuencia B: Ritmo & Dinámica
-              </h3>
-              <p class="text-xs text-slate-400 font-light leading-relaxed mb-4">
-                Edición de ritmo acelerado y sincronización multicanal de audio.
-              </p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 3 -->
-      <article class="gold-border-gradient flex flex-col group">
-        <div class="bg-xmas-card rounded-[0.95rem] overflow-hidden flex flex-col h-full">
-          <div class="relative w-full aspect-video bg-black">
-            <iframe class="w-full h-full border-0" src="https://www.youtube-nocookie.com/embed/BsoPTJDNS2k?rel=0&playsinline=1" title="Proyecto 03" allowfullscreen></iframe>
-          </div>
-          <div class="p-6 flex-1 flex flex-col justify-between">
-            <div>
-              <span class="text-[10px] font-mono text-amber-400 uppercase tracking-widest font-bold block mb-1">
-                // Documental
-              </span>
-              <h3 class="text-lg font-serif font-bold text-white mb-2">
-                Secuencia C: Cobertura & Retrato
-              </h3>
-              <p class="text-xs text-slate-400 font-light leading-relaxed mb-4">
-                Captura de luz natural y diseño sonoro envolvente para formato documental.
-              </p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer id="contacto" class="py-12 px-4 sm:px-6 border-t border-white/[0.06] bg-[#050608] text-center font-mono text-xs text-slate-500">
-    <div class="flex items-center justify-center gap-2 mb-3">
-      <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-      <span class="text-slate-200 font-bold tracking-wider">JOSE BARBARIE</span>
-      <span class="text-slate-600">•</span>
-      <span>PRODUCCIÓN AUDIOVISUAL</span>
-    </div>
-    <p>© 2026 Jose Barbarie. Todos los derechos reservados.</p>
-  </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const vid = document.getElementById('hero-video');
-      if (vid) {
-        vid.muted = true;
-        vid.play().catch(() => {});
-      }
-    });
-  </script>
-
-</body>
-</html>
+        <a href="https://drive.google.com/drive/folders/1Gfrdd-S5EClJks61-o6kxV7_d-iPngpm?usp=sharing" target="_blank" rel="noopener noreferrer" class="w-full sm:w-
