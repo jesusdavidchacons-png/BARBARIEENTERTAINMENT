@@ -158,8 +158,8 @@
       
       <div class="bg-[#161824] p-5 rounded-2xl border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
         <div>
-          <h2 class="text-xl font-black text-white font-heading">Gestión de Productos, Fotos & Precios</h2>
-          <p class="text-xs text-zinc-400 mt-0.5">Toma fotos en vivo con la cámara o sube desde la galería. Pulsa "Guardar Cambios en la Web" para actualizar los precios.</p>
+          <h2 class="text-xl font-black text-white font-heading">Gestión Integral de Menú & Precios</h2>
+          <p class="text-xs text-zinc-400 mt-0.5">Puedes modificar la categoría, el nombre, los ingredientes/descripción, el precio y cambiar o tomar fotos en vivo. Pulsa "Guardar Cambios en la Web" para aplicar.</p>
         </div>
 
         <div class="flex items-center gap-2">
@@ -178,15 +178,15 @@
         <button onclick="filtrarCatalogo('Hamburguesas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Hamburguesas</button>
         <button onclick="filtrarCatalogo('Restaurant')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Restaurant</button>
         <button onclick="filtrarCatalogo('Pizzas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Pizzas</button>
-        <button onclick="filtrarCatalogo('Navidad')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Navidad</button>
+        <button onclick="filtrarCatalogo('Promos')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Promos</button>
         <button onclick="filtrarCatalogo('Cócteles')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Cócteles</button>
         <button onclick="filtrarCatalogo('Bebidas')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Bebidas</button>
         <button onclick="filtrarCatalogo('Helados')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Helados</button>
         <button onclick="filtrarCatalogo('Parque')" class="cat-btn bg-black/40 text-zinc-400 hover:text-white px-3.5 py-1.5 rounded-xl font-semibold border border-white/10 cursor-pointer">Parque</button>
       </div>
 
-      <!-- Cuadrícula de Productos -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="contenedorCatalogoEditable">
+      <!-- Cuadrícula de Productos Totalmente Editables -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="contenedorCatalogoEditable">
         <!-- Inyectado vía JS -->
       </div>
     </section>
@@ -237,10 +237,10 @@
             <option value="Hamburguesas">Hamburguesas</option>
             <option value="Restaurant">Restaurant</option>
             <option value="Pizzas">Pizzas</option>
+            <option value="Promos">Promos</option>
             <option value="Cócteles">Cócteles</option>
             <option value="Bebidas">Bebidas</option>
             <option value="Helados">Helados</option>
-            <option value="Navidad">Navidad</option>
             <option value="Parque">Parque</option>
           </select>
         </div>
@@ -250,7 +250,7 @@
         </div>
         <div>
           <label class="block text-zinc-400 font-semibold mb-1">Descripción / Ingredientes</label>
-          <textarea id="nuevoDetalle" rows="2" placeholder="Detalles de la preparación..." class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white"></textarea>
+          <textarea id="nuevoDetalle" rows="2" placeholder="Detalles de la preparación, acompañamientos o notas..." class="w-full bg-black/60 border border-white/15 rounded-xl p-2.5 text-white"></textarea>
         </div>
         <div>
           <label class="block text-zinc-400 font-semibold mb-1">Precio en COP</label>
@@ -296,11 +296,11 @@
       "al vino burger": "al vino burguer.jpg",
       "bacon kubrick": "Bacon cubrick.jpg",
       "pollo crispy": "Pollo crispy.jpg",
+      "mar y tierra": "Mar y tierra.jpg",
       "pasticho tradicional": "pasticho.jpg",
       "churrasco de solomo": "Churrasco de Solomo.jpg",
       "pechuga a la meuniér": "Pechuga a la Meunier.jpg",
       "pechuga a la meunier": "Pechuga a la Meunier.jpg",
-      "mar y tierra": "Mar y tierra.jpg",
       "parrilla mixta": "Parrilla.jpg",
       "cazuela de mariscos": "Cazuela de Mariscos.jpg",
       "ceviche peruano": "ceviche peruano.jpg",
@@ -366,7 +366,6 @@
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    // Normalizador de formato para Venezuela/Colombia
     function formatearTelefonoWhatsApp(tel) {
       if (!tel) return "";
       let clean = tel.toString().replace(/\D/g, '');
@@ -528,7 +527,6 @@
       }
     }
 
-    // ================= FUNCIONES DE INTERACCIÓN WHATSAPP =================
     function contactarClienteWA(telefono, cliente, idComanda) {
       const telLimpio = formatearTelefonoWhatsApp(telefono);
       if (!telLimpio) {
@@ -549,7 +547,6 @@
       window.open(`https://wa.me/${telLimpio}?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
 
-    // ================= BORRADO INDIVIDUAL Y SEGURO DE COMANDAS =================
     async function eliminarComanda(idComanda) {
       const idTarget = (idComanda || "").toString().trim();
       if (!idTarget) {
@@ -560,11 +557,9 @@
       const confirmar = confirm(`¿Estás seguro de que deseas eliminar la comanda "${idTarget}"? Se borrará permanentemente de Google Sheets.`);
       if (!confirmar) return;
 
-      // 1. Filtrar solo la comanda específica de la memoria
       rawVentas = rawVentas.filter(v => (v.idComanda || "").toString().trim() !== idTarget);
       aplicarFiltrosVentas();
 
-      // 2. Comunicar la eliminación a Google Sheets
       try {
         const payload = {
           action: "eliminar_comanda",
@@ -665,15 +660,12 @@
             <td class="py-3 px-4 text-zinc-400 italic">${v.note ? '✍️ ' + v.note : '--'}</td>
             <td class="py-3 px-4 text-center">
               <div class="flex items-center justify-center gap-1.5">
-                <!-- Botón Contactar por WhatsApp -->
                 <button onclick="contactarClienteWA('${telLimpio}', '${clienteEsc}', '${cmdEsc}')" class="p-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/30 transition cursor-pointer" title="Contactar al cliente por WhatsApp">
                   <i class="fa-brands fa-whatsapp text-sm"></i>
                 </button>
-                <!-- Botón Activar Premio Sorpresa -->
                 <button onclick="activarPremioSorpresaWA('${telLimpio}', '${clienteEsc}')" class="p-2 rounded-xl bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black border border-amber-500/40 transition cursor-pointer" title="Activar Premio Sorpresa con mensaje 'Haaru'">
                   <i class="fa-solid fa-gift text-sm"></i>
                 </button>
-                <!-- Botón Eliminar Comanda -->
                 <button onclick="eliminarComanda('${cmdEsc}')" class="p-2 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 transition cursor-pointer" title="Eliminar comanda">
                   <i class="fa-solid fa-trash-can text-sm"></i>
                 </button>
@@ -684,7 +676,7 @@
       }).join('');
     }
 
-    // ================= GESTOR DE MENÚ & PRECIOS =================
+    // ================= GESTOR DE MENÚ: EDICIÓN COMPLETA =================
     function filtrarCatalogo(cat) {
       categoriaActivaMenu = cat;
       document.querySelectorAll('.cat-btn').forEach(btn => {
@@ -700,7 +692,10 @@
       const container = document.getElementById('contenedorCatalogoEditable');
       const lista = catalogoProductos.filter(p => {
         if (categoriaActivaMenu === 'todos') return true;
-        return (p.category || '').toLowerCase() === categoriaActivaMenu.toLowerCase();
+        const c = (p.category || '').toLowerCase();
+        const f = categoriaActivaMenu.toLowerCase();
+        if (f === 'promos') return c.includes('promo') || c.includes('navidad');
+        return c.includes(f) || f.includes(c);
       });
 
       if (lista.length === 0) {
@@ -713,59 +708,93 @@
         const srcFoto = p.image || obtenerFotoReferencia(p.name, p.category);
 
         return `
-          <div class="bg-[#161824] border border-white/10 p-4 rounded-2xl flex flex-col justify-between space-y-3 shadow-lg">
+          <div class="bg-[#161824] border border-white/10 p-5 rounded-3xl flex flex-col justify-between space-y-4 shadow-xl hover:border-orange-500/40 transition-all">
             
-            <div class="flex items-start gap-3">
-              <div class="w-20 h-20 rounded-xl bg-black/60 border border-white/10 overflow-hidden shrink-0 relative group">
-                <img id="img-prod-${indexReal}" src="${srcFoto}" alt="${p.name}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=200&auto=format&fit=crop'">
-                
-                <div class="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1">
-                  <button onclick="dispararSubidaParaIndex(${indexReal})" class="text-[9px] bg-white/20 hover:bg-white text-white hover:text-black font-bold px-2 py-0.5 rounded transition cursor-pointer">
-                    <i class="fa-solid fa-folder-open"></i> Subir
-                  </button>
-                  <button onclick="abrirCamaraParaIndex(${indexReal})" class="text-[9px] bg-orange-600/80 hover:bg-orange-600 text-white font-bold px-2 py-0.5 rounded transition cursor-pointer">
-                    <i class="fa-solid fa-camera"></i> Foto
-                  </button>
-                </div>
+            <!-- Barra Superior: Categoría y Botón Eliminar -->
+            <div class="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
+              <div class="flex items-center gap-2 flex-1">
+                <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Categoría:</span>
+                <select onchange="actualizarDatoProducto(${indexReal}, 'category', this.value)" class="bg-black/60 border border-white/15 rounded-xl px-2.5 py-1 text-xs text-orange-400 font-bold focus:ring-1 focus:ring-orange-500 cursor-pointer">
+                  <option value="Hamburguesas" ${p.category === 'Hamburguesas' ? 'selected' : ''}>Hamburguesas</option>
+                  <option value="Restaurant" ${p.category === 'Restaurant' ? 'selected' : ''}>Restaurant</option>
+                  <option value="Pizzas" ${p.category === 'Pizzas' ? 'selected' : ''}>Pizzas</option>
+                  <option value="Promos" ${p.category === 'Promos' || p.category === 'Navidad' ? 'selected' : ''}>Promos</option>
+                  <option value="Cócteles" ${p.category === 'Cócteles' ? 'selected' : ''}>Cócteles</option>
+                  <option value="Bebidas" ${p.category === 'Bebidas' ? 'selected' : ''}>Bebidas</option>
+                  <option value="Helados" ${p.category === 'Helados' ? 'selected' : ''}>Helados</option>
+                  <option value="Parque" ${p.category === 'Parque' ? 'selected' : ''}>Parque</option>
+                </select>
               </div>
-
-              <div class="flex-1 min-w-0">
-                <span class="text-[9px] uppercase font-bold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20">${p.category}</span>
-                <input type="text" value="${p.name}" onchange="actualizarDatoProducto(${indexReal}, 'name', this.value)" class="w-full bg-transparent border-b border-transparent hover:border-white/20 focus:border-orange-500 text-sm font-bold text-white mt-1 py-0.5 focus:outline-none transition">
-                <input type="text" value="${p.detail}" onchange="actualizarDatoProducto(${indexReal}, 'detail', this.value)" class="w-full bg-transparent border-b border-transparent hover:border-white/20 focus:border-orange-500 text-[11px] text-zinc-400 py-0.5 focus:outline-none transition">
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/5 text-xs items-end">
-              <div>
-                <label class="block text-[10px] text-zinc-500 font-bold uppercase">Precio (COP):</label>
-                <input type="number" value="${p.price}" onchange="actualizarDatoProducto(${indexReal}, 'price', Number(this.value))" class="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1.5 text-white font-mono font-bold focus:ring-1 focus:ring-orange-500">
-              </div>
-              <div class="flex items-center gap-1.5">
-                <button onclick="dispararSubidaParaIndex(${indexReal})" class="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-1.5 px-2 rounded-lg text-[10px] flex items-center justify-center gap-1 border border-white/10 transition cursor-pointer">
-                  <i class="fa-solid fa-folder-open text-orange-400"></i> Archivo
-                </button>
-                <button onclick="abrirCamaraParaIndex(${indexReal})" class="flex-1 bg-orange-600/30 hover:bg-orange-600 text-orange-300 hover:text-white font-semibold py-1.5 px-2 rounded-lg text-[10px] flex items-center justify-center gap-1 border border-orange-500/30 transition cursor-pointer">
-                  <i class="fa-solid fa-camera"></i> Cámara
-                </button>
-              </div>
-            </div>
-
-            <div class="flex items-center justify-between pt-1">
-              <span class="text-[9px] text-zinc-500 truncate max-w-[200px]">
-                ${p.image && p.image.startsWith('data:') ? '📸 Foto en Base64' : (p.image || 'Referencia estándar')}
-              </span>
-              <button onclick="eliminarProductoCatalogo(${indexReal})" class="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 transition cursor-pointer">
-                <i class="fa-solid fa-trash-can"></i> Eliminar
+              <button onclick="eliminarProductoCatalogo(${indexReal})" class="text-xs text-red-400 hover:text-red-300 font-semibold flex items-center gap-1 bg-red-500/10 hover:bg-red-500/20 px-2.5 py-1 rounded-xl border border-red-500/20 transition cursor-pointer" title="Eliminar producto">
+                <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>
+
+            <!-- Sección de Fotografía (Previsualización, Cámara, Archivo y URL) -->
+            <div class="space-y-2">
+              <label class="block text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Fotografía del Producto:</label>
+              <div class="flex items-center gap-3">
+                <div class="w-20 h-20 rounded-2xl bg-black/60 border border-white/10 overflow-hidden shrink-0 relative group">
+                  <img id="img-prod-${indexReal}" src="${srcFoto}" alt="${p.name}" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1">
+                    <button onclick="dispararSubidaParaIndex(${indexReal})" class="text-[9px] bg-white/20 hover:bg-white text-white hover:text-black font-bold px-2 py-0.5 rounded transition cursor-pointer">
+                      Subir
+                    </button>
+                    <button onclick="abrirCamaraParaIndex(${indexReal})" class="text-[9px] bg-orange-600/80 hover:bg-orange-600 text-white font-bold px-2 py-0.5 rounded transition cursor-pointer">
+                      Foto
+                    </button>
+                  </div>
+                </div>
+
+                <div class="flex-1 space-y-2">
+                  <div class="flex gap-2">
+                    <button onclick="abrirCamaraParaIndex(${indexReal})" class="flex-1 bg-orange-600/30 hover:bg-orange-600 text-orange-300 hover:text-white font-bold py-2 px-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 border border-orange-500/30 transition cursor-pointer">
+                      <i class="fa-solid fa-camera"></i> Tomar Foto
+                    </button>
+                    <button onclick="dispararSubidaParaIndex(${indexReal})" class="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-2 px-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 border border-white/15 transition cursor-pointer">
+                      <i class="fa-solid fa-folder-open text-orange-400"></i> Galería / Archivo
+                    </button>
+                  </div>
+                  <input type="text" value="${p.image || ''}" placeholder="Escribe foto.jpg o enlace URL..." oninput="actualizarDatoProducto(${indexReal}, 'image', this.value)" class="w-full bg-black/50 border border-white/10 rounded-xl px-2.5 py-1.5 text-[11px] text-zinc-300 focus:ring-1 focus:ring-orange-500">
+                </div>
+              </div>
+            </div>
+
+            <!-- Campo 1: Nombre del Producto -->
+            <div>
+              <label class="block text-[10px] text-zinc-400 font-bold uppercase tracking-wider mb-1">Nombre del Producto:</label>
+              <input type="text" value="${p.name}" oninput="actualizarDatoProducto(${indexReal}, 'name', this.value)" placeholder="Nombre del producto..." class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs font-bold text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition">
+            </div>
+
+            <!-- Campo 2: Ingredientes / Descripción (Textarea Espacioso) -->
+            <div>
+              <label class="block text-[10px] text-zinc-400 font-bold uppercase tracking-wider mb-1">Ingredientes / Descripción / Detalles:</label>
+              <textarea rows="2" oninput="actualizarDatoProducto(${indexReal}, 'detail', this.value)" placeholder="Ingredientes, acompañantes o notas de preparación..." class="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-zinc-200 focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition custom-scrollbar">${p.detail || ''}</textarea>
+            </div>
+
+            <!-- Campo 3: Precio Oficial (COP) -->
+            <div>
+              <label class="block text-[10px] text-zinc-400 font-bold uppercase tracking-wider mb-1">Precio en COP:</label>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-xs text-zinc-500 font-mono font-bold">$</span>
+                <input type="number" value="${p.price}" oninput="actualizarDatoProducto(${indexReal}, 'price', Number(this.value))" placeholder="30000" class="w-full bg-black/60 border border-white/15 rounded-xl pl-7 pr-3 py-2 text-xs text-amber-400 font-mono font-black focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition">
+              </div>
+            </div>
+
           </div>
         `;
       }).join('');
     }
 
     function actualizarDatoProducto(index, campo, valor) {
-      catalogoProductos[index][campo] = valor;
+      if (catalogoProductos[index]) {
+        catalogoProductos[index][campo] = valor;
+        // Si se cambia la foto manualmente por texto, refrescar la imagen en la tarjeta
+        if (campo === 'image') {
+          const imgEl = document.getElementById(`img-prod-${index}`);
+          if (imgEl) imgEl.src = valor || obtenerFotoReferencia(catalogoProductos[index].name, catalogoProductos[index].category);
+        }
+      }
     }
 
     function eliminarProductoCatalogo(index) {
@@ -859,7 +888,7 @@
         video.srcObject = streamCamaraActivo;
         modal.classList.remove('hidden');
       } catch (err) {
-        console.warn("Fallo getUserMedia, usando cámara nativa:", err);
+        console.warn("Fallo getUserMedia, usando selector de cámara nativo:", err);
         const inputFallback = document.createElement('input');
         inputFallback.type = 'file';
         inputFallback.accept = 'image/*';
@@ -954,7 +983,7 @@
           body: JSON.stringify(payload)
         });
 
-        alert("¡Catálogo, fotos y precios actualizados con éxito en Google Sheets y en la web!");
+        alert("¡Catálogo, fotos, ingredientes y precios actualizados con éxito en Google Sheets y en la web!");
       } catch (err) {
         console.error("Error al guardar:", err);
         alert("Ocurrió un error al guardar. Revisa la conexión de Apps Script.");
