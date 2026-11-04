@@ -9,7 +9,7 @@
   <link rel="canonical" href="https://barbariestudios.com">
   <link rel="icon" type="image/png" href="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
 
-  <!-- Tipografías en Tendencia: Cinzel, Syne, Inter, JetBrains Mono -->
+  <!-- Tipografías: Cinzel, Inter, JetBrains Mono, Syne -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
@@ -119,10 +119,10 @@
   <!-- HERO CINEMATOGRÁFICO DE ALTA GAMA -->
   <section class="relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 px-6 overflow-hidden obsidian-glow">
     
-    <!-- Video de Fondo de Portada (LOSROQUES.mp4) -->
+    <!-- Video de Fondo (LOSROQUES.mp4 al 100% de opacidad) -->
     <video 
       id="hero-video"
-      class="absolute inset-0 w-full h-full object-cover opacity-100 filter brightness-[0.8] contrast-[1.1]"
+      class="absolute inset-0 w-full h-full object-cover opacity-100 filter brightness-[0.85] contrast-[1.1]"
       autoplay 
       muted 
       loop 
@@ -134,7 +134,7 @@
     </video>
 
     <!-- Overlay sutil para contraste del texto -->
-    <div class="absolute inset-0 bg-[#060709]/40 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[#060709]/30 pointer-events-none"></div>
 
     <div class="relative z-10 max-w-5xl mx-auto text-center w-full">
       
@@ -330,7 +330,7 @@
       if (vid) {
         vid.muted = true;
         vid.play().catch(error => {
-          console.log("Reproducción automática con política del navegador:", error);
+          console.log("Autoplay controlado:", error);
         });
       }
     });
