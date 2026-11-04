@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Haaru Park | GastroPark, Gelatería y Aventura</title>
   
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  
-  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -48,29 +43,13 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
     }
-    h1, h2, h3, h4, .font-heading {
-      font-family: 'Outfit', sans-serif;
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      height: 8px;
-      width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #0f101a;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #2a2d42;
-      border-radius: 9999px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #ff5a1f;
-    }
-    .glow-orange {
-      filter: drop-shadow(0 0 25px rgba(255, 90, 31, 0.35));
-    }
-    .poster-card {
-      transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.35s ease;
-    }
+    h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { height: 8px; width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #0f101a; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #2a2d42; border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #ff5a1f; }
+    .glow-orange { filter: drop-shadow(0 0 25px rgba(255, 90, 31, 0.35)); }
+    .poster-card { transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.35s ease; }
     .poster-card:hover {
       transform: translateY(-8px) scale(1.02);
       box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 90, 31, 0.25);
@@ -79,12 +58,11 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-brand-orange selection:text-white">
 
-  <!-- ================= NAVBAR ================= -->
+  <!-- NAVBAR -->
   <header class="sticky top-0 z-50 bg-[#0c0d14]/90 backdrop-blur-md border-b border-brand-border/60 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-24 sm:h-28">
         
-        <!-- Logo Principal -->
         <a href="#portal" onclick="mostrarSeccion('todos')" class="flex items-center gap-3 group py-2">
           <img 
             src="LOGO HAARU BLANCO.png" 
@@ -100,35 +78,17 @@
           </div>
         </a>
 
-        <!-- Botones de Navegación Rápida -->
         <nav class="hidden 2xl:flex items-center gap-1.5 bg-brand-card/80 p-1.5 rounded-full border border-brand-border/60">
-          <button onclick="mostrarSeccion('todos')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white hover:bg-white/10 transition-colors cursor-pointer">
-            <i class="fa-solid fa-compass mr-1 text-brand-orange"></i> Todo
-          </button>
-          <button onclick="mostrarSeccion('promos')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
-            <i class="fa-solid fa-gift mr-1 text-red-500"></i> Promos
-          </button>
-          <button onclick="mostrarSeccion('hamburguesas')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer">
-            <i class="fa-solid fa-burger mr-1 text-orange-500"></i> Hamburguesas
-          </button>
-          <button onclick="mostrarSeccion('restaurant')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
-            <i class="fa-solid fa-utensils mr-1 text-amber-500"></i> Restaurant
-          </button>
-          <button onclick="mostrarSeccion('pizzas')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
-            <i class="fa-solid fa-pizza-slice mr-1 text-red-500"></i> Pizzas
-          </button>
-          <button onclick="mostrarSeccion('bebidas')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
-            <i class="fa-solid fa-martini-glass-citrus mr-1 text-cyan-400"></i> Bar & Cócteles
-          </button>
-          <button onclick="mostrarSeccion('heladeria')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
-            <i class="fa-solid fa-ice-cream mr-1 text-pink-500"></i> Heladería
-          </button>
-          <button onclick="mostrarSeccion('parque')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
-            <i class="fa-solid fa-car-side mr-1 text-blue-500"></i> Parque
-          </button>
+          <button onclick="mostrarSeccion('todos')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white hover:bg-white/10 transition-colors cursor-pointer"><i class="fa-solid fa-compass mr-1 text-brand-orange"></i> Todo</button>
+          <button onclick="mostrarSeccion('promos')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer"><i class="fa-solid fa-gift mr-1 text-red-500"></i> Promos</button>
+          <button onclick="mostrarSeccion('hamburguesas')" class="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 hover:bg-amber-500/20 transition-colors cursor-pointer"><i class="fa-solid fa-burger mr-1 text-orange-500"></i> Hamburguesas</button>
+          <button onclick="mostrarSeccion('restaurant')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"><i class="fa-solid fa-utensils mr-1 text-amber-500"></i> Restaurant</button>
+          <button onclick="mostrarSeccion('pizzas')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"><i class="fa-solid fa-pizza-slice mr-1 text-red-500"></i> Pizzas</button>
+          <button onclick="mostrarSeccion('bebidas')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"><i class="fa-solid fa-martini-glass-citrus mr-1 text-cyan-400"></i> Bar & Cócteles</button>
+          <button onclick="mostrarSeccion('heladeria')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"><i class="fa-solid fa-ice-cream mr-1 text-pink-500"></i> Heladería</button>
+          <button onclick="mostrarSeccion('parque')" class="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider text-zinc-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"><i class="fa-solid fa-car-side mr-1 text-blue-500"></i> Parque</button>
         </nav>
 
-        <!-- Botón Comanda / Carrito -->
         <div class="flex items-center gap-3">
           <button 
             onclick="toggleCart()" 
@@ -136,9 +96,7 @@
           >
             <i class="fa-solid fa-receipt text-lg"></i>
             <span class="hidden sm:inline font-heading text-sm tracking-wide">Comanda</span>
-            <span id="cart-badge" class="bg-white text-brand-dark text-xs font-black rounded-full h-6 w-6 flex items-center justify-center ml-1 shadow">
-              0
-            </span>
+            <span id="cart-badge" class="bg-white text-brand-dark text-xs font-black rounded-full h-6 w-6 flex items-center justify-center ml-1 shadow">0</span>
           </button>
         </div>
 
@@ -146,12 +104,11 @@
     </div>
   </header>
 
-  <!-- ================= PORTAL DE ENTRADA ================= -->
+  <!-- PORTAL -->
   <section id="portal" class="relative overflow-hidden py-10 sm:py-16 border-b border-brand-border/40">
     <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-orange/15 via-[#0c0d14] to-[#0c0d14]"></div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      
       <div class="flex justify-center mb-6">
         <img 
           src="LOGO HAARU BLANCO.png" 
@@ -173,57 +130,43 @@
 
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4 max-w-7xl mx-auto">
         <button onclick="mostrarSeccion('promos')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-red-950/40 to-brand-card border border-red-500/50 p-4 text-left hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-gift"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-gift"></i></div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Promos</h3>
           <p class="text-[10px] text-zinc-400 mt-0.5">Especiales</p>
         </button>
 
         <button onclick="mostrarSeccion('hamburguesas')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-amber-950/40 to-brand-card border border-amber-500/50 p-4 text-left hover:border-amber-400 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-burger"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-burger"></i></div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Burgers</h3>
           <p class="text-[10px] text-amber-400 font-semibold mt-0.5">Solomillo & Pollo</p>
         </button>
 
         <button onclick="mostrarSeccion('restaurant')" class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-amber-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-utensils"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-utensils"></i></div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-amber-400">Restaurant</h3>
           <p class="text-[10px] text-zinc-400 mt-0.5">Cortes & Pasticho</p>
         </button>
 
         <button onclick="mostrarSeccion('pizzas')" class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-red-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-pizza-slice"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-pizza-slice"></i></div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-red-400">Pizzas</h3>
           <p class="text-[10px] text-zinc-400 mt-0.5">Borde de Queso</p>
         </button>
 
         <button onclick="mostrarSeccion('bebidas')" class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-cyan-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-martini-glass-citrus"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-martini-glass-citrus"></i></div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-cyan-400">Bar</h3>
           <p class="text-[10px] text-zinc-400 mt-0.5">Cócteles 18K</p>
         </button>
 
         <button onclick="mostrarSeccion('heladeria')" class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-pink-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-ice-cream"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-ice-cream"></i></div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-pink-400">Heladería</h3>
           <p class="text-[10px] text-zinc-400 mt-0.5">Toppings & Fruta</p>
         </button>
 
         <button onclick="mostrarSeccion('parque')" class="group relative overflow-hidden rounded-2xl bg-brand-card border border-brand-border/70 p-4 text-left hover:border-blue-500/80 transition-all duration-300 hover:-translate-y-1.5 shadow-lg cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform">
-            <i class="fa-solid fa-car-side"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-3 text-xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-car-side"></i></div>
           <h3 class="text-sm font-bold text-white font-heading group-hover:text-blue-400">Parque</h3>
           <p class="text-[10px] text-blue-400 font-semibold mt-0.5">Tiempo Libre</p>
         </button>
@@ -231,22 +174,18 @@
     </div>
   </section>
 
-  <!-- ================= CONTENEDOR PRINCIPAL ================= -->
+  <!-- CONTENEDOR PRINCIPAL -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-24">
 
-    <!-- SECCIÓN 0: PROMOS (CON FOTO Y DINÁMICAS) -->
+    <!-- SECCIÓN 0: PROMOS -->
     <section id="sec-promos" class="space-y-8">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/20 text-red-400 border border-red-500/40 text-xs font-bold uppercase tracking-wider mb-2">
             <i class="fa-solid fa-gift text-amber-400"></i> Combos & Paquetes Especiales
           </div>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
-            Promociones Haaru
-          </h2>
-          <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            Combos completos que incluyen comida, postre, bebidas y entrada al parque.
-          </p>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">Promociones Haaru</h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">Combos completos que incluyen comida, postre, bebidas y entrada al parque.</p>
         </div>
         <div class="text-xs text-amber-400 font-bold bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl flex items-center gap-2">
           <i class="fa-solid fa-sparkles"></i> ¡Incluyen Entrada al Parque Tiempo Libre!
@@ -255,19 +194,15 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8" id="grid-promos"></div>
     </section>
 
-    <!-- SECCIÓN 1: HAMBURGUESAS GOURMET (SEPARADA) -->
+    <!-- SECCIÓN 1: HAMBURGUESAS (INCLUYE MAR Y TIERRA) -->
     <section id="sec-hamburguesas" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40 text-xs font-bold uppercase tracking-wider mb-2">
             <i class="fa-solid fa-burger"></i> Línea Artesanal & Croquetas de Solomillo
           </div>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
-            Hamburguesas Haaru
-          </h2>
-          <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            Pan brioche artesanal, cortes madurados y papas fritas. Añade croqueta de carne adicional por +$5.000 COP.
-          </p>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">Hamburguesas Haaru</h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">Pan brioche artesanal, cortes madurados y papas fritas. Añade croqueta de carne adicional por +$5.000 COP.</p>
         </div>
         <div class="text-xs text-amber-400 font-semibold bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl">
           🍔 + Croqueta Adicional (+5K)
@@ -276,31 +211,25 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-hamburguesas"></div>
     </section>
 
-    <!-- SECCIÓN 2: RESTAURANT GOURMET -->
+    <!-- SECCIÓN 2: RESTAURANT (SIN HAMBURGUESAS) -->
     <section id="sec-restaurant" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold uppercase tracking-wider mb-2">
             <i class="fa-solid fa-fire"></i> Cocina de Autor, Cortes & Brasas
           </div>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
-            Cartelera de Platos
-          </h2>
-          <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            Cortes a la brasa, pasticho tradicional, cazuelas de mariscos y platos gourmet.
-          </p>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">Cartelera de Platos</h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">Cortes a la brasa, pasticho tradicional, cazuelas de mariscos y platos gourmet.</p>
         </div>
         <div class="text-xs text-zinc-500 font-mono flex items-center gap-2">
           <i class="fa-solid fa-circle-check text-green-500"></i> Precios en Pesos Colombianos (COP)
         </div>
       </div>
 
-      <!-- Hero Featured Dish -->
+      <!-- Hero Plato Insignia -->
       <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-card to-[#12131d] border border-brand-border p-6 sm:p-10 flex flex-col lg:flex-row items-center gap-8 shadow-2xl">
         <div class="w-full lg:w-1/2 space-y-4">
-          <span class="bg-brand-orange text-white text-xs font-black uppercase px-3 py-1 rounded-md tracking-wider">
-            Plato Insignia
-          </span>
+          <span class="bg-brand-orange text-white text-xs font-black uppercase px-3 py-1 rounded-md tracking-wider">Plato Insignia</span>
           <h3 id="hero-plato-titulo" class="text-3xl sm:text-4xl font-black text-white font-heading">Churrasco de Solomo</h3>
           <p id="hero-plato-desc" class="text-zinc-300 text-sm sm:text-base leading-relaxed">
             Corte tierno y jugoso de solomo madurado a la brasa con el término exacto del chef, acompañado de ensalada fresca de la casa y crujientes papas fritas doradas.
@@ -312,181 +241,102 @@
           </div>
           <div class="pt-4 flex items-center gap-4">
             <div id="hero-plato-precio" class="text-3xl font-black text-amber-400 font-heading">$45.000 <span class="text-xs text-zinc-400 font-normal">COP</span></div>
-            <button 
-              id="btn-hero-ordenar"
-              onclick="ordenarHeroPlato()"
-              class="bg-white hover:bg-zinc-200 text-brand-dark font-extrabold px-6 py-3 rounded-2xl flex items-center gap-2 active:scale-95 transition-all shadow-lg cursor-pointer"
-            >
+            <button id="btn-hero-ordenar" onclick="ordenarHeroPlato()" class="bg-white hover:bg-zinc-200 text-brand-dark font-extrabold px-6 py-3 rounded-2xl flex items-center gap-2 active:scale-95 transition-all shadow-lg cursor-pointer">
               <i class="fa-solid fa-plus"></i> Ordenar Plato
             </button>
           </div>
         </div>
         <div class="w-full lg:w-1/2 relative h-64 sm:h-80 rounded-2xl overflow-hidden border border-brand-border/80 group">
-          <img 
-            id="hero-plato-img"
-            src="Churrasco de Solomo.jpg" 
-            alt="Churrasco de Solomo" 
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1000&auto=format&fit=crop'"
-          />
+          <img id="hero-plato-img" src="Churrasco de Solomo.jpg" alt="Churrasco de Solomo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1000&auto=format&fit=crop'" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
-            <span id="hero-plato-badge" class="text-xs font-semibold text-zinc-200 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">
-              Churrasco de Solomo + Ensalada 45K
-            </span>
+            <span id="hero-plato-badge" class="text-xs font-semibold text-zinc-200 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full">Churrasco de Solomo + Ensalada 45K</span>
           </div>
         </div>
       </div>
-
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-restaurant"></div>
     </section>
 
-    <!-- SECCIÓN 3: PIZZAS ARTESANALES -->
+    <!-- SECCIÓN 3: PIZZAS -->
     <section id="sec-pizzas" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/30 text-xs font-bold uppercase tracking-wider mb-2">
-            <i class="fa-solid fa-pizza-slice"></i> Masa Madre & Horno Caliente
-          </div>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
-            Pizzas Artesanales
-          </h2>
-          <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            5 recetas artesanales. Elige tamaño Mediana o Grande y agrega Borde de Queso (+12K).
-          </p>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/30 text-xs font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-pizza-slice"></i> Masa Madre & Horno Caliente</div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">Pizzas Artesanales</h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">5 recetas artesanales. Elige tamaño Mediana o Grande y agrega Borde de Queso (+12K).</p>
         </div>
       </div>
 
       <div class="relative overflow-hidden rounded-3xl bg-brand-card border border-brand-border h-64 sm:h-80 shadow-2xl flex items-center">
-        <img 
-          src="PIZZAS.jpg" 
-          alt="Variedad de Pizzas Haaru" 
-          class="w-full h-full object-cover object-center filter brightness-90 hover:scale-105 transition-transform duration-700"
-          onerror="this.src='https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop'"
-        />
+        <img src="PIZZAS.jpg" alt="Variedad de Pizzas Haaru" class="w-full h-full object-cover object-center filter brightness-90 hover:scale-105 transition-transform duration-700" onerror="this.src='https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1200&auto=format&fit=crop'" />
         <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent flex flex-col justify-center p-6 sm:p-12 max-w-xl">
-          <span class="bg-red-600 text-white text-[11px] font-black uppercase px-3 py-1 rounded-md tracking-wider w-max mb-3">
-            Receta Tradicional
-          </span>
-          <h3 class="text-2xl sm:text-4xl font-black text-white font-heading leading-tight">
-            Masa crujiente y queso fundido al punto
-          </h3>
-          <p class="text-zinc-300 text-xs sm:text-sm mt-2">
-            Añade opcionalmente a cualquier pizza nuestro icónico <strong>Borde de Queso por +$12.000 COP</strong>.
-          </p>
+          <span class="bg-red-600 text-white text-[11px] font-black uppercase px-3 py-1 rounded-md tracking-wider w-max mb-3">Receta Tradicional</span>
+          <h3 class="text-2xl sm:text-4xl font-black text-white font-heading leading-tight">Masa crujiente y queso fundido al punto</h3>
+          <p class="text-zinc-300 text-xs sm:text-sm mt-2">Añade opcionalmente a cualquier pizza nuestro icónico <strong>Borde de Queso por +$12.000 COP</strong>.</p>
         </div>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-pizzas"></div>
     </section>
 
-    <!-- SECCIÓN 4: BEBIDAS & CÓCTELES (TRAGOS CON FOTO) -->
+    <!-- SECCIÓN 4: BAR DE CÓCTELES Y BEBIDAS -->
     <section id="sec-bebidas" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-bold uppercase tracking-wider mb-2">
-            <i class="fa-solid fa-wine-glass"></i> Barra & Coctelería
-          </div>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
-            Bar de Cócteles & Bebidas
-          </h2>
-          <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            Cócteles tropicales de autor preparados con licores selectos y bebidas frías.
-          </p>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-wine-glass"></i> Barra & Coctelería</div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">Bar de Cócteles & Bebidas</h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">Cócteles tropicales de autor preparados con licores selectos y bebidas frías.</p>
         </div>
-        <div class="text-xs text-cyan-400 font-semibold bg-cyan-500/10 border border-cyan-500/30 px-3 py-1.5 rounded-xl">
-          🍹 Cócteles Preparados al Momento
-        </div>
+        <div class="text-xs text-cyan-400 font-semibold bg-cyan-500/10 border border-cyan-500/30 px-3 py-1.5 rounded-xl">🍹 Cócteles Preparados al Momento</div>
       </div>
 
-      <!-- Tragos / Cócteles con Fotografía -->
       <div class="space-y-4">
-        <h3 class="text-xl font-black text-white font-heading flex items-center gap-2">
-          <i class="fa-solid fa-cocktail text-cyan-400"></i> Cócteles de la Casa (Tragos)
-        </h3>
+        <h3 class="text-xl font-black text-white font-heading flex items-center gap-2"><i class="fa-solid fa-cocktail text-cyan-400"></i> Cócteles de la Casa (Tragos)</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6" id="grid-cocteles"></div>
       </div>
 
-      <!-- Bebidas Sin Alcohol -->
       <div class="space-y-4 pt-4">
-        <h3 class="text-xl font-black text-white font-heading flex items-center gap-2">
-          <i class="fa-solid fa-bottle-water text-emerald-400"></i> Bebidas & Granizados
-        </h3>
+        <h3 class="text-xl font-black text-white font-heading flex items-center gap-2"><i class="fa-solid fa-bottle-water text-emerald-400"></i> Bebidas & Granizados</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="grid-bebidas"></div>
       </div>
     </section>
 
-    <!-- SECCIÓN 5: HELADERÍA ARTESANAL -->
+    <!-- SECCIÓN 5: HELADERÍA -->
     <section id="sec-heladeria" class="space-y-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 text-pink-400 border border-pink-500/30 text-xs font-bold uppercase tracking-wider mb-2">
-            <i class="fa-solid fa-ice-cream"></i> Gelatería Cremosa & Frutas Naturales
-          </div>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
-            Helados Haaru
-          </h2>
-          <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            Sabores Crunch Especiales y copas con fruta natural en tamaño Clásico o Junior.
-          </p>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 text-pink-400 border border-pink-500/30 text-xs font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-ice-cream"></i> Gelatería Cremosa & Frutas Naturales</div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">Helados Haaru</h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">Sabores Crunch Especiales y copas con fruta natural en tamaño Clásico o Junior.</p>
         </div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="grid-helados"></div>
     </section>
 
-    <!-- SECCIÓN 6: PARQUE INFANTIL -->
+    <!-- SECCIÓN 6: PARQUE -->
     <section id="sec-parque" class="space-y-8">
       <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-brand-border/50 pb-5 gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-2">
-            <i class="fa-solid fa-gamepad"></i> Zona de Aventura Familiar
-          </div>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">
-            Parque Infantil & Carros Eléctricos
-          </h2>
-          <p class="text-zinc-400 text-sm sm:text-base mt-1">
-            Diversión total sin límite de tiempo: juega, explora y maneja en un espacio seguro y climatizado.
-          </p>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-2"><i class="fa-solid fa-gamepad"></i> Zona de Aventura Familiar</div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-tight">Parque Infantil & Carros Eléctricos</h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-1">Diversión total sin límite de tiempo: juega, explora y maneja en un espacio seguro y climatizado.</p>
         </div>
       </div>
 
       <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#121424] via-brand-card to-[#0d0f1b] border-2 border-blue-500/40 p-6 sm:p-10 shadow-2xl">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          
           <div class="lg:col-span-7 space-y-6">
-            <div class="inline-flex items-center gap-2 bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-xl border border-blue-500/40 uppercase tracking-wider">
-              <i class="fa-solid fa-infinity"></i> Pase Tiempo Libre
-            </div>
-
-            <h3 class="text-3xl sm:text-5xl font-black text-white font-heading leading-tight">
-              Diversión Ilimitada en Tiempo Libre
-            </h3>
-
-            <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">
-              El boleto otorga acceso ilimitado sin límite de reloj a las dos atracciones estelares de Haaru Park:
-            </p>
-
+            <div class="inline-flex items-center gap-2 bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-xl border border-blue-500/40 uppercase tracking-wider"><i class="fa-solid fa-infinity"></i> Pase Tiempo Libre</div>
+            <h3 class="text-3xl sm:text-5xl font-black text-white font-heading leading-tight">Diversión Ilimitada en Tiempo Libre</h3>
+            <p class="text-zinc-300 text-sm sm:text-base leading-relaxed">El boleto otorga acceso ilimitado sin límite de reloj a las dos atracciones estelares de Haaru Park:</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div class="bg-black/30 border border-brand-border p-4 rounded-2xl flex items-start gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0 text-lg">
-                  <i class="fa-solid fa-layer-group"></i>
-                </div>
-                <div>
-                  <h4 class="text-white font-bold text-sm">Dos Niveles de Parque</h4>
-                  <p class="text-zinc-400 text-xs mt-1">Obstáculos acolchados, piscina de pelotas, toboganes y puentes colgantes.</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0 text-lg"><i class="fa-solid fa-layer-group"></i></div>
+                <div><h4 class="text-white font-bold text-sm">Dos Niveles de Parque</h4><p class="text-zinc-400 text-xs mt-1">Obstáculos acolchados, piscina de pelotas, toboganes y puentes colgantes.</p></div>
               </div>
-
               <div class="bg-black/30 border border-brand-border p-4 rounded-2xl flex items-start gap-3">
-                <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0 text-lg">
-                  <i class="fa-solid fa-car-battery"></i>
-                </div>
-                <div>
-                  <h4 class="text-white font-bold text-sm">Pista de Carros Eléctricos</h4>
-                  <p class="text-zinc-400 text-xs mt-1">Manejo interactivo y seguro supervisado por operadores del parque.</p>
-                </div>
+                <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0 text-lg"><i class="fa-solid fa-car-battery"></i></div>
+                <div><h4 class="text-white font-bold text-sm">Pista de Carros Eléctricos</h4><p class="text-zinc-400 text-xs mt-1">Manejo interactivo y seguro supervisado por operadores del parque.</p></div>
               </div>
             </div>
-
             <div class="pt-2 flex flex-wrap items-center gap-6 text-zinc-400 text-xs">
               <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-blue-400"></i> Espacio protegido</span>
               <span class="flex items-center gap-1.5"><i class="fa-solid fa-user-check text-blue-400"></i> Personal de apoyo</span>
@@ -500,123 +350,74 @@
               $20.000 <span class="text-sm font-semibold text-zinc-400">COP</span>
             </div>
             <p class="text-xs text-blue-400 font-bold mb-6">Incluye 2 Niveles + Carros Eléctricos (Tiempo Libre)</p>
-
             <div class="flex items-center justify-center gap-4 mb-6 bg-brand-card/80 p-2 rounded-2xl border border-brand-border">
               <button onclick="cambiarCantidadParque(-1)" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold flex items-center justify-center text-lg active:scale-90 transition-all cursor-pointer">-</button>
               <span id="parque-cant" class="text-2xl font-black font-heading text-white w-12 text-center">1</span>
               <button onclick="cambiarCantidadParque(1)" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold flex items-center justify-center text-lg active:scale-90 transition-all cursor-pointer">+</button>
             </div>
-
-            <button 
-              onclick="agregarPaseParque()" 
-              class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 rounded-2xl shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 active:scale-95 transition-all text-sm uppercase tracking-wider cursor-pointer"
-            >
+            <button onclick="agregarPaseParque()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 rounded-2xl shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 active:scale-95 transition-all text-sm uppercase tracking-wider cursor-pointer">
               <i class="fa-solid fa-cart-plus"></i> Agregar Pases al Pedido
             </button>
           </div>
-
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ================= DRAWER LATERAL DE COMANDA ================= -->
+  <!-- DRAWER COMANDA -->
   <div id="cart-drawer-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
-  
   <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:w-[500px] bg-brand-card border-l border-brand-border z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
-    
     <div class="p-5 border-b border-brand-border flex items-center justify-between bg-[#0e0f18]">
       <div class="flex items-center gap-3">
         <img src="LOGO HAARU BLANCO.png" alt="Haaru Logo" class="h-8 w-auto object-contain" onerror="this.style.display='none'"/>
-        <div>
-          <h3 class="text-xl font-black text-white font-heading">Tu Comanda</h3>
-          <p class="text-xs text-zinc-400">Haaru Park • Detalle & Sugerencias</p>
-        </div>
+        <div><h3 class="text-xl font-black text-white font-heading">Tu Comanda</h3><p class="text-xs text-zinc-400">Haaru Park • Detalle & Sugerencias</p></div>
       </div>
-      <button onclick="toggleCart()" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
+      <button onclick="toggleCart()" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
     </div>
-
     <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar"></div>
-
     <div class="p-5 border-t border-brand-border bg-[#0e0f18] space-y-4">
       <div class="bg-gradient-to-br from-brand-orange/15 to-amber-500/10 border border-brand-orange/30 p-3.5 rounded-2xl space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-brand-orange uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fa-solid fa-gift animate-pulse"></i> Participa por Premios Sorpresa
-          </span>
+          <span class="text-xs font-bold text-brand-orange uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-gift animate-pulse"></i> Participa por Premios Sorpresa</span>
           <span class="text-[10px] bg-brand-orange/20 text-brand-orange px-2 py-0.5 rounded-full font-bold">Gratis</span>
         </div>
-        <p class="text-[11px] text-zinc-300 leading-snug">
-          Ingresa tus datos para identificar tu orden y quedas participando automáticamente en nuestros sorteos y cortesías sorpresa.
-        </p>
+        <p class="text-[11px] text-zinc-300 leading-snug">Ingresa tus datos para identificar tu orden y participar automáticamente por cortesías sorpresa.</p>
         <div class="grid grid-cols-1 gap-2 pt-1">
-          <input 
-            type="text" 
-            id="cliente-nombre" 
-            placeholder="Tu Nombre y Apellido *" 
-            class="w-full bg-black/60 border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition"
-          />
-          <input 
-            type="tel" 
-            id="cliente-telefono" 
-            placeholder="Número de WhatsApp (ej: 04141234567) *" 
-            class="w-full bg-black/60 border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition"
-          />
+          <input type="text" id="cliente-nombre" placeholder="Tu Nombre y Apellido *" class="w-full bg-black/60 border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition" />
+          <input type="tel" id="cliente-telefono" placeholder="Número de WhatsApp (ej: 04141234567) *" class="w-full bg-black/60 border border-brand-border rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition" />
         </div>
       </div>
 
       <div class="space-y-1.5 text-sm text-zinc-300">
-        <div class="flex justify-between">
-          <span class="text-zinc-400">Subtotal</span>
-          <span id="cart-subtotal" class="font-bold text-white">$0 COP</span>
-        </div>
-        <div class="flex justify-between text-xs text-zinc-400">
-          <span>Servicio & Empaque</span>
-          <span class="text-emerald-400 font-semibold">Incluido</span>
-        </div>
-        <div class="flex justify-between text-lg font-black font-heading text-white pt-2 border-t border-brand-border/60">
-          <span>Total a Pagar</span>
-          <span id="cart-total" class="text-amber-400">$0 COP</span>
-        </div>
+        <div class="flex justify-between"><span class="text-zinc-400">Subtotal</span><span id="cart-subtotal" class="font-bold text-white">$0 COP</span></div>
+        <div class="flex justify-between text-xs text-zinc-400"><span>Servicio & Empaque</span><span class="text-emerald-400 font-semibold">Incluido</span></div>
+        <div class="flex justify-between text-lg font-black font-heading text-white pt-2 border-t border-brand-border/60"><span>Total a Pagar</span><span id="cart-total" class="text-amber-400">$0 COP</span></div>
       </div>
 
-      <button 
-        id="btnEnviarPedidoWhatsApp"
-        onclick="enviarPedidoWhatsApp(event)" 
-        class="w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white font-black py-4 rounded-2xl shadow-xl shadow-green-600/25 flex items-center justify-center gap-3 text-base uppercase tracking-wider active:scale-95 transition-all cursor-pointer"
-      >
+      <button id="btnEnviarPedidoWhatsApp" onclick="enviarPedidoWhatsApp(event)" class="w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white font-black py-4 rounded-2xl shadow-xl shadow-green-600/25 flex items-center justify-center gap-3 text-base uppercase tracking-wider active:scale-95 transition-all cursor-pointer">
         <i class="fa-brands fa-whatsapp text-2xl"></i> Enviar Pedido a WhatsApp
       </button>
-
-      <p class="text-[11px] text-center text-zinc-500 leading-tight">
-        Se registrará la comanda en la base de datos central antes de abrir WhatsApp.
-      </p>
+      <p class="text-[11px] text-center text-zinc-500 leading-tight">Se registrará la comanda en la base de datos central antes de abrir WhatsApp.</p>
     </div>
   </aside>
 
-  <!-- ================= MODAL DETALLES ================= -->
+  <!-- MODAL DETALLES -->
   <div id="dish-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
     <div id="dish-modal-content" class="bg-brand-card border border-brand-border rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300"></div>
   </div>
 
-  <!-- ================= NOTIFICACIÓN TOAST ================= -->
+  <!-- TOAST -->
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-brand-orange text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-2xl shadow-2xl opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2">
     <i class="fa-solid fa-circle-check"></i>
     <span id="toast-text">Producto agregado</span>
   </div>
 
-  <!-- ================= FOOTER ================= -->
+  <!-- FOOTER -->
   <footer class="mt-20 border-t border-brand-border/50 bg-[#08090e] py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-      <div class="flex justify-center">
-        <img src="LOGO HAARU BLANCO.png" alt="Haaru Park" class="h-16 w-auto object-contain opacity-80" onerror="this.style.display='none'"/>
-      </div>
-      <p class="text-xs sm:text-sm text-zinc-400 max-w-md mx-auto">
-        Haaru Park: Gastronomía gourmet, hamburguesas con croqueta de solomillo, cócteles, heladería y parque infantil por tiempo libre.
-      </p>
+      <div class="flex justify-center"><img src="LOGO HAARU BLANCO.png" alt="Haaru Park" class="h-16 w-auto object-contain opacity-80" onerror="this.style.display='none'"/></div>
+      <p class="text-xs sm:text-sm text-zinc-400 max-w-md mx-auto">Haaru Park: Gastronomía gourmet, hamburguesas con croqueta de solomillo, cócteles, heladería y parque infantil por tiempo libre.</p>
       <div class="flex flex-wrap justify-center gap-6 text-zinc-400 text-sm">
         <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('promos')">Promos</span>
         <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('hamburguesas')">Hamburguesas</span>
@@ -626,13 +427,11 @@
         <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('heladeria')">Helados</span>
         <span class="hover:text-white transition-colors cursor-pointer" onclick="mostrarSeccion('parque')">Parque</span>
       </div>
-      <div class="text-[11px] text-zinc-600 border-t border-brand-border/30 pt-6">
-        &copy; 2026 Haaru Park. Todos los derechos reservados. Precios expresados en Pesos Colombianos (COP).
-      </div>
+      <div class="text-[11px] text-zinc-600 border-t border-brand-border/30 pt-6">&copy; 2026 Haaru Park. Todos los derechos reservados. Precios expresados en Pesos Colombianos (COP).</div>
     </div>
   </footer>
 
-  <!-- ================= SCRIPT PRINCIPAL ================= -->
+  <!-- SCRIPT PRINCIPAL -->
   <script>
     const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyM9ZafnPZluds8nodbgBt14gxqP71Iyk6iG-POaL2pT3dqstjnZ1Kb9kd74HpEGB3K/exec";
 
@@ -652,7 +451,25 @@
       return numStr ? Number(numStr) : 0;
     }
 
-    // 1. PROMOS (CON FOTOS LOCALES Y FALLBACKS)
+    function nombresCoinciden(s1, s2) {
+      const a = limpiarTexto(s1);
+      const b = limpiarTexto(s2);
+      if (a === b || a.includes(b) || b.includes(a)) return true;
+
+      const getBigrams = str => {
+        const s = new Set();
+        for (let i = 0; i < str.length - 1; i++) s.add(str.slice(i, i + 2));
+        return s;
+      };
+      const setA = getBigrams(a);
+      const setB = getBigrams(b);
+      let inter = 0;
+      setA.forEach(it => { if (setB.has(it)) inter++; });
+      const sim = (2.0 * inter) / (setA.size + setB.size || 1);
+      return sim >= 0.65;
+    }
+
+    // 1. PROMOS DE RESPALDO
     let promosNavidadData = [
       { 
         id: 'promo-1', 
@@ -686,18 +503,18 @@
       }
     ];
 
-    // 2. HAMBURGUESAS GOURMET
+    // 2. HAMBURGUESAS GOURMET (INCLUYE MAR Y TIERRA)
     let burgersData = [
       { id: 'vino-burger', title: 'Al Vino Burger', file: 'al vino burguer.jpg', fallback: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop', subtitle: 'Al vino burguer + Papas a la francesa 30K', ingredients: 'Muchacho al vino madurado, queso crema, cebolla caramelizada, vegetales frescos, papas rufles crujientes.', price: 30000 },
       { id: 'bacon-kubrick', title: 'Bacon Kubrick', file: 'Bacon cubrick.jpg', fallback: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=800&auto=format&fit=crop', subtitle: 'Bacon Kubrick + Papas a la francesa 30K', ingredients: 'Croqueta de solomillo, tocineta crujiente, relish de pepinillo, vegetales frescos, queso cheddar fundido, papas francesas.', price: 30000 },
-      { id: 'pollo-crispy', title: 'Pollo Crispy', file: 'Pollo crispy.jpg', fallback: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=800&auto=format&fit=crop', subtitle: 'Pollo Crispy + Papas a la francesa 30K', ingredients: 'Suprema de pollo crujiente rebozada, tocineta, queso crema, vegetales frescos de temporada, salsas de la casa, papas.', price: 30000 }
+      { id: 'pollo-crispy', title: 'Pollo Crispy', file: 'Pollo crispy.jpg', fallback: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=800&auto=format&fit=crop', subtitle: 'Pollo Crispy + Papas a la francesa 30K', ingredients: 'Suprema de pollo crujiente rebozada, tocineta, queso crema, vegetales frescos de temporada, salsas de la casa, papas.', price: 30000 },
+      { id: 'mar-tierra', title: 'Mar y Tierra', file: 'Mar y tierra.jpg', fallback: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop', subtitle: 'Mar y Tierra + Papas a la francesa 55K', ingredients: 'Camarones seleccionados, suprema de pollo, queso crema, vegetales frescos, salsas de la casa, papas a la francesa.', price: 55000 }
     ];
 
-    // 3. RESTAURANT GOURMET
+    // 3. RESTAURANT GOURMET (SIN HAMBURGUESAS)
     let dishesData = [
       { id: 'pasticho', title: 'Pasticho Tradicional', file: 'pasticho.jpg', fallback: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?q=80&w=800&auto=format&fit=crop', subtitle: 'Pasticho personal horneado al momento 25K', ingredients: 'Láminas de pasta artesanal, salsa bolognesa de la casa, bechamel cremosa y abundante queso gratinado.', price: 25000, type: 'simple' },
       { id: 'meunier', title: 'Pechuga a la Meuniér', file: 'Pechuga a la Meunier.jpg', fallback: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=800&auto=format&fit=crop', subtitle: 'Pechuga a la Meunier + Ensalada de la casa 35K', ingredients: 'Suprema de pollo, Ensalada cesar, Papas a la francesa', price: 35000, type: 'simple' },
-      { id: 'mar-tierra', title: 'Mar y Tierra', file: 'Mar y tierra.jpg', fallback: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800&auto=format&fit=crop', subtitle: 'Mar y Tierra + Papas a la francesa 55K', ingredients: 'Camarones seleccionados, suprema de pollo, queso crema, vegetales frescos, salsas de la casa, papas a la francesa.', price: 55000, type: 'simple' },
       { id: 'parrilla', title: 'Parrilla Mixta', file: 'Parrilla.jpg', fallback: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop', subtitle: 'Solomo, Pechuga, Cochino, Salsas, Papas a la francesa', ingredients: 'Solomo madurado, pechuga, cochino, salsas caseras, papas a la francesa.', type: 'portion', portions: [{ name: 'Personal (+ Papas)', price: 35000 }, { name: 'Mediana (+ Papas)', price: 60000 }, { name: 'Grande (+ Papas)', price: 95000 }] },
       { id: 'cazuela-mariscos', title: 'Cazuela de Mariscos', file: 'Cazuela de Mariscos.jpg', fallback: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=800&auto=format&fit=crop', subtitle: 'Camarones, Calamares, Langostino, Almejas, Chipichipi', ingredients: 'Camarones, calamares, langostino, almejas, chipichipi en bisque criollo + pan tostado al horno.', type: 'portion', portions: [{ name: 'Mediana (+ Pan tostado)', price: 45000 }, { name: 'Grande (+ Pan tostado)', price: 75000 }] },
       { id: 'ceviche', title: 'Ceviche Peruano', file: 'ceviche peruano.jpg', fallback: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?q=80&w=800&auto=format&fit=crop', subtitle: 'Ceviche peruano + tostones de la casa 45K', ingredients: 'Pescado fresco marinado en leche de tigre, camarones, cebolla morada, cilantro y tostones crujientes.', price: 45000, type: 'simple' },
@@ -713,58 +530,24 @@
       { id: 'pizza-wins', name: 'Pizza Wins', fallback: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop', ingredients: 'Queso mozzarella, pollo, jamón, pepperoni, tocineta, maíz, champiñón, pimentón, cebolla', mediana: 55000, grande: 85000 }
     ];
 
-    // 5. CÓCTELES (TRAGOS) — CON FOTO Y FALLBACK
+    // 5. CÓCTELES (TRAGOS CON FOTO)
     let coctelesData = [
-      { 
-        id: 'laguna-azul', 
-        name: 'Laguna Azul', 
-        desc: 'Vodka, curaçao azul, limón y soda refrescante.', 
-        price: 18000,
-        file: 'laguna azul.jpg',
-        fallback: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop'
-      },
-      { 
-        id: 'mai-tai', 
-        name: 'Mai Tai', 
-        desc: 'Ron añejo y blanco, licor de naranja, amaretto y jugo tropical.', 
-        price: 18000,
-        file: 'mai tai.jpg',
-        fallback: 'https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=600&auto=format&fit=crop'
-      },
-      { 
-        id: 'mojito-cubano', 
-        name: 'Mojito Cubano', 
-        desc: 'Ron blanco, hierbabuena fresca, azúcar de caña y lima.', 
-        price: 18000,
-        file: 'mojito.jpg',
-        fallback: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=600&auto=format&fit=crop'
-      },
-      { 
-        id: 'cuba-libre', 
-        name: 'Cuba Libre', 
-        desc: 'Ron dorado, refresco cola, limón y hielo frappé.', 
-        price: 18000,
-        file: 'cuba libre.jpg',
-        fallback: 'https://images.unsplash.com/photo-1556881286-fc6915169721?q=80&w=600&auto=format&fit=crop'
-      },
-      { 
-        id: 'laguna-roja', 
-        name: 'Laguna Roja', 
-        desc: 'Bebida vibrante de frutos rojos, vodka y licor dulce.', 
-        price: 18000,
-        file: 'laguna roja.jpg',
-        fallback: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=600&auto=format&fit=crop'
-      }
+      { id: 'laguna-azul', name: 'Laguna Azul', desc: 'Vodka, curaçao azul, limón y soda refrescante.', price: 18000, file: 'laguna azul.jpg', fallback: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=600&auto=format&fit=crop' },
+      { id: 'mai-tai', name: 'Mai Tai', desc: 'Ron añejo y blanco, licor de naranja, amaretto y jugo tropical.', price: 18000, file: 'mai tai.jpg', fallback: 'https://images.unsplash.com/photo-1536935338788-846bb9981813?q=80&w=600&auto=format&fit=crop' },
+      { id: 'mojito-cubano', name: 'Mojito Cubano', desc: 'Ron blanco, hierbabuena fresca, azúcar de caña y lima.', price: 18000, file: 'mojito.jpg', fallback: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=600&auto=format&fit=crop' },
+      { id: 'cuba-libre', name: 'Cuba Libre', desc: 'Ron dorado, refresco cola, limón y hielo frappé.', price: 18000, file: 'cuba libre.jpg', fallback: 'https://images.unsplash.com/photo-1556881286-fc6915169721?q=80&w=600&auto=format&fit=crop' },
+      { id: 'laguna-roja', name: 'Laguna Roja', desc: 'Bebida vibrante de frutos rojos, vodka y licor dulce.', price: 18000, file: 'laguna roja.jpg', fallback: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?q=80&w=600&auto=format&fit=crop' }
     ];
 
+    // 6. BEBIDAS FRÍAS (SOPORTE PARA FOTOS Y NUEVAS BEBIDAS)
     let bebidasData = [
-      { id: 'granizado', name: 'Granizado de Frutas', detail: 'Frappé con pulpa fresca a elección', price: 10000, icon: 'fa-blender' },
-      { id: 'refresco-personal', name: 'Refresco Personal', detail: 'Botella individual fría', price: 5000, icon: 'fa-bottle-droplet' },
-      { id: 'agua-mineral', name: 'Agua Mineral 600ml', detail: 'Agua pura sin gas', price: 5000, icon: 'fa-bottle-water' },
-      { id: 'refresco-litro', name: 'Refresco de Litro', detail: 'Formato familiar para compartir', price: 10000, icon: 'fa-champagne-glasses' }
+      { id: 'granizado', name: 'Granizado de Frutas', detail: 'Frappé con pulpa fresca a elección', price: 10000, file: '', icon: 'fa-blender' },
+      { id: 'refresco-personal', name: 'Refresco Personal', detail: 'Botella individual fría', price: 5000, file: '', icon: 'fa-bottle-droplet' },
+      { id: 'agua-mineral', name: 'Agua Mineral 600ml', detail: 'Agua pura sin gas', price: 5000, file: '', icon: 'fa-bottle-water' },
+      { id: 'refresco-litro', name: 'Refresco de Litro', detail: 'Formato familiar para compartir', price: 10000, file: '', icon: 'fa-champagne-glasses' }
     ];
 
-    // 6. HELADOS
+    // 7. HELADOS
     let heladosData = [
       { id: 'flips', name: 'Flips', file: 'FLIPS.jpg', altFile: '', fallback: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop', type: 'special', price: 12000, desc: 'Cremoso helado con cobertura abundante de cereal Flips de chocolate.' },
       { id: 'pirulin', name: 'Pirulin', file: 'PIRULIN.jpg', altFile: '', fallback: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371?q=80&w=800&auto=format&fit=crop', type: 'special', price: 13000, desc: 'Base artesanal con crujientes barquillas rellenas de avellana Pirulin.' },
@@ -791,7 +574,7 @@
       return '$' + (Number(num) || 0).toLocaleString('es-CO') + ' COP';
     }
 
-    // ================= SINCRONIZACIÓN EN VIVO (TRAGOS, PROMOS Y MENÚ) =================
+    // ================= SINCRONIZACIÓN DINÁMICA COMPLETA =================
     async function sincronizarMenuEnVivo() {
       try {
         const respuesta = await fetch(`${GOOGLE_SHEETS_WEBHOOK_URL}?tipo=catalogo&t=${Date.now()}`, { cache: "no-store" });
@@ -800,7 +583,28 @@
         if (data.status === "success" && Array.isArray(data.catalogo) && data.catalogo.length > 0) {
           const catalogo = data.catalogo;
 
-          // 1. Promociones (actualiza fotos, precios o combos nuevos desde el panel)
+          // 1. BEBIDAS: Soporte dinámico para productos nuevos agregados desde el panel
+          const itemsBeb = catalogo.filter(x => {
+            const c = limpiarTexto(x.category);
+            return c.includes('bebida') || c.includes('refresco') || c.includes('agua') || c.includes('jugo');
+          });
+
+          if (itemsBeb.length > 0) {
+            bebidasData = itemsBeb.map((b, idx) => {
+              const localEx = bebidasData.find(x => nombresCoinciden(x.name, b.name)) || {};
+              const tieneFoto = b.image && (b.image.startsWith('data:') || b.image.startsWith('http') || b.image.includes('.jpg') || b.image.includes('.png'));
+              return {
+                id: localEx.id || ('beb-dyn-' + idx),
+                name: b.name,
+                detail: b.detail || localEx.detail || 'Bebida fría',
+                price: limpiarPrecioNumero(b.price) || localEx.price || 5000,
+                file: tieneFoto ? b.image : (localEx.file || ''),
+                icon: localEx.icon || 'fa-bottle-water'
+              };
+            });
+          }
+
+          // 2. PROMOCIONES
           const promoItems = catalogo.filter(x => {
             const c = limpiarTexto(x.category);
             return c.includes('navidad') || c.includes('promo');
@@ -832,7 +636,7 @@
             });
           }
 
-          // 2. Tragos / Cócteles (actualiza foto y precio)
+          // 3. CÓCTELES / TRAGOS
           const coctelItems = catalogo.filter(x => {
             const c = limpiarTexto(x.category);
             return c.includes('coctel') || c.includes('trago') || c.includes('bar');
@@ -840,12 +644,7 @@
 
           if (coctelItems.length > 0) {
             coctelesData = coctelItems.map((item, idx) => {
-              const nomLimpioItem = limpiarTexto(item.name);
-              const localEx = coctelesData.find(x => {
-                const t = limpiarTexto(x.name);
-                return t === nomLimpioItem || t.includes(nomLimpioItem) || nomLimpioItem.includes(t);
-              }) || {};
-
+              const localEx = coctelesData.find(x => nombresCoinciden(x.name, item.name)) || {};
               const tieneFoto = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
 
               return {
@@ -859,44 +658,99 @@
             });
           }
 
-          // 3. Sincronización general por coincidencia inteligente de nombres
+          // 4. HAMBURGUESAS (Nuevas y existentes, incluyendo Mar y Tierra)
+          const itemsBurgers = catalogo.filter(x => {
+            const c = limpiarTexto(x.category);
+            return c.includes('burger') || c.includes('hamburguesa');
+          });
+
+          if (itemsBurgers.length > 0) {
+            burgersData = itemsBurgers.map((b, idx) => {
+              const localEx = burgersData.find(x => nombresCoinciden(x.title, b.name)) || {};
+              const tieneFoto = b.image && (b.image.startsWith('data:') || b.image.startsWith('http') || b.image.includes('.jpg') || b.image.includes('.png'));
+              return {
+                id: localEx.id || ('burger-dyn-' + idx),
+                title: b.name,
+                file: tieneFoto ? b.image : (localEx.file || 'al vino burguer.jpg'),
+                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop',
+                subtitle: b.detail || localEx.subtitle || `${b.name} ${formatCOP(b.price)}`,
+                ingredients: b.detail || localEx.ingredients || '',
+                price: limpiarPrecioNumero(b.price) || localEx.price || 30000
+              };
+            });
+          }
+
+          // 5. RESTAURANT
+          const itemsRest = catalogo.filter(x => {
+            const c = limpiarTexto(x.category);
+            return c.includes('restaurant') || c.includes('plato') || c.includes('carne') || c.includes('cocina');
+          });
+
+          if (itemsRest.length > 0) {
+            dishesData = itemsRest.map((item, idx) => {
+              const localEx = dishesData.find(d => nombresCoinciden(d.title, item.name)) || {};
+              const tieneFoto = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
+              const nomLimpio = limpiarTexto(item.name);
+
+              if (nomLimpio.includes('solomo') || nomLimpio.includes('churrasco')) {
+                heroPlatoActual.nombre = item.name;
+                heroPlatoActual.precio = limpiarPrecioNumero(item.price);
+                if (item.detail) heroPlatoActual.detalle = item.detail;
+                const hPre = document.getElementById('hero-plato-precio');
+                if (hPre) hPre.innerHTML = `${formatCOP(heroPlatoActual.precio)} <span class="text-xs text-zinc-400 font-normal">COP</span>`;
+                if (tieneFoto) {
+                  const hImg = document.getElementById('hero-plato-img');
+                  if (hImg) hImg.src = item.image;
+                }
+              }
+
+              return {
+                id: localEx.id || ('dish-dyn-' + idx),
+                title: item.name,
+                file: tieneFoto ? item.image : (localEx.file || 'Churrasco de Solomo.jpg'),
+                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
+                subtitle: item.detail || localEx.subtitle || `${item.name} ${formatCOP(item.price)}`,
+                ingredients: item.detail || localEx.ingredients || '',
+                price: limpiarPrecioNumero(item.price) || localEx.price || 35000,
+                type: localEx.type || 'simple',
+                portions: localEx.portions || null
+              };
+            });
+          }
+
+          // 6. HELADOS
+          const itemsHel = catalogo.filter(x => {
+            const c = limpiarTexto(x.category);
+            return c.includes('helado') || c.includes('gelato');
+          });
+
+          if (itemsHel.length > 0) {
+            heladosData = itemsHel.map((h, idx) => {
+              const localEx = heladosData.find(x => nombresCoinciden(x.name, h.name)) || {};
+              const tieneFoto = h.image && (h.image.startsWith('data:') || h.image.startsWith('http') || h.image.includes('.jpg') || h.image.includes('.png'));
+              const p = limpiarPrecioNumero(h.price) || localEx.price || 12000;
+              return {
+                id: localEx.id || ('ice-dyn-' + idx),
+                name: h.name,
+                file: tieneFoto ? h.image : (localEx.file || 'FLIPS.jpg'),
+                altFile: localEx.altFile || '',
+                fallback: localEx.fallback || 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=800&auto=format&fit=crop',
+                type: localEx.type || 'special',
+                price: p,
+                clasico: p,
+                junior: Math.round(p * 0.75),
+                desc: h.detail || localEx.desc || 'Helado suave artesanal con ingredientes frescos.'
+              };
+            });
+          }
+
+          // 7. PIZZAS Y PARQUE
           catalogo.forEach(item => {
             const nomLimpio = limpiarTexto(item.name);
             const precio = limpiarPrecioNumero(item.price);
-            const tieneFotoValida = item.image && (item.image.startsWith('data:') || item.image.startsWith('http') || item.image.includes('.jpg') || item.image.includes('.png'));
 
-            // Hamburguesas
-            const b = burgersData.find(x => {
-              const t = limpiarTexto(x.title);
-              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
-            });
-            if (b) {
-              if (precio > 0) b.price = precio;
-              if (item.detail) b.ingredients = item.detail;
-              if (tieneFotoValida) b.file = item.image;
-            }
-
-            // Restaurant
-            const d = dishesData.find(x => {
-              const t = limpiarTexto(x.title);
-              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
-            });
-            if (d) {
-              if (precio > 0) d.price = precio;
-              if (item.detail) d.ingredients = item.detail;
-              if (tieneFotoValida) d.file = item.image;
-
-              if (nomLimpio.includes('solomo') || nomLimpio.includes('churrasco')) {
-                heroPlatoActual.precio = precio;
-                const hPre = document.getElementById('hero-plato-precio');
-                if (hPre) hPre.innerHTML = `${formatCOP(precio)} <span class="text-xs text-zinc-400 font-normal">COP</span>`;
-              }
-            }
-
-            // Pizzas
             pizzasData.forEach(p => {
-              const nomP = limpiarTexto(p.name);
-              if (nomLimpio === nomP || nomLimpio.includes(nomP)) {
+              if (nombresCoinciden(p.name, item.name)) {
                 if (nomLimpio.includes('grande')) {
                   if (precio > 0) p.grande = precio;
                 } else {
@@ -905,29 +759,6 @@
               }
             });
 
-            // Bebidas
-            const beb = bebidasData.find(x => {
-              const t = limpiarTexto(x.name);
-              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
-            });
-            if (beb && precio > 0) {
-              beb.price = precio;
-            }
-
-            // Helados
-            const h = heladosData.find(x => {
-              const t = limpiarTexto(x.name);
-              return t === nomLimpio || t.includes(nomLimpio) || nomLimpio.includes(t);
-            });
-            if (h) {
-              if (precio > 0) {
-                h.price = precio;
-                h.clasico = precio;
-              }
-              if (tieneFotoValida) h.file = item.image;
-            }
-
-            // Parque
             if (nomLimpio.includes('parque') || (item.category || '').toLowerCase() === 'parque') {
               if (precio > 0) {
                 precioParqueActual = precio;
@@ -937,11 +768,11 @@
             }
           });
 
-          // Re-renderizar
+          // Re-renderizado
+          renderBebidasYCocteles();
           renderHamburguesas();
           renderRestaurant();
           renderPizzas();
-          renderBebidasYCocteles();
           renderHelados();
           renderPromosNavidad();
         }
@@ -950,7 +781,7 @@
       }
     }
 
-    // ================= RENDERIZADO: PROMOS CON FOTO =================
+    // ================= RENDERIZADO: PROMOS =================
     function renderPromosNavidad() {
       const container = document.getElementById('grid-promos');
       if (!container) return;
@@ -1199,8 +1030,9 @@
       document.getElementById(`price-btn-${pizzaId}`).innerText = formatCOP(total);
     }
 
-    // ================= RENDERIZADO: TRAGOS / CÓCTELES CON FOTO =================
+    // ================= RENDERIZADO: BAR (TRAGOS Y BEBIDAS) =================
     function renderBebidasYCocteles() {
+      // 1. Tragos / Cócteles con Fotografía
       const cContainer = document.getElementById('grid-cocteles');
       if (cContainer) {
         cContainer.innerHTML = coctelesData.map(c => `
@@ -1232,25 +1064,36 @@
         `).join('');
       }
 
+      // 2. Bebidas Frías (Soporta imágenes de Sheets o icono si no tiene foto)
       const bContainer = document.getElementById('grid-bebidas');
       if (bContainer) {
-        bContainer.innerHTML = bebidasData.map(b => `
-          <div class="poster-card rounded-2xl bg-brand-card border border-brand-border p-4 flex flex-col justify-between space-y-3 shadow-lg">
-            <div>
-              <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-sm mb-2">
-                <i class="fa-solid ${b.icon}"></i>
+        bContainer.innerHTML = bebidasData.map(b => {
+          const tieneFoto = b.file && (b.file.startsWith('data:') || b.file.startsWith('http') || b.file.includes('.jpg') || b.file.includes('.png'));
+
+          return `
+            <div class="poster-card rounded-2xl bg-brand-card border border-brand-border overflow-hidden p-4 flex flex-col justify-between space-y-3 shadow-lg">
+              <div>
+                ${tieneFoto ? `
+                  <div class="h-32 w-full rounded-xl overflow-hidden mb-3 bg-black/40">
+                    <img src="${b.file}" alt="${b.name}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" onerror="this.parentElement.style.display='none'">
+                  </div>
+                ` : `
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-base mb-2">
+                    <i class="fa-solid ${b.icon || 'fa-bottle-water'}"></i>
+                  </div>
+                `}
+                <h4 class="text-base font-black text-white font-heading">${b.name}</h4>
+                <p class="text-[11px] text-zinc-400 mt-0.5">${b.detail}</p>
               </div>
-              <h4 class="text-base font-black text-white font-heading">${b.name}</h4>
-              <p class="text-[11px] text-zinc-400 mt-0.5">${b.detail}</p>
+              <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between">
+                <span class="text-sm font-black text-emerald-400 font-heading">${formatCOP(b.price)}</span>
+                <button onclick="agregarBebida('${b.name}', ${b.price}, '${b.detail}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 active:scale-95 transition-all cursor-pointer">
+                  <i class="fa-solid fa-plus"></i> Sumar
+                </button>
+              </div>
             </div>
-            <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between">
-              <span class="text-sm font-black text-emerald-400 font-heading">${formatCOP(b.price)}</span>
-              <button onclick="agregarBebida('${b.name}', ${b.price}, '${b.detail}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 active:scale-95 transition-all cursor-pointer">
-                <i class="fa-solid fa-plus"></i> Sumar
-              </button>
-            </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       }
     }
 
@@ -1563,7 +1406,7 @@
 
       const idComandaGenerado = "CMD-" + Math.floor(1000 + Math.random() * 9000);
 
-      // 1. Envío asegurado a Google Sheets
+      // 1. Envío a Google Sheets
       if (typeof GOOGLE_SHEETS_WEBHOOK_URL !== 'undefined' && GOOGLE_SHEETS_WEBHOOK_URL.startsWith('http')) {
         const payload = {
           idComanda: idComandaGenerado,
@@ -1589,7 +1432,7 @@
         }
       }
 
-      // 2. Construcción del mensaje para WhatsApp
+      // 2. Mensaje para WhatsApp
       let mensaje = `*¡HOLA HAARU PARK! QUIERO REALIZAR ESTE PEDIDO:*%0A%0A`;
       mensaje += `🎟️ *N° Comanda:* ${idComandaGenerado}%0A`;
       mensaje += `👤 *Cliente:* ${encodeURIComponent(nombreCliente)}%0A`;
