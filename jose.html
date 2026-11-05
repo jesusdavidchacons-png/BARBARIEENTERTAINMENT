@@ -243,4 +243,97 @@
             <div>
               <div class="flex items-center justify-between text-[10px] font-mono text-cine-emerald-glow uppercase tracking-widest mb-3">
                 <span>SCENE 02 // RITMO</span>
-                <span class="text-slate-
+                <span class="text-slate-500">24 FPS</span>
+              </div>
+              <h3 class="text-lg font-cinzel font-bold text-white mb-3">
+                Dinámica de Movimiento
+              </h3>
+              <p class="text-xs text-slate-400 font-light leading-relaxed mb-6">
+                Secuencia de prueba enfocada en la armonía cromática y el flujo de trabajo multicámara.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-white/[0.05] flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-500">Master Look</span>
+              <a href="https://www.youtube.com/watch?v=ZJshrDhXMPw" target="_blank" rel="noopener noreferrer" class="text-cine-emerald-glow hover:text-white font-bold transition-colors inline-flex items-center gap-1.5">
+                <span>Reproducir</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Video 3 -->
+      <article class="bronze-border-gradient flex flex-col group shadow-cine-box">
+        <div class="bg-cine-card rounded-[0.95rem] overflow-hidden flex flex-col h-full">
+          <div class="relative w-full aspect-video bg-black">
+            <iframe class="w-full h-full border-0" src="https://www.youtube-nocookie.com/embed/BsoPTJDNS2k?rel=0&playsinline=1&modestbranding=1" title="Secuencia 03" allowfullscreen></iframe>
+          </div>
+          <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between text-[10px] font-mono text-cine-bronze uppercase tracking-widest mb-3">
+                <span>SCENE 03 // CONTINUIDAD</span>
+                <span class="text-slate-500">24 FPS</span>
+              </div>
+              <h3 class="text-lg font-cinzel font-bold text-white mb-3">
+                Estética Global & Color
+              </h3>
+              <p class="text-xs text-slate-400 font-light leading-relaxed mb-6">
+                Línea de tiempo de continuidad montada para validar la consistencia visual en postproducción.
+              </p>
+            </div>
+            <div class="pt-4 border-t border-white/[0.05] flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-500">Master Look</span>
+              <a href="https://youtu.be/BsoPTJDNS2k" target="_blank" rel="noopener noreferrer" class="text-cine-bronze hover:text-white font-bold transition-colors inline-flex items-center gap-1.5">
+                <span>Reproducir</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- FOOTER Y CANALES DE CONTACTO DIRECTO -->
+  <footer class="py-16 px-6 border-t border-white/[0.05] bg-[#040507] text-center font-mono text-xs text-slate-500">
+    <div class="max-w-4xl mx-auto flex flex-col items-center gap-6">
+      
+      <!-- Identificación -->
+      <div class="flex items-center justify-center gap-3">
+        <span class="w-2 h-2 rounded-full bg-cine-emerald-glow animate-pulse"></span>
+        <span class="text-slate-200 font-cinzel font-bold tracking-[0.25em] text-sm">JOSE BARBARIE</span>
+        <span class="text-slate-700">•</span>
+        <span class="tracking-widest">CINEMATOGRAPHY</span>
+      </div>
+
+      <!-- Enlaces de Contacto Directo -->
+      <div class="flex flex-wrap items-center justify-center gap-6 pt-2 pb-4">
+        <a href="https://instagram.com/josebarbarie" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-slate-300 hover:text-cine-bronze transition-colors px-4 py-2 rounded-lg bg-white/[0.02] border border-white/5">
+          <i class="fa-brands fa-instagram text-base text-cine-bronze"></i>
+          <span class="font-mono text-xs">@josebarbarie</span>
+        </a>
+        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-slate-300 hover:text-cine-emerald-glow transition-colors px-4 py-2 rounded-lg bg-white/[0.02] border border-white/5">
+          <i class="fa-brands fa-whatsapp text-base text-cine-emerald-glow"></i>
+          <span class="font-mono text-xs">+58 424-7780942</span>
+        </a>
+      </div>
+
+      <p class="text-[11px] text-slate-600">© 2026 Jose Barbarie. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const vid = document.getElementById('hero-video');
+      if (vid) {
+        vid.muted = true;
+        vid.play().catch(error => {
+          console.log("Autoplay controlado:", error);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
