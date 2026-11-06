@@ -2,7 +2,7 @@
 <html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>CAVIM x Barbarie | Despliegue Táctico Inmersivo</title>
 
     <!-- METADATOS OPEN GRAPH PARA VISTA PREVIA EN WHATSAPP / TELEGRAM / REDES -->
@@ -77,6 +77,8 @@
             justify-content: center;
             text-align: center;
             padding: 1.5rem;
+            padding-top: env(safe-area-inset-top, 1.5rem);
+            padding-bottom: env(safe-area-inset-bottom, 1.5rem);
         }
 
         /* Detección pura por Media Query en dispositivos móviles/tablets verticales */
@@ -87,6 +89,18 @@
             body {
                 overflow: hidden !important;
             }
+        }
+
+        /* Safe areas para teléfonos en horizontal con notch / dynamic island */
+        .safe-px {
+            padding-left: max(1rem, env(safe-area-inset-left));
+            padding-right: max(1rem, env(safe-area-inset-right));
+        }
+        .safe-pt {
+            padding-top: max(0.5rem, env(safe-area-inset-top));
+        }
+        .safe-pb {
+            padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
         }
 
         /* Animación continua de rotación del teléfono (de vertical a horizontal) */
@@ -147,7 +161,8 @@
 
         /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: #040609;
@@ -166,45 +181,42 @@
     <!-- ============================================================== -->
     <!-- 0. PANTALLA DE BLOQUEO OBLIGATORIA: GIRE A MODO HORIZONTAL     -->
     <!-- ============================================================== -->
-    <div id="orientationGate" class="select-none">
+    <div id="orientationGate" class="select-none safe-px">
         <div class="absolute inset-0 bg-gradient-to-b from-military-950 via-slate-950 to-military-950 opacity-95"></div>
         <div class="absolute inset-0 cyber-grid bg-grid-pattern opacity-25"></div>
 
-        <div class="relative z-10 max-w-md w-full mx-auto space-y-6 flex flex-col items-center">
+        <div class="relative z-10 max-w-md w-full mx-auto space-y-5 flex flex-col items-center">
             <!-- Logo Oficial de CAVIM -->
-            <div class="p-3 rounded-2xl glass-panel border border-cyan-500/30 shadow-2xl shadow-cyan-950">
-                <img src="https://i.postimg.cc/xCdQ3Kjk/251165.png" alt="CAVIM Logo Oficial" class="h-16 w-auto object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+            <div class="p-2.5 rounded-2xl glass-panel border border-cyan-500/30 shadow-2xl shadow-cyan-950">
+                <img src="https://i.postimg.cc/xCdQ3Kjk/251165.png" alt="CAVIM Logo Oficial" class="h-14 w-auto object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]">
             </div>
 
-            <div class="space-y-2">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 text-[11px] font-tactical uppercase tracking-widest">
-                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <div class="space-y-1.5">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 text-[10px] font-tactical uppercase tracking-widest">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
                     Experiencia Cinematográfica Inmersiva
                 </div>
-                <h2 class="text-2xl font-black font-tactical uppercase tracking-wider text-white">
-                    Gira tu dispositivo a <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-400">Modo Horizontal</span>
+                <h2 class="text-xl sm:text-2xl font-black font-tactical uppercase tracking-wider text-white">
+                    Gira tu teléfono a <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-400">Modo Horizontal</span>
                 </h2>
             </div>
 
             <!-- Ícono Animado de Rotación del Teléfono -->
-            <div class="my-4 py-4">
-                <div class="w-16 h-28 rounded-2xl border-2 border-cyan-400 bg-slate-900/90 flex flex-col justify-between p-2 phone-rotate-anim mx-auto relative">
-                    <!-- Bocina superior del teléfono -->
+            <div class="my-2 py-2">
+                <div class="w-14 h-24 rounded-2xl border-2 border-cyan-400 bg-slate-900/90 flex flex-col justify-between p-2 phone-rotate-anim mx-auto relative">
                     <div class="w-4 h-1 bg-cyan-500/50 rounded-full mx-auto"></div>
-                    <!-- Pantalla central -->
-                    <div class="w-full h-14 rounded-lg bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center">
-                        <i class="fa-solid fa-arrows-rotate text-cyan-400 text-lg"></i>
+                    <div class="w-full h-12 rounded-lg bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center">
+                        <i class="fa-solid fa-arrows-rotate text-cyan-400 text-sm"></i>
                     </div>
-                    <!-- Botón inferior -->
-                    <div class="w-2 h-2 rounded-full bg-cyan-400/60 mx-auto"></div>
+                    <div class="w-1.5 h-1.5 rounded-full bg-cyan-400/60 mx-auto"></div>
                 </div>
             </div>
 
-            <div class="space-y-3">
-                <p class="text-slate-300 text-xs sm:text-sm font-light leading-relaxed max-w-xs mx-auto">
+            <div class="space-y-2">
+                <p class="text-slate-300 text-xs font-light leading-relaxed max-w-xs mx-auto">
                     Para ingresar al portafolio y propuesta técnica de <strong class="text-white">CAVIM</strong> es obligatorio colocar tu pantalla en posición apaisada.
                 </p>
-                <div class="p-2.5 rounded-lg bg-military-900/80 border border-slate-800 text-[11px] font-tactical text-slate-400">
+                <div class="p-2 rounded-lg bg-military-900/80 border border-slate-800 text-[10px] font-tactical text-slate-400">
                     <i class="fa-solid fa-lock text-amber-400 mr-1.5"></i> Bloqueado hasta detectar rotación horizontal
                 </div>
             </div>
@@ -213,63 +225,63 @@
 
     <!-- ========================================== -->
     <!-- 1. PANTALLA INICIAL MINIMALISTA (GATEKEEPER) -->
+    <!-- Adaptada a Landscape: 2 Columnas fluidas con scroll natural si la pantalla es muy baja -->
     <!-- ========================================== -->
-    <div id="introGatekeeper" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-military-950 transition-opacity duration-700">
+    <div id="introGatekeeper" class="fixed inset-0 z-50 overflow-y-auto bg-military-950 transition-opacity duration-700 safe-px safe-pt safe-pb flex items-center justify-center">
         <!-- Video de fondo con 90% de visibilidad clara y cinematográfica -->
-        <video id="bgVideo" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-90 filter contrast-110 brightness-95 pointer-events-none">
+        <video id="bgVideo" autoplay muted loop playsinline class="fixed inset-0 w-full h-full object-cover opacity-90 filter contrast-110 brightness-95 pointer-events-none">
             <source src="cavim.mp4" type="video/mp4">
         </video>
 
         <!-- Capas de textura y viñeta sutil para asegurar contraste y legibilidad -->
-        <div class="absolute inset-0 bg-gradient-to-b from-military-950/40 via-military-950/20 to-military-950/70 pointer-events-none"></div>
-        <div class="absolute inset-0 cyber-grid bg-grid-pattern opacity-20 pointer-events-none"></div>
+        <div class="fixed inset-0 bg-gradient-to-b from-military-950/50 via-military-950/30 to-military-950/80 pointer-events-none"></div>
+        <div class="fixed inset-0 cyber-grid bg-grid-pattern opacity-20 pointer-events-none"></div>
 
-        <!-- Contenido Central Minimalista -->
-        <div class="relative z-10 max-w-2xl w-full px-6 text-center space-y-8">
-            
-            <!-- Logo Oficial de CAVIM -->
-            <div class="flex justify-center">
-                <div class="relative p-3 rounded-2xl glass-panel border border-cyan-500/30 shadow-2xl shadow-cyan-950">
-                    <img src="https://i.postimg.cc/xCdQ3Kjk/251165.png" alt="CAVIM Logo Oficial" class="h-20 sm:h-24 w-auto object-contain drop-shadow-[0_0_20px_rgba(0,240,255,0.35)]">
+        <!-- Contenedor adaptativo: 2 columnas en mobile horizontal para que nunca se desborde -->
+        <div class="relative z-10 w-full max-w-5xl my-auto py-3">
+            <div class="glass-panel p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border border-cyan-500/30 shadow-2xl shadow-cyan-950/60 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center">
+                
+                <!-- Columna Izquierda: Logo y Branding -->
+                <div class="md:col-span-5 flex flex-col items-center md:items-start text-center md:text-left space-y-2.5">
+                    <div class="p-2 sm:p-2.5 rounded-xl glass-panel border border-cyan-500/40 shadow-lg shadow-cyan-950 inline-block">
+                        <img src="https://i.postimg.cc/xCdQ3Kjk/251165.png" alt="CAVIM Logo Oficial" class="h-12 sm:h-16 lg:h-20 w-auto object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                    </div>
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 text-[10px] font-tactical uppercase tracking-wider">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                        Despliegue Táctico Expo 2026
+                    </div>
+                    <h1 class="text-xl sm:text-2xl lg:text-3xl font-black font-tactical uppercase tracking-wide text-white leading-tight">
+                        CAVIM <br class="hidden sm:inline"><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-400">Vanguardia Digital</span>
+                    </h1>
+                    <div class="text-[10px] font-tactical text-slate-400 tracking-wider">
+                        PRODUCIDO POR <span class="text-cyan-400 font-bold">BARBARIE ENTERTAINMENT</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="space-y-3">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-400 text-xs font-tactical uppercase tracking-widest">
-                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                    Alianza Estratégica & Despliegue Expo 2026
+                <!-- Columna Derecha: Resumen de propuesta y Botones de Choque -->
+                <div class="md:col-span-7 flex flex-col justify-center space-y-3 border-t md:border-t-0 md:border-l border-slate-800/80 pt-3 md:pt-0 md:pl-6 text-center md:text-left">
+                    <p class="text-slate-300 text-xs sm:text-sm font-light leading-relaxed">
+                        Propuesta integral de modernización para la <strong class="text-white">Expo Crecer e Innovar 2026</strong>: 3 días de rodaje en campo, terminal inmersiva VR Meta Quest 3, tarjetas inteligentes NFC y portafolio interactivo B2B.
+                    </p>
+
+                    <!-- Acciones rápidas sin desborde -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                        <button onclick="playSensitizationVideo()" class="w-full px-4 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-tactical font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/30 transition-all">
+                            <i class="fa-solid fa-play text-[10px] p-1 rounded-full bg-slate-950 text-cyan-400"></i>
+                            <span>Sensibilización</span>
+                        </button>
+                        <button onclick="enterDirectly()" class="w-full px-4 py-2.5 sm:py-3 rounded-xl glass-panel hover:bg-slate-800 text-slate-200 hover:text-white font-tactical text-xs tracking-wider uppercase border border-slate-700 transition-all flex items-center justify-center gap-2">
+                            <span>Ver Propuesta</span>
+                            <i class="fa-solid fa-arrow-right text-[10px] text-cyan-400"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-center md:justify-start gap-4 text-[10px] font-tactical text-slate-400 pt-0.5">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-circle-check text-emerald-400"></i> Hardware Propio</span>
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-circle-check text-cyan-400"></i> Respuesta Inmediata</span>
+                    </div>
                 </div>
-                <h1 class="text-3xl sm:text-5xl font-black font-tactical uppercase tracking-wider text-white">
-                    CAVIM <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Vanguardia Digital</span>
-                </h1>
-                <p class="text-slate-400 text-xs sm:text-sm max-w-lg mx-auto font-light leading-relaxed">
-                    Propuesta de despliegue inmersivo, portafolio B2B de choque y soberanía tecnológica para la Expo Crecer e Innovar (13-15 Nov 2026).
-                </p>
-            </div>
 
-            <!-- Aviso Táctico de Rotación de Dispositivo -->
-            <div class="glass-panel p-3.5 rounded-xl border border-amber-500/30 max-w-md mx-auto flex items-center justify-center gap-3 text-amber-300 text-xs font-tactical">
-                <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
-                    <i class="fa-solid fa-mobile-screen rotate-icon-anim text-amber-400 text-base"></i>
-                </div>
-                <span class="text-left leading-tight">
-                    Para una experiencia cinematográfica completa, <strong>sugerimos orientar su pantalla horizontalmente</strong>.
-                </span>
-            </div>
-
-            <!-- Botones de Acción -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-                <button onclick="playSensitizationVideo()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-tactical font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 shadow-xl shadow-cyan-500/30 transition-all transform hover:-translate-y-0.5">
-                    <i class="fa-solid fa-play text-xs p-1.5 rounded-full bg-slate-950 text-cyan-400"></i>
-                    Ver Video de Sensibilización
-                </button>
-                <button onclick="enterDirectly()" class="w-full sm:w-auto px-6 py-4 rounded-xl glass-panel hover:bg-slate-800 text-slate-300 hover:text-white font-tactical text-xs tracking-wider uppercase border border-slate-700 transition-all">
-                    Entrar Directamente a la Propuesta <i class="fa-solid fa-arrow-right ml-1.5 text-cyan-400"></i>
-                </button>
-            </div>
-
-            <div class="text-[11px] font-tactical text-slate-400 tracking-widest pt-2">
-                PRODUCIDO POR <span class="text-cyan-400 font-bold">BARBARIE ENTERTAINMENT</span>
             </div>
         </div>
     </div>
@@ -277,26 +289,26 @@
     <!-- ========================================== -->
     <!-- 2. REPRODUCTOR DE VIDEO DE SENSIBILIZACIÓN -->
     <!-- ========================================== -->
-    <div id="sensitizationPlayer" class="fixed inset-0 z-50 hidden bg-black flex flex-col justify-between">
+    <div id="sensitizationPlayer" class="fixed inset-0 z-50 hidden bg-black flex flex-col justify-between safe-px safe-pt safe-pb">
         <!-- Barra de Control Superior con Botón "Saltar Video" -->
-        <div class="glass-panel border-b border-cyan-500/30 p-4 flex items-center justify-between relative z-20">
-            <div class="flex items-center gap-3">
-                <img src="https://i.postimg.cc/xCdQ3Kjk/251165.png" alt="CAVIM Logo" class="h-8 w-auto">
+        <div class="glass-panel border-b border-cyan-500/30 px-3 py-2 sm:p-3 flex items-center justify-between relative z-20">
+            <div class="flex items-center gap-2.5">
+                <img src="https://i.postimg.cc/xCdQ3Kjk/251165.png" alt="CAVIM Logo" class="h-6 sm:h-8 w-auto">
                 <div>
-                    <div class="text-xs font-tactical text-white font-bold">PIEZA DE SENSIBILIZACIÓN</div>
-                    <div class="text-[10px] text-cyan-400 font-tactical">APERTURA INTERNACIONAL & MOMENTO PAÍS</div>
+                    <div class="text-[11px] sm:text-xs font-tactical text-white font-bold leading-none">PIEZA DE SENSIBILIZACIÓN</div>
+                    <div class="text-[9px] sm:text-[10px] text-cyan-400 font-tactical mt-0.5">APERTURA INTERNACIONAL & MOMENTO PAÍS</div>
                 </div>
             </div>
 
-            <button onclick="skipSensitizationVideo()" class="px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-tactical font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/30 flex items-center gap-2 transition-all">
-                <span>Saltar Video / Entrar a la Web</span>
-                <i class="fa-solid fa-forward-step"></i>
+            <button onclick="skipSensitizationVideo()" class="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-tactical font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/30 flex items-center gap-1.5 transition-all">
+                <span>Saltar Video</span>
+                <i class="fa-solid fa-forward-step text-[10px]"></i>
             </button>
         </div>
 
         <!-- Contenedor del Video de Sensibilización de YouTube -->
-        <div class="relative flex-1 w-full bg-black flex items-center justify-center p-2 sm:p-4">
-            <div class="w-full max-w-6xl aspect-video max-h-[82vh] rounded-xl overflow-hidden shadow-2xl border border-cyan-500/20 bg-black">
+        <div class="relative flex-1 w-full bg-black flex items-center justify-center p-1 sm:p-3">
+            <div class="w-full max-w-5xl h-full max-h-[72vh] rounded-xl overflow-hidden shadow-2xl border border-cyan-500/20 bg-black">
                 <div class="yt-clean-wrap">
                     <iframe 
                         id="sensitizationIframe" 
@@ -310,7 +322,7 @@
         </div>
 
         <!-- Pie Informativo del Reproductor -->
-        <div class="glass-panel border-t border-slate-800 p-3 text-center text-xs font-tactical text-slate-400">
+        <div class="glass-panel border-t border-slate-800 px-2 py-1 text-center text-[10px] font-tactical text-slate-400">
             Esta pieza establece el tono de solvencia, apertura y diplomacia estratégica necesario ante delegaciones internacionales.
         </div>
     </div>
@@ -320,121 +332,118 @@
     <!-- ========================================== -->
 
     <!-- Top Tactical Alert Status Bar -->
-    <div class="bg-gradient-to-r from-military-950 via-military-800 to-military-950 border-b border-cyan-500/20 py-1.5 px-4 text-xs font-tactical tracking-widest text-cyan-400 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span>OPERACIÓN TÁCTICA: EXPO CRECER E INNOVAR 2026</span>
+    <div class="bg-gradient-to-r from-military-950 via-military-800 to-military-950 border-b border-cyan-500/20 py-1 px-3 sm:px-4 text-[10px] sm:text-xs font-tactical tracking-wider text-cyan-400 flex items-center justify-between safe-px">
+        <div class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="truncate">OPERACIÓN: EXPO CRECER E INNOVAR 2026</span>
         </div>
         <div class="hidden md:flex items-center gap-4 text-slate-400">
-            <span>VENTANA OPERATIVA: <strong class="text-white">13 AL 15 NOVIEMBRE 2026</strong></span>
+            <span>VENTANA: <strong class="text-white">13-15 NOV 2026</strong></span>
             <span class="text-cyan-500/40">|</span>
-            <span>OBJETIVO: <strong class="text-white">VANGUARDIA B2B & DIGITALIZACIÓN TOTAL</strong></span>
+            <span>OBJETIVO: <strong class="text-white">VANGUARDIA B2B</strong></span>
         </div>
         <div>
-            <span class="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/50 text-amber-300 text-[10px] uppercase font-bold">Muestra Presencial en Reunión</span>
+            <span class="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/50 text-amber-300 text-[9px] uppercase font-bold">Muestra Presencial en Reunión</span>
         </div>
     </div>
 
-    <!-- Navigation Header -->
-    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <img src="https://i.postimg.cc/xCdQ3Kjk/251165.png" alt="Logo CAVIM" class="h-12 w-auto object-contain">
+    <!-- Navigation Header Compacto para Landscape -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80 safe-px">
+        <div class="max-w-7xl mx-auto h-14 sm:h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <img src="https://i.postimg.cc/xCdQ3Kjk/251165.png" alt="Logo CAVIM" class="h-9 sm:h-10 w-auto object-contain">
                 <div>
-                    <div class="font-tactical font-bold text-lg tracking-wider text-white flex items-center gap-2">
-                        CAVIM <span class="text-xs px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-500/40 text-cyan-400 font-normal">DEFENSA & INDUSTRIA</span>
+                    <div class="font-tactical font-bold text-sm sm:text-base tracking-wider text-white flex items-center gap-1.5 leading-none">
+                        CAVIM <span class="text-[9px] px-1 py-0.5 rounded bg-cyan-950 border border-cyan-500/40 text-cyan-400 font-normal">DEFENSA</span>
                     </div>
-                    <p class="text-[11px] text-slate-400 tracking-wider">ECOSISTEMA TÁCTICO x BARBARIE</p>
+                    <p class="text-[9px] text-slate-400 tracking-wider">ECOSISTEMA x BARBARIE</p>
                 </div>
             </div>
 
             <!-- Desktop Nav -->
-            <nav class="hidden lg:flex items-center gap-6 text-xs uppercase tracking-wider font-tactical">
+            <nav class="hidden lg:flex items-center gap-5 text-[11px] uppercase tracking-wider font-tactical">
                 <a href="#diagnostico" class="text-slate-300 hover:text-cyan-400 transition-colors">Diagnóstico</a>
-                <a href="#rodaje" class="text-slate-300 hover:text-cyan-400 transition-colors">3 Días de Rodaje</a>
-                <a href="#experiencias" class="text-slate-300 hover:text-cyan-400 transition-colors">Portafolio VR & Media</a>
+                <a href="#rodaje" class="text-slate-300 hover:text-cyan-400 transition-colors">3 Días Rodaje</a>
+                <a href="#experiencias" class="text-slate-300 hover:text-cyan-400 transition-colors">VR & Media</a>
                 <a href="#ecosistema" class="text-slate-300 hover:text-cyan-400 transition-colors">Meta Quest 3 & NFC</a>
                 <a href="#argumento" class="text-slate-300 hover:text-cyan-400 transition-colors">Alianza Estratégica</a>
             </nav>
 
-            <div class="flex items-center gap-3">
-                <button onclick="shareViaWhatsApp()" class="hidden sm:flex items-center gap-2 px-3.5 py-2.5 rounded-lg bg-emerald-600/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-600 hover:text-white font-tactical text-xs tracking-wider uppercase transition-all shadow-lg shadow-emerald-950">
-                    <i class="fa-brands fa-whatsapp text-sm"></i>
-                    <span>Enviar Resumen</span>
+            <div class="flex items-center gap-2">
+                <button onclick="shareViaWhatsApp()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-600 hover:text-white font-tactical text-[11px] tracking-wider uppercase transition-all">
+                    <i class="fa-brands fa-whatsapp text-xs"></i>
+                    <span>Resumen</span>
                 </button>
 
-                <a href="#argumento" class="relative group overflow-hidden px-4 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-tactical font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all">
-                    <span class="relative z-10 flex items-center gap-2">
-                        <i class="fa-solid fa-handshake"></i> Alianza Estratégica
-                    </span>
-                    <div class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-white/20 transition-transform duration-300"></div>
+                <a href="#argumento" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-tactical font-bold text-[11px] uppercase tracking-wider shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-handshake text-xs"></i> <span>Alianza</span>
                 </a>
                 
-                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white">
-                    <i class="fa-solid fa-bars text-lg"></i>
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-bars text-sm"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="hidden lg:hidden glass-panel border-t border-slate-800 px-4 py-6 space-y-4 font-tactical text-sm uppercase">
+        <!-- Mobile Menu con scroll interno si es necesario -->
+        <div id="mobileMenu" class="hidden lg:hidden glass-panel border-t border-slate-800 px-4 py-3 space-y-2 font-tactical text-xs uppercase max-h-[70vh] overflow-y-auto">
             <a href="#diagnostico" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyan-400 py-1">Diagnóstico & Necesidad</a>
             <a href="#rodaje" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyan-400 py-1">3 Días de Rodaje en Terreno</a>
             <a href="#experiencias" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyan-400 py-1">Portafolio Vivo: VR 360° & Medios</a>
             <a href="#ecosistema" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyan-400 py-1">Stand de Vanguardia: Meta Quest 3 & NFC</a>
             <a href="#argumento" onclick="toggleMobileMenu()" class="block text-cyan-400 py-1 font-bold">Argumento de Cierre & Alianza</a>
-            <button onclick="shareViaWhatsApp()" class="w-full text-left flex items-center gap-2 text-emerald-400 py-2 border-t border-slate-800">
-                <i class="fa-brands fa-whatsapp text-base"></i> Compartir Propuesta por WhatsApp
+            <button onclick="shareViaWhatsApp()" class="w-full text-left flex items-center gap-2 text-emerald-400 py-1.5 border-t border-slate-800">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Compartir Propuesta por WhatsApp
             </button>
         </div>
     </header>
 
     <!-- HERO SECTION -->
-    <section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-16 cyber-grid bg-grid-pattern">
+    <section class="relative min-h-[80vh] flex items-center justify-center overflow-hidden py-10 sm:py-16 cyber-grid bg-grid-pattern safe-px">
         <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-cyan-600/10 rounded-full blur-[140px] pointer-events-none"></div>
         <div class="absolute bottom-10 left-10 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="max-w-7xl mx-auto relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
                 
                 <!-- Left Hero Copy -->
-                <div class="lg:col-span-7 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-400 text-xs font-tactical tracking-widest uppercase">
-                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                        Solución Táctica Inmediata | Expo Crecer e Innovar
+                <div class="lg:col-span-7 space-y-4 sm:space-y-6">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-400 text-[10px] sm:text-xs font-tactical tracking-wider uppercase">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                        Solución Táctica Inmediata | Expo Crecer e Innovar 2026
                     </div>
 
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-none uppercase font-tactical">
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-none uppercase font-tactical">
                         Soberanía <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500">Tecnológica</span> & Vanguardia <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">Inmersiva</span>
                     </h1>
 
-                    <p class="text-slate-300 text-base sm:text-lg max-w-2xl font-light leading-relaxed">
+                    <p class="text-slate-300 text-xs sm:text-sm lg:text-base max-w-2xl font-light leading-relaxed">
                         CAVIM no debe presentarse como un expositor convencional. Transformamos su espacio en una <strong class="text-white font-semibold">base de operaciones de alta tecnología</strong>: visores Meta Quest 3, captura cinematográfica de alto impacto, portafolio digital ultraligero y transferencia de dossiers sin papel vía chip NFC.
                     </p>
 
                     <!-- Key Metrics Grid -->
-                    <div class="grid grid-cols-3 gap-3 pt-2 max-w-lg">
-                        <div class="glass-panel p-3 rounded-lg border-l-2 border-cyan-400">
-                            <div class="text-2xl font-tactical font-bold text-white">3 DÍAS</div>
-                            <div class="text-[11px] text-slate-400 uppercase tracking-wider">Rodaje en Terreno</div>
+                    <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-1 max-w-lg">
+                        <div class="glass-panel p-2.5 rounded-lg border-l-2 border-cyan-400">
+                            <div class="text-lg sm:text-xl font-tactical font-bold text-white">3 DÍAS</div>
+                            <div class="text-[10px] text-slate-400 uppercase tracking-wider">Rodaje en Terreno</div>
                         </div>
-                        <div class="glass-panel p-3 rounded-lg border-l-2 border-amber-400">
-                            <div class="text-2xl font-tactical font-bold text-white">META QUEST 3</div>
-                            <div class="text-[11px] text-slate-400 uppercase tracking-wider">Inmersión VR 360°</div>
+                        <div class="glass-panel p-2.5 rounded-lg border-l-2 border-amber-400">
+                            <div class="text-lg sm:text-xl font-tactical font-bold text-white">META QUEST 3</div>
+                            <div class="text-[10px] text-slate-400 uppercase tracking-wider">Inmersión VR 360°</div>
                         </div>
-                        <div class="glass-panel p-3 rounded-lg border-l-2 border-emerald-400">
-                            <div class="text-2xl font-tactical font-bold text-white">NFC B2B</div>
-                            <div class="text-[11px] text-slate-400 uppercase tracking-wider">Dossier Instantáneo</div>
+                        <div class="glass-panel p-2.5 rounded-lg border-l-2 border-emerald-400">
+                            <div class="text-lg sm:text-xl font-tactical font-bold text-white">NFC B2B</div>
+                            <div class="text-[10px] text-slate-400 uppercase tracking-wider">Dossier Instantáneo</div>
                         </div>
                     </div>
 
                     <!-- CTA Actions -->
-                    <div class="flex flex-wrap items-center gap-4 pt-4">
-                        <button onclick="playSensitizationVideo()" class="px-6 py-3.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-tactical font-bold text-sm tracking-wider uppercase flex items-center gap-3 shadow-lg shadow-cyan-500/25 transition-all transform hover:-translate-y-0.5">
-                            <i class="fa-solid fa-play text-xs p-1.5 rounded-full bg-slate-950 text-cyan-400"></i>
-                            Ver Pieza de Sensibilización
+                    <div class="flex flex-wrap items-center gap-3 pt-2">
+                        <button onclick="playSensitizationVideo()" class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-tactical font-bold text-xs tracking-wider uppercase flex items-center gap-2 shadow-lg shadow-cyan-500/25 transition-all">
+                            <i class="fa-solid fa-play text-[10px] p-1 rounded-full bg-slate-950 text-cyan-400"></i>
+                            Ver Sensibilización
                         </button>
-                        <a href="#ecosistema" class="px-6 py-3.5 rounded-lg glass-panel hover:bg-slate-800 text-white font-tactical font-medium text-sm tracking-wider uppercase border border-slate-700 transition-all flex items-center gap-2">
+                        <a href="#ecosistema" class="px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg glass-panel hover:bg-slate-800 text-white font-tactical font-medium text-xs tracking-wider uppercase border border-slate-700 transition-all flex items-center gap-1.5">
                             <i class="fa-solid fa-microchip text-cyan-400"></i>
                             Tecnología del Stand
                         </a>
@@ -443,7 +452,7 @@
 
                 <!-- Right Video Showcase Card -->
                 <div class="lg:col-span-5">
-                    <div class="glass-panel-glow rounded-2xl p-3 relative group">
+                    <div class="glass-panel-glow rounded-2xl p-2.5 sm:p-3 relative group">
                         <div class="relative rounded-xl overflow-hidden aspect-video bg-military-900 border border-slate-700/50">
                             <div class="yt-clean-wrap">
                                 <iframe 
@@ -454,15 +463,15 @@
                                 </iframe>
                             </div>
                         </div>
-                        <div class="p-4 space-y-2">
-                            <div class="flex items-center justify-between text-xs font-tactical">
-                                <span class="text-amber-400 flex items-center gap-1.5">
+                        <div class="p-3 space-y-1.5">
+                            <div class="flex items-center justify-between text-[10px] sm:text-xs font-tactical">
+                                <span class="text-amber-400 flex items-center gap-1">
                                     <i class="fa-solid fa-earth-americas"></i> APERTURA INTERNACIONAL
                                 </span>
-                                <span class="text-slate-400">Referencia de Sensibilización</span>
+                                <span class="text-slate-400">Sensibilización</span>
                             </div>
-                            <h3 class="font-tactical font-bold text-base text-white">Pieza Promocional: El Momento País</h3>
-                            <p class="text-xs text-slate-400 leading-relaxed">
+                            <h3 class="font-tactical font-bold text-sm sm:text-base text-white">Pieza Promocional: El Momento País</h3>
+                            <p class="text-[11px] sm:text-xs text-slate-400 leading-relaxed">
                                 Producción cinematográfica diseñada para sensibilizar al inversionista y delegaciones extranjeras sobre la reactivación industrial y solvencia institucional de Venezuela.
                             </p>
                         </div>
@@ -474,85 +483,85 @@
     </section>
 
     <!-- SECTION: DIAGNOSTICO DE URGENCIA Y OPORTUNIDAD -->
-    <section id="diagnostico" class="py-20 bg-military-900/60 border-t border-b border-slate-800/80 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
-                <span class="text-xs font-tactical text-cyan-400 uppercase tracking-widest px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/20">
+    <section id="diagnostico" class="py-14 sm:py-20 bg-military-900/60 border-t border-b border-slate-800/80 relative safe-px">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-2">
+                <span class="text-[10px] sm:text-xs font-tactical text-cyan-400 uppercase tracking-widest px-3 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/20">
                     Plan Táctico Contra-Reloj
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold uppercase font-tactical text-white">
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase font-tactical text-white">
                     De la Urgencia Inmediata al <span class="text-cyan-400">Liderazgo Tecnológico</span>
                 </h2>
-                <p class="text-slate-400 text-sm sm:text-base">
-                    La Expo Crecer e Innovar (13 al 15 de noviembre) es el escenario idóneo: resolvemos la necesidad de presentarse con dignidad y modernidad, demostrando la eficacia de nuestra alianza en tiempo récord.
+                <p class="text-slate-400 text-xs sm:text-sm">
+                    La Expo Crecer e Innovar (13 al 15 de noviembre de 2026) es el escenario idóneo: resolvemos la necesidad de presentarse con dignidad y modernidad, demostrando la eficacia de nuestra alianza en tiempo récord.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                 <!-- Card 1 -->
-                <div class="glass-panel p-6 rounded-2xl border-t-2 border-red-500/80 space-y-4">
-                    <div class="w-12 h-12 rounded-xl bg-red-950/50 border border-red-500/30 flex items-center justify-center text-red-400 text-xl">
+                <div class="glass-panel p-5 rounded-2xl border-t-2 border-red-500/80 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-500/30 flex items-center justify-center text-red-400 text-lg">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
-                    <h3 class="text-lg font-tactical font-bold text-white uppercase">El Reto Inmediato</h3>
-                    <ul class="text-xs text-slate-400 space-y-2.5 font-sans">
+                    <h3 class="text-base font-tactical font-bold text-white uppercase">El Reto Inmediato</h3>
+                    <ul class="text-xs text-slate-400 space-y-2 font-sans">
                         <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-xmark text-red-400 mt-0.5"></i>
+                            <i class="fa-solid fa-xmark text-red-400 mt-0.5 text-[10px]"></i>
                             <span>Ausencia de material audiovisual cinematográfico contemporáneo.</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-xmark text-red-400 mt-0.5"></i>
+                            <i class="fa-solid fa-xmark text-red-400 mt-0.5 text-[10px]"></i>
                             <span>Catálogos impresos obsoletos que no generan interacción B2B.</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-xmark text-red-400 mt-0.5"></i>
-                            <span>Ventana de ejecución reducida antes del 13 de noviembre.</span>
+                            <i class="fa-solid fa-xmark text-red-400 mt-0.5 text-[10px]"></i>
+                            <span>Ventana de ejecución reducida antes de la inauguración.</span>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="glass-panel-glow p-6 rounded-2xl border-t-2 border-cyan-400 space-y-4 relative">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-950/50 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl">
+                <div class="glass-panel-glow p-5 rounded-2xl border-t-2 border-cyan-400 space-y-3 relative">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-950/50 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-lg">
                         <i class="fa-solid fa-crosshairs"></i>
                     </div>
                     <div class="absolute top-4 right-4">
-                        <span class="text-[10px] font-tactical bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded uppercase">Solución de Choque</span>
+                        <span class="text-[9px] font-tactical bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded uppercase">Solución de Choque</span>
                     </div>
-                    <h3 class="text-lg font-tactical font-bold text-white uppercase">Nuestra Ventaja Táctica</h3>
-                    <ul class="text-xs text-slate-300 space-y-2.5 font-sans">
+                    <h3 class="text-base font-tactical font-bold text-white uppercase">Nuestra Ventaja Táctica</h3>
+                    <ul class="text-xs text-slate-300 space-y-2 font-sans">
                         <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-cyan-400 mt-0.5"></i>
+                            <i class="fa-solid fa-check text-cyan-400 mt-0.5 text-[10px]"></i>
                             <span><strong class="text-white">Experiencia en terreno real:</strong> Operaciones subterráneas de oro, carbón, hierro y bauxita.</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-cyan-400 mt-0.5"></i>
+                            <i class="fa-solid fa-check text-cyan-400 mt-0.5 text-[10px]"></i>
                             <span>Despliegue propio de visores Meta Quest 3 ya operativos.</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-cyan-400 mt-0.5"></i>
+                            <i class="fa-solid fa-check text-cyan-400 mt-0.5 text-[10px]"></i>
                             <span>Arquitectura Web y credenciales NFC listas para codificar.</span>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="glass-panel p-6 rounded-2xl border-t-2 border-amber-400 space-y-4">
-                    <div class="w-12 h-12 rounded-xl bg-amber-950/50 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl">
+                <div class="glass-panel p-5 rounded-2xl border-t-2 border-amber-400 space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-950/50 border border-amber-500/30 flex items-center justify-center text-amber-400 text-lg">
                         <i class="fa-solid fa-handshake-simple"></i>
                     </div>
-                    <h3 class="text-lg font-tactical font-bold text-white uppercase">El Objetivo Estratégico</h3>
-                    <ul class="text-xs text-slate-400 space-y-2.5 font-sans">
+                    <h3 class="text-base font-tactical font-bold text-white uppercase">El Objetivo Estratégico</h3>
+                    <ul class="text-xs text-slate-400 space-y-2 font-sans">
                         <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-arrow-right text-amber-400 mt-0.5"></i>
+                            <i class="fa-solid fa-arrow-right text-amber-400 mt-0.5 text-[10px]"></i>
                             <span>Ganar la confianza plena de la directiva de CAVIM mediante resultados.</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-arrow-right text-amber-400 mt-0.5"></i>
+                            <i class="fa-solid fa-arrow-right text-amber-400 mt-0.5 text-[10px]"></i>
                             <span>Apertura de la hoja de ruta integral de modernización 2026-2027.</span>
                         </li>
                         <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-arrow-right text-amber-400 mt-0.5"></i>
+                            <i class="fa-solid fa-arrow-right text-amber-400 mt-0.5 text-[10px]"></i>
                             <span>Posicionar a CAVIM como referente de soberanía tecnológica e innovación.</span>
                         </li>
                     </ul>
@@ -562,111 +571,111 @@
     </section>
 
     <!-- SECTION: OPERACIÓN DE CAMPO (3 DÍAS DE RODAJE) -->
-    <section id="rodaje" class="py-20 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+    <section id="rodaje" class="py-14 sm:py-20 relative safe-px">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4">
                 <div>
-                    <span class="text-xs font-tactical text-cyan-400 uppercase tracking-widest px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/20">
+                    <span class="text-[10px] sm:text-xs font-tactical text-cyan-400 uppercase tracking-widest px-3 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-500/20">
                         Protocolo de Producción en Terreno
                     </span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold uppercase font-tactical text-white mt-2">
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase font-tactical text-white mt-1.5">
                         Operación Campo: <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-200">3 Días de Rodaje</span>
                     </h2>
-                    <p class="text-slate-400 text-sm max-w-xl mt-1 font-light">
+                    <p class="text-slate-400 text-xs sm:text-sm max-w-xl mt-1 font-light">
                         Un despliegue de captura quirúrgico, sin interrumpir los procesos productivos de las plantas, recolectando activos 360° y tomas cinematográficas FX3/FX6 4K.
                     </p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300 font-tactical border border-slate-700">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-[11px] text-slate-300 font-tactical border border-slate-700">
                         <i class="fa-solid fa-video mr-1 text-cyan-400"></i> Cine Gear 4K & Rig 360
                     </span>
-                    <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300 font-tactical border border-slate-700">
+                    <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-[11px] text-slate-300 font-tactical border border-slate-700">
                         <i class="fa-solid fa-shield-virus mr-1 text-emerald-400"></i> Protocolos de Seguridad
                     </span>
                 </div>
             </div>
 
             <!-- 3 Days Breakdown Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                 <!-- Dia 1 -->
-                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-cyan-500/40 transition-all">
-                    <div class="text-5xl font-black font-tactical text-slate-800/80 group-hover:text-cyan-500/10 transition-colors absolute top-2 right-4">
+                <div class="glass-panel p-5 rounded-2xl relative overflow-hidden group hover:border-cyan-500/40 transition-all">
+                    <div class="text-4xl font-black font-tactical text-slate-800/80 group-hover:text-cyan-500/10 transition-colors absolute top-2 right-4">
                         DÍA 01
                     </div>
-                    <div class="inline-block px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-tactical text-xs font-bold mb-4">
+                    <div class="inline-block px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-tactical text-[11px] font-bold mb-3">
                         MANUFACTURA & BALÍSTICA
                     </div>
-                    <h3 class="text-xl font-tactical font-bold text-white mb-2">Poder Industrial & Metalmecánica</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                    <h3 class="text-lg font-tactical font-bold text-white mb-1.5">Poder Industrial & Metalmecánica</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-3">
                         Captura con ópticas de cine de líneas de mecanizado pesado, hornos, forja, precisión balística, pruebas de resistencia y control de calidad.
                     </p>
-                    <div class="space-y-2 border-t border-slate-800 pt-4 text-xs font-tactical text-slate-300">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-angles-right text-cyan-400 text-[10px]"></i>
+                    <div class="space-y-1.5 border-t border-slate-800 pt-3 text-[11px] font-tactical text-slate-300">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-angles-right text-cyan-400 text-[9px]"></i>
                             <span>Hornos, prensas hidráulicas y mecanizado CNC</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-angles-right text-cyan-400 text-[10px]"></i>
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-angles-right text-cyan-400 text-[9px]"></i>
                             <span>Líneas balísticas y ensamblaje de alta precisión</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-angles-right text-cyan-400 text-[10px]"></i>
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-angles-right text-cyan-400 text-[9px]"></i>
                             <span>Iluminación estética e impacto visual industrial</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Dia 2 -->
-                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-amber-500/40 transition-all">
-                    <div class="text-5xl font-black font-tactical text-slate-800/80 group-hover:text-amber-500/10 transition-colors absolute top-2 right-4">
+                <div class="glass-panel p-5 rounded-2xl relative overflow-hidden group hover:border-amber-500/40 transition-all">
+                    <div class="text-4xl font-black font-tactical text-slate-800/80 group-hover:text-amber-500/10 transition-colors absolute top-2 right-4">
                         DÍA 02
                     </div>
-                    <div class="inline-block px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-tactical text-xs font-bold mb-4">
+                    <div class="inline-block px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-tactical text-[11px] font-bold mb-3">
                         LEVANTAMIENTO VR 360°
                     </div>
-                    <h3 class="text-xl font-tactical font-bold text-white mb-2">Inmersión Meta Quest 3</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                    <h3 class="text-xl font-tactical font-bold text-white mb-1.5">Inmersión Meta Quest 3</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-3">
                         Instalación de cámaras esféricas 360° en el epicentro de las plantas, polígonos de prueba y líneas logísticas para transportar al usuario de la feria dentro de CAVIM.
                     </p>
-                    <div class="space-y-2 border-t border-slate-800 pt-4 text-xs font-tactical text-slate-300">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-angles-right text-amber-400 text-[10px]"></i>
+                    <div class="space-y-1.5 border-t border-slate-800 pt-3 text-[11px] font-tactical text-slate-300">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-angles-right text-amber-400 text-[9px]"></i>
                             <span>Perspectiva en primera persona del operador técnico</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-angles-right text-amber-400 text-[10px]"></i>
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-angles-right text-amber-400 text-[9px]"></i>
                             <span>Pruebas balísticas y pirotecnia en 360 grados</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-angles-right text-amber-400 text-[10px]"></i>
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-angles-right text-amber-400 text-[9px]"></i>
                             <span>Recorrido inmersivo guiado por instalaciones clave</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Dia 3 -->
-                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-emerald-500/40 transition-all">
-                    <div class="text-5xl font-black font-tactical text-slate-800/80 group-hover:text-emerald-500/10 transition-colors absolute top-2 right-4">
+                <div class="glass-panel p-5 rounded-2xl relative overflow-hidden group hover:border-emerald-500/40 transition-all">
+                    <div class="text-4xl font-black font-tactical text-slate-800/80 group-hover:text-emerald-500/10 transition-colors absolute top-2 right-4">
                         DÍA 03
                     </div>
-                    <div class="inline-block px-2.5 py-1 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-tactical text-xs font-bold mb-4">
+                    <div class="inline-block px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-tactical text-[11px] font-bold mb-3">
                         FACTOR HUMANO & TÓTEM
                     </div>
-                    <h3 class="text-xl font-tactical font-bold text-white mb-2">Historias de Vida & Orgullo</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                    <h3 class="text-xl font-tactical font-bold text-white mb-1.5">Historias de Vida & Orgullo</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-3">
                         El componente clave de conexión emocional: testimoniales de trabajadores, ingenieros militares y técnicos, grabados en formato vertical 9:16 para tótems de la feria.
                     </p>
-                    <div class="space-y-2 border-t border-slate-800 pt-4 text-xs font-tactical text-slate-300">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-angles-right text-emerald-400 text-[10px]"></i>
+                    <div class="space-y-1.5 border-t border-slate-800 pt-3 text-[11px] font-tactical text-slate-300">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-angles-right text-emerald-400 text-[9px]"></i>
                             <span>Micro-historias de vida, dedicación y soberanía</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-angles-right text-emerald-400 text-[10px]"></i>
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-angles-right text-emerald-400 text-[9px]"></i>
                             <span>Optimizado para pantallas verticales y redes</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-angles-right text-emerald-400 text-[10px]"></i>
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-angles-right text-emerald-400 text-[9px]"></i>
                             <span>Planos aéreos de magnitud industrial autorizados</span>
                         </div>
                     </div>
@@ -676,47 +685,38 @@
     </section>
 
     <!-- SECTION: EXPERIENCIAS INTERACTIVAS & PORTAFOLIO VIVO (LIVE REFS) -->
-    <section id="experiencias" class="py-20 bg-military-900 border-t border-slate-800/80 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
-                <span class="text-xs font-tactical text-amber-400 uppercase tracking-widest px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/20">
+    <section id="experiencias" class="py-14 sm:py-20 bg-military-900 border-t border-slate-800/80 relative safe-px">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-2">
+                <span class="text-[10px] sm:text-xs font-tactical text-amber-400 uppercase tracking-widest px-3 py-0.5 rounded-full bg-amber-950/60 border border-amber-500/20">
                     Demostración de Capacidad Comprobada
                 </span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold uppercase font-tactical text-white">
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase font-tactical text-white">
                     Portafolio Vivo: <span class="text-cyan-400">VR 360° en Terreno Hostil</span>
                 </h2>
-                <p class="text-slate-400 text-sm">
+                <p class="text-slate-400 text-xs sm:text-sm">
                     No venimos a experimentar. Ya operamos en minería subterránea de oro, explotación de carbón, hierro y bauxita bajo estrictas normas de resguardo y seguridad industrial.
                 </p>
             </div>
 
             <!-- Interactive Filters / Tabs -->
-            <div class="flex flex-wrap items-center justify-center gap-3 mb-10 font-tactical text-xs">
-                <button onclick="filterMedia('all')" class="tab-btn active px-4 py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold uppercase transition-all" data-category="all">
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8 font-tactical text-[11px] sm:text-xs">
+                <button onclick="filterMedia('all')" class="tab-btn active px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-cyan-500 text-slate-950 font-bold uppercase transition-all" data-category="all">
                     Todos los Medios
                 </button>
-                <button onclick="filterMedia('vr')" class="tab-btn px-4 py-2 rounded-lg glass-panel hover:text-white text-slate-400 uppercase transition-all" data-category="vr">
+                <button onclick="filterMedia('vr')" class="tab-btn px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg glass-panel hover:text-white text-slate-400 uppercase transition-all" data-category="vr">
                     <i class="fa-solid fa-vr-cardboard mr-1 text-cyan-400"></i> VR 360° Industrial
                 </button>
-                <button onclick="filterMedia('international')" class="tab-btn px-4 py-2 rounded-lg glass-panel hover:text-white text-slate-400 uppercase transition-all" data-category="international">
-                    <i class="fa-solid fa-language mr-1 text-amber-400"></i> B2B & Proyección Internacional
+                <button onclick="filterMedia('international')" class="tab-btn px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg glass-panel hover:text-white text-slate-400 uppercase transition-all" data-category="international">
+                    <i class="fa-solid fa-language mr-1 text-amber-400"></i> B2B Internacional
                 </button>
-                <button onclick="filterMedia('human')" class="tab-btn px-4 py-2 rounded-lg glass-panel hover:text-white text-slate-400 uppercase transition-all" data-category="human">
-                    <i class="fa-solid fa-mobile-screen-button mr-1 text-emerald-400"></i> Tótems & Historias de Vida
+                <button onclick="filterMedia('human')" class="tab-btn px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg glass-panel hover:text-white text-slate-400 uppercase transition-all" data-category="human">
+                    <i class="fa-solid fa-mobile-screen-button mr-1 text-emerald-400"></i> Tótems Verticales
                 </button>
             </div>
 
             <!-- Media Grid with Live Embeds -->
-            <div id="mediaGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                <!-- Card 1: VR Carbozulia -->
-                <div class="media-card vr glass-panel rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col">
-                    <div class="relative aspect-video bg-black overflow-hidden">
-                        <div class="yt-clean-wrap">
-                            <iframe src="https://www.youtube.com/embed/kWblVPHz-Vs?rel=0&modestbranding=1&iv_load_policy=3&controls=1&showinfo=0" title="VR 360 Carbozulia" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <span class="absolute top-2 left-2 z-10 bg-black/75 backdrop-blur-md text-[10px] text-cyan-400 font-tactical px-2 py-0.5 rounded border border-cyan-500/30">
-                            VR 360° INTERACTIVO
+            <div id="mediaGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                         </span>
                     </div>
                     <div class="p-4 flex-1 flex flex-col justify-between">
@@ -998,15 +998,15 @@
     </footer>
 
     <!-- INTERACTIVE VIDEO MODAL (PARA CASOS DE ESTUDIO) -->
-    <div id="videoModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="relative w-full max-w-4xl glass-panel-glow rounded-2xl overflow-hidden border border-cyan-500/40">
-            <div class="flex items-center justify-between p-4 border-b border-slate-800 bg-military-900">
-                <h4 id="modalVideoTitle" class="font-tactical font-bold text-sm text-white truncate max-w-md">Video Showcase</h4>
-                <button onclick="closeVideoModal()" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center">
-                    <i class="fa-solid fa-xmark"></i>
+    <div id="videoModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 safe-px safe-pt safe-pb">
+        <div class="relative w-full max-w-4xl max-h-[90vh] glass-panel-glow rounded-2xl overflow-hidden border border-cyan-500/40 flex flex-col">
+            <div class="flex items-center justify-between p-3 border-b border-slate-800 bg-military-900 flex-shrink-0">
+                <h4 id="modalVideoTitle" class="font-tactical font-bold text-xs sm:text-sm text-white truncate max-w-md">Video Showcase</h4>
+                <button onclick="closeVideoModal()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-xs"></i>
                 </button>
             </div>
-            <div class="relative aspect-video bg-black overflow-hidden">
+            <div class="relative flex-1 aspect-video bg-black overflow-hidden max-h-[75vh]">
                 <div class="yt-clean-wrap">
                     <iframe id="modalIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
@@ -1015,8 +1015,8 @@
     </div>
 
     <!-- NOTIFICATION TOAST -->
-    <div id="actionToast" class="fixed bottom-6 right-6 z-50 hidden glass-panel-glow px-5 py-3 rounded-xl border border-cyan-400 text-xs font-tactical text-white flex items-center gap-3 shadow-2xl">
-        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+    <div id="actionToast" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 hidden glass-panel-glow px-4 py-2.5 rounded-xl border border-cyan-400 text-xs font-tactical text-white flex items-center gap-2.5 shadow-2xl safe-px">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
         <span id="toastMessage">Operación confirmada</span>
     </div>
 
@@ -1056,25 +1056,22 @@
             const player = document.getElementById('sensitizationPlayer');
             const iframe = document.getElementById('sensitizationIframe');
 
-            // Set YouTube Sensitization Embed with parameters and clean crop
             iframe.src = "https://www.youtube.com/embed/jX4x6mT5nnM?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&controls=1&showinfo=0";
             
             gatekeeper.style.opacity = '0';
             setTimeout(() => {
                 gatekeeper.classList.add('hidden');
                 player.classList.remove('hidden');
-            }, 500);
+            }, 400);
         }
 
         function skipSensitizationVideo() {
             const player = document.getElementById('sensitizationPlayer');
             const iframe = document.getElementById('sensitizationIframe');
             
-            // Stop Video
             iframe.src = "";
             player.classList.add('hidden');
             
-            // Show main page smoothly
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1084,7 +1081,7 @@
             setTimeout(() => {
                 gatekeeper.classList.add('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 500);
+            }, 400);
         }
 
         // 2. Mobile Menu Toggle
