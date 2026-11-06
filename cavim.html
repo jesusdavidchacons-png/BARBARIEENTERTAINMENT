@@ -66,6 +66,21 @@
         .rotate-icon-anim {
             animation: rotateDevice 2.8s infinite ease-in-out;
         }
+        /* YouTube Title Bar Conceal & Clean Player Wrapper */
+        .yt-clean-wrap {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        .yt-clean-wrap iframe {
+            position: absolute;
+            top: -46px;
+            left: 0;
+            width: 100%;
+            height: calc(100% + 56px);
+            border: 0;
+        }
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -88,14 +103,14 @@
     <!-- 1. PANTALLA INICIAL MINIMALISTA (GATEKEEPER) -->
     <!-- ========================================== -->
     <div id="introGatekeeper" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-military-950 transition-opacity duration-700">
-        <!-- Video de fondo opaco (cavim.mp4) con fallback elegante -->
-        <video id="bgVideo" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-20 filter contrast-125 brightness-75 pointer-events-none">
+        <!-- Video de fondo con 90% de visibilidad clara y cinematográfica -->
+        <video id="bgVideo" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-90 filter contrast-110 brightness-95 pointer-events-none">
             <source src="cavim.mp4" type="video/mp4">
         </video>
 
-        <!-- Capas de textura y gradiente táctico -->
-        <div class="absolute inset-0 bg-gradient-to-b from-military-950/80 via-military-900/90 to-military-950 pointer-events-none"></div>
-        <div class="absolute inset-0 cyber-grid bg-grid-pattern opacity-40 pointer-events-none"></div>
+        <!-- Capas de textura y viñeta sutil para asegurar contraste y legibilidad -->
+        <div class="absolute inset-0 bg-gradient-to-b from-military-950/40 via-military-950/20 to-military-950/70 pointer-events-none"></div>
+        <div class="absolute inset-0 cyber-grid bg-grid-pattern opacity-20 pointer-events-none"></div>
 
         <!-- Contenido Central Minimalista -->
         <div class="relative z-10 max-w-2xl w-full px-6 text-center space-y-8">
@@ -168,16 +183,18 @@
         </div>
 
         <!-- Contenedor del Video de Sensibilización de YouTube -->
-        <div class="relative flex-1 w-full bg-black flex items-center justify-center">
-            <iframe 
-                id="sensitizationIframe" 
-                class="w-full h-full max-w-6xl max-h-[82vh]" 
-                src="" 
-                title="Apertura Internacional CAVIM" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
+        <div class="relative flex-1 w-full bg-black flex items-center justify-center p-2 sm:p-4">
+            <div class="w-full max-w-6xl aspect-video max-h-[82vh] rounded-xl overflow-hidden shadow-2xl border border-cyan-500/20 bg-black">
+                <div class="yt-clean-wrap">
+                    <iframe 
+                        id="sensitizationIframe" 
+                        src="" 
+                        title="Apertura Internacional CAVIM" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
         </div>
 
         <!-- Pie Informativo del Reproductor -->
@@ -308,14 +325,14 @@
                 <div class="lg:col-span-5">
                     <div class="glass-panel-glow rounded-2xl p-3 relative group">
                         <div class="relative rounded-xl overflow-hidden aspect-video bg-military-900 border border-slate-700/50">
-                            <iframe 
-                                class="w-full h-full object-cover" 
-                                src="https://www.youtube.com/embed/jX4x6mT5nnM?rel=0&modestbranding=1" 
-                                title="Apertura Internacional CAVIM" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                allowfullscreen>
-                            </iframe>
+                            <div class="yt-clean-wrap">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/jX4x6mT5nnM?rel=0&modestbranding=1&iv_load_policy=3&controls=1&showinfo=0" 
+                                    title="Apertura Internacional CAVIM" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
                         </div>
                         <div class="p-4 space-y-2">
                             <div class="flex items-center justify-between text-xs font-tactical">
@@ -574,9 +591,11 @@
 
                 <!-- Card 1: VR Carbozulia -->
                 <div class="media-card vr glass-panel rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col">
-                    <div class="relative aspect-video bg-black">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/kWblVPHz-Vs?rel=0&modestbranding=1" title="VR 360 Carbozulia" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <span class="absolute top-2 left-2 bg-black/75 backdrop-blur-md text-[10px] text-cyan-400 font-tactical px-2 py-0.5 rounded border border-cyan-500/30">
+                    <div class="relative aspect-video bg-black overflow-hidden">
+                        <div class="yt-clean-wrap">
+                            <iframe src="https://www.youtube.com/embed/kWblVPHz-Vs?rel=0&modestbranding=1&iv_load_policy=3&controls=1&showinfo=0" title="VR 360 Carbozulia" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <span class="absolute top-2 left-2 z-10 bg-black/75 backdrop-blur-md text-[10px] text-cyan-400 font-tactical px-2 py-0.5 rounded border border-cyan-500/30">
                             VR 360° INTERACTIVO
                         </span>
                     </div>
@@ -594,9 +613,11 @@
 
                 <!-- Card 2: VR Mina Colombia El Callao -->
                 <div class="media-card vr glass-panel rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col">
-                    <div class="relative aspect-video bg-black">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/ddULoya6Pvo?rel=0&modestbranding=1" title="VR Mina Colombia El Callao" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <span class="absolute top-2 left-2 bg-black/75 backdrop-blur-md text-[10px] text-amber-400 font-tactical px-2 py-0.5 rounded border border-amber-500/30">
+                    <div class="relative aspect-video bg-black overflow-hidden">
+                        <div class="yt-clean-wrap">
+                            <iframe src="https://www.youtube.com/embed/ddULoya6Pvo?rel=0&modestbranding=1&iv_load_policy=3&controls=1&showinfo=0" title="VR Mina Colombia El Callao" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <span class="absolute top-2 left-2 z-10 bg-black/75 backdrop-blur-md text-[10px] text-amber-400 font-tactical px-2 py-0.5 rounded border border-amber-500/30">
                             SUBTERRÁNEO ORO
                         </span>
                     </div>
@@ -614,9 +635,11 @@
 
                 <!-- Card 3: International B2B English -->
                 <div class="media-card international glass-panel rounded-2xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition-all flex flex-col">
-                    <div class="relative aspect-video bg-black">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/iDsoJRcIJZs?rel=0&modestbranding=1" title="B2B English Presentation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <span class="absolute top-2 left-2 bg-black/75 backdrop-blur-md text-[10px] text-emerald-400 font-tactical px-2 py-0.5 rounded border border-emerald-500/30">
+                    <div class="relative aspect-video bg-black overflow-hidden">
+                        <div class="yt-clean-wrap">
+                            <iframe src="https://www.youtube.com/embed/iDsoJRcIJZs?rel=0&modestbranding=1&iv_load_policy=3&controls=1&showinfo=0" title="B2B English Presentation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <span class="absolute top-2 left-2 z-10 bg-black/75 backdrop-blur-md text-[10px] text-emerald-400 font-tactical px-2 py-0.5 rounded border border-emerald-500/30">
                             PROYECCIÓN GLOBAL
                         </span>
                     </div>
@@ -634,9 +657,11 @@
 
                 <!-- Card 4: Vertical Totem Human Stories -->
                 <div class="media-card human glass-panel rounded-2xl overflow-hidden border border-slate-800 hover:border-emerald-500/50 transition-all flex flex-col">
-                    <div class="relative aspect-video bg-black flex items-center justify-center">
-                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/LSxxqKUZyxM?rel=0&modestbranding=1" title="Historias de Vida Totem" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <span class="absolute top-2 left-2 bg-black/75 backdrop-blur-md text-[10px] text-yellow-300 font-tactical px-2 py-0.5 rounded border border-yellow-500/30">
+                    <div class="relative aspect-video bg-black flex items-center justify-center overflow-hidden">
+                        <div class="yt-clean-wrap">
+                            <iframe src="https://www.youtube.com/embed/LSxxqKUZyxM?rel=0&modestbranding=1&iv_load_policy=3&controls=1&showinfo=0" title="Historias de Vida Totem" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <span class="absolute top-2 left-2 z-10 bg-black/75 backdrop-blur-md text-[10px] text-yellow-300 font-tactical px-2 py-0.5 rounded border border-yellow-500/30">
                             FORMATO TÓTEM 9:16
                         </span>
                     </div>
@@ -853,8 +878,10 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <div class="relative aspect-video bg-black">
-                <iframe id="modalIframe" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="relative aspect-video bg-black overflow-hidden">
+                <div class="yt-clean-wrap">
+                    <iframe id="modalIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </div>
@@ -873,8 +900,8 @@
             const player = document.getElementById('sensitizationPlayer');
             const iframe = document.getElementById('sensitizationIframe');
 
-            // Set YouTube Sensitization Embed with autoplay
-            iframe.src = "https://www.youtube.com/embed/jX4x6mT5nnM?autoplay=1&rel=0&modestbranding=1";
+            // Set YouTube Sensitization Embed with parameters and clean crop
+            iframe.src = "https://www.youtube.com/embed/jX4x6mT5nnM?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&controls=1&showinfo=0";
             
             gatekeeper.style.opacity = '0';
             setTimeout(() => {
@@ -941,7 +968,7 @@
             const titleElement = document.getElementById('modalVideoTitle');
 
             titleElement.innerText = title;
-            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&controls=1&showinfo=0`;
             modal.classList.remove('hidden');
         }
 
