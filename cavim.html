@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CAVIM x Barbarie | Despliegue Táctico Inmersivo</title>
+
+    <!-- METADATOS OPEN GRAPH PARA VISTA PREVIA EN WHATSAPP / TELEGRAM / REDES -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CAVIM | Despliegue Tecnológico & Ecosistema B2B Expo 2026">
+    <meta property="og:description" content="Propuesta integral de modernización: 3 días de rodaje en campo, terminal inmersiva VR Meta Quest 3, credenciales tácticas NFC y portafolio interactivo de vanguardia para la Expo Crecer e Innovar 2026.">
+    <meta property="og:image" content="https://i.postimg.cc/xCdQ3Kjk/251165.png">
+    <meta property="og:image:secure_url" content="https://i.postimg.cc/xCdQ3Kjk/251165.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Logotipo Oficial CAVIM - Propuesta de Modernización Tecnológica">
+    <meta name="description" content="Propuesta integral de modernización: 3 días de rodaje en campo, terminal inmersiva VR Meta Quest 3, credenciales tácticas NFC y portafolio interactivo de vanguardia para la Expo Crecer e Innovar 2026.">
+    
+    <!-- TWITTER / X CARD TAGS -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CAVIM | Despliegue Tecnológico & Ecosistema B2B Expo 2026">
+    <meta name="twitter:description" content="Propuesta integral de modernización: 3 días de rodaje en campo, terminal inmersiva VR Meta Quest 3, credenciales tácticas NFC y portafolio interactivo de vanguardia para la Expo Crecer e Innovar 2026.">
+    <meta name="twitter:image" content="https://i.postimg.cc/xCdQ3Kjk/251165.png">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter & Chakra Petch for tactical military-grade typography -->
@@ -125,13 +144,13 @@
             <div class="space-y-3">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-400 text-xs font-tactical uppercase tracking-widest">
                     <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                    Alianza Estratégica & Despliegue Expo 2024
+                    Alianza Estratégica & Despliegue Expo 2026
                 </div>
                 <h1 class="text-3xl sm:text-5xl font-black font-tactical uppercase tracking-wider text-white">
                     CAVIM <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Vanguardia Digital</span>
                 </h1>
                 <p class="text-slate-400 text-xs sm:text-sm max-w-lg mx-auto font-light leading-relaxed">
-                    Propuesta de despliegue inmersivo, portafolio B2B de choque y soberanía tecnológica para la Expo Crecer e Innovar (13-15 Nov).
+                    Propuesta de despliegue inmersivo, portafolio B2B de choque y soberanía tecnológica para la Expo Crecer e Innovar (13-15 Nov 2026).
                 </p>
             </div>
 
@@ -211,10 +230,10 @@
     <div class="bg-gradient-to-r from-military-950 via-military-800 to-military-950 border-b border-cyan-500/20 py-1.5 px-4 text-xs font-tactical tracking-widest text-cyan-400 flex items-center justify-between">
         <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-            <span>OPERACIÓN TÁCTICA: EXPO CRECER E INNOVAR 2024</span>
+            <span>OPERACIÓN TÁCTICA: EXPO CRECER E INNOVAR 2026</span>
         </div>
         <div class="hidden md:flex items-center gap-4 text-slate-400">
-            <span>VENTANA OPERATIVA: <strong class="text-white">13 AL 15 NOVIEMBRE</strong></span>
+            <span>VENTANA OPERATIVA: <strong class="text-white">13 AL 15 NOVIEMBRE 2026</strong></span>
             <span class="text-cyan-500/40">|</span>
             <span>OBJETIVO: <strong class="text-white">VANGUARDIA B2B & DIGITALIZACIÓN TOTAL</strong></span>
         </div>
@@ -246,6 +265,11 @@
             </nav>
 
             <div class="flex items-center gap-3">
+                <button onclick="shareViaWhatsApp()" class="hidden sm:flex items-center gap-2 px-3.5 py-2.5 rounded-lg bg-emerald-600/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-600 hover:text-white font-tactical text-xs tracking-wider uppercase transition-all shadow-lg shadow-emerald-950">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>Enviar Resumen</span>
+                </button>
+
                 <a href="#argumento" class="relative group overflow-hidden px-4 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-tactical font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all">
                     <span class="relative z-10 flex items-center gap-2">
                         <i class="fa-solid fa-handshake"></i> Alianza Estratégica
@@ -266,6 +290,9 @@
             <a href="#experiencias" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyan-400 py-1">Portafolio Vivo: VR 360° & Medios</a>
             <a href="#ecosistema" onclick="toggleMobileMenu()" class="block text-slate-300 hover:text-cyan-400 py-1">Stand de Vanguardia: Meta Quest 3 & NFC</a>
             <a href="#argumento" onclick="toggleMobileMenu()" class="block text-cyan-400 py-1 font-bold">Argumento de Cierre & Alianza</a>
+            <button onclick="shareViaWhatsApp()" class="w-full text-left flex items-center gap-2 text-emerald-400 py-2 border-t border-slate-800">
+                <i class="fa-brands fa-whatsapp text-base"></i> Compartir Propuesta por WhatsApp
+            </button>
         </div>
     </header>
 
@@ -429,7 +456,7 @@
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fa-solid fa-arrow-right text-amber-400 mt-0.5"></i>
-                            <span>Apertura de la hoja de ruta integral de modernización 2024-2025.</span>
+                            <span>Apertura de la hoja de ruta integral de modernización 2026-2027.</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fa-solid fa-arrow-right text-amber-400 mt-0.5"></i>
@@ -828,14 +855,19 @@
 
                 <!-- Action Button Matrix -->
                 <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <button onclick="triggerActionAlert('Dossier institucional listo para la reunión de directiva de CAVIM.')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-tactical font-bold text-sm tracking-wider uppercase shadow-xl shadow-cyan-500/25 flex items-center justify-center gap-3 transition-all">
-                        <i class="fa-solid fa-file-pdf text-base"></i>
-                        Descargar Dossier de Propuesta
+                    <button onclick="shareViaWhatsApp()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-tactical font-bold text-sm tracking-wider uppercase shadow-xl shadow-emerald-500/25 flex items-center justify-center gap-3 transition-all">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        Enviar Propuesta por WhatsApp
                     </button>
                     
-                    <button onclick="triggerActionAlert('Equipos Meta Quest 3 y tarjetas NFC listos para la presentación presencial.')" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel hover:bg-slate-800 text-white font-tactical font-bold text-sm tracking-wider uppercase border border-slate-700 flex items-center justify-center gap-3 transition-all">
+                    <button onclick="triggerActionAlert('Dossier institucional listo para la reunión de directiva de CAVIM.')" class="w-full sm:w-auto px-7 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-tactical font-bold text-sm tracking-wider uppercase shadow-xl shadow-cyan-500/25 flex items-center justify-center gap-3 transition-all">
+                        <i class="fa-solid fa-file-pdf text-base"></i>
+                        Descargar Dossier
+                    </button>
+                    
+                    <button onclick="triggerActionAlert('Equipos Meta Quest 3 y tarjetas NFC listos para la presentación presencial.')" class="w-full sm:w-auto px-6 py-4 rounded-xl glass-panel hover:bg-slate-800 text-white font-tactical font-bold text-sm tracking-wider uppercase border border-slate-700 flex items-center justify-center gap-3 transition-all">
                         <i class="fa-solid fa-check-double text-cyan-400 text-base"></i>
-                        Confirmar Demostración en Reunión
+                        Confirmar Demostración
                     </button>
                 </div>
 
@@ -861,7 +893,10 @@
             <div>
                 Desarrollado estratégicamente por <strong class="text-cyan-400">Barbarie Entertainment</strong>
             </div>
-            <div class="flex items-center gap-4 text-sm text-slate-400">
+            <div class="flex items-center gap-4 text-base text-slate-400">
+                <button onclick="shareViaWhatsApp()" class="hover:text-emerald-400 transition-colors" title="Compartir vía WhatsApp">
+                    <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
+                </button>
                 <a href="#rodaje" class="hover:text-cyan-400 transition-colors" title="Rodaje"><i class="fa-solid fa-video"></i></a>
                 <a href="#experiencias" class="hover:text-cyan-400 transition-colors" title="VR 360"><i class="fa-solid fa-vr-cardboard"></i></a>
                 <a href="#ecosistema" class="hover:text-cyan-400 transition-colors" title="NFC"><i class="fa-solid fa-nfc-directional"></i></a>
@@ -1027,6 +1062,27 @@
             setTimeout(() => {
                 toast.classList.add('hidden');
             }, 3500);
+        }
+
+        // 7. Enlace y Envío a WhatsApp con Resumen Completo de la Propuesta
+        function shareViaWhatsApp() {
+            const currentUrl = window.location.href;
+            const message = 
+`Saludos cordiales.
+
+Le comparto la *Propuesta Técnica y Experiencial de Vanguardia para CAVIM* de cara a la *Expo Crecer e Innovar 2026*:
+
+🎯 *Despliegue de Choque en Terreno:*
+• *3 Días de Rodaje Cinematográfico:* Registro 4K en planta, balística y levantamiento inmersivo en primera persona.
+• *Estación Táctica de Realidad Virtual:* Visores *Meta Quest 3* en modo quiosco autónomo con réplica simultánea en pantalla externa.
+• *Portafolio Digital B2B & Protocolo NFC:* Credenciales tácticas inteligentes con chip para transferir el catálogo técnico al smartphone sin papeles ni folletos obsoletos.
+• *Piezas Audiovisuales de Impacto:* Proyección internacional bilingüe e historias de vida en formato vertical para tótems.
+
+Conozca el ecosistema y los casos en vivo aquí:
+${currentUrl}`;
+
+            const encoded = encodeURIComponent(message);
+            window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
         }
     </script>
 </body>
