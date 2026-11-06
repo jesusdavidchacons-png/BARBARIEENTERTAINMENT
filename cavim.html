@@ -63,6 +63,56 @@
         }
     </script>
     <style>
+        /* ========================================================== */
+        /* BLOQUEO ESTRICTO DE ORIENTACIÓN VERTICAL (CSS DIRECTO)     */
+        /* ========================================================== */
+        #orientationGate {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999999999;
+            background: #030712;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        /* Detección pura por Media Query en dispositivos móviles/tablets verticales */
+        @media screen and (orientation: portrait) and (max-width: 1024px) {
+            #orientationGate {
+                display: flex !important;
+            }
+            body {
+                overflow: hidden !important;
+            }
+        }
+
+        /* Animación continua de rotación del teléfono (de vertical a horizontal) */
+        @keyframes rotateDeviceTactical {
+            0% {
+                transform: rotate(0deg);
+                box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            }
+            35% {
+                transform: rotate(-90deg);
+                box-shadow: 0 0 35px rgba(0, 240, 255, 0.8);
+            }
+            70% {
+                transform: rotate(-90deg);
+                box-shadow: 0 0 35px rgba(0, 240, 255, 0.8);
+            }
+            100% {
+                transform: rotate(0deg);
+                box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            }
+        }
+
+        .phone-rotate-anim {
+            animation: rotateDeviceTactical 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
         .cyber-grid {
             background-size: 32px 32px;
         }
@@ -78,13 +128,7 @@
             border: 1px solid rgba(0, 240, 255, 0.28);
             box-shadow: 0 0 30px -5px rgba(0, 240, 255, 0.15);
         }
-        @keyframes rotateDevice {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(90deg); }
-        }
-        .rotate-icon-anim {
-            animation: rotateDevice 2.8s infinite ease-in-out;
-        }
+
         /* YouTube Title Bar Conceal & Clean Player Wrapper */
         .yt-clean-wrap {
             position: relative;
@@ -100,6 +144,7 @@
             height: calc(100% + 56px);
             border: 0;
         }
+
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -117,6 +162,54 @@
     </style>
 </head>
 <body class="bg-military-950 text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-black">
+
+    <!-- ============================================================== -->
+    <!-- 0. PANTALLA DE BLOQUEO OBLIGATORIA: GIRE A MODO HORIZONTAL     -->
+    <!-- ============================================================== -->
+    <div id="orientationGate" class="select-none">
+        <div class="absolute inset-0 bg-gradient-to-b from-military-950 via-slate-950 to-military-950 opacity-95"></div>
+        <div class="absolute inset-0 cyber-grid bg-grid-pattern opacity-25"></div>
+
+        <div class="relative z-10 max-w-md w-full mx-auto space-y-6 flex flex-col items-center">
+            <!-- Logo Oficial de CAVIM -->
+            <div class="p-3 rounded-2xl glass-panel border border-cyan-500/30 shadow-2xl shadow-cyan-950">
+                <img src="https://i.postimg.cc/xCdQ3Kjk/251165.png" alt="CAVIM Logo Oficial" class="h-16 w-auto object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+            </div>
+
+            <div class="space-y-2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 text-[11px] font-tactical uppercase tracking-widest">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                    Experiencia Cinematográfica Inmersiva
+                </div>
+                <h2 class="text-2xl font-black font-tactical uppercase tracking-wider text-white">
+                    Gira tu dispositivo a <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-400">Modo Horizontal</span>
+                </h2>
+            </div>
+
+            <!-- Ícono Animado de Rotación del Teléfono -->
+            <div class="my-4 py-4">
+                <div class="w-16 h-28 rounded-2xl border-2 border-cyan-400 bg-slate-900/90 flex flex-col justify-between p-2 phone-rotate-anim mx-auto relative">
+                    <!-- Bocina superior del teléfono -->
+                    <div class="w-4 h-1 bg-cyan-500/50 rounded-full mx-auto"></div>
+                    <!-- Pantalla central -->
+                    <div class="w-full h-14 rounded-lg bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center">
+                        <i class="fa-solid fa-arrows-rotate text-cyan-400 text-lg"></i>
+                    </div>
+                    <!-- Botón inferior -->
+                    <div class="w-2 h-2 rounded-full bg-cyan-400/60 mx-auto"></div>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <p class="text-slate-300 text-xs sm:text-sm font-light leading-relaxed max-w-xs mx-auto">
+                    Para ingresar al portafolio y propuesta técnica de <strong class="text-white">CAVIM</strong> es obligatorio colocar tu pantalla en posición apaisada.
+                </p>
+                <div class="p-2.5 rounded-lg bg-military-900/80 border border-slate-800 text-[11px] font-tactical text-slate-400">
+                    <i class="fa-solid fa-lock text-amber-400 mr-1.5"></i> Bloqueado hasta detectar rotación horizontal
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ========================================== -->
     <!-- 1. PANTALLA INICIAL MINIMALISTA (GATEKEEPER) -->
@@ -929,6 +1022,34 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        // ==============================================================
+        // CONTROL ESTRICTO DE ORIENTACIÓN (HARDWARE & RESIZE EVENT)
+        // ==============================================================
+        function verifyDeviceOrientation() {
+            const gate = document.getElementById('orientationGate');
+            if (!gate) return;
+
+            const isPortrait = window.innerHeight > window.innerWidth;
+            const isSmallScreen = window.innerWidth <= 1024 || window.innerHeight <= 1024;
+
+            // Si el dispositivo está en vertical y es móvil o tablet, se fuerza el bloqueo
+            if (isPortrait && isSmallScreen) {
+                gate.style.setProperty('display', 'flex', 'important');
+                document.body.style.overflow = 'hidden';
+            } else {
+                gate.style.setProperty('display', 'none', 'important');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Detección inmediata en carga, redimensionamiento y cambio de orientación de pantalla
+        window.addEventListener('resize', verifyDeviceOrientation);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(verifyDeviceOrientation, 150);
+        });
+        window.addEventListener('load', verifyDeviceOrientation);
+        document.addEventListener('DOMContentLoaded', verifyDeviceOrientation);
+
         // 1. Sensitization Player Controls
         function playSensitizationVideo() {
             const gatekeeper = document.getElementById('introGatekeeper');
