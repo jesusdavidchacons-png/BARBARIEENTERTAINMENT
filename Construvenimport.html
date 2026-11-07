@@ -9,7 +9,7 @@
   <link rel="canonical" href="https://barbariestudios.com">
   <link rel="icon" type="image/png" href="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
 
-  <!-- Tipografías Industriales: Syne, Inter, JetBrains Mono -->
+  <!-- Tipografías Industriales -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
@@ -119,7 +119,7 @@
   <!-- HERO DE ALTO IMPACTO Y CONFIANZA -->
   <section class="relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 px-6 overflow-hidden heavy-mesh bg-[#0A0C0E]">
     
-    <!-- Video de Fondo (Con fallback inteligente) -->
+    <!-- Video de Fondo Local -->
     <video 
       id="hero-video"
       class="absolute inset-0 w-full h-full object-cover opacity-80 filter brightness-[0.75] contrast-[1.15] z-0"
@@ -133,7 +133,7 @@
       <source src="Retroexcavadora LOVOL FB878M pagina portada.mp4" type="video/mp4">
     </video>
 
-    <!-- Gradient Overlay Industrial para asegurar visibilidad de textos -->
+    <!-- Gradient Overlay Industrial -->
     <div class="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] via-[#0A0C0E]/60 to-black/70 z-1 pointer-events-none"></div>
 
     <div class="relative z-10 max-w-5xl mx-auto text-center w-full">
@@ -144,7 +144,7 @@
         <span class="font-bold">LOVOL FB878M • MULTIPROPÓSITO 4X4 TURBO</span>
       </div>
 
-      <!-- Título Principal de Fuerza y Confianza -->
+      <!-- Título Principal -->
       <h1 class="font-display font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white uppercase leading-[1.05] mb-6 drop-shadow-2xl">
         POTENCIA Y RENDIMIENTO <br>
         <span class="bg-gradient-to-r from-cat-yellow via-amber-200 to-cat-yellow bg-clip-text text-transparent">
@@ -157,4 +157,39 @@
       </p>
 
       <!-- Ficha de Rendimiento Operativo -->
-      <div
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto font-mono text-xs mb-10 text-left">
+        <div class="bg-cat-surface/90 border border-cat-border p-3 rounded-lg backdrop-blur-sm">
+          <span class="text-cat-yellow block text-[10px] font-bold uppercase">Profundidad Excavación</span>
+          <span class="text-white font-bold text-sm">HASTA 4.7 M</span>
+        </div>
+        <div class="bg-cat-surface/90 border border-cat-border p-3 rounded-lg backdrop-blur-sm">
+          <span class="text-cat-yellow block text-[10px] font-bold uppercase">Potencia Motor</span>
+          <span class="text-[13px] font-bold text-white">95 HP - 110 HP TURBO</span>
+        </div>
+        <div class="bg-cat-surface/90 border border-cat-border p-3 rounded-lg backdrop-blur-sm">
+          <span class="text-cat-yellow block text-[10px] font-bold uppercase">Tracción</span>
+          <span class="text-white font-bold text-sm">4X4 HEAVY DUTY</span>
+        </div>
+        <div class="bg-cat-surface/90 border border-cat-border p-3 rounded-lg backdrop-blur-sm">
+          <span class="text-cat-yellow block text-[10px] font-bold uppercase">Garantía</span>
+          <span class="text-white font-bold text-sm">2 AÑOS / 3,000 HRS</span>
+        </div>
+      </div>
+
+      <!-- Botones CTAs -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#retroexcavadoras" class="w-full sm:w-auto px-8 py-4 rounded-lg bg-cat-yellow hover:bg-cat-yellow-hover text-black font-black font-mono text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-3 shadow-glow-yellow active:scale-95">
+          <i class="fa-solid fa-truck-monster text-black text-sm"></i>
+          <span>VER MODELOS DE RETROEXCAVADORAS</span>
+        </a>
+        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-lg border-2 border-cat-yellow/60 bg-black/60 text-white font-mono text-xs font-bold uppercase tracking-widest hover:bg-cat-yellow hover:text-black transition-all flex items-center justify-center gap-3 backdrop-blur-sm active:scale-95">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <span>COTIZAR MODELO 4X4</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CATÁLOGO DE RETROEXCAVADORAS -->
+  <section id="retroexcavadoras" class="py-24 px-6 max-w-
