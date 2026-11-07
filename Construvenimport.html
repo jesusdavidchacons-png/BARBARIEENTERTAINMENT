@@ -80,15 +80,15 @@
 </head>
 <body class="selection:bg-cat-yellow selection:text-black bg-[#0A0C0E] font-sans antialiased text-slate-200">
 
-  <!-- NAVBAR INDUSTRIAL -->
+  <!-- NAVBAR INDUSTRIAL CON LOGO PNG -->
   <header class="fixed top-0 inset-x-0 z-50 glass-nav">
     <div class="max-w-7xl mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
       
-      <!-- Marca Corporativa -->
+      <!-- Logo e Identidad Corporativa -->
       <a href="#" class="flex items-center gap-3 group">
-        <div class="h-10 w-10 rounded-lg bg-cat-yellow flex items-center justify-center font-display font-black text-black text-xl tracking-tighter shadow-glow-yellow">
-          CVI
-        </div>
+        <!-- Logo con el nombre exacto indicado -->
+        <img src="./Construvenimport_logo.png" alt="CONSTRUVENIMPORT Logo" class="h-10 sm:h-12 w-auto object-contain">
+        
         <div class="flex flex-col">
           <span class="font-display font-extrabold text-lg sm:text-xl tracking-wider text-white uppercase leading-none group-hover:text-cat-yellow transition-colors">
             CONSTRUVENIMPORT
@@ -212,13 +212,11 @@
     <!-- Grid de Retroexcavadoras -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       
-      <!-- Modelo 1: Retroexcavadora Lovol (Video YouTube con Thumbnail Interactiva Segura) -->
+      <!-- Modelo 1: Retroexcavadora Lovol (Video YouTube: -ZPi0QhVVK0) -->
       <article class="cat-border-card flex flex-col group shadow-heavy-box">
         <div class="bg-cat-card rounded-lg overflow-hidden flex flex-col h-full">
           <div class="relative w-full aspect-video bg-black cursor-pointer group/vid" onclick="loadYouTubeVideo(this, '-ZPi0QhVVK0')">
-            <!-- Miniatura Oficial de YouTube -->
             <img src="https://img.youtube.com/vi/-ZPi0QhVVK0/maxresdefault.jpg" alt="Retroexcavadora Lovol FB878M" class="w-full h-full object-cover group-hover/vid:scale-105 transition-transform duration-500">
-            <!-- Botón Play Estilo Industrial -->
             <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover/vid:bg-black/20 transition-colors">
               <div class="w-16 h-16 rounded-xl bg-cat-yellow text-black flex items-center justify-center text-xl shadow-glow-yellow group-hover/vid:scale-110 transition-transform">
                 <i class="fa-solid fa-play ml-1"></i>
@@ -365,7 +363,6 @@
       }
     });
 
-    // Función para activar el video de YouTube al hacer clic en la miniatura
     function loadYouTubeVideo(container, videoId) {
       container.innerHTML = `
         <iframe 
