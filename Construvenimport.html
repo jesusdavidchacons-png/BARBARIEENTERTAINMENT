@@ -52,6 +52,7 @@
     html, body {
       overflow-x: hidden;
       width: 100%;
+      background-color: #0A0C0E;
     }
 
     ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -67,4 +68,93 @@
     }
 
     .heavy-mesh {
-      background: radial-gradient(
+      background: radial-gradient(circle at 50% 10%, rgba(247, 181, 0, 0.12) 0%, rgba(18, 21, 26, 0.85) 50%, #0A0C0E 90%);
+    }
+
+    .cat-border-card {
+      background: linear-gradient(145deg, rgba(247, 181, 0, 0.25) 0%, rgba(38, 44, 56, 0.4) 40%, rgba(10, 12, 14, 0.8) 100%);
+      padding: 1px;
+      border-radius: 0.75rem;
+    }
+  </style>
+</head>
+<body class="selection:bg-cat-yellow selection:text-black bg-[#0A0C0E] font-sans antialiased text-slate-200">
+
+  <!-- NAVBAR INDUSTRIAL -->
+  <header class="fixed top-0 inset-x-0 z-50 glass-nav">
+    <div class="max-w-7xl mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
+      
+      <!-- Marca Corporativa -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="h-10 w-10 rounded-lg bg-cat-yellow flex items-center justify-center font-display font-black text-black text-xl tracking-tighter shadow-glow-yellow">
+          CVI
+        </div>
+        <div class="flex flex-col">
+          <span class="font-display font-extrabold text-lg sm:text-xl tracking-wider text-white uppercase leading-none group-hover:text-cat-yellow transition-colors">
+            CONSTRUVENIMPORT
+          </span>
+          <span class="font-mono text-[9px] tracking-[0.25em] text-cat-yellow uppercase mt-1 font-bold">
+            RETROEXCAVADORAS & MAQUINARIA PESADA
+          </span>
+        </div>
+      </a>
+
+      <!-- Accesos Directos & Cotización -->
+      <div class="flex items-center gap-4 sm:gap-6">
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-cat-yellow text-base transition-colors p-2" title="Instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-emerald-400 text-base transition-colors p-2" title="WhatsApp Corporativo">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://drive.google.com/drive/folders/1Gfrdd-S5EClJks61-o6kxV7_d-iPngpm?usp=sharing" target="_blank" rel="noopener noreferrer" class="bg-cat-yellow hover:bg-cat-yellow-hover text-black px-5 py-2.5 rounded-lg font-mono text-xs font-black transition-all flex items-center gap-2.5 shadow-glow-yellow active:scale-95 uppercase tracking-wider">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span class="hidden sm:inline">Catálogo Técnico</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- HERO DE ALTO IMPACTO Y CONFIANZA -->
+  <section class="relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 px-6 overflow-hidden heavy-mesh bg-[#0A0C0E]">
+    
+    <!-- Video de Fondo (Con fallback inteligente) -->
+    <video 
+      id="hero-video"
+      class="absolute inset-0 w-full h-full object-cover opacity-80 filter brightness-[0.75] contrast-[1.15] z-0"
+      autoplay 
+      muted 
+      loop 
+      playsinline 
+      preload="metadata"
+    >
+      <source src="Retroexcavadora%20LOVOL%20FB878M%20pagina%20portada.mp4" type="video/mp4">
+      <source src="Retroexcavadora LOVOL FB878M pagina portada.mp4" type="video/mp4">
+    </video>
+
+    <!-- Gradient Overlay Industrial para asegurar visibilidad de textos -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] via-[#0A0C0E]/60 to-black/70 z-1 pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-5xl mx-auto text-center w-full">
+      
+      <!-- Insignia de Grado Industrial -->
+      <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-md border border-cat-yellow/40 bg-black/80 font-mono text-xs tracking-[0.25em] text-cat-yellow uppercase mb-8 backdrop-blur-md">
+        <i class="fa-solid fa-gear text-cat-yellow"></i>
+        <span class="font-bold">LOVOL FB878M • MULTIPROPÓSITO 4X4 TURBO</span>
+      </div>
+
+      <!-- Título Principal de Fuerza y Confianza -->
+      <h1 class="font-display font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white uppercase leading-[1.05] mb-6 drop-shadow-2xl">
+        POTENCIA Y RENDIMIENTO <br>
+        <span class="bg-gradient-to-r from-cat-yellow via-amber-200 to-cat-yellow bg-clip-text text-transparent">
+          SIN INTERRUPCIONES
+        </span>
+      </h1>
+
+      <p class="font-sans font-normal text-slate-300 text-base sm:text-lg max-w-3xl mx-auto mb-10 leading-relaxed tracking-wide drop-shadow-md">
+        Retroexcavadoras Lovol FB878M y maquinaria pesada de alto rendimiento. Equipos 4x4 respaldados con soporte técnico integral y stock inmediato de repuestos.
+      </p>
+
+      <!-- Ficha de Rendimiento Operativo -->
+      <div
