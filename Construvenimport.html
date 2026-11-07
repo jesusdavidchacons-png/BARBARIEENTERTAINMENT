@@ -82,25 +82,25 @@
       border-radius: 0.75rem;
     }
 
-    /* Mezcla CSS para eliminar el patrón de fondo gris del logo */
-    .logo-clean {
-      mix-blend-mode: screen;
-      filter: contrast(1.2) brightness(1.1);
+    /* Solución definitiva: Elimina por completo el fondo gris y aclara el logo al máximo */
+    .logo-transparent {
+      mix-blend-mode: lighten;
+      filter: brightness(2.5) contrast(1.5);
     }
   </style>
 </head>
 <body class="selection:bg-cat-yellow selection:text-black bg-[#0A0C0E] font-sans antialiased text-slate-200">
 
-  <!-- NAVBAR INDUSTRIAL RESPONSIVO (LOGO SIN FONDO GRIS) -->
+  <!-- NAVBAR INDUSTRIAL RESPONSIVO (LOGO GRANDE Y SIN FONDO) -->
   <header class="fixed top-0 inset-x-0 z-50 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-10 h-20 flex items-center justify-between gap-2">
       
-      <!-- Contenedor del Logo con mezcla limpia transparente -->
-      <a href="#" class="flex items-center group flex-shrink-0">
+      <!-- Logo de mayor tamaño y totalmente integrado sin fondo -->
+      <a href="#" class="flex items-center group flex-shrink-0 py-1">
         <img 
           src="./contruven import.png" 
           alt="CONSTRUVENIMPORT Logo" 
-          class="h-10 sm:h-14 w-auto object-contain logo-clean transition-transform group-hover:scale-105"
+          class="h-12 sm:h-16 w-auto object-contain logo-transparent transition-transform group-hover:scale-105"
         >
       </a>
 
