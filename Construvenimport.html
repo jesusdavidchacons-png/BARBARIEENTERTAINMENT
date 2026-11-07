@@ -37,6 +37,11 @@
               card: '#181C24',
               border: '#262C38',
               accent: '#FFD000'
+            },
+            brand: {
+              navy: '#101B30',      /* Azul institucional del catálogo */
+              'navy-dark': '#0A111F', /* Azul marino profundo */
+              blue: '#1D3557'       /* Azul acento corporativo */
             }
           },
           boxShadow: {
@@ -61,18 +66,18 @@
     ::-webkit-scrollbar-thumb:hover { background: #F7B500; }
 
     .glass-nav {
-      background: rgba(10, 12, 14, 0.95);
+      background: rgba(16, 27, 48, 0.95); /* Incorporando el azul marino de la paleta */
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 2px solid #F7B500;
     }
 
     .heavy-mesh {
-      background: radial-gradient(circle at 50% 10%, rgba(247, 181, 0, 0.12) 0%, rgba(18, 21, 26, 0.85) 50%, #0A0C0E 90%);
+      background: radial-gradient(circle at 50% 10%, rgba(247, 181, 0, 0.15) 0%, rgba(16, 27, 48, 0.9) 50%, #0A0C0E 90%);
     }
 
     .cat-border-card {
-      background: linear-gradient(145deg, rgba(247, 181, 0, 0.25) 0%, rgba(38, 44, 56, 0.4) 40%, rgba(10, 12, 14, 0.8) 100%);
+      background: linear-gradient(145deg, rgba(247, 181, 0, 0.25) 0%, rgba(29, 53, 87, 0.5) 40%, rgba(10, 12, 14, 0.9) 100%);
       padding: 1px;
       border-radius: 0.75rem;
     }
@@ -80,7 +85,7 @@
 </head>
 <body class="selection:bg-cat-yellow selection:text-black bg-[#0A0C0E] font-sans antialiased text-slate-200">
 
-  <!-- NAVBAR INDUSTRIAL RESPONSIVO -->
+  <!-- NAVBAR INDUSTRIAL RESPONSIVO CON PALETA INSTITUCIONAL -->
   <header class="fixed top-0 inset-x-0 z-50 glass-nav">
     <div class="max-w-7xl mx-auto px-3 sm:px-10 h-20 flex items-center justify-between gap-2">
       
@@ -120,7 +125,7 @@
     <!-- Video de Fondo Local -->
     <video 
       id="hero-video"
-      class="absolute inset-0 w-full h-full object-cover opacity-80 filter brightness-[0.75] contrast-[1.15] z-0"
+      class="absolute inset-0 w-full h-full object-cover opacity-75 filter brightness-[0.75] contrast-[1.15] z-0"
       autoplay 
       muted 
       loop 
@@ -131,19 +136,19 @@
       <source src="Retroexcavadora LOVOL FB878M pagina portada.mp4" type="video/mp4">
     </video>
 
-    <!-- Gradient Overlay Industrial -->
-    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] via-[#0A0C0E]/60 to-black/70 z-1 pointer-events-none"></div>
+    <!-- Gradient Overlay con Azul Marino de Marca -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] via-brand-navy-dark/70 to-black/80 z-1 pointer-events-none"></div>
 
     <div class="relative z-10 max-w-5xl mx-auto text-center w-full px-2">
       
       <!-- Insignia de Grado Industrial -->
-      <div class="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 rounded-md border border-cat-yellow/40 bg-black/80 font-mono text-[10px] sm:text-xs tracking-[0.2em] text-cat-yellow uppercase mb-6 sm:mb-8 backdrop-blur-md">
+      <div class="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 rounded-md border border-cat-yellow/40 bg-brand-navy/90 font-mono text-[10px] sm:text-xs tracking-[0.2em] text-cat-yellow uppercase mb-6 sm:mb-8 backdrop-blur-md shadow-lg">
         <i class="fa-solid fa-gear text-cat-yellow"></i>
         <span class="font-bold">LOVOL FB878M • MULTIPROPÓSITO 4X4 TURBO</span>
       </div>
 
-      <!-- Título Principal Rediseñado y Escalable -->
-      <h1 class="font-display font-black text-3xl sm:text-5xl lg:text-7xl tracking-tight text-white uppercase leading-[1.1] mb-6 drop-shadow-2xl">
+      <!-- Título Principal Escalado y Ajustado para Celulares (Sin cortes) -->
+      <h1 class="font-display font-black text-2xl xs:text-3xl sm:text-5xl lg:text-7xl tracking-tight text-white uppercase leading-[1.15] mb-6 drop-shadow-2xl">
         POTENCIA SIN LÍMITES <br>
         <span class="bg-gradient-to-r from-cat-yellow via-amber-200 to-cat-yellow bg-clip-text text-transparent">
           RENDIMIENTO TOTAL
@@ -156,19 +161,19 @@
 
       <!-- Ficha de Rendimiento Operativo -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 max-w-4xl mx-auto font-mono text-xs mb-8 sm:mb-10 text-left">
-        <div class="bg-cat-surface/90 border border-cat-border p-3 rounded-lg backdrop-blur-sm">
+        <div class="bg-brand-navy/80 border border-cat-border p-3 rounded-lg backdrop-blur-sm shadow-md">
           <span class="text-cat-yellow block text-[9px] sm:text-[10px] font-bold uppercase">Profundidad Excavación</span>
           <span class="text-white font-bold text-xs sm:text-sm">HASTA 4.7 M</span>
         </div>
-        <div class="bg-cat-surface/90 border border-cat-border p-3 rounded-lg backdrop-blur-sm">
+        <div class="bg-brand-navy/80 border border-cat-border p-3 rounded-lg backdrop-blur-sm shadow-md">
           <span class="text-cat-yellow block text-[9px] sm:text-[10px] font-bold uppercase">Potencia Motor</span>
           <span class="text-[11px] sm:text-[13px] font-bold text-white">95 HP - 110 HP TURBO</span>
         </div>
-        <div class="bg-cat-surface/90 border border-cat-border p-3 rounded-lg backdrop-blur-sm">
+        <div class="bg-brand-navy/80 border border-cat-border p-3 rounded-lg backdrop-blur-sm shadow-md">
           <span class="text-cat-yellow block text-[9px] sm:text-[10px] font-bold uppercase">Tracción</span>
           <span class="text-white font-bold text-xs sm:text-sm">4X4 HEAVY DUTY</span>
         </div>
-        <div class="bg-cat-surface/90 border border-cat-border p-3 rounded-lg backdrop-blur-sm">
+        <div class="bg-brand-navy/80 border border-cat-border p-3 rounded-lg backdrop-blur-sm shadow-md">
           <span class="text-cat-yellow block text-[9px] sm:text-[10px] font-bold uppercase">Garantía</span>
           <span class="text-white font-bold text-xs sm:text-sm">2 AÑOS / 3,000 HRS</span>
         </div>
@@ -180,8 +185,8 @@
           <i class="fa-solid fa-truck-monster text-black text-sm"></i>
           <span>VER MODELOS DE RETROEXCAVADORAS</span>
         </a>
-        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg border-2 border-cat-yellow/60 bg-black/60 text-white font-mono text-xs font-bold uppercase tracking-widest hover:bg-cat-yellow hover:text-black transition-all flex items-center justify-center gap-3 backdrop-blur-sm active:scale-95">
-          <i class="fa-brands fa-whatsapp text-lg"></i>
+        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg border-2 border-cat-yellow/60 bg-brand-navy/70 text-white font-mono text-xs font-bold uppercase tracking-widest hover:bg-cat-yellow hover:text-black transition-all flex items-center justify-center gap-3 backdrop-blur-sm active:scale-95 shadow-md">
+          <i class="fa-brands fa-whatsapp text-lg text-emerald-400"></i>
           <span>COTIZAR MODELO 4X4</span>
         </a>
       </div>
@@ -201,7 +206,7 @@
           EQUIPOS DE EXCAVACIÓN Y CARGA
         </h2>
       </div>
-      <div class="font-mono text-xs text-slate-300 bg-cat-surface border border-cat-border px-4 py-2.5 rounded-lg self-center sm:self-auto flex items-center gap-2">
+      <div class="font-mono text-xs text-slate-300 bg-brand-navy border border-cat-border px-4 py-2.5 rounded-lg self-center sm:self-auto flex items-center gap-2 shadow-md">
         <span class="w-2.5 h-2.5 rounded-full bg-cat-yellow animate-pulse"></span>
         <span class="font-bold text-white">ENTREGA E IMPORTACIÓN DIRECTA</span>
       </div>
@@ -318,8 +323,8 @@
     </div>
   </section>
 
-  <!-- PIE DE PÁGINA CORPORATIVO RESPONSIVO -->
-  <footer class="py-14 sm:py-16 px-4 sm:px-6 border-t-2 border-cat-yellow bg-[#07080A] text-center font-mono text-xs text-slate-400">
+  <!-- PIE DE PÁGINA CORPORATIVO RESPONSIVO CON PALETA INSTITUCIONAL -->
+  <footer class="py-14 sm:py-16 px-4 sm:px-6 border-t-2 border-cat-yellow bg-brand-navy-dark text-center font-mono text-xs text-slate-400">
     <div class="max-w-4xl mx-auto flex flex-col items-center gap-5 sm:gap-6">
       
       <!-- Identificación de Marca -->
@@ -336,15 +341,15 @@
 
       <!-- Canales de Contacto Directo con Instagram y Botón Catálogo -->
       <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 pt-2 pb-4 w-full px-4">
-        <a href="https://instagram.com/construvenimport" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 text-slate-300 hover:text-cat-yellow transition-colors px-4 py-2.5 rounded-lg bg-cat-surface border border-cat-border w-full sm:w-auto">
+        <a href="https://instagram.com/construvenimport" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 text-slate-300 hover:text-cat-yellow transition-colors px-4 py-2.5 rounded-lg bg-brand-navy border border-cat-border w-full sm:w-auto shadow-md">
           <i class="fa-brands fa-instagram text-base text-cat-yellow"></i>
           <span class="font-mono text-xs font-bold">@construvenimport</span>
         </a>
-        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors px-4 py-2.5 rounded-lg bg-cat-surface border border-cat-border w-full sm:w-auto">
+        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors px-4 py-2.5 rounded-lg bg-brand-navy border border-cat-border w-full sm:w-auto shadow-md">
           <i class="fa-brands fa-whatsapp text-base text-emerald-400"></i>
           <span class="font-mono text-xs font-bold">+58 424-7780942</span>
         </a>
-        <a href="https://drive.google.com/drive/folders/1Gfrdd-S5EClJks61-o6kxV7_d-iPngpm?usp=sharing" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 text-black font-black bg-cat-yellow hover:bg-cat-yellow-hover transition-colors px-4 py-2.5 rounded-lg border border-cat-yellow w-full sm:w-auto">
+        <a href="https://drive.google.com/drive/folders/1Gfrdd-S5EClJks61-o6kxV7_d-iPngpm?usp=sharing" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 text-black font-black bg-cat-yellow hover:bg-cat-yellow-hover transition-colors px-4 py-2.5 rounded-lg border border-cat-yellow w-full sm:w-auto shadow-lg">
           <i class="fa-solid fa-file-pdf text-base"></i>
           <span class="font-mono text-xs font-bold">VER CATÁLOGO</span>
         </a>
