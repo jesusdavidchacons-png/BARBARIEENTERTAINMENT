@@ -250,4 +250,63 @@
   </section>
 
   <!-- PIE DE PÁGINA CORPORATIVO RESPONSIVO CON PALETA INSTITUCIONAL -->
-  <footer class="py-14 sm:py-16 px-4 sm:px-6 border-t-2 border-cat-yellow bg-brand-navy-dark text-
+  <footer class="py-14 sm:py-16 px-4 sm:px-6 border-t-2 border-cat-yellow bg-brand-navy-dark text-center font-mono text-xs text-slate-400">
+    <div class="max-w-4xl mx-auto flex flex-col items-center gap-5 sm:gap-6">
+      
+      <!-- Identificación de Marca -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+        <span class="w-2.5 h-2.5 rounded-full bg-cat-yellow hidden sm:inline-block"></span>
+        <span class="text-white font-display font-black tracking-widest text-sm sm:text-base uppercase">CONSTRUVENIMPORT</span>
+        <span class="text-slate-600 hidden sm:inline">•</span>
+        <span class="text-cat-yellow tracking-widest font-bold text-[11px] sm:text-xs">ESPECIALISTAS EN RETROEXCAVADORAS</span>
+      </div>
+
+      <p class="text-slate-400 max-w-xl text-[11px] leading-relaxed px-4">
+        Venta, alquiler e importación autorizada de retroexcavadoras y maquinaria pesada. Repuestos genuinos, mantenimiento preventivo y soporte técnico de campo.
+      </p>
+
+      <!-- Canales de Contacto Directo con Instagram y Botón Catálogo -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 pt-2 pb-4 w-full px-4">
+        <a href="https://instagram.com/construvenimport" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 text-slate-300 hover:text-cat-yellow transition-colors px-4 py-2.5 rounded-lg bg-brand-navy border border-cat-border w-full sm:w-auto shadow-md">
+          <i class="fa-brands fa-instagram text-base text-cat-yellow"></i>
+          <span class="font-mono text-xs font-bold">@construvenimport</span>
+        </a>
+        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors px-4 py-2.5 rounded-lg bg-brand-navy border border-cat-border w-full sm:w-auto shadow-md">
+          <i class="fa-brands fa-whatsapp text-base text-emerald-400"></i>
+          <span class="font-mono text-xs font-bold">+58 424-7780942</span>
+        </a>
+        <a href="https://drive.google.com/drive/folders/1Gfrdd-S5EClJks61-o6kxV7_d-iPngpm?usp=sharing" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 text-black font-black bg-cat-yellow hover:bg-cat-yellow-hover transition-colors px-4 py-2.5 rounded-lg border border-cat-yellow w-full sm:w-auto shadow-lg">
+          <i class="fa-solid fa-file-pdf text-base"></i>
+          <span class="font-mono text-xs font-bold">VER CATÁLOGO</span>
+        </a>
+      </div>
+
+      <p class="text-[10px] text-slate-600">© 2026 CONSTRUVENIMPORT C.A. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const vid = document.getElementById('hero-video');
+      if (vid) {
+        vid.muted = true;
+        vid.play().catch(error => {
+          console.log("Autoplay de video controlado:", error);
+        });
+      }
+    });
+
+    function loadYouTubeVideo(container, videoId) {
+      container.innerHTML = `
+        <iframe 
+          class="w-full h-full border-0" 
+          src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1&modestbranding=1" 
+          title="Reproductor YouTube" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      `;
+    }
+  </script>
+</body>
+</html>
