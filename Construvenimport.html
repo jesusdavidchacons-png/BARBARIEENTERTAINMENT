@@ -82,31 +82,32 @@
       border-radius: 0.75rem;
     }
 
-    /* ESCALA EXCLUSIVAMENTE LA IMAGEN DEL LOGO SIN AFECTAR LA BARRA AZUL */
-    .logo-standalone-scaled {
-      transform: scale(2.2);
+    /* ESCALA EL LOGO EXACTAMENTE AL DOBLE (2X) SIN AFECTAR LA BARRA AZUL */
+    .logo-standalone-2x {
+      transform: scale(2);
       transform-origin: left center;
+      margin-left: 15px;
     }
     @media (max-width: 640px) {
-      .logo-standalone-scaled {
-        transform: scale(1.7);
-        transform-origin: left center;
+      .logo-standalone-2x {
+        transform: scale(1.5);
+        margin-left: 8px;
       }
     }
   </style>
 </head>
 <body class="selection:bg-cat-yellow selection:text-black bg-[#0A0C0E] font-sans antialiased text-slate-200">
 
-  <!-- NAVBAR INDUSTRIAL RESPONSIVO -->
+  <!-- NAVBAR INDUSTRIAL RESPONSIVO (BARRA FIJA DELGADA) -->
   <header class="fixed top-0 inset-x-0 z-50 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-10 h-20 flex items-center justify-between gap-2">
       
-      <!-- Contenedor del Logo: Permite desbordamiento para que el logo crezca libremente -->
+      <!-- Contenedor del Logo Escalado al Doble -->
       <a href="#" class="flex items-center group flex-shrink-0 overflow-visible py-1">
         <img 
           src="./Construven_import.png" 
           alt="CONSTRUVENIMPORT Logo" 
-          class="h-10 sm:h-12 w-auto object-contain logo-standalone-scaled transition-transform"
+          class="h-10 sm:h-12 w-auto object-contain logo-standalone-2x transition-transform"
         >
       </a>
 
@@ -127,13 +128,13 @@
     </div>
   </header>
 
-  <!-- HERO DE ALTO IMPACTO Y CONFIANZA -->
+  <!-- HERO CON VIDEO NÍTIDO Y MENOS OPACIDAD -->
   <section class="relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 px-4 sm:px-6 overflow-hidden heavy-mesh bg-[#0A0C0E]">
     
-    <!-- Video de Fondo Local con Opacidad al 50% -->
+    <!-- Video de Fondo Local con Opacidad al 80% (Más Nítido) -->
     <video 
       id="hero-video"
-      class="absolute inset-0 w-full h-full object-cover opacity-50 filter brightness-[0.75] contrast-[1.15] z-0"
+      class="absolute inset-0 w-full h-full object-cover opacity-80 filter brightness-[0.85] contrast-[1.1] z-0"
       autoplay 
       muted 
       loop 
@@ -144,8 +145,8 @@
       <source src="Retroexcavadora LOVOL FB878M pagina portada.mp4" type="video/mp4">
     </video>
 
-    <!-- Gradient Overlay con Azul Marino de Marca -->
-    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] via-brand-navy-dark/70 to-black/80 z-1 pointer-events-none"></div>
+    <!-- Gradient Overlay optimizado para mantener legibilidad sin oscurecer demasiado el video -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0C0E] via-brand-navy-dark/40 to-black/60 z-1 pointer-events-none"></div>
 
     <div class="relative z-10 max-w-5xl mx-auto text-center w-full px-2">
       
