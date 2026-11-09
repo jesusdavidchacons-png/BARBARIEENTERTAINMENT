@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>CONSTRUVENIMPORT | Lovol & Shantui Maquinaria Pesada</title>
   
-  <meta name="description" content="CONSTRUVENIMPORT. Distribuidor y proveedor autorizados de retroexcavadoras, jumbos, excavadoras y maquinaria pesada LOVOL y SHANTUI.">
+  <meta name="description" content="CONSTRUVENIMPORT. Distribuidor y proveedor autorizados de retroexcavadoras, motoniveladoras, excavadoras y maquinaria pesada LOVOL y SHANTUI.">
   <link rel="canonical" href="https://barbariestudios.com">
   <link rel="icon" type="image/png" href="https://i.postimg.cc/CLyBvwYG/logo-barbarie.png">
 
@@ -76,12 +76,6 @@
       background: radial-gradient(circle at 50% 10%, rgba(247, 181, 0, 0.15) 0%, rgba(16, 27, 48, 0.9) 50%, #0A0C0E 90%);
     }
 
-    .cat-border-card {
-      background: linear-gradient(145deg, rgba(247, 181, 0, 0.25) 0%, rgba(29, 53, 87, 0.5) 40%, rgba(10, 12, 14, 0.9) 100%);
-      padding: 1px;
-      border-radius: 0.75rem;
-    }
-
     /* LOGO SUPER ESCALADO SIN AFECTAR LA BARRA AZUL */
     .logo-enormous-3x {
       transform: scale(3.2);
@@ -98,7 +92,7 @@
 </head>
 <body class="selection:bg-cat-yellow selection:text-black bg-[#0A0C0E] font-sans antialiased text-slate-200">
 
-  <!-- NAVBAR INDUSTRIAL RESPONSIVO CON BOTÓN FLOTANTE DE LOVOL -->
+  <!-- NAVBAR INDUSTRIAL RESPONSIVO CON MENÚ DESPLEGABLE "MAQUINARIA" -->
   <header class="fixed top-0 inset-x-0 z-50 glass-nav">
     <div class="max-w-7xl mx-auto px-4 sm:px-10 h-20 flex items-center justify-between gap-4">
       
@@ -111,16 +105,37 @@
         >
       </a>
 
-      <!-- Pestañas de Marcas (Navegación Central con Despliegue de Ventana) -->
-      <nav class="hidden md:flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider bg-black/40 p-1.5 rounded-xl border border-cat-border/60">
-        <button onclick="openLovolModal()" class="px-4 py-2 rounded-lg text-slate-300 hover:text-cat-yellow hover:bg-brand-navy transition-all flex items-center gap-2 cursor-pointer">
-          <i class="fa-solid fa-truck-monster text-cat-yellow"></i>
-          <span>LOVOL</span>
-        </button>
-        <a href="#shantui" class="px-4 py-2 rounded-lg text-slate-300 hover:text-cat-yellow hover:bg-brand-navy transition-all flex items-center gap-2">
-          <i class="fa-solid fa-hard-hat text-cat-yellow"></i>
-          <span>SHANTUI</span>
-        </a>
+      <!-- Pestaña Central con Menú Desplegable de Maquinaria (Desktop) -->
+      <nav class="hidden md:flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider relative">
+        <div class="relative group">
+          
+          <!-- Botón Principal "MAQUINARIA" -->
+          <button class="px-5 py-2.5 rounded-xl bg-black/40 border border-cat-border/60 text-slate-200 hover:text-cat-yellow hover:border-cat-yellow transition-all flex items-center gap-2 cursor-pointer shadow-md">
+            <i class="fa-solid fa-truck-monster text-cat-yellow"></i>
+            <span>MAQUINARIA</span>
+            <i class="fa-solid fa-chevron-down text-[10px] ml-1 transition-transform group-hover:rotate-180"></i>
+          </button>
+
+          <!-- Subventana Desplegable de Marcas (Lovol & Shantui) -->
+          <div class="absolute left-0 top-full mt-2 w-56 bg-brand-navy-dark border-2 border-cat-yellow/60 rounded-xl shadow-heavy-box opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 p-2 space-y-1">
+            <button onclick="openLovolModal()" class="w-full text-left px-4 py-3 rounded-lg hover:bg-brand-navy text-slate-200 hover:text-cat-yellow transition-all flex items-center gap-3 cursor-pointer">
+              <i class="fa-solid fa-truck-monster text-cat-yellow text-sm"></i>
+              <div>
+                <span class="block text-xs font-black">LOVOL</span>
+                <span class="block text-[9px] text-slate-400 font-normal lowercase">Retroexcavadoras FB878M</span>
+              </div>
+            </button>
+            <div class="border-t border-cat-border/50"></div>
+            <button onclick="openShantuiModal()" class="w-full text-left px-4 py-3 rounded-lg hover:bg-brand-navy text-slate-200 hover:text-cat-yellow transition-all flex items-center gap-3 cursor-pointer">
+              <i class="fa-solid fa-hard-hat text-cat-yellow text-sm"></i>
+              <div>
+                <span class="block text-xs font-black">SHANTUI</span>
+                <span class="block text-[9px] text-slate-400 font-normal lowercase">Motoniveladoras SG27-C5</span>
+              </div>
+            </button>
+          </div>
+
+        </div>
       </nav>
 
       <!-- Accesos Directos, Redes y Botón Catálogo -->
@@ -139,15 +154,16 @@
 
     </div>
 
-    <!-- Barra de Pestañas Móviles -->
+    <!-- Pestañas Móviles para Pantallas Pequeñas -->
     <div class="flex md:hidden items-center justify-center gap-4 bg-brand-navy-dark/90 py-2 border-t border-cat-border/40 font-mono text-xs font-bold uppercase">
+      <span class="text-slate-400">MAQUINARIA:</span>
       <button onclick="openLovolModal()" class="text-cat-yellow flex items-center gap-1 cursor-pointer">
         <i class="fa-solid fa-truck-monster"></i> LOVOL
       </button>
       <span class="text-slate-600">•</span>
-      <a href="#shantui" class="text-slate-300 hover:text-cat-yellow flex items-center gap-1">
+      <button onclick="openShantuiModal()" class="text-slate-300 hover:text-cat-yellow flex items-center gap-1 cursor-pointer">
         <i class="fa-solid fa-hard-hat"></i> SHANTUI
-      </a>
+      </button>
     </div>
   </header>
 
@@ -176,7 +192,7 @@
       <!-- Insignia de Grado Industrial -->
       <div class="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 rounded-md border border-cat-yellow/40 bg-brand-navy/90 font-mono text-[10px] sm:text-xs tracking-[0.2em] text-cat-yellow uppercase mb-6 sm:mb-8 backdrop-blur-md shadow-lg">
         <i class="fa-solid fa-gear text-cat-yellow"></i>
-        <span class="font-bold">LOVOL & SHANTUI • DISTRIBUCIÓN OFICIAL 4X4 TURBO</span>
+        <span class="font-bold">LOVOL & SHANTUI • DISTRIBUCIÓN OFICIAL MAQUINARIA PESADA</span>
       </div>
 
       <!-- Título Principal -->
@@ -188,7 +204,7 @@
       </h1>
 
       <p class="font-sans font-normal text-slate-300 text-sm sm:text-lg max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed tracking-wide drop-shadow-md">
-        Retroexcavadoras y maquinaria pesada LOVOL y SHANTUI de alto rendimiento. Equipos 4x4 respaldados con soporte técnico integral y stock inmediato de repuestos.
+        Retroexcavadoras, motoniveladoras y maquinaria pesada LOVOL y SHANTUI de alto rendimiento. Equipos respaldados con soporte técnico integral y repuestos genuinos.
       </p>
 
       <!-- Ficha de Rendimiento Operativo -->
@@ -199,11 +215,11 @@
         </div>
         <div class="bg-brand-navy/80 border border-cat-border p-3 rounded-lg backdrop-blur-sm shadow-md">
           <span class="text-cat-yellow block text-[9px] sm:text-[10px] font-bold uppercase">Potencia Motor</span>
-          <span class="text-[11px] sm:text-[13px] font-bold text-white">95 HP - 110 HP TURBO</span>
+          <span class="text-[11px] sm:text-[13px] font-bold text-white">95 HP - 270 HP TURBO</span>
         </div>
         <div class="bg-brand-navy/80 border border-cat-border p-3 rounded-lg backdrop-blur-sm shadow-md">
           <span class="text-cat-yellow block text-[9px] sm:text-[10px] font-bold uppercase">Tracción</span>
-          <span class="text-white font-bold text-xs sm:text-sm">4X4 HEAVY DUTY</span>
+          <span class="text-white font-bold text-xs sm:text-sm">4X4 & HEAVY DUTY</span>
         </div>
         <div class="bg-brand-navy/80 border border-cat-border p-3 rounded-lg backdrop-blur-sm shadow-md">
           <span class="text-cat-yellow block text-[9px] sm:text-[10px] font-bold uppercase">Garantía</span>
@@ -217,94 +233,20 @@
           <i class="fa-solid fa-truck-monster text-black text-sm"></i>
           <span>VER LOVOL FB878M</span>
         </button>
-        <a href="#shantui" class="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg border-2 border-cat-yellow/60 bg-brand-navy/70 text-white font-mono text-xs font-bold uppercase tracking-widest hover:bg-cat-yellow hover:text-black transition-all flex items-center justify-center gap-3 backdrop-blur-sm active:scale-95 shadow-md">
+        <button onclick="openShantuiModal()" class="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg border-2 border-cat-yellow/60 bg-brand-navy/70 text-white font-mono text-xs font-bold uppercase tracking-widest hover:bg-cat-yellow hover:text-black transition-all flex items-center justify-center gap-3 backdrop-blur-sm active:scale-95 shadow-md cursor-pointer">
           <i class="fa-solid fa-hard-hat text-lg text-cat-yellow"></i>
-          <span>EXPLORAR SHANTUI</span>
-        </a>
+          <span>VER SHANTUI SG27-C5</span>
+        </button>
       </div>
 
     </div>
   </section>
 
-  <!-- SECCIÓN SHANTUI -->
-  <section id="shantui" class="py-20 sm:py-24 px-4 sm:px-6 max-w-5xl mx-auto border-t border-cat-border">
-    
-    <div class="mb-10 text-center">
-      <span class="text-cat-yellow text-xs font-mono uppercase tracking-[0.25em] block mb-2 font-bold">
-        // LÍNEA DE MOVIMIENTO DE TIERRA Y MINERÍA
-      </span>
-      <h2 class="font-display font-black text-3xl sm:text-5xl text-white tracking-tight uppercase mb-4">
-        EQUIPOS SHANTUI
-      </h2>
-      <p class="text-xs sm:text-sm text-slate-300 font-normal max-w-2xl mx-auto leading-relaxed">
-        Bulldozers, excavadoras de oruga y maquinaria pesada líder mundial en movimiento de tierra continuo y minería pesada.
-      </p>
-    </div>
-
-    <!-- Ficha Promocional SHANTUI -->
-    <div class="cat-border-card p-8 sm:p-10 bg-cat-card rounded-xl shadow-heavy-box">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div>
-          <div class="inline-block px-3 py-1 rounded bg-cat-yellow/20 border border-cat-yellow/50 text-cat-yellow text-xs font-mono font-bold uppercase mb-4">
-            SERIE HEAVY DUTY MINERÍA
-          </div>
-          <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-white uppercase mb-4">
-            BULLDOZERS Y EXCAVADORAS SHANTUI
-          </h3>
-          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 font-sans">
-            Equipos concebidos para condiciones extremas de trabajo. Sistemas de rodaje reforzados, tecnología de vanguardia y máxima eficiencia de consumo diésel por tonelada desplazada.
-          </p>
-          
-          <div class="space-y-3 font-mono text-xs mb-8">
-            <div class="flex items-center gap-3 text-slate-200">
-              <i class="fa-solid fa-check text-cat-yellow"></i>
-              <span>Sistemas de transmisión y convertidor de torque hidrodinámico</span>
-            </div>
-            <div class="flex items-center gap-3 text-slate-200">
-              <i class="fa-solid fa-check text-cat-yellow"></i>
-              <span>Hojas de empuje tipo Semi-U y Straight Tilt de alto volumen</span>
-            </div>
-            <div class="flex items-center gap-3 text-slate-200">
-              <i class="fa-solid fa-check text-cat-yellow"></i>
-              <span>Cabinas climatizadas ROPS/FOPS con aislamiento acústico</span>
-            </div>
-          </div>
-
-          <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="bg-cat-yellow hover:bg-cat-yellow-hover text-black px-6 py-3.5 rounded-lg font-mono text-xs font-black transition-all inline-flex items-center gap-2 shadow-glow-yellow uppercase tracking-wider">
-            <i class="fa-brands fa-whatsapp text-sm"></i>
-            <span>SOLICITAR CATÁLOGO SHANTUI</span>
-          </a>
-        </div>
-
-        <!-- Tarjeta de Resumen Técnico SHANTUI -->
-        <div class="bg-brand-navy p-6 rounded-xl border border-cat-border space-y-4 font-mono text-xs">
-          <div class="border-b border-cat-border/60 pb-3">
-            <span class="text-cat-yellow font-bold uppercase block text-[10px]">// CAPACIDAD DE EMPUJE</span>
-            <span class="text-white font-bold text-sm">DESDE 160 HP HASTA 320 HP</span>
-          </div>
-          <div class="border-b border-cat-border/60 pb-3">
-            <span class="text-cat-yellow font-bold uppercase block text-[10px]">// TIPO DE RODAJE</span>
-            <span class="text-white font-bold text-sm">ORUGAS DE ALTA TRACCIÓN MINERA</span>
-          </div>
-          <div class="border-b border-cat-border/60 pb-3">
-            <span class="text-cat-yellow font-bold uppercase block text-[10px]">// APLICACIÓN</span>
-            <span class="text-white font-bold text-sm">CANTERAS, MINERÍA Y VÍAS</span>
-          </div>
-          <div>
-            <span class="text-cat-yellow font-bold uppercase block text-[10px]">// SOPORTE TÉCNICO</span>
-            <span class="text-white font-bold text-sm">REPUESTOS Y MANTENIMIENTO DIRECTO</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </section>
-
-  <!-- VENTANA FLOTANTE EMERGENTE (MODAL EXCLUSIVO LOVOL FB878M) -->
+  <!-- VENTANA FLOTANTE EMERGENTE (MODAL LOVOL FB878M) -->
   <div id="lovolModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity">
     <div class="relative w-full max-w-4xl bg-brand-navy-dark border-2 border-cat-yellow/60 rounded-2xl shadow-heavy-box overflow-hidden max-h-[90vh] flex flex-col">
       
-      <!-- Encabezado de la Ventana Emergente -->
+      <!-- Encabezado -->
       <div class="flex items-center justify-between p-5 bg-brand-navy border-b border-cat-border">
         <div class="flex items-center gap-3">
           <i class="fa-solid fa-truck-monster text-cat-yellow text-xl"></i>
@@ -313,16 +255,13 @@
             <span class="font-mono text-[10px] text-cat-yellow uppercase">Ficha Técnica Oficial & Demostración</span>
           </div>
         </div>
-        <!-- Botón de Cerrar -->
         <button onclick="closeLovolModal()" class="w-10 h-10 rounded-xl bg-black/40 hover:bg-cat-yellow hover:text-black text-slate-300 font-mono text-lg font-bold transition-all flex items-center justify-center border border-cat-border cursor-pointer">
           ✕
         </button>
       </div>
 
-      <!-- Cuerpo de la Ventana Emergente con Desplazamiento -->
+      <!-- Cuerpo con Video y Ficha -->
       <div class="p-6 overflow-y-auto space-y-6">
-        
-        <!-- Video Integrado -->
         <div class="relative w-full aspect-video bg-black rounded-xl overflow-hidden border border-cat-border">
           <iframe 
             class="w-full h-full border-0" 
@@ -333,7 +272,6 @@
           </iframe>
         </div>
 
-        <!-- Ficha Técnica Exclusiva LOVOL FB878M -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
           <div class="bg-black/40 p-4 rounded-xl border border-cat-border/60">
             <span class="text-cat-yellow font-bold uppercase block mb-2 text-[11px]">// MOTOR WEICHAI WP4.1</span>
@@ -369,15 +307,108 @@
             </ul>
           </div>
         </div>
-
       </div>
 
-      <!-- Pie de la Ventana Emergente con Botón de Cotización -->
+      <!-- Pie con Botón de Cotización -->
       <div class="p-5 bg-brand-navy border-t border-cat-border flex flex-col sm:flex-row items-center justify-between gap-4">
         <span class="font-mono text-xs text-slate-400 font-bold uppercase">CONSTRUVENIMPORT • ENTREGA INMEDIATA</span>
         <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-cat-yellow hover:bg-cat-yellow-hover text-black px-6 py-3 rounded-lg font-mono text-xs font-black transition-colors inline-flex items-center justify-center gap-2 shadow-glow-yellow uppercase tracking-wider">
           <i class="fa-brands fa-whatsapp text-sm"></i>
-          <span>COTIZAR MODELO FB878M</span>
+          <span>COTIZAR MODELO LOVOL</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- VENTANA FLOTANTE EMERGENTE (MODAL SHANTUI SG27-C5) -->
+  <div id="shantuiModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity">
+    <div class="relative w-full max-w-4xl bg-brand-navy-dark border-2 border-cat-yellow/60 rounded-2xl shadow-heavy-box overflow-hidden max-h-[90vh] flex flex-col">
+      
+      <!-- Encabezado -->
+      <div class="flex items-center justify-between p-5 bg-brand-navy border-b border-cat-border">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-hard-hat text-cat-yellow text-xl"></i>
+          <div>
+            <h3 class="font-display font-black text-lg text-white uppercase tracking-wide">SHANTUI SG27-C5</h3>
+            <span class="font-mono text-[10px] text-cat-yellow uppercase">Motoniveladora Heavy Duty • Ficha Técnica Oficial</span>
+          </div>
+        </div>
+        <button onclick="closeShantuiModal()" class="w-10 h-10 rounded-xl bg-black/40 hover:bg-cat-yellow hover:text-black text-slate-300 font-mono text-lg font-bold transition-all flex items-center justify-center border border-cat-border cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <!-- Cuerpo con Ficha Técnica Detallada SHANTUI SG27-C5 -->
+      <div class="p-6 overflow-y-auto space-y-6">
+        
+        <!-- Insignia Informativa -->
+        <div class="bg-brand-navy/80 p-4 rounded-xl border border-cat-border flex items-center justify-between flex-wrap gap-3 font-mono text-xs">
+          <span class="text-cat-yellow font-bold uppercase">// ESPECIFICACIONES TÉCNICAS COMPLETAS</span>
+          <span class="text-slate-300">CILINDRADA: <strong class="text-white">7.47 L</strong> | VÍAS Y MINERÍA</span>[cite: 4]
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+          
+          <!-- Motor -->
+          <div class="bg-black/40 p-4 rounded-xl border border-cat-border/60 space-y-1.5">
+            <span class="text-cat-yellow font-bold uppercase block mb-2 text-[11px]">// MOTOR WEICHAI WP7G270E302</span>[cite: 4]
+            <p><strong class="text-white">Modelo:</strong> Weichai WP7G270E302 (6 Cilindros)</p>[cite: 4]
+            <p><strong class="text-white">Potencia Bruta:</strong> 199 kW (270 HP) @ 2200 rpm</p>[cite: 4]
+            <p><strong class="text-white">Torque Máximo:</strong> 1100 N·m @ 1300-1500 rpm</p>[cite: 4]
+            <p><strong class="text-white">Aspiración:</strong> Turbocargado Intercooler aire-aire</p>[cite: 4]
+            <p><strong class="text-white">Tracción Máxima:</strong> 97 kN</p>[cite: 4]
+          </div>
+
+          <!-- Hoja Vertedera -->
+          <div class="bg-black/40 p-4 rounded-xl border border-cat-border/60 space-y-1.5">
+            <span class="text-cat-yellow font-bold uppercase block mb-2 text-[11px]">// HOJA VERTEDERA</span>[cite: 4]
+            <p><strong class="text-white">Accionamiento:</strong> Hidráulico (Rotación 360°)</p>[cite: 4]
+            <p><strong class="text-white">Ancho de Hoja:</strong> 3965 / 4270 mm</p>[cite: 4]
+            <p><strong class="text-white">Alto / Espesor:</strong> 635 mm / 20 mm</p>[cite: 4]
+            <p><strong class="text-white">Profundidad Máx. Corte:</strong> 500 mm</p>[cite: 4]
+            <p><strong class="text-white">Ángulo de Inclinación:</strong> 27° - 73° (Máx. 90°)</p>[cite: 4]
+          </div>
+
+          <!-- Peso Operativo -->
+          <div class="bg-black/40 p-4 rounded-xl border border-cat-border/60 space-y-1.5">
+            <span class="text-cat-yellow font-bold uppercase block mb-2 text-[11px]">// PESO OPERATIVO</span>[cite: 4]
+            <p><strong class="text-white">Estándar:</strong> 18,500 kg</p>[cite: 4]
+            <p><strong class="text-white">Con Ripper Trasero:</strong> 18,800 kg</p>[cite: 4]
+            <p><strong class="text-white">Con Hoja Frontal:</strong> 19,100 kg</p>[cite: 4]
+            <p><strong class="text-white">Con Hoja Frontal y Ripper:</strong> 19,400 kg</p>[cite: 4]
+          </div>
+
+          <!-- Capacidades de Reabastecimiento -->
+          <div class="bg-black/40 p-4 rounded-xl border border-cat-border/60 space-y-1.5">
+            <span class="text-cat-yellow font-bold uppercase block mb-2 text-[11px]">// CAPACIDADES REABASTECIMIENTO</span>[cite: 4]
+            <p><strong class="text-white">Tanque Combustible:</strong> 340 L</p>[cite: 4]
+            <p><strong class="text-white">Tanque Hidráulico:</strong> 110 L</p>[cite: 4]
+            <p><strong class="text-white">Cárter del Motor:</strong> 19 L</p>[cite: 4]
+            <p><strong class="text-white">Refrigerante del Motor:</strong> 33 L</p>[cite: 4]
+          </div>
+
+        </div>
+
+        <!-- Dimensiones Generales -->
+        <div class="bg-black/40 p-4 rounded-xl border border-cat-border/60 font-mono text-xs">
+          <span class="text-cat-yellow font-bold uppercase block mb-2 text-[11px]">// DIMENSIONES GENERALES</span>[cite: 4]
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-300">
+            <p><strong class="text-white">Longitud Total Estándar:</strong> 9445 mm</p>[cite: 4]
+            <p><strong class="text-white">Altura Hasta la Cabina:</strong> 3560 mm</p>[cite: 4]
+            <p><strong class="text-white">Longitud del Eje Tandem:</strong> 6560 mm</p>[cite: 4]
+            <p><strong class="text-white">Despeje Libre sobre Suelo:</strong> 500 mm</p>[cite: 4]
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pie con Botón de Cotización -->
+      <div class="p-5 bg-brand-navy border-t border-cat-border flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="font-mono text-xs text-slate-400 font-bold uppercase">CONSTRUVENIMPORT • DISTRIBUIDOR AUTORIZADO</span>
+        <a href="https://wa.me/584247780942" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-cat-yellow hover:bg-cat-yellow-hover text-black px-6 py-3 rounded-lg font-mono text-xs font-black transition-colors inline-flex items-center justify-center gap-2 shadow-glow-yellow uppercase tracking-wider">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>COTIZAR SHANTUI SG27-C5</span>
         </a>
       </div>
 
@@ -431,34 +462,43 @@
       }
     });
 
-    /* FUNCIONALIDAD DE LA VENTANA EMERGENTE (MODAL LOVOL) */
+    /* FUNCIONALIDAD MODAL LOVOL */
     function openLovolModal() {
       const modal = document.getElementById('lovolModal');
       if (modal) {
         modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Evita el scroll de fondo
+        document.body.style.overflow = 'hidden';
       }
     }
-
     function closeLovolModal() {
       const modal = document.getElementById('lovolModal');
       if (modal) {
         modal.classList.add('hidden');
-        document.body.style.overflow = ''; // Restaura el scroll
+        document.body.style.overflow = '';
       }
     }
 
-    // Cerrar al presionar la tecla Escape
+    /* FUNCIONALIDAD MODAL SHANTUI */
+    function openShantuiModal() {
+      const modal = document.getElementById('shantuiModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    function closeShantuiModal() {
+      const modal = document.getElementById('shantuiModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Tecla Escape para cerrar modales
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeLovolModal();
-      }
-    });
-
-    // Cerrar al hacer clic fuera del recuadro
-    document.getElementById('lovolModal')?.addEventListener('click', (e) => {
-      if (e.target === document.getElementById('lovolModal')) {
-        closeLovolModal();
+        closeShantuiModal();
       }
     });
   </script>
