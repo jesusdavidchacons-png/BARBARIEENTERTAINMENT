@@ -42,28 +42,33 @@
     }
     .font-netflix { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; }
 
-    /* Scrollbar Netflix */
+    /* Barra de desplazamiento Netflix */
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #141414; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #333333; border-radius: 9999px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #E50914; }
+
+    .glow-red {
+      box-shadow: 0 0 35px -5px rgba(229, 9, 20, 0.5);
+    }
   </style>
 </head>
 <body class="min-h-full flex flex-col justify-between selection:bg-[#E50914] selection:text-white">
 
-  <!-- ================= NAVBAR TRANSLÚCIDA ESTILO NETFLIX ================= -->
-  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-colors duration-500 bg-gradient-to-b from-black/85 via-black/40 to-transparent">
+  <!-- ================= BARRA DE NAVEGACIÓN ESTILO NETFLIX ================= -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 bg-gradient-to-b from-black/90 via-black/50 to-transparent">
     <div class="max-w-[1700px] mx-auto px-4 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
       
-      <!-- Logos Oficiales: SISTEMA.png y DA.png -->
+      <!-- Logos Oficiales con detección de nombres -->
       <div class="flex items-center gap-6 sm:gap-10">
         <div class="flex items-center gap-3">
           <!-- Logo El Sistema -->
           <img 
+            id="logoSistema"
             src="SISTEMA.png" 
             alt="El Sistema — PAP" 
             class="h-9 sm:h-11 w-auto object-contain filter drop-shadow hover:scale-105 transition"
-            onerror="this.onerror=null; this.src='sistema.png'; this.onerror=function(){this.src='EL-SISTEMA.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fb-sis').classList.remove('hidden');}};"
+            onerror="probarLogosSistema(this)"
           >
           <span id="fb-sis" class="hidden text-xs uppercase tracking-widest font-black text-[#E50914]">EL SISTEMA</span>
 
@@ -71,10 +76,11 @@
 
           <!-- Logo Ministerio Penitenciario -->
           <img 
+            id="logoDA"
             src="DA.png" 
             alt="Ministerio Penitenciario" 
             class="h-9 sm:h-11 w-auto object-contain filter drop-shadow hover:scale-105 transition"
-            onerror="this.onerror=null; this.src='da.png'; this.onerror=function(){this.style.display='none';};"
+            onerror="this.onerror=null; this.src='da.png';"
           >
         </div>
 
@@ -86,22 +92,22 @@
         </nav>
       </div>
 
-      <!-- Acciones Derecha -->
+      <!-- Botón Superior YouTube -->
       <div class="flex items-center gap-4">
-        <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="bg-[#E50914] hover:bg-red-700 text-white font-bold px-4 py-2 rounded text-xs uppercase tracking-wider transition active:scale-95 flex items-center gap-2">
+        <button onclick="abrirReproductorNetflix()" class="bg-[#E50914] hover:bg-red-700 text-white font-bold px-4 py-2 rounded text-xs uppercase tracking-wider transition active:scale-95 flex items-center gap-2 cursor-pointer">
           <i class="fa-brands fa-youtube text-sm"></i>
-          <span class="hidden sm:inline">YouTube Completo</span>
-        </a>
+          <span class="hidden sm:inline">Ver Concierto</span>
+        </button>
       </div>
 
     </div>
   </header>
 
-  <!-- ================= HERO BILLBOARD NETFLIX (VIDEO concierto.mp4) ================= -->
-  <section id="hero" class="relative w-full h-[100vh] min-h-[650px] flex items-center overflow-hidden">
+  <!-- ================= HERO BILLBOARD NETFLIX (VIDEO concierto.mp4 EN FONDO TOTAL) ================= -->
+  <section id="hero" class="relative w-full h-[100vh] min-h-[650px] flex items-center overflow-hidden isolate">
     
-    <!-- Video de fondo concierto.mp4 (Edge to Edge) -->
-    <div class="absolute inset-0 w-full h-full -z-20 overflow-hidden bg-black">
+    <!-- Video de fondo concierto.mp4 (Capa Base z-0) -->
+    <div class="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
       <video 
         id="heroVideo" 
         autoplay 
@@ -110,22 +116,25 @@
         playsinline 
         webkit-playsinline 
         preload="auto" 
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover scale-100"
       >
         <source src="concierto.mp4" type="video/mp4">
         <source src="Concierto.mp4" type="video/mp4">
-        <source src="CONCIERTO.mp4" type="video/mp4">
+        <source src="./concierto.mp4" type="video/mp4">
       </video>
 
-      <!-- Gradientes Netflix: sombra lateral izquierda para textos y degradado al fondo -->
-      <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent pointer-events-none"></div>
-      <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#141414] via-[#141414]/60 to-transparent pointer-events-none"></div>
+      <!-- Sombra degradada lateral para legibilidad (sin tapar el video en el centro/derecha) -->
+      <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/40 to-transparent"></div>
+      
+      <!-- Degradado inferior para conectar con el catálogo -->
+      <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#141414] via-[#141414]/70 to-transparent"></div>
     </div>
 
-    <!-- Contenido Superpuesto Delante del Video -->
+    <!-- Contenido Superpuesto Delante del Video (Capa Superior z-10) -->
     <div class="relative max-w-[1700px] w-full mx-auto px-4 sm:px-8 lg:px-12 z-10 pt-20">
       <div class="max-w-2xl space-y-4">
         
+        <!-- Insignia Netflix -->
         <div class="flex items-center gap-2.5">
           <span class="text-[#E50914] font-black tracking-widest text-lg font-netflix flex items-center gap-1.5">
             <span class="w-1.5 h-4 bg-[#E50914] inline-block"></span> ESPECIAL ORIGINAL
@@ -134,59 +143,106 @@
           <span class="text-xs uppercase font-bold tracking-wider text-zinc-300">Concierto por la Paz 2026</span>
         </div>
 
+        <!-- Título Billboard Principal -->
         <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black font-netflix uppercase text-white leading-none tracking-wide drop-shadow-2xl">
           LIBERTAD MUSICAL
         </h1>
 
+        <!-- Featuring y Etiquetas -->
         <div class="flex flex-wrap items-center gap-3 text-sm sm:text-base font-bold">
           <span class="text-amber-400">ft. Bonny Cepeda</span>
           <span class="text-zinc-500">•</span>
           <span class="text-white font-medium">«Mery Tu Loba»</span>
-          <span class="border border-zinc-500 text-zinc-300 text-[10px] px-1.5 py-0.2 rounded font-mono">13+</span>
+          <span class="border border-zinc-500 text-zinc-300 text-[10px] px-1.5 py-0.5 rounded font-mono">13+</span>
           <span class="bg-zinc-800/80 text-zinc-300 text-[10px] px-2 py-0.5 rounded font-mono">EN VIVO HD</span>
         </div>
 
+        <!-- Sinopsis -->
         <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal max-w-xl drop-shadow line-clamp-3">
           31 músicos de la Orquesta Penitenciaria se unen al legendario maestro Bonny Cepeda en la histórica Plaza El Venezolano de Caracas. Un hito de rigor artístico y redención nacido de la alianza entre El Sistema (PAP) y el Ministerio del Servicio Penitenciario.
         </p>
 
-        <!-- Botones Delante del Banner -->
+        <!-- BOTONES DE ACCIÓN NETFLIX -->
         <div class="flex items-center gap-3 pt-3">
-          <button onclick="reproducirConciertoModal()" class="bg-white hover:bg-white/80 text-black font-extrabold px-6 sm:px-8 py-3 rounded text-sm sm:text-base flex items-center gap-2.5 transition active:scale-95 cursor-pointer shadow-xl">
-            <i class="fa-solid fa-play text-base sm:text-lg"></i>
+          
+          <!-- Botón Reproducir (Abre la experiencia pantalla completa) -->
+          <button onclick="abrirReproductorNetflix()" class="bg-white hover:bg-zinc-200 text-black font-black px-7 sm:px-9 py-3.5 rounded text-sm sm:text-base flex items-center gap-3 transition hover:scale-105 active:scale-95 cursor-pointer shadow-2xl glow-red">
+            <i class="fa-solid fa-play text-base sm:text-lg text-black"></i>
             <span>Reproducir</span>
           </button>
 
-          <a href="#detras-escena" class="bg-zinc-500/40 hover:bg-zinc-500/60 text-white font-bold px-5 sm:px-7 py-3 rounded text-sm sm:text-base flex items-center gap-2 backdrop-blur-sm transition active:scale-95 cursor-pointer">
+          <!-- Botón Más Información -->
+          <a href="#detras-escena" class="bg-zinc-500/40 hover:bg-zinc-500/60 text-white font-bold px-6 sm:px-8 py-3.5 rounded text-sm sm:text-base flex items-center gap-2 backdrop-blur-sm transition active:scale-95 cursor-pointer">
             <i class="fa-solid fa-circle-info text-base sm:text-lg"></i>
             <span>Más información</span>
           </a>
+
         </div>
 
       </div>
     </div>
 
-    <!-- Controles en la esquina inferior derecha -->
+    <!-- Controles Inferiores Derechos: Botón Mute & Tag de Sede -->
     <div class="absolute bottom-16 right-4 sm:right-8 lg:right-12 z-20 flex items-center gap-3">
-      <button onclick="alternarAudioHero()" id="btnAudioHero" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-white/40 bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition active:scale-90" title="Activar/Silenciar sonido de fondo">
+      <button onclick="alternarAudioHero()" id="btnAudioHero" class="w-11 h-11 rounded-full border border-white/30 bg-black/60 hover:bg-black text-white flex items-center justify-center transition active:scale-90 cursor-pointer" title="Activar / Silenciar sonido del banner">
         <i id="iconoAudioHero" class="fa-solid fa-volume-xmark text-sm"></i>
       </button>
 
-      <div class="border-l-2 border-white/60 bg-black/50 backdrop-blur-sm px-3 py-1 text-xs font-bold text-zinc-300">
+      <div class="border-l-2 border-white/60 bg-black/60 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold text-zinc-300">
         Plaza El Venezolano • 13 Jun
       </div>
     </div>
 
   </section>
 
-  <!-- ================= FILA 1: REPARTO NETFLIX (31 MÚSICOS) ================= -->
-  <section id="elenco" class="py-10 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-4">
-    <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
-      <div class="flex items-center gap-2">
-        <h2 class="text-xl sm:text-2xl font-bold font-heading text-white">
-          Reparto Principal — 31 Músicos en Escena
-        </h2>
+  <!-- ================= REPRODUCTOR NETFLIX A PANTALLA COMPLETA (MODAL OVERLAY) ================= -->
+  <div id="reproductorNetflixModal" class="fixed inset-0 z-50 bg-black hidden flex flex-col justify-between overflow-hidden">
+    
+    <!-- Barra Superior del Reproductor (Estilo Netflix UI) -->
+    <div class="absolute top-0 left-0 right-0 z-30 p-4 sm:p-6 bg-gradient-to-b from-black/90 via-black/40 to-transparent flex items-center justify-between transition-opacity duration-300 group">
+      
+      <div class="flex items-center gap-4">
+        <!-- Botón Volver (Flecha atrás Netflix) -->
+        <button onclick="cerrarReproductorNetflix()" class="w-11 h-11 rounded-full bg-black/60 hover:bg-zinc-800 text-white flex items-center justify-center text-lg transition cursor-pointer border border-white/20" title="Volver a la cartelera">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div>
+          <span class="text-[10px] uppercase font-black text-[#E50914] tracking-widest block font-netflix">EN REPRODUCCIÓN</span>
+          <h3 class="text-sm sm:text-base font-bold text-white font-heading truncate max-w-md sm:max-w-xl">
+            Libertad Musical ft. Bonny Cepeda — Mery Tu Loba (En Vivo)
+          </h3>
+        </div>
       </div>
+
+      <div class="flex items-center gap-3">
+        <span class="hidden sm:inline text-xs text-zinc-400 font-mono">13 de Junio de 2026 • Caracas</span>
+        <button onclick="cerrarReproductorNetflix()" class="text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/10 transition cursor-pointer">
+          ✕ Salir
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Iframe Pantalla Completa (100vw × 100vh) -->
+    <div class="relative w-full h-full flex items-center justify-center bg-black">
+      <iframe 
+        id="iframeYoutubePlayer"
+        class="w-full h-full border-0"
+        src="" 
+        title="Orquesta Libertad Musical ft. Bonny Cepeda"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen>
+      </iframe>
+    </div>
+
+  </div>
+
+  <!-- ================= FILA 1: REPARTO NETFLIX (31 MÚSICOS) ================= -->
+  <section id="elenco" class="py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-4">
+    <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+      <h2 class="text-xl sm:text-2xl font-bold font-heading text-white">
+        Reparto Principal — 31 Músicos en Escena
+      </h2>
       <span class="text-xs font-semibold text-zinc-500">Orquesta Libertad Musical</span>
     </div>
 
@@ -195,7 +251,7 @@
     </div>
   </section>
 
-  <!-- ================= FILA 2: DETRÁS DE ESCENA ================= -->
+  <!-- ================= FILA 2: DETRÁS DE ESCENA (EL RODEO III) ================= -->
   <section id="detras-escena" class="py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-6">
     <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
       <h2 class="text-xl sm:text-2xl font-bold font-heading text-white">
@@ -205,6 +261,8 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#181818] border border-zinc-800 rounded-xl overflow-hidden p-6 sm:p-8">
+      
+      <!-- Video Embebido del Ensayo -->
       <div class="lg:col-span-7">
         <div class="relative aspect-video w-full rounded-lg overflow-hidden bg-black shadow-2xl border border-zinc-800">
           <iframe 
@@ -217,6 +275,7 @@
         </div>
       </div>
 
+      <!-- Reseña del Ensayo -->
       <div class="lg:col-span-5 space-y-4 text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
         <span class="text-[10px] uppercase font-bold text-[#E50914] tracking-widest block">Ensayo General</span>
         <h3 class="text-lg sm:text-xl font-bold text-white font-heading">
@@ -230,11 +289,12 @@
         </p>
         
         <div class="pt-2 flex items-center gap-3">
-          <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="bg-zinc-700 hover:bg-zinc-600 text-white font-bold px-4 py-2 rounded text-xs transition flex items-center gap-1.5">
-            <i class="fa-brands fa-youtube text-red-500"></i> Ver Concierto Completo
-          </a>
+          <button onclick="abrirReproductorNetflix()" class="bg-zinc-700 hover:bg-zinc-600 text-white font-bold px-4 py-2 rounded text-xs transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-play text-red-500"></i> Ver Concierto Completo
+          </button>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -248,61 +308,22 @@
       </p>
 
       <div class="flex items-center justify-center gap-8 pt-4 opacity-80 hover:opacity-100 transition">
-        <!-- Logo El Sistema en el pie -->
         <img 
           src="SISTEMA.png" 
           alt="El Sistema" 
           class="h-8 sm:h-10 w-auto object-contain"
-          onerror="this.onerror=null; this.src='sistema.png'; this.onerror=function(){this.src='EL-SISTEMA.png'; this.onerror=function(){this.style.display='none';}};"
+          onerror="probarLogosSistema(this)"
         >
         <span class="text-zinc-600">•</span>
-        <!-- Logo Ministerio en el pie -->
         <img 
           src="DA.png" 
           alt="Servicio Penitenciario" 
           class="h-8 sm:h-10 w-auto object-contain"
-          onerror="this.onerror=null; this.src='da.png'; this.onerror=function(){this.style.display='none';};"
+          onerror="this.onerror=null; this.src='da.png';"
         >
       </div>
     </div>
   </section>
-
-  <!-- ================= MODAL DE REPRODUCCIÓN PARA concierto.mp4 ================= -->
-  <div id="modalReproductor" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6">
-    <div class="relative w-full max-w-6xl bg-[#181818] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
-      
-      <div class="p-4 bg-black/60 border-b border-zinc-800 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="text-[#E50914] font-black text-sm uppercase tracking-wider font-netflix">REPRODUCIENDO</span>
-          <span class="text-white text-xs sm:text-sm font-bold truncate">Libertad Musical ft. Bonny Cepeda — Mery Tu Loba</span>
-        </div>
-        <button onclick="cerrarConciertoModal()" class="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white flex items-center justify-center transition cursor-pointer">
-          <i class="fa-solid fa-xmark text-sm"></i>
-        </button>
-      </div>
-
-      <div class="relative aspect-video w-full bg-black flex items-center justify-center">
-        <video 
-          id="videoModalPlayer" 
-          controls 
-          playsinline 
-          class="w-full h-full object-cover"
-        >
-          <source src="concierto.mp4" type="video/mp4">
-          <source src="Concierto.mp4" type="video/mp4">
-          <source src="CONCIERTO.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <div class="p-4 bg-[#181818] flex items-center justify-between text-xs text-zinc-400">
-        <span>Concierto por la Paz 2026 • Grabación Oficial</span>
-        <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1.5">
-          <i class="fa-brands fa-youtube"></i> Ver en YouTube
-        </a>
-      </div>
-
-    </div>
-  </div>
 
   <!-- ================= PIE DE PÁGINA ================= -->
   <footer class="border-t border-zinc-900 bg-black py-8 text-center text-xs text-zinc-600">
@@ -312,6 +333,7 @@
 
   <!-- ================= SCRIPTS ================= -->
   <script>
+    // LISTADO COMPLETO DE LOS 31 MÚSICOS
     const elencoMusicos = [
       { nombre: "Luis David Solórzano Guarapana", rol: "Dirección Musical" },
       { nombre: "Emerson Ewin Rodríguez Martínez", rol: "Arreglista" },
@@ -362,20 +384,69 @@
       `).join('');
     }
 
-    function reproducirConciertoModal() {
-      const modal = document.getElementById('modalReproductor');
-      const video = document.getElementById('videoModalPlayer');
+    // RESOLUCIÓN INTELIGENTE DE RUTA DEL LOGO
+    const posiblesLogosSistema = ['SISTEMA.png', 'sistema.png', 'EL-SISTEMA.png', 'el-sistema.png', 'El-Sistema.png', 'ELSISTEMA.png'];
+    let intentoLogo = 0;
+    function probarLogosSistema(img) {
+      intentoLogo++;
+      if (intentoLogo < posiblesLogosSistema.length) {
+        img.src = posiblesLogosSistema[intentoLogo];
+      } else {
+        img.style.display = 'none';
+        const fallback = document.getElementById('fb-sis');
+        if (fallback) fallback.classList.remove('hidden');
+      }
+    }
+
+    // REPRODUCTOR NETFLIX A PANTALLA COMPLETA
+    function abrirReproductorNetflix() {
+      const modal = document.getElementById('reproductorNetflixModal');
+      const iframe = document.getElementById('iframeYoutubePlayer');
+      const heroVid = document.getElementById('heroVideo');
+
+      // Pausa el video de fondo para no saturar recursos ni mezclar audio
+      if (heroVid) heroVid.pause();
+
+      // Carga el video de YouTube en autoplay directamente
+      iframe.src = "https://www.youtube.com/embed/KZ9DzZzuVfI?autoplay=1&rel=0&modestbranding=1&fs=1&playsinline=1";
       modal.classList.remove('hidden');
-      video.play().catch(() => {});
+      document.body.style.overflow = 'hidden';
+
+      // Solicita pantalla completa nativa si el navegador lo permite
+      if (modal.requestFullscreen) {
+        modal.requestFullscreen().catch(() => {});
+      } else if (modal.webkitRequestFullscreen) {
+        modal.webkitRequestFullscreen().catch(() => {});
+      }
     }
 
-    function cerrarConciertoModal() {
-      const modal = document.getElementById('modalReproductor');
-      const video = document.getElementById('videoModalPlayer');
-      video.pause();
+    function cerrarReproductorNetflix() {
+      const modal = document.getElementById('reproductorNetflixModal');
+      const iframe = document.getElementById('iframeYoutubePlayer');
+      const heroVid = document.getElementById('heroVideo');
+
+      // Detiene la reproducción
+      iframe.src = "";
       modal.classList.add('hidden');
+      document.body.style.overflow = '';
+
+      // Reanuda el video de fondo
+      if (heroVid) heroVid.play().catch(() => {});
+
+      // Sale de pantalla completa si estaba activa
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
     }
 
+    // Escuchar tecla ESC para cerrar el reproductor
+    document.addEventListener('keydown', (e) => {
+      if (e.key === "Escape") {
+        cerrarReproductorNetflix();
+      }
+    });
+
+    // Control de Audio del Banner
     function alternarAudioHero() {
       const vid = document.getElementById('heroVideo');
       const icono = document.getElementById('iconoAudioHero');
@@ -390,6 +461,7 @@
       }
     }
 
+    // Navbar scroll
     window.addEventListener('scroll', () => {
       const nav = document.getElementById('navbar');
       if (window.scrollY > 60) {
@@ -401,16 +473,29 @@
       }
     });
 
+    // Arranque de la página y reproducción garantizada
     document.addEventListener('DOMContentLoaded', () => {
       renderMusicosNetflix();
       
       const heroVid = document.getElementById('heroVideo');
       if (heroVid) {
         heroVid.muted = true;
-        heroVid.play().catch(() => {
-          document.addEventListener('click', () => heroVid.play(), { once: true });
-          document.addEventListener('touchstart', () => heroVid.play(), { once: true });
-        });
+        heroVid.defaultMuted = true;
+        heroVid.playsInline = true;
+
+        const playPromise = heroVid.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Si el navegador bloquea autoplay al primer instante, arranca al primer toque
+            const arrancarAlTocar = () => {
+              heroVid.play();
+              document.removeEventListener('click', arrancarAlTocar);
+              document.removeEventListener('touchstart', arrancarAlTocar);
+            };
+            document.addEventListener('click', arrancarAlTocar);
+            document.addEventListener('touchstart', arrancarAlTocar);
+          });
+        }
       }
     });
   </script>
