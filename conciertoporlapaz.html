@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- API Oficial de YouTube para control de calidad HD -->
+  <!-- API Oficial de YouTube para control de calidad 4K Ultra HD -->
   <script src="https://www.youtube.com/iframe_api"></script>
 
   <script>
@@ -55,7 +55,7 @@
       box-shadow: 0 0 35px -5px rgba(229, 9, 20, 0.5);
     }
 
-    /* Animación de giro para el móvil en la pantalla de bienvenida */
+    /* Animación de rotación del teléfono */
     @keyframes rotarDispositivo {
       0%, 20% { transform: rotate(0deg); }
       50%, 80% { transform: rotate(90deg); }
@@ -65,7 +65,7 @@
       animation: rotarDispositivo 2.4s ease-in-out infinite;
     }
 
-    /* COMPUERTA DE ORIENTACIÓN: Si la pantalla está en vertical en móviles o tabletas, bloquea el sitio */
+    /* COMPUERTA DE ORIENTACIÓN: Bloqueo en dispositivos móviles si están en vertical */
     @media screen and (orientation: portrait) and (max-width: 1024px) {
       #bloqueoOrientacion {
         display: flex !important;
@@ -90,10 +90,10 @@
         </div>
       </div>
 
-      <!-- Título de Invitación Cinematográfica -->
+      <!-- Título de Invitación Cinematográfica en 4K -->
       <div class="space-y-2">
         <span class="text-xs uppercase font-black text-[#E50914] tracking-[0.25em] font-netflix block">
-          EXPERIENCIA CINEMATOGRÁFICA 1080p
+          EXPERIENCIA CINEMATOGRÁFICA 4K ULTRA HD
         </span>
         <h2 class="text-2xl sm:text-3xl font-black font-heading text-white uppercase tracking-tight">
           Gira tu pantalla en horizontal
@@ -101,7 +101,7 @@
       </div>
 
       <p class="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed max-w-sm">
-        Para apreciar el sonido de consola y la escala visual de los <strong>31 músicos</strong> de la Orquesta Libertad Musical junto a <strong>Bonny Cepeda</strong>, rota tu teléfono para desbloquear la experiencia.
+        Para disfrutar la fidelidad sonora y la resolución <strong>4K Ultra HD</strong> de los <strong>31 músicos</strong> de la Orquesta Libertad Musical junto a <strong>Bonny Cepeda</strong>, rota tu teléfono para desbloquear el sitio.
       </p>
 
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-zinc-400 uppercase tracking-wider">
@@ -151,7 +151,7 @@
         <div class="flex items-center gap-4">
           <button onclick="abrirReproductorNetflix()" class="bg-[#E50914] hover:bg-red-700 text-white font-bold px-4 py-2 rounded text-xs uppercase tracking-wider transition active:scale-95 flex items-center gap-2 cursor-pointer">
             <i class="fa-brands fa-youtube text-sm"></i>
-            <span class="hidden sm:inline">Ver en 1080p</span>
+            <span class="hidden sm:inline">Ver en 4K</span>
           </button>
         </div>
 
@@ -178,7 +178,7 @@
           <source src="CONCIERTO.mp4" type="video/mp4">
         </video>
 
-        <!-- Sombra lateral cinematográfica para los títulos -->
+        <!-- Sombra lateral cinematográfica para legibilidad -->
         <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/40 to-transparent"></div>
         <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#141414] via-[#141414]/70 to-transparent"></div>
       </div>
@@ -204,7 +204,7 @@
             <span class="text-zinc-500">•</span>
             <span class="text-white font-medium">«Mery Tu Loba»</span>
             <span class="border border-zinc-500 text-zinc-300 text-[10px] px-1.5 py-0.5 rounded font-mono">13+</span>
-            <span class="bg-[#E50914] text-white text-[10px] px-2 py-0.5 rounded font-bold font-mono">1080p MÁXIMA CALIDAD</span>
+            <span class="bg-[#E50914] text-white text-[10px] px-2 py-0.5 rounded font-bold font-mono">4K ULTRA HD</span>
           </div>
 
           <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal max-w-xl drop-shadow line-clamp-3">
@@ -242,7 +242,7 @@
 
     </section>
 
-    <!-- ================= MODAL CINEMATOGRÁFICO DE REPRODUCCIÓN (YOUTUBE API 1080p) ================= -->
+    <!-- ================= MODAL CINEMATOGRÁFICO DE REPRODUCCIÓN (YOUTUBE API 4K) ================= -->
     <div id="reproductorNetflixModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between overflow-hidden">
       
       <!-- Barra Superior UI Netflix -->
@@ -253,7 +253,7 @@
             <i class="fa-solid fa-arrow-left"></i>
           </button>
           <div>
-            <span class="text-[10px] uppercase font-black text-[#E50914] tracking-widest block font-netflix">REPRODUCIENDO EN HD</span>
+            <span class="text-[10px] uppercase font-black text-[#E50914] tracking-widest block font-netflix">REPRODUCIENDO EN 4K ULTRA HD</span>
             <h3 class="text-sm sm:text-base font-bold text-white font-heading truncate max-w-md sm:max-w-xl">
               Libertad Musical ft. Bonny Cepeda — Mery Tu Loba (En Vivo)
             </h3>
@@ -261,7 +261,7 @@
         </div>
 
         <div class="flex items-center gap-3">
-          <span class="text-[11px] bg-red-600/30 text-red-300 border border-red-500/40 px-2 py-0.5 rounded font-mono font-bold hidden sm:inline">1080p Máxima Calidad</span>
+          <span class="text-[11px] bg-red-600/30 text-red-300 border border-red-500/40 px-2 py-0.5 rounded font-mono font-bold hidden sm:inline">4K Ultra HD</span>
           <button onclick="cerrarReproductorNetflix()" class="text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/10 transition cursor-pointer">
             ✕ Salir
           </button>
@@ -288,7 +288,7 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5" id="gridMusicosNetflix"></div>
     </section>
 
-    <!-- ================= FILA 2: DETRÁS DE ESCENA (EL RODEO III) ================= -->
+    <!-- ================= FILA 2: DETRÁS DE ESCENA CON PORTADA julioybonny.jpg ================= -->
     <section id="detras-escena" class="py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-6">
       <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
         <h2 class="text-xl sm:text-2xl font-bold font-heading text-white">
@@ -298,18 +298,61 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#181818] border border-zinc-800 rounded-xl overflow-hidden p-6 sm:p-8">
+        
+        <!-- Video con Portada Personalizada julioybonny.jpg -->
         <div class="lg:col-span-7">
-          <div class="relative aspect-video w-full rounded-lg overflow-hidden bg-black shadow-2xl border border-zinc-800">
+          <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-black shadow-2xl border border-zinc-800 group">
+            
+            <!-- Iframe de YouTube para el Ensayo General -->
             <iframe 
+              id="iframeEnsayo"
               class="w-full h-full object-cover"
-              src="https://www.youtube.com/embed/_gTlUvfCfPE?rel=0&modestbranding=1" 
+              src="" 
+              data-src="https://www.youtube.com/embed/_gTlUvfCfPE?autoplay=1&rel=0&modestbranding=1&vq=hd2160"
               title="Ensayo General Orquesta Libertad Musical y Bonny Cepeda"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
               allowfullscreen>
             </iframe>
+
+            <!-- Capa de Portada: julioybonny.jpg con Click-to-Play -->
+            <div 
+              id="portadaEnsayo" 
+              onclick="reproducirEnsayoConPortada()" 
+              class="absolute inset-0 bg-black flex items-center justify-center cursor-pointer transition-opacity duration-500 z-10"
+            >
+              <!-- Imagen de Portada -->
+              <img 
+                src="julioybonny.jpg" 
+                alt="Ministro Julio García Zerpa y Bonny Cepeda en El Rodeo III" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                onerror="this.src='https://img.youtube.com/vi/_gTlUvfCfPE/maxresdefault.jpg'"
+              >
+              
+              <!-- Gradiente cinematográfico inferior -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
+
+              <!-- Botón Play estilo Netflix -->
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#E50914] text-white flex items-center justify-center text-xl sm:text-2xl pl-1 shadow-2xl shadow-red-600/60 group-hover:scale-110 transition-transform">
+                  <i class="fa-solid fa-play"></i>
+                </div>
+              </div>
+
+              <!-- Etiqueta inferior de la portada -->
+              <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-zinc-300 pointer-events-none">
+                <span class="font-bold tracking-wide text-white uppercase text-[11px] flex items-center gap-1.5 drop-shadow">
+                  <i class="fa-solid fa-clapperboard text-[#E50914]"></i> Ver Ensayo General
+                </span>
+                <span class="bg-black/70 backdrop-blur-md px-2.5 py-1 rounded text-[10px] text-zinc-300 font-mono border border-white/10">
+                  El Rodeo III
+                </span>
+              </div>
+            </div>
+
           </div>
         </div>
 
+        <!-- Reseña del Ensayo -->
         <div class="lg:col-span-5 space-y-4 text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
           <span class="text-[10px] uppercase font-bold text-[#E50914] tracking-widest block">Ensayo General</span>
           <h3 class="text-lg sm:text-xl font-bold text-white font-heading">
@@ -324,10 +367,11 @@
           
           <div class="pt-2 flex items-center gap-3">
             <button onclick="abrirReproductorNetflix()" class="bg-zinc-700 hover:bg-zinc-600 text-white font-bold px-4 py-2 rounded text-xs transition flex items-center gap-1.5 cursor-pointer">
-              <i class="fa-solid fa-play text-red-500"></i> Ver Concierto Completo
+              <i class="fa-solid fa-play text-red-500"></i> Ver Concierto Completo en 4K
             </button>
           </div>
         </div>
+
       </div>
     </section>
 
@@ -432,7 +476,7 @@
       }
     }
 
-    // CONTROL DEL REPRODUCTOR CON FORZADO DE MÁXIMA CALIDAD (YouTube Iframe API)
+    // CONTROL DEL REPRODUCTOR CON FORZADO EN 4K ULTRA HD (YouTube Iframe API)
     let ytPlayer = null;
     let ytApiLista = false;
 
@@ -446,6 +490,7 @@
 
       if (heroVid) heroVid.pause();
       modal.classList.remove('hidden');
+      modal.classList.add('flex');
       document.body.style.overflow = 'hidden';
 
       if (!ytPlayer && ytApiLista) {
@@ -453,7 +498,7 @@
           videoId: 'KZ9DzZzuVfI',
           playerVars: {
             autoplay: 1,
-            vq: 'hd1080',
+            vq: 'hd2160',
             modestbranding: 1,
             rel: 0,
             fs: 1,
@@ -461,8 +506,8 @@
           },
           events: {
             'onReady': (event) => {
-              // Forzar máxima resolución soportada
-              event.target.setPlaybackQuality('hd1080');
+              // Forzar máxima resolución 4K soportada
+              event.target.setPlaybackQuality('hd2160');
               event.target.playVideo();
             },
             'onPlaybackQualityChange': (event) => {
@@ -473,12 +518,12 @@
       } else if (ytPlayer && ytPlayer.loadVideoById) {
         ytPlayer.loadVideoById({
           videoId: 'KZ9DzZzuVfI',
-          suggestedQuality: 'hd1080'
+          suggestedQuality: 'hd2160'
         });
-        ytPlayer.setPlaybackQuality('hd1080');
+        ytPlayer.setPlaybackQuality('hd2160');
       }
 
-      // Solicitar pantalla completa nativa del navegador
+      // Pantalla completa nativa del navegador
       if (modal.requestFullscreen) {
         modal.requestFullscreen().catch(() => {});
       } else if (modal.webkitRequestFullscreen) {
@@ -495,6 +540,7 @@
       }
 
       modal.classList.add('hidden');
+      modal.classList.remove('flex');
       document.body.style.overflow = '';
 
       if (heroVid) heroVid.play().catch(() => {});
@@ -508,7 +554,20 @@
       if (e.key === "Escape") cerrarReproductorNetflix();
     });
 
-    // Control de Audio Banner
+    // REPRODUCCIÓN DEL ENSAYO GENERAL CON PORTADA julioybonny.jpg
+    function reproducirEnsayoConPortada() {
+      const portada = document.getElementById('portadaEnsayo');
+      const iframe = document.getElementById('iframeEnsayo');
+      if (iframe && portada) {
+        iframe.src = iframe.getAttribute('data-src');
+        portada.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          portada.style.display = 'none';
+        }, 500);
+      }
+    }
+
+    // CONTROL DE AUDIO BANNER
     function alternarAudioHero() {
       const vid = document.getElementById('heroVideo');
       const icono = document.getElementById('iconoAudioHero');
@@ -523,7 +582,7 @@
       }
     }
 
-    // DETECCIÓN DINÁMICA DE GIRO
+    // DETECCIÓN DINÁMICA DE GIRO HORIZONTAL
     function verificarOrientacionDispositivo() {
       const esRetrato = window.matchMedia("(orientation: portrait)").matches;
       const esPantallaPequena = window.innerWidth <= 1024;
