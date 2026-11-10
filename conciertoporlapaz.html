@@ -9,12 +9,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <!-- Google Fonts: Bebas Neue (Netflix Display) & Plus Jakarta Sans -->
+  <!-- Google Fonts: Bebas Neue & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- API Oficial de YouTube para control de calidad 4K Ultra HD -->
+  <!-- API Oficial de YouTube para forzado de calidad 4K Ultra HD -->
   <script src="https://www.youtube.com/iframe_api"></script>
 
   <script>
@@ -65,7 +65,7 @@
       animation: rotarDispositivo 2.4s ease-in-out infinite;
     }
 
-    /* COMPUERTA DE ORIENTACIÓN: Bloqueo en dispositivos móviles si están en vertical */
+    /* COMPUERTA DE ORIENTACIÓN: Bloqueo en dispositivos móviles si están en posición vertical */
     @media screen and (orientation: portrait) and (max-width: 1024px) {
       #bloqueoOrientacion {
         display: flex !important;
@@ -101,11 +101,11 @@
       </div>
 
       <p class="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed max-w-sm">
-        Para disfrutar la fidelidad sonora y la resolución <strong>4K Ultra HD</strong> de los <strong>31 músicos</strong> de la Orquesta Libertad Musical junto a <strong>Bonny Cepeda</strong>, rota tu teléfono para desbloquear el sitio.
+        Para disfrutar la fidelidad sonora y la resolución <strong>4K Ultra HD</strong> de los <strong>31 músicos</strong> de la Orquesta Libertad Musical junto a <strong>Bonny Cepeda</strong>, gira tu dispositivo para desbloquear el sitio.
       </p>
 
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-zinc-400 uppercase tracking-wider">
-        <i class="fa-solid fa-rotate text-amber-400 animate-spin"></i> Esperando orientación apaisada...
+        <i class="fa-solid fa-rotate text-amber-400 animate-spin"></i> Esperando orientación horizontal...
       </div>
 
     </div>
@@ -288,7 +288,7 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5" id="gridMusicosNetflix"></div>
     </section>
 
-    <!-- ================= FILA 2: DETRÁS DE ESCENA CON PORTADA julioybonny.jpg ================= -->
+    <!-- ================= FILA 2: DETRÁS DE ESCENA CON PORTADA INTELIGENTE ================= -->
     <section id="detras-escena" class="py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-6">
       <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
         <h2 class="text-xl sm:text-2xl font-bold font-heading text-white">
@@ -299,7 +299,7 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#181818] border border-zinc-800 rounded-xl overflow-hidden p-6 sm:p-8">
         
-        <!-- Video con Portada Personalizada julioybonny.jpg -->
+        <!-- Video con Portada Personalizada julioybonny con Detección en Cascada -->
         <div class="lg:col-span-7">
           <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-black shadow-2xl border border-zinc-800 group">
             
@@ -314,18 +314,19 @@
               allowfullscreen>
             </iframe>
 
-            <!-- Capa de Portada: julioybonny.jpg con Click-to-Play -->
+            <!-- Capa de Portada: julioybonny con Click-to-Play -->
             <div 
               id="portadaEnsayo" 
               onclick="reproducirEnsayoConPortada()" 
               class="absolute inset-0 bg-black flex items-center justify-center cursor-pointer transition-opacity duration-500 z-10"
             >
-              <!-- Imagen de Portada -->
+              <!-- Imagen de Portada con Rastreador de Extensiones y Fallback Real -->
               <img 
+                id="imgPortadaEnsayo"
                 src="julioybonny.jpg" 
                 alt="Ministro Julio García Zerpa y Bonny Cepeda en El Rodeo III" 
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                onerror="this.src='https://img.youtube.com/vi/_gTlUvfCfPE/maxresdefault.jpg'"
+                onerror="probarPortadas(this)"
               >
               
               <!-- Gradiente cinematográfico inferior -->
@@ -476,6 +477,30 @@
       }
     }
 
+    // RESOLUCIÓN INTELIGENTE DE PORTADA (Prueba variantes de nombres y extensiones)
+    const posiblesPortadas = [
+      'julioybonny.jpg',
+      'julioybonny.JPG',
+      'julioybonny.jpeg',
+      'julioybonny.JPEG',
+      'julioybonny.png',
+      'julioybonny.PNG',
+      'Julioybonny.jpg',
+      'JulioYBonny.jpg',
+      'julio-y-bonny.jpg'
+    ];
+    let idxPortada = 0;
+
+    function probarPortadas(img) {
+      idxPortada++;
+      if (idxPortada < posiblesPortadas.length) {
+        img.src = posiblesPortadas[idxPortada];
+      } else {
+        // Fallback garantizado de YouTube con fotograma real (nunca pantalla gris)
+        img.src = 'https://img.youtube.com/vi/_gTlUvfCfPE/hqdefault.jpg';
+      }
+    }
+
     // CONTROL DEL REPRODUCTOR CON FORZADO EN 4K ULTRA HD (YouTube Iframe API)
     let ytPlayer = null;
     let ytApiLista = false;
@@ -554,7 +579,7 @@
       if (e.key === "Escape") cerrarReproductorNetflix();
     });
 
-    // REPRODUCCIÓN DEL ENSAYO GENERAL CON PORTADA julioybonny.jpg
+    // REPRODUCCIÓN DEL ENSAYO GENERAL CON PORTADA julioybonny
     function reproducirEnsayoConPortada() {
       const portada = document.getElementById('portadaEnsayo');
       const iframe = document.getElementById('iframeEnsayo');
