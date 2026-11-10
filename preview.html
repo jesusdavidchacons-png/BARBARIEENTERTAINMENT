@@ -2,14 +2,14 @@
 <html lang="es" class="scroll-smooth h-full bg-[#141414]">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Libertad Musical ft. Bonny Cepeda — Concierto por la Paz 2026</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <!-- Google Fonts: Bebas Neue (Netflix Display) & Plus Jakarta Sans -->
+  <!-- Google Fonts: Bebas Neue & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -49,371 +49,286 @@
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #E50914; }
 
     .glow-red {
-      box-shadow: 0 0 35px -5px rgba(229, 9, 20, 0.5);
-    }
-
-    /* Animación de rotación del teléfono */
-    @keyframes rotarDispositivo {
-      0%, 20% { transform: rotate(0deg); }
-      50%, 80% { transform: rotate(90deg); }
-      100% { transform: rotate(0deg); }
-    }
-    .anim-rotar {
-      animation: rotarDispositivo 2.4s ease-in-out infinite;
-    }
-
-    /* COMPUERTA DE ORIENTACIÓN: Bloqueo en dispositivos móviles si están en vertical */
-    @media screen and (orientation: portrait) and (max-width: 1024px) {
-      #bloqueoOrientacion {
-        display: flex !important;
-      }
-      #sitioPrincipal {
-        display: none !important;
-      }
+      box-shadow: 0 0 35px -5px rgba(229, 9, 20, 0.55);
     }
   </style>
 </head>
 <body class="min-h-full flex flex-col justify-between selection:bg-[#E50914] selection:text-white">
 
-  <!-- ================= COMPUERTA: BLOQUEO HASTA GIRAR EN HORIZONTAL ================= -->
-  <div id="bloqueoOrientacion" class="fixed inset-0 z-[100] bg-[#0c0d12] hidden flex-col items-center justify-center p-6 text-center select-none">
-    <div class="max-w-md space-y-6 flex flex-col items-center">
+  <!-- ================= NAVBAR TRANSLÚCIDA ================= -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 bg-gradient-to-b from-black/95 via-black/60 to-transparent">
+    <div class="max-w-[1700px] mx-auto px-4 sm:px-8 lg:px-12 h-16 sm:h-20 flex items-center justify-between">
       
-      <!-- Icono animado de rotación -->
-      <div class="relative w-28 h-28 flex items-center justify-center">
-        <div class="absolute inset-0 rounded-full bg-[#E50914]/20 animate-ping"></div>
-        <div class="w-24 h-24 rounded-full border border-[#E50914]/40 bg-black/60 flex items-center justify-center text-4xl text-white shadow-2xl">
-          <i class="fa-solid fa-mobile-screen-button anim-rotar text-[#E50914]"></i>
-        </div>
-      </div>
-
-      <!-- Título de Invitación Cinematográfica en 4K -->
-      <div class="space-y-2">
-        <span class="text-xs uppercase font-black text-[#E50914] tracking-[0.25em] font-netflix block">
-          EXPERIENCIA CINEMATOGRÁFICA 4K ULTRA HD
-        </span>
-        <h2 class="text-2xl sm:text-3xl font-black font-heading text-white uppercase tracking-tight">
-          Gira tu pantalla en horizontal
-        </h2>
-      </div>
-
-      <p class="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed max-w-sm">
-        Para disfrutar la fidelidad sonora y la resolución <strong>4K Ultra HD</strong> de los <strong>31 músicos</strong> de la Orquesta Libertad Musical junto a <strong>Bonny Cepeda</strong>, gira tu dispositivo para desbloquear el sitio.
-      </p>
-
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-zinc-400 uppercase tracking-wider">
-        <i class="fa-solid fa-rotate text-amber-400 animate-spin"></i> Esperando orientación horizontal...
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ================= CONTENEDOR PRINCIPAL DEL SITIO ================= -->
-  <div id="sitioPrincipal" class="flex flex-col min-h-full">
-
-    <!-- ================= NAVBAR TRANSLÚCIDA ================= -->
-    <header id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-500 bg-gradient-to-b from-black/90 via-black/50 to-transparent">
-      <div class="max-w-[1700px] mx-auto px-4 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
-        
-        <div class="flex items-center gap-6 sm:gap-10">
-          <div class="flex items-center gap-3">
-            <img 
-              id="logoSistema"
-              src="SISTEMA.png" 
-              alt="El Sistema — PAP" 
-              class="h-9 sm:h-11 w-auto object-contain filter drop-shadow hover:scale-105 transition"
-              onerror="probarLogosSistema(this)"
-            >
-            <span id="fb-sis" class="hidden text-xs uppercase tracking-widest font-black text-[#E50914]">EL SISTEMA</span>
-
-            <div class="h-6 w-px bg-white/25"></div>
-
-            <img 
-              id="logoDA"
-              src="DA.png" 
-              alt="Ministerio Penitenciario" 
-              class="h-9 sm:h-11 w-auto object-contain filter drop-shadow hover:scale-105 transition"
-              onerror="this.onerror=null; this.src='da.png';"
-            >
-          </div>
-
-          <nav class="hidden md:flex items-center gap-5 text-sm font-medium text-zinc-300">
-            <a href="#hero" class="text-white font-bold hover:text-zinc-200 transition">Inicio</a>
-            <a href="#elenco" class="hover:text-zinc-300 transition">Reparto (31 Músicos)</a>
-            <a href="#detras-escena" class="hover:text-zinc-300 transition">Detrás de Escena</a>
-            <a href="#alianza" class="hover:text-zinc-300 transition">Alianza PAP</a>
-          </nav>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <button onclick="abrirReproductorNetflix()" class="bg-[#E50914] hover:bg-red-700 text-white font-bold px-4 py-2 rounded text-xs uppercase tracking-wider transition active:scale-95 flex items-center gap-2 cursor-pointer">
-            <i class="fa-brands fa-youtube text-sm"></i>
-            <span class="hidden sm:inline">Ver en 4K</span>
-          </button>
-        </div>
-
-      </div>
-    </header>
-
-    <!-- ================= BILLBOARD HERO: VIDEO concierto.mp4 ================= -->
-    <section id="hero" class="relative w-full h-[100vh] min-h-[600px] flex items-center overflow-hidden isolate">
-      
-      <!-- Video de fondo nítido y en primer plano visual -->
-      <div class="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
-        <video 
-          id="heroVideo" 
-          autoplay 
-          muted 
-          loop 
-          playsinline 
-          webkit-playsinline 
-          preload="auto" 
-          class="w-full h-full object-cover scale-100"
-        >
-          <source src="concierto.mp4" type="video/mp4">
-          <source src="Concierto.mp4" type="video/mp4">
-          <source src="CONCIERTO.mp4" type="video/mp4">
-        </video>
-
-        <!-- Sombra lateral cinematográfica para legibilidad -->
-        <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/40 to-transparent"></div>
-        <div class="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#141414] via-[#141414]/70 to-transparent"></div>
-      </div>
-
-      <!-- Contenido Superpuesto Delante del Video -->
-      <div class="relative max-w-[1700px] w-full mx-auto px-4 sm:px-8 lg:px-12 z-10 pt-16">
-        <div class="max-w-2xl space-y-4">
-          
-          <div class="flex items-center gap-2.5">
-            <span class="text-[#E50914] font-black tracking-widest text-lg font-netflix flex items-center gap-1.5">
-              <span class="w-1.5 h-4 bg-[#E50914] inline-block"></span> ESPECIAL ORIGINAL
-            </span>
-            <span class="text-zinc-400 text-xs">•</span>
-            <span class="text-xs uppercase font-bold tracking-wider text-zinc-300">Concierto por la Paz 2026</span>
-          </div>
-
-          <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black font-netflix uppercase text-white leading-none tracking-wide drop-shadow-2xl">
-            LIBERTAD MUSICAL
-          </h1>
-
-          <div class="flex flex-wrap items-center gap-3 text-sm sm:text-base font-bold">
-            <span class="text-amber-400">ft. Bonny Cepeda</span>
-            <span class="text-zinc-500">•</span>
-            <span class="text-white font-medium">«Mery Tu Loba»</span>
-            <span class="border border-zinc-500 text-zinc-300 text-[10px] px-1.5 py-0.5 rounded font-mono">13+</span>
-            <span class="bg-[#E50914] text-white text-[10px] px-2 py-0.5 rounded font-bold font-mono">4K ULTRA HD</span>
-          </div>
-
-          <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal max-w-xl drop-shadow line-clamp-3">
-            31 músicos de la Orquesta Penitenciaria se unen al legendario maestro Bonny Cepeda en la histórica Plaza El Venezolano de Caracas. Un hito de rigor artístico y redención nacido de la alianza entre El Sistema (PAP) y el Ministerio del Servicio Penitenciario.
-          </p>
-
-          <!-- BOTONES DE ACCIÓN NETFLIX -->
-          <div class="flex items-center gap-3 pt-3">
-            
-            <button onclick="abrirReproductorNetflix()" class="bg-white hover:bg-zinc-200 text-black font-black px-7 sm:px-9 py-3.5 rounded text-sm sm:text-base flex items-center gap-3 transition hover:scale-105 active:scale-95 cursor-pointer shadow-2xl glow-red">
-              <i class="fa-solid fa-play text-base sm:text-lg text-black"></i>
-              <span>Reproducir</span>
-            </button>
-
-            <a href="#detras-escena" class="bg-zinc-500/40 hover:bg-zinc-500/60 text-white font-bold px-6 sm:px-8 py-3.5 rounded text-sm sm:text-base flex items-center gap-2 backdrop-blur-sm transition active:scale-95 cursor-pointer">
-              <i class="fa-solid fa-circle-info text-base sm:text-lg"></i>
-              <span>Más información</span>
-            </a>
-
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Controles Inferiores Derechos -->
-      <div class="absolute bottom-16 right-4 sm:right-8 lg:right-12 z-20 flex items-center gap-3">
-        <button onclick="alternarAudioHero()" id="btnAudioHero" class="w-11 h-11 rounded-full border border-white/30 bg-black/60 hover:bg-black text-white flex items-center justify-center transition active:scale-90 cursor-pointer" title="Activar / Silenciar sonido del banner">
-          <i id="iconoAudioHero" class="fa-solid fa-volume-xmark text-sm"></i>
-        </button>
-
-        <div class="border-l-2 border-white/60 bg-black/60 backdrop-blur-sm px-3.5 py-1.5 text-xs font-bold text-zinc-300">
-          Plaza El Venezolano • 13 Jun
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ================= MODAL CINEMATOGRÁFICO DE REPRODUCCIÓN (4K ULTRA HD GARANTIZADO) ================= -->
-    <div id="reproductorNetflixModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between overflow-hidden">
-      
-      <!-- Barra Superior UI Netflix -->
-      <div class="absolute top-0 left-0 right-0 z-30 p-4 sm:p-6 bg-gradient-to-b from-black/95 via-black/50 to-transparent flex items-center justify-between">
-        
-        <div class="flex items-center gap-4">
-          <button onclick="cerrarReproductorNetflix()" class="w-11 h-11 rounded-full bg-black/70 hover:bg-zinc-800 text-white flex items-center justify-center text-lg transition cursor-pointer border border-white/20" title="Volver a la cartelera">
-            <i class="fa-solid fa-arrow-left"></i>
-          </button>
-          <div>
-            <span class="text-[10px] uppercase font-black text-[#E50914] tracking-widest block font-netflix">REPRODUCIENDO EN 4K ULTRA HD</span>
-            <h3 class="text-sm sm:text-base font-bold text-white font-heading truncate max-w-md sm:max-w-xl">
-              Libertad Musical ft. Bonny Cepeda — Mery Tu Loba (En Vivo)
-            </h3>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <span class="text-[11px] bg-red-600/30 text-red-300 border border-red-500/40 px-2 py-0.5 rounded font-mono font-bold hidden sm:inline">4K Ultra HD</span>
-          <button onclick="cerrarReproductorNetflix()" class="text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/10 transition cursor-pointer">
-            ✕ Salir
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Iframe de YouTube con inyección directa en 4K -->
-      <div class="relative w-full h-full flex items-center justify-center bg-black">
-        <iframe 
-          id="iframeYoutubePlayer"
-          class="w-full h-full border-0"
-          src="" 
-          title="Libertad Musical ft. Bonny Cepeda — Concierto por la Paz 4K"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" 
-          allowfullscreen>
-        </iframe>
-      </div>
-
-    </div>
-
-    <!-- ================= FILA 1: REPARTO NETFLIX (31 MÚSICOS) ================= -->
-    <section id="elenco" class="py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-4">
-      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
-        <h2 class="text-xl sm:text-2xl font-bold font-heading text-white">
-          Reparto Principal — 31 Músicos en Escena
-        </h2>
-        <span class="text-xs font-semibold text-zinc-500">Orquesta Libertad Musical</span>
-      </div>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5" id="gridMusicosNetflix"></div>
-    </section>
-
-    <!-- ================= FILA 2: DETRÁS DE ESCENA CON PORTADA INTELIGENTE ================= -->
-    <section id="detras-escena" class="py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-6">
-      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
-        <h2 class="text-xl sm:text-2xl font-bold font-heading text-white">
-          Detrás de Escena & Proceso Artístico
-        </h2>
-        <span class="text-xs text-amber-400 font-semibold">El Rodeo III</span>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#181818] border border-zinc-800 rounded-xl overflow-hidden p-6 sm:p-8">
-        
-        <!-- Video con Portada Personalizada julioybonny con Detección en Cascada -->
-        <div class="lg:col-span-7">
-          <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-black shadow-2xl border border-zinc-800 group">
-            
-            <!-- Iframe de YouTube para el Ensayo General -->
-            <iframe 
-              id="iframeEnsayo"
-              class="w-full h-full object-cover"
-              src="" 
-              data-src="https://www.youtube.com/embed/_gTlUvfCfPE?autoplay=1&rel=0&modestbranding=1&vq=hd2160&suggestedQuality=hd2160"
-              title="Ensayo General Orquesta Libertad Musical y Bonny Cepeda"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" 
-              allowfullscreen>
-            </iframe>
-
-            <!-- Capa de Portada: julioybonny con Click-to-Play -->
-            <div 
-              id="portadaEnsayo" 
-              onclick="reproducirEnsayoConPortada()" 
-              class="absolute inset-0 bg-black flex items-center justify-center cursor-pointer transition-opacity duration-500 z-10"
-            >
-              <!-- Imagen de Portada con Rastreador de Extensiones y Fallback Real -->
-              <img 
-                id="imgPortadaEnsayo"
-                src="julioybonny.jpg" 
-                alt="Ministro Julio García Zerpa y Bonny Cepeda en El Rodeo III" 
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                onerror="probarPortadas(this)"
-              >
-              
-              <!-- Gradiente cinematográfico inferior -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
-
-              <!-- Botón Play estilo Netflix -->
-              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#E50914] text-white flex items-center justify-center text-xl sm:text-2xl pl-1 shadow-2xl shadow-red-600/60 group-hover:scale-110 transition-transform">
-                  <i class="fa-solid fa-play"></i>
-                </div>
-              </div>
-
-              <!-- Etiqueta inferior de la portada -->
-              <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-zinc-300 pointer-events-none">
-                <span class="font-bold tracking-wide text-white uppercase text-[11px] flex items-center gap-1.5 drop-shadow">
-                  <i class="fa-solid fa-clapperboard text-[#E50914]"></i> Ver Ensayo General
-                </span>
-                <span class="bg-black/70 backdrop-blur-md px-2.5 py-1 rounded text-[10px] text-zinc-300 font-mono border border-white/10">
-                  El Rodeo III
-                </span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Reseña del Ensayo -->
-        <div class="lg:col-span-5 space-y-4 text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
-          <span class="text-[10px] uppercase font-bold text-[#E50914] tracking-widest block">Ensayo General</span>
-          <h3 class="text-lg sm:text-xl font-bold text-white font-heading">
-            El Encuentro que Transformó el Escenario
-          </h3>
-          <p>
-            Vivimos una jornada histórica durante el ensayo general de la <strong>Orquesta Libertad Musical</strong>, quienes compartieron escenario y partituras con el maestro <strong>Bonny Cepeda</strong>, afinando cada acorde de un montaje de gran nivel artístico.
-          </p>
-          <p>
-            Durante la jornada, el <strong>Ministro del Poder Popular para el Servicio Penitenciario, Julio García Zerpa</strong>, asistió a las instalaciones para constatar de primera mano el trabajo, la mística y el compromiso de los privados de libertad. Bonny Cepeda lo recibió personalmente para guiar el recorrido y mostrar la magnitud de este despliegue musical, demostrando cómo la cultura se consolida como una herramienta real de transformación humana y redención. La disciplina, el arte y la esperanza resuenan con fuerza en El Rodeo III.
-          </p>
-          
-          <div class="pt-2 flex items-center gap-3">
-            <button onclick="abrirReproductorNetflix()" class="bg-zinc-700 hover:bg-zinc-600 text-white font-bold px-4 py-2 rounded text-xs transition flex items-center gap-1.5 cursor-pointer">
-              <i class="fa-solid fa-play text-red-500"></i> Ver Concierto Completo en 4K
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ================= FILA 3: ALIANZA INSTITUCIONAL ================= -->
-    <section id="alianza" class="py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full border-t border-zinc-800">
-      <div class="max-w-4xl mx-auto text-center space-y-5">
-        <span class="text-xs uppercase font-bold tracking-widest text-zinc-500">Alianza Estratégica Nacional</span>
-        <h3 class="text-2xl font-bold text-white font-heading">Programa Académico Penitenciario (PAP)</h3>
-        <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed font-light">
-          El Programa Académico Penitenciario es una iniciativa de <strong>El Sistema</strong> desarrollada de manera conjunta con el <strong>Ministerio del Poder Popular para el Servicio Penitenciario</strong>, brindando herramientas de superación, educación formal y excelencia musical dentro de los centros de formación integral del país.
-        </p>
-
-        <div class="flex items-center justify-center gap-8 pt-4 opacity-80 hover:opacity-100 transition">
+      <div class="flex items-center gap-3 sm:gap-10">
+        <div class="flex items-center gap-2 sm:gap-3">
           <img 
+            id="logoSistema"
             src="SISTEMA.png" 
-            alt="El Sistema" 
-            class="h-8 sm:h-10 w-auto object-contain"
+            alt="El Sistema — PAP" 
+            class="h-8 sm:h-11 w-auto object-contain filter drop-shadow hover:scale-105 transition"
             onerror="probarLogosSistema(this)"
           >
-          <span class="text-zinc-600">•</span>
+          <span id="fb-sis" class="hidden text-xs uppercase tracking-widest font-black text-[#E50914]">EL SISTEMA</span>
+
+          <div class="h-5 sm:h-6 w-px bg-white/25"></div>
+
           <img 
+            id="logoDA"
             src="DA.png" 
-            alt="Servicio Penitenciario" 
-            class="h-8 sm:h-10 w-auto object-contain"
+            alt="Ministerio Penitenciario" 
+            class="h-8 sm:h-11 w-auto object-contain filter drop-shadow hover:scale-105 transition"
             onerror="this.onerror=null; this.src='da.png';"
           >
         </div>
+
+        <nav class="hidden md:flex items-center gap-5 text-sm font-medium text-zinc-300">
+          <a href="#hero" class="text-white font-bold hover:text-zinc-200 transition">Inicio</a>
+          <a href="#elenco" class="hover:text-zinc-300 transition">Reparto (31 Músicos)</a>
+          <a href="#detras-escena" class="hover:text-zinc-300 transition">Detrás de Escena</a>
+          <a href="#alianza" class="hover:text-zinc-300 transition">Alianza PAP</a>
+        </nav>
       </div>
-    </section>
 
-    <!-- ================= PIE DE PÁGINA ================= -->
-    <footer class="border-t border-zinc-900 bg-black py-8 text-center text-xs text-zinc-600">
-      <p>Orquesta Penitenciaria Libertad Musical ft. Bonny Cepeda • 13 de Junio de 2026</p>
-      <p class="text-[11px] mt-1 text-zinc-700">&copy; 2026 El Sistema (PAP) & MPPSP. Todos los derechos reservados.</p>
-    </footer>
+      <div class="flex items-center gap-3">
+        <a 
+          href="https://www.youtube.com/watch?v=KZ9DzZzuVfI&vq=hd2160" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="bg-[#E50914] hover:bg-red-700 text-white font-bold px-3.5 sm:px-4 py-1.5 sm:py-2 rounded text-xs uppercase tracking-wider transition active:scale-95 flex items-center gap-1.5 shadow-md"
+        >
+          <i class="fa-brands fa-youtube text-sm"></i>
+          <span>Ver en 4K</span>
+        </a>
+      </div>
 
-  </div>
+    </div>
+  </header>
+
+  <!-- ================= BILLBOARD HERO RESPONSIVO (VERTICAL Y HORIZONTAL) ================= -->
+  <section id="hero" class="relative w-full min-h-[90vh] sm:h-[100vh] sm:min-h-[600px] flex items-end sm:items-center overflow-hidden isolate pb-14 sm:pb-0">
+    
+    <!-- Video de fondo nítido y adaptable -->
+    <div class="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+      <video 
+        id="heroVideo" 
+        autoplay 
+        muted 
+        loop 
+        playsinline 
+        webkit-playsinline 
+        preload="auto" 
+        class="w-full h-full object-cover scale-100"
+      >
+        <source src="concierto.mp4" type="video/mp4">
+        <source src="Concierto.mp4" type="video/mp4">
+        <source src="CONCIERTO.mp4" type="video/mp4">
+      </video>
+
+      <!-- Gradiente vertical para móviles y lateral para pantallas anchas -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/70 to-black/40 sm:hidden"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-black/45 to-transparent hidden sm:block"></div>
+      <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#141414] via-[#141414]/80 to-transparent hidden sm:block"></div>
+    </div>
+
+    <!-- Contenido Superpuesto Delante del Video -->
+    <div class="relative max-w-[1700px] w-full mx-auto px-4 sm:px-8 lg:px-12 z-10 pt-24 sm:pt-16">
+      <div class="max-w-2xl space-y-3 sm:space-y-4">
+        
+        <div class="flex items-center gap-2">
+          <span class="text-[#E50914] font-black tracking-widest text-base sm:text-lg font-netflix flex items-center gap-1.5">
+            <span class="w-1.5 h-3.5 sm:h-4 bg-[#E50914] inline-block"></span> ESPECIAL ORIGINAL
+          </span>
+          <span class="text-zinc-400 text-xs">•</span>
+          <span class="text-[11px] sm:text-xs uppercase font-bold tracking-wider text-zinc-300">Concierto por la Paz 2026</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-7xl lg:text-8xl font-black font-netflix uppercase text-white leading-none tracking-wide drop-shadow-2xl">
+          LIBERTAD MUSICAL
+        </h1>
+
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-base font-bold">
+          <span class="text-amber-400">ft. Bonny Cepeda</span>
+          <span class="text-zinc-500">•</span>
+          <span class="text-white font-medium">«Mery Tu Loba»</span>
+          <span class="border border-zinc-500 text-zinc-300 text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded font-mono">13+</span>
+          <span class="bg-[#E50914] text-white text-[9px] sm:text-[10px] px-2 py-0.5 rounded font-bold font-mono">4K ULTRA HD</span>
+        </div>
+
+        <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal max-w-xl drop-shadow line-clamp-3">
+          31 músicos de la Orquesta Penitenciaria se unen al legendario maestro Bonny Cepeda en la histórica Plaza El Venezolano de Caracas. Un hito de rigor artístico y redención nacido de la alianza entre El Sistema (PAP) y el Ministerio del Servicio Penitenciario.
+        </p>
+
+        <!-- BOTONES DE ACCIÓN NETFLIX -->
+        <div class="flex items-center gap-3 pt-2 sm:pt-3">
+          
+          <a 
+            href="https://www.youtube.com/watch?v=KZ9DzZzuVfI&vq=hd2160" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="bg-white hover:bg-zinc-200 text-black font-black px-6 sm:px-9 py-3 sm:py-3.5 rounded text-xs sm:text-base flex items-center gap-2.5 sm:gap-3 transition hover:scale-105 active:scale-95 cursor-pointer shadow-2xl glow-red"
+          >
+            <i class="fa-solid fa-play text-sm sm:text-lg text-black"></i>
+            <span>Reproducir en 4K</span>
+          </a>
+
+          <a 
+            href="#detras-escena" 
+            class="bg-zinc-500/40 hover:bg-zinc-500/60 text-white font-bold px-5 sm:px-8 py-3 sm:py-3.5 rounded text-xs sm:text-base flex items-center gap-2 backdrop-blur-sm transition active:scale-95 cursor-pointer"
+          >
+            <i class="fa-solid fa-circle-info text-sm sm:text-lg"></i>
+            <span>Más información</span>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Controles en la esquina inferior derecha -->
+    <div class="absolute bottom-6 sm:bottom-16 right-4 sm:right-8 lg:right-12 z-20 flex items-center gap-2.5 sm:gap-3">
+      <button onclick="alternarAudioHero()" id="btnAudioHero" class="w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-white/30 bg-black/60 hover:bg-black text-white flex items-center justify-center transition active:scale-90 cursor-pointer" title="Activar / Silenciar sonido del banner">
+        <i id="iconoAudioHero" class="fa-solid fa-volume-xmark text-xs sm:text-sm"></i>
+      </button>
+
+      <div class="border-l-2 border-white/60 bg-black/60 backdrop-blur-sm px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[10px] sm:text-xs font-bold text-zinc-300">
+        Plaza El Venezolano • 13 Jun
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ================= FILA 1: REPARTO NETFLIX (31 MÚSICOS) ================= -->
+  <section id="elenco" class="py-8 sm:py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-4">
+    <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+      <h2 class="text-lg sm:text-2xl font-bold font-heading text-white">
+        Reparto Principal — 31 Músicos en Escena
+      </h2>
+      <span class="text-xs font-semibold text-zinc-500">Orquesta Libertad Musical</span>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-2.5" id="gridMusicosNetflix"></div>
+  </section>
+
+  <!-- ================= FILA 2: DETRÁS DE ESCENA CON PORTADA INTELIGENTE ================= -->
+  <section id="detras-escena" class="py-8 sm:py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-6">
+    <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+      <h2 class="text-lg sm:text-2xl font-bold font-heading text-white">
+        Detrás de Escena & Proceso Artístico
+      </h2>
+      <span class="text-xs text-amber-400 font-semibold">El Rodeo III</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center bg-[#181818] border border-zinc-800 rounded-xl overflow-hidden p-4 sm:p-8">
+      
+      <!-- Video con Portada Personalizada julioybonny con Detección en Cascada -->
+      <div class="lg:col-span-7">
+        <div class="relative aspect-video w-full rounded-xl overflow-hidden bg-black shadow-2xl border border-zinc-800 group">
+          
+          <iframe 
+            id="iframeEnsayo"
+            class="w-full h-full object-cover"
+            src="" 
+            data-src="https://www.youtube.com/embed/_gTlUvfCfPE?autoplay=1&rel=0&modestbranding=1&vq=hd2160"
+            title="Ensayo General Orquesta Libertad Musical y Bonny Cepeda"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" 
+            allowfullscreen>
+          </iframe>
+
+          <!-- Capa de Portada con Click-to-Play -->
+          <div 
+            id="portadaEnsayo" 
+            onclick="reproducirEnsayoConPortada()" 
+            class="absolute inset-0 bg-black flex items-center justify-center cursor-pointer transition-opacity duration-500 z-10"
+          >
+            <img 
+              id="imgPortadaEnsayo"
+              src="julioybonny.jpg" 
+              alt="Ministro Julio García Zerpa y Bonny Cepeda en El Rodeo III" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              onerror="probarPortadas(this)"
+            >
+            
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
+
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div class="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-[#E50914] text-white flex items-center justify-center text-lg sm:text-2xl pl-1 shadow-2xl shadow-red-600/60 group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-play"></i>
+              </div>
+            </div>
+
+            <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 flex items-center justify-between text-xs text-zinc-300 pointer-events-none">
+              <span class="font-bold tracking-wide text-white uppercase text-[10px] sm:text-[11px] flex items-center gap-1.5 drop-shadow">
+                <i class="fa-solid fa-clapperboard text-[#E50914]"></i> Ver Ensayo General
+              </span>
+              <span class="bg-black/70 backdrop-blur-md px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[9px] sm:text-[10px] text-zinc-300 font-mono border border-white/10">
+                El Rodeo III
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Reseña del Ensayo -->
+      <div class="lg:col-span-5 space-y-3 sm:space-y-4 text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
+        <span class="text-[10px] uppercase font-bold text-[#E50914] tracking-widest block">Ensayo General</span>
+        <h3 class="text-base sm:text-xl font-bold text-white font-heading">
+          El Encuentro que Transformó el Escenario
+        </h3>
+        <p>
+          Vivimos una jornada histórica durante el ensayo general de la <strong>Orquesta Libertad Musical</strong>, quienes compartieron escenario y partituras con el maestro <strong>Bonny Cepeda</strong>, afinando cada acorde de un montaje de gran nivel artístico.
+        </p>
+        <p>
+          Durante la jornada, el <strong>Ministro del Poder Popular para el Servicio Penitenciario, Julio García Zerpa</strong>, asistió a las instalaciones para constatar de primera mano el trabajo, la mística y el compromiso de los privados de libertad. Bonny Cepeda lo recibió personalmente para guiar el recorrido y mostrar la magnitud de este despliegue musical, demostrando cómo la cultura se consolida como una herramienta real de transformación humana y redención. La disciplina, el arte y la esperanza resuenan con fuerza en El Rodeo III.
+        </p>
+        
+        <div class="pt-2 flex items-center gap-3">
+          <a 
+            href="https://www.youtube.com/watch?v=KZ9DzZzuVfI&vq=hd2160" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="bg-zinc-700 hover:bg-zinc-600 text-white font-bold px-4 py-2 rounded text-xs transition flex items-center gap-1.5 cursor-pointer"
+          >
+            <i class="fa-solid fa-play text-red-500"></i> Ver Concierto Completo en 4K
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FILA 3: ALIANZA INSTITUCIONAL ================= -->
+  <section id="alianza" class="py-10 sm:py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full border-t border-zinc-800">
+    <div class="max-w-4xl mx-auto text-center space-y-4 sm:space-y-5">
+      <span class="text-[11px] sm:text-xs uppercase font-bold tracking-widest text-zinc-500">Alianza Estratégica Nacional</span>
+      <h3 class="text-xl sm:text-2xl font-bold text-white font-heading">Programa Académico Penitenciario (PAP)</h3>
+      <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed font-light">
+        El Programa Académico Penitenciario es una iniciativa de <strong>El Sistema</strong> desarrollada de manera conjunta con el <strong>Ministerio del Poder Popular para el Servicio Penitenciario</strong>, brindando herramientas de superación, educación formal y excelencia musical dentro de los centros de formación integral del país.
+      </p>
+
+      <div class="flex items-center justify-center gap-6 sm:gap-8 pt-2 sm:pt-4 opacity-80 hover:opacity-100 transition">
+        <img 
+          src="SISTEMA.png" 
+          alt="El Sistema" 
+          class="h-7 sm:h-10 w-auto object-contain"
+          onerror="probarLogosSistema(this)"
+        >
+        <span class="text-zinc-600">•</span>
+        <img 
+          src="DA.png" 
+          alt="Servicio Penitenciario" 
+          class="h-7 sm:h-10 w-auto object-contain"
+          onerror="this.onerror=null; this.src='da.png';"
+        >
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PIE DE PÁGINA ================= -->
+  <footer class="border-t border-zinc-900 bg-black py-6 sm:py-8 text-center text-xs text-zinc-600">
+    <p>Orquesta Penitenciaria Libertad Musical ft. Bonny Cepeda • 13 de Junio de 2026</p>
+    <p class="text-[11px] mt-1 text-zinc-700">&copy; 2026 El Sistema (PAP) & MPPSP. Todos los derechos reservados.</p>
+  </footer>
 
   <!-- ================= SCRIPTS ================= -->
   <script>
@@ -456,8 +371,8 @@
       if (!contenedor) return;
 
       contenedor.innerHTML = elencoMusicos.map((m) => `
-        <div class="bg-[#1f1f1f] hover:bg-[#282828] p-3 rounded border border-zinc-800/80 transition flex flex-col justify-between group">
-          <span class="text-[10px] uppercase tracking-wider text-zinc-400 font-bold group-hover:text-[#E50914] transition-colors">
+        <div class="bg-[#1f1f1f] hover:bg-[#282828] p-2.5 sm:p-3 rounded border border-zinc-800/80 transition flex flex-col justify-between group">
+          <span class="text-[9px] sm:text-[10px] uppercase tracking-wider text-zinc-400 font-bold group-hover:text-[#E50914] transition-colors">
             ${m.rol}
           </span>
           <span class="text-xs font-semibold text-zinc-100 group-hover:text-white transition-colors truncate mt-1">
@@ -481,7 +396,7 @@
       }
     }
 
-    // RESOLUCIÓN INTELIGENTE DE PORTADA (Extensiones y Fallback real)
+    // RESOLUCIÓN INTELIGENTE DE PORTADA
     const posiblesPortadas = [
       'julioybonny.jpg',
       'julioybonny.JPG',
@@ -504,71 +419,7 @@
       }
     }
 
-    // REPRODUCTOR NETFLIX 4K: INYECCIÓN DIRECTA SIN FALLAS
-    function abrirReproductorNetflix() {
-      const modal = document.getElementById('reproductorNetflixModal');
-      const iframe = document.getElementById('iframeYoutubePlayer');
-      const heroVid = document.getElementById('heroVideo');
-
-      // 1. Pausar video de fondo
-      if (heroVid) heroVid.pause();
-
-      // 2. Inyectar URL forzando 4K (hd2160), calidad sugerida y Autoplay inmediato
-      iframe.src = "https://www.youtube.com/embed/KZ9DzZzuVfI?autoplay=1&vq=hd2160&hd=1&suggestedQuality=hd2160&modestbranding=1&rel=0&fs=1&enablejsapi=1&playsinline=1";
-
-      // 3. Mostrar modal
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-
-      // 4. Enviar comando postMessage a YouTube para forzar 4K una vez cargado
-      iframe.onload = () => {
-        try {
-          iframe.contentWindow.postMessage(JSON.stringify({
-            event: 'command',
-            func: 'setPlaybackQuality',
-            args: ['hd2160']
-          }), '*');
-          iframe.contentWindow.postMessage(JSON.stringify({
-            event: 'command',
-            func: 'playVideo',
-            args: ''
-          }), '*');
-        } catch (err) {}
-      };
-
-      // 5. Solicitar pantalla completa nativa
-      if (modal.requestFullscreen) {
-        modal.requestFullscreen().catch(() => {});
-      } else if (modal.webkitRequestFullscreen) {
-        modal.webkitRequestFullscreen().catch(() => {});
-      }
-    }
-
-    function cerrarReproductorNetflix() {
-      const modal = document.getElementById('reproductorNetflixModal');
-      const iframe = document.getElementById('iframeYoutubePlayer');
-      const heroVid = document.getElementById('heroVideo');
-
-      // Vaciar iframe para cortar el audio de inmediato
-      iframe.src = "";
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = '';
-
-      // Reanudar video de fondo
-      if (heroVid) heroVid.play().catch(() => {});
-
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(() => {});
-      }
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === "Escape") cerrarReproductorNetflix();
-    });
-
-    // REPRODUCCIÓN DEL ENSAYO GENERAL CON PORTADA julioybonny
+    // REPRODUCCIÓN DEL ENSAYO GENERAL
     function reproducirEnsayoConPortada() {
       const portada = document.getElementById('portadaEnsayo');
       const iframe = document.getElementById('iframeEnsayo');
@@ -596,35 +447,8 @@
       }
     }
 
-    // DETECCIÓN DINÁMICA DE GIRO HORIZONTAL
-    function verificarOrientacionDispositivo() {
-      const esRetrato = window.matchMedia("(orientation: portrait)").matches;
-      const esPantallaPequena = window.innerWidth <= 1024;
-      const bloqueo = document.getElementById('bloqueoOrientacion');
-      const sitio = document.getElementById('sitioPrincipal');
-      const heroVid = document.getElementById('heroVideo');
-
-      if (esRetrato && esPantallaPequena) {
-        bloqueo.classList.remove('hidden');
-        bloqueo.classList.add('flex');
-        sitio.classList.add('hidden');
-        if (heroVid) heroVid.pause();
-      } else {
-        bloqueo.classList.add('hidden');
-        bloqueo.classList.remove('flex');
-        sitio.classList.remove('hidden');
-        if (heroVid && heroVid.paused) heroVid.play().catch(() => {});
-      }
-    }
-
-    window.addEventListener('resize', verificarOrientacionDispositivo);
-    window.addEventListener('orientationchange', () => {
-      setTimeout(verificarOrientacionDispositivo, 250);
-    });
-
     document.addEventListener('DOMContentLoaded', () => {
       renderMusicosNetflix();
-      verificarOrientacionDispositivo();
 
       const heroVid = document.getElementById('heroVideo');
       if (heroVid) {
