@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <!-- Google Fonts: Netflix-Style Clean Sans (Plus Jakarta Sans & Outfit) -->
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -50,12 +50,18 @@
     .glow-red {
       box-shadow: 0 0 35px -5px rgba(229, 9, 20, 0.45);
     }
+    .glass-panel {
+      background: rgba(18, 19, 23, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
   </style>
 </head>
 <body class="min-h-full flex flex-col justify-between selection:bg-[#E50914] selection:text-white">
 
   <!-- ================= BARRA SUPERIOR ================= -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/95 via-black/70 to-transparent backdrop-blur-md transition-all duration-300">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/95 via-black/75 to-transparent backdrop-blur-md transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
       <!-- Logos Institucionales -->
@@ -73,36 +79,36 @@
 
       <!-- Menú Minimalista -->
       <nav class="hidden md:flex items-center gap-6 text-xs uppercase tracking-wider font-semibold text-zinc-300">
-        <a href="#concierto" class="hover:text-white transition">El Evento</a>
+        <a href="#concierto" class="hover:text-white transition">El Video</a>
         <a href="#proceso" class="hover:text-white transition">Ensayo El Rodeo III</a>
         <a href="#elenco" class="hover:text-white transition">Reparto (31 Músicos)</a>
       </nav>
 
-      <!-- Botón Directo YouTube -->
-      <div class="flex items-center gap-3">
-        <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="bg-[#E50914] hover:bg-red-700 text-white font-extrabold px-4 sm:px-5 py-2.5 rounded-lg text-xs uppercase tracking-wider shadow-lg shadow-red-600/30 transition active:scale-95 flex items-center gap-2">
+      <!-- Botón de Reproducción Inmediata -->
+      <div class="flex items-center gap-2.5">
+        <button onclick="reproducirVideoReferencia()" class="bg-[#E50914] hover:bg-red-700 text-white font-extrabold px-4 sm:px-5 py-2.5 rounded-lg text-xs uppercase tracking-wider shadow-lg shadow-red-600/30 transition active:scale-95 flex items-center gap-2 cursor-pointer">
           <i class="fa-solid fa-play text-xs"></i>
-          <span>Ver en YouTube</span>
-        </a>
+          <span>Reproducir Video</span>
+        </button>
       </div>
 
     </div>
   </header>
 
-  <!-- ================= BANNER HERO CON VIDEO Y RESPALDO VISUAL ================= -->
-  <section id="hero" class="relative min-h-[90vh] sm:min-h-screen flex items-end sm:items-center overflow-hidden pb-16 sm:pb-0 bg-[#0a0a0c]">
+  <!-- ================= BANNER HERO CON VIDEO EN VIVO ================= -->
+  <section id="hero" class="relative min-h-[92vh] sm:min-h-screen flex items-end sm:items-center overflow-hidden pb-16 sm:pb-0 bg-[#0a0a0c]">
     
-    <!-- Contenedor del video con imagen de respaldo inmediata -->
+    <!-- Video de fondo nítido y visible -->
     <div class="absolute inset-0 w-full h-full -z-20 overflow-hidden bg-black">
-      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1600&auto=format&fit=crop" class="w-full h-full object-cover filter brightness-[0.85] contrast-[1.08] transition-all duration-700">
+      <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" class="w-full h-full object-cover filter brightness-[0.88] contrast-[1.08] transition-all duration-700">
         <source src="concierto.mp4" type="video/mp4">
         <source src="Concierto.mp4" type="video/mp4">
       </video>
-      <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-black/30 to-black/70"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-black/25 to-black/60"></div>
       <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0c]/85 via-transparent to-transparent hidden md:block"></div>
     </div>
 
-    <!-- Contenido Cartelera -->
+    <!-- Contenido Hero alineado estilo cartelera Netflix -->
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 pt-28 sm:pt-0">
       <div class="max-w-2xl space-y-4 sm:space-y-5">
         
@@ -131,23 +137,28 @@
           <span class="text-zinc-300 font-medium">«Mery Tu Loba»</span>
         </p>
 
-        <div class="p-3.5 rounded-xl bg-black/65 backdrop-blur-md border border-white/10 max-w-xl text-xs text-zinc-300 leading-relaxed font-light">
-          <strong class="text-white font-semibold">Gracias a la alianza estratégica</strong> entre el <span class="text-amber-300 font-medium">Programa Académico Penitenciario (PAP) de El Sistema</span> y el <span class="text-amber-300 font-medium">Ministerio del Poder Popular para el Servicio Penitenciario</span>, transformando vidas a través del rigor sinfónico y la dignidad cultural.
+        <div class="p-3.5 rounded-xl bg-black/70 backdrop-blur-md border border-white/10 max-w-xl text-xs text-zinc-300 leading-relaxed font-light">
+          <strong class="text-white font-semibold">Gracias a la alianza estratégica</strong> entre el <span class="text-amber-300 font-medium">Programa Académico Penitenciario (PAP) de El Sistema</span> y el <span class="text-amber-300 font-medium">Ministerio del Poder Popular para el Servicio Penitenciario</span>, consolidando la música y la disciplina como ruta real de redención.
         </div>
 
+        <!-- BOTONES DE LLAMADA A LA ACCIÓN -->
         <div class="flex flex-wrap items-center gap-3 pt-2">
-          <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="bg-white hover:bg-zinc-200 text-black font-black px-7 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-3 shadow-2xl transition hover:scale-105 active:scale-95 group cursor-pointer glow-red">
+          
+          <!-- Botón 1: Reproduce concierto.mp4 directamente -->
+          <button onclick="reproducirVideoReferencia()" class="bg-white hover:bg-zinc-200 text-black font-black px-7 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-3 shadow-2xl transition hover:scale-105 active:scale-95 group cursor-pointer glow-red">
             <div class="w-7 h-7 rounded-full bg-[#E50914] text-white flex items-center justify-center text-xs pl-0.5 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-play"></i>
             </div>
-            <span>Ver Concierto en Pantalla Completa</span>
-          </a>
+            <span>Reproducir Concierto (concierto.mp4)</span>
+          </button>
 
-          <a href="https://www.youtube.com/watch?v=_gTlUvfCfPE" target="_blank" rel="noopener noreferrer" class="bg-zinc-800/80 hover:bg-zinc-700/90 text-white font-bold px-5 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-2.5 backdrop-blur-md border border-white/10 transition active:scale-95">
+          <!-- Botón 2: Ver Ensayo -->
+          <a href="#proceso" class="bg-zinc-800/80 hover:bg-zinc-700/90 text-white font-bold px-5 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-2.5 backdrop-blur-md border border-white/10 transition active:scale-95">
             <i class="fa-solid fa-clapperboard text-zinc-400"></i>
-            <span>Ver Ensayo El Rodeo III</span>
+            <span>Ver Ensayo</span>
           </a>
 
+          <!-- Botón 3: Control Audio Banner -->
           <button onclick="alternarAudioHero()" id="btnAudioHero" class="w-12 h-12 rounded-xl bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md flex items-center justify-center transition active:scale-90" title="Activar / Silenciar Sonido del Banner">
             <i id="iconoAudioHero" class="fa-solid fa-volume-xmark text-sm"></i>
           </button>
@@ -157,43 +168,76 @@
     </div>
   </section>
 
-  <!-- ================= SECCIÓN 1: EL EVENTO & SIGNIFICADO ================= -->
+  <!-- ================= SECCIÓN 1: REPRODUCTOR DEL VIDEO DE REFERENCIA (concierto.mp4) ================= -->
   <section id="concierto" class="py-20 relative bg-gradient-to-b from-[#0a0a0c] via-[#121317] to-[#0a0a0c] border-t border-white/5">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
       
-      <div class="space-y-3">
-        <span class="text-xs uppercase font-black text-[#E50914] tracking-widest flex items-center gap-2">
-          <i class="fa-solid fa-monument"></i> 13 de Junio de 2026 • Caracas
-        </span>
-        <h2 class="text-2xl sm:text-4xl font-black text-white font-heading uppercase tracking-tight">
-          La Música Como Territorio de Reconciliación
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center text-sm text-zinc-300 leading-relaxed font-light">
-        <div class="md:col-span-8 space-y-4">
-          <p>
-            El <strong>Concierto por la Paz</strong> en la histórica Plaza El Venezolano congregó a miles de caraqueños en torno a un acontecimiento inédito: la presentación estelar de los <strong>31 músicos</strong> de la <strong>Orquesta Penitenciaria Libertad Musical</strong>, compartiendo tarima y partituras con la leyenda viva del merengue latinoamericano, el maestro <strong>Bonny Cepeda</strong>.
-          </p>
-          <p>
-            Más allá de la algarabía de temas emblemáticos como <em>«Mery Tu Loba»</em>, el concierto representó la culminación de un proceso silencioso y exhaustivo. Estos 31 intérpretes son hombres privados de libertad que han elegido el atril, el estudio armónico y la disciplina diaria de los instrumentos para transformar el tiempo de custodia en una siembra de dignidad humana.
-          </p>
-          <p class="text-zinc-400 text-xs italic border-l-2 border-[#E50914] pl-3 py-1">
-            Un testimonio vivo de que cuando el Estado y las instituciones artísticas abren paso a la cultura, las segundas oportunidades se escriben con precisión sinfónica.
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-5">
+        <div>
+          <span class="text-xs uppercase font-black text-[#E50914] tracking-widest flex items-center gap-2">
+            <i class="fa-solid fa-clapperboard"></i> Archivo Máster de Referencia
+          </span>
+          <h2 class="text-2xl sm:text-4xl font-black text-white font-heading uppercase tracking-tight mt-1">
+            Mery Tu Loba — Concierto por la Paz 2026
+          </h2>
+          <p class="text-xs sm:text-sm text-zinc-400 mt-1">
+            Registro en directo con los 31 músicos de la Orquesta Libertad Musical y Bonny Cepeda en la Plaza El Venezolano.
           </p>
         </div>
 
-        <div class="md:col-span-4 bg-[#181920] border border-white/10 p-5 rounded-2xl flex flex-col justify-between space-y-4 shadow-xl">
-          <div class="space-y-1">
-            <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">Transmisión Oficial</span>
-            <h4 class="text-base font-bold text-white font-heading">Concierto en Vivo</h4>
-            <p class="text-xs text-zinc-400">Audio directo de consola y registro multicámara en la Plaza El Venezolano.</p>
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+            <i class="fa-brands fa-youtube text-sm"></i>
+            <span>Ver en YouTube</span>
+          </a>
+          <button onclick="abrirPantallaCompletaReferencia()" class="bg-white/10 hover:bg-white/20 text-white border border-white/15 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-expand text-xs"></i>
+            <span>Pantalla Completa</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- REPRODUCTOR DIRECTO DE concierto.mp4 (16:9 con Controles y Audio) -->
+      <div class="relative overflow-hidden rounded-3xl glass-panel p-3 sm:p-5 shadow-2xl border border-white/15">
+        <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-white/10 shadow-2xl group flex items-center justify-center">
+          
+          <video 
+            id="videoReferencia" 
+            controls 
+            playsinline 
+            preload="metadata" 
+            class="w-full h-full object-cover rounded-2xl"
+          >
+            <source src="concierto.mp4" type="video/mp4">
+            <source src="Concierto.mp4" type="video/mp4">
+            Tu navegador no soporta reproducción de video MP4.
+          </video>
+
+          <!-- Overlay para reproducción inicial con un toque -->
+          <div id="overlayPlayReferencia" onclick="iniciarReproduccionReferencia()" class="absolute inset-0 bg-black/45 backdrop-blur-[2px] flex flex-col items-center justify-center gap-3 cursor-pointer group-hover:bg-black/35 transition">
+            <div class="w-20 h-20 rounded-full bg-[#E50914] text-white flex items-center justify-center text-2xl pl-1 shadow-2xl shadow-red-600/60 transition-transform group-hover:scale-110">
+              <i class="fa-solid fa-play"></i>
+            </div>
+            <span class="text-xs sm:text-sm font-black text-white tracking-widest uppercase font-heading drop-shadow">
+              Reproducir Video de Referencia (concierto.mp4)
+            </span>
           </div>
 
-          <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="w-full bg-[#E50914] hover:bg-red-700 text-white font-black py-3 rounded-xl text-xs uppercase tracking-wider text-center transition flex items-center justify-center gap-2 shadow-lg shadow-red-600/30">
-            <i class="fa-brands fa-youtube text-sm"></i>
-            <span>Abrir en Pantalla Completa</span>
-          </a>
+        </div>
+
+        <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-zinc-300 pt-6 border-t border-white/10 mt-2">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider block">Evento y Fecha</span>
+            <p class="text-zinc-400 mt-0.5">Concierto por la Paz • Sábado 13 de junio de 2026 en el Centro Histórico de Caracas.</p>
+          </div>
+          <div>
+            <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider block">Elenco Orquestal</span>
+            <p class="text-zinc-400 mt-0.5">31 músicos en tarima junto a la leyenda del merengue Bonny Cepeda.</p>
+          </div>
+          <div>
+            <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider block">Instituciones</span>
+            <p class="text-zinc-400 mt-0.5">Alianza El Sistema PAP (Programa Académico Penitenciario) y el MPPSP.</p>
+          </div>
         </div>
       </div>
 
@@ -213,7 +257,7 @@
             Ensayo General en El Rodeo III
           </h2>
           <p class="text-xs text-zinc-400 mt-1">
-            El encuentro entre el maestro Bonny Cepeda, la orquesta y las autoridades penitenciarias.
+            El encuentro entre el maestro Bonny Cepeda, la orquesta y el Ministro Julio García Zerpa.
           </p>
         </div>
 
@@ -335,6 +379,37 @@
       `).join('');
     }
 
+    // Funciones del Reproductor de Referencia (concierto.mp4)
+    function iniciarReproduccionReferencia() {
+      const vid = document.getElementById('videoReferencia');
+      const overlay = document.getElementById('overlayPlayReferencia');
+      if (!vid) return;
+
+      if (overlay) overlay.classList.add('opacity-0', 'pointer-events-none');
+      vid.play();
+    }
+
+    function reproducirVideoReferencia() {
+      const sec = document.getElementById('concierto');
+      if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+      iniciarReproduccionReferencia();
+    }
+
+    function abrirPantallaCompletaReferencia() {
+      const vid = document.getElementById('videoReferencia');
+      if (!vid) return;
+
+      iniciarReproduccionReferencia();
+      if (vid.requestFullscreen) {
+        vid.requestFullscreen();
+      } else if (vid.webkitRequestFullscreen) {
+        vid.webkitRequestFullscreen();
+      } else if (vid.msRequestFullscreen) {
+        vid.msRequestFullscreen();
+      }
+    }
+
+    // Sonido del Banner de Fondo
     function alternarAudioHero() {
       const vid = document.getElementById('heroVideo');
       const icono = document.getElementById('iconoAudioHero');
@@ -352,10 +427,12 @@
     document.addEventListener('DOMContentLoaded', () => {
       renderMusicosNetflix();
       
-      const vid = document.getElementById('heroVideo');
-      if (vid) {
-        vid.play().catch(() => {
-          console.warn("Autoplay bloqueado por políticas del navegador");
+      // Asegurar arranque del video de fondo sin bloqueos
+      const heroVid = document.getElementById('heroVideo');
+      if (heroVid) {
+        heroVid.muted = true;
+        heroVid.play().catch(() => {
+          console.warn("Autoplay diferido esperando interacción del usuario.");
         });
       }
     });
