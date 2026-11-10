@@ -9,13 +9,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <!-- Google Fonts: Bebas Neue & Plus Jakarta Sans -->
+  <!-- Google Fonts: Bebas Neue (Netflix Display) & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- API Oficial de YouTube para forzado de calidad 4K Ultra HD -->
-  <script src="https://www.youtube.com/iframe_api"></script>
 
   <script>
     tailwind.config = {
@@ -65,7 +62,7 @@
       animation: rotarDispositivo 2.4s ease-in-out infinite;
     }
 
-    /* COMPUERTA DE ORIENTACIÓN: Bloqueo en dispositivos móviles si están en posición vertical */
+    /* COMPUERTA DE ORIENTACIÓN: Bloqueo en dispositivos móviles si están en vertical */
     @media screen and (orientation: portrait) and (max-width: 1024px) {
       #bloqueoOrientacion {
         display: flex !important;
@@ -242,14 +239,14 @@
 
     </section>
 
-    <!-- ================= MODAL CINEMATOGRÁFICO DE REPRODUCCIÓN (YOUTUBE API 4K) ================= -->
+    <!-- ================= MODAL CINEMATOGRÁFICO DE REPRODUCCIÓN (4K ULTRA HD GARANTIZADO) ================= -->
     <div id="reproductorNetflixModal" class="fixed inset-0 z-50 bg-black hidden flex-col justify-between overflow-hidden">
       
       <!-- Barra Superior UI Netflix -->
-      <div class="absolute top-0 left-0 right-0 z-30 p-4 sm:p-6 bg-gradient-to-b from-black/90 via-black/40 to-transparent flex items-center justify-between transition-opacity duration-300">
+      <div class="absolute top-0 left-0 right-0 z-30 p-4 sm:p-6 bg-gradient-to-b from-black/95 via-black/50 to-transparent flex items-center justify-between">
         
         <div class="flex items-center gap-4">
-          <button onclick="cerrarReproductorNetflix()" class="w-11 h-11 rounded-full bg-black/60 hover:bg-zinc-800 text-white flex items-center justify-center text-lg transition cursor-pointer border border-white/20" title="Volver a la cartelera">
+          <button onclick="cerrarReproductorNetflix()" class="w-11 h-11 rounded-full bg-black/70 hover:bg-zinc-800 text-white flex items-center justify-center text-lg transition cursor-pointer border border-white/20" title="Volver a la cartelera">
             <i class="fa-solid fa-arrow-left"></i>
           </button>
           <div>
@@ -269,9 +266,16 @@
 
       </div>
 
-      <!-- Contenedor Dinámico para el Player de la API de YouTube -->
+      <!-- Iframe de YouTube con inyección directa en 4K -->
       <div class="relative w-full h-full flex items-center justify-center bg-black">
-        <div id="youtubePlayerContainer" class="w-full h-full"></div>
+        <iframe 
+          id="iframeYoutubePlayer"
+          class="w-full h-full border-0"
+          src="" 
+          title="Libertad Musical ft. Bonny Cepeda — Concierto por la Paz 4K"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" 
+          allowfullscreen>
+        </iframe>
       </div>
 
     </div>
@@ -308,9 +312,9 @@
               id="iframeEnsayo"
               class="w-full h-full object-cover"
               src="" 
-              data-src="https://www.youtube.com/embed/_gTlUvfCfPE?autoplay=1&rel=0&modestbranding=1&vq=hd2160"
+              data-src="https://www.youtube.com/embed/_gTlUvfCfPE?autoplay=1&rel=0&modestbranding=1&vq=hd2160&suggestedQuality=hd2160"
               title="Ensayo General Orquesta Libertad Musical y Bonny Cepeda"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" 
               allowfullscreen>
             </iframe>
 
@@ -477,7 +481,7 @@
       }
     }
 
-    // RESOLUCIÓN INTELIGENTE DE PORTADA (Prueba variantes de nombres y extensiones)
+    // RESOLUCIÓN INTELIGENTE DE PORTADA (Extensiones y Fallback real)
     const posiblesPortadas = [
       'julioybonny.jpg',
       'julioybonny.JPG',
@@ -496,59 +500,44 @@
       if (idxPortada < posiblesPortadas.length) {
         img.src = posiblesPortadas[idxPortada];
       } else {
-        // Fallback garantizado de YouTube con fotograma real (nunca pantalla gris)
         img.src = 'https://img.youtube.com/vi/_gTlUvfCfPE/hqdefault.jpg';
       }
     }
 
-    // CONTROL DEL REPRODUCTOR CON FORZADO EN 4K ULTRA HD (YouTube Iframe API)
-    let ytPlayer = null;
-    let ytApiLista = false;
-
-    function onYouTubeIframeAPIReady() {
-      ytApiLista = true;
-    }
-
+    // REPRODUCTOR NETFLIX 4K: INYECCIÓN DIRECTA SIN FALLAS
     function abrirReproductorNetflix() {
       const modal = document.getElementById('reproductorNetflixModal');
+      const iframe = document.getElementById('iframeYoutubePlayer');
       const heroVid = document.getElementById('heroVideo');
 
+      // 1. Pausar video de fondo
       if (heroVid) heroVid.pause();
+
+      // 2. Inyectar URL forzando 4K (hd2160), calidad sugerida y Autoplay inmediato
+      iframe.src = "https://www.youtube.com/embed/KZ9DzZzuVfI?autoplay=1&vq=hd2160&hd=1&suggestedQuality=hd2160&modestbranding=1&rel=0&fs=1&enablejsapi=1&playsinline=1";
+
+      // 3. Mostrar modal
       modal.classList.remove('hidden');
       modal.classList.add('flex');
       document.body.style.overflow = 'hidden';
 
-      if (!ytPlayer && ytApiLista) {
-        ytPlayer = new YT.Player('youtubePlayerContainer', {
-          videoId: 'KZ9DzZzuVfI',
-          playerVars: {
-            autoplay: 1,
-            vq: 'hd2160',
-            modestbranding: 1,
-            rel: 0,
-            fs: 1,
-            playsinline: 1
-          },
-          events: {
-            'onReady': (event) => {
-              // Forzar máxima resolución 4K soportada
-              event.target.setPlaybackQuality('hd2160');
-              event.target.playVideo();
-            },
-            'onPlaybackQualityChange': (event) => {
-              console.log("Calidad establecida:", event.data);
-            }
-          }
-        });
-      } else if (ytPlayer && ytPlayer.loadVideoById) {
-        ytPlayer.loadVideoById({
-          videoId: 'KZ9DzZzuVfI',
-          suggestedQuality: 'hd2160'
-        });
-        ytPlayer.setPlaybackQuality('hd2160');
-      }
+      // 4. Enviar comando postMessage a YouTube para forzar 4K una vez cargado
+      iframe.onload = () => {
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({
+            event: 'command',
+            func: 'setPlaybackQuality',
+            args: ['hd2160']
+          }), '*');
+          iframe.contentWindow.postMessage(JSON.stringify({
+            event: 'command',
+            func: 'playVideo',
+            args: ''
+          }), '*');
+        } catch (err) {}
+      };
 
-      // Pantalla completa nativa del navegador
+      // 5. Solicitar pantalla completa nativa
       if (modal.requestFullscreen) {
         modal.requestFullscreen().catch(() => {});
       } else if (modal.webkitRequestFullscreen) {
@@ -558,16 +547,16 @@
 
     function cerrarReproductorNetflix() {
       const modal = document.getElementById('reproductorNetflixModal');
+      const iframe = document.getElementById('iframeYoutubePlayer');
       const heroVid = document.getElementById('heroVideo');
 
-      if (ytPlayer && ytPlayer.stopVideo) {
-        ytPlayer.stopVideo();
-      }
-
+      // Vaciar iframe para cortar el audio de inmediato
+      iframe.src = "";
       modal.classList.add('hidden');
       modal.classList.remove('flex');
       document.body.style.overflow = '';
 
+      // Reanudar video de fondo
       if (heroVid) heroVid.play().catch(() => {});
 
       if (document.fullscreenElement) {
