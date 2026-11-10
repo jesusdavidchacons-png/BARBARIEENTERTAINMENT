@@ -47,27 +47,26 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #2a2c35; border-radius: 9999px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #E50914; }
 
-    /* Efecto Glow & Contraste Netflix */
     .glow-red {
-      box-shadow: 0 0 40px -10px rgba(229, 9, 20, 0.45);
+      box-shadow: 0 0 35px -5px rgba(229, 9, 20, 0.45);
     }
   </style>
 </head>
 <body class="min-h-full flex flex-col justify-between selection:bg-[#E50914] selection:text-white">
 
-  <!-- ================= BARRA SUPERIOR ESTILO STREAMING ================= -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/90 via-black/50 to-transparent backdrop-blur-sm transition-all duration-300">
+  <!-- ================= BARRA SUPERIOR ================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/95 via-black/70 to-transparent backdrop-blur-md transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
-      <!-- Logos Oficiales de las Instituciones -->
-      <div class="flex items-center gap-3 sm:gap-5">
+      <!-- Logos Institucionales -->
+      <div class="flex items-center gap-3 sm:gap-4">
         <a href="#hero" class="flex items-center gap-3">
-          <img src="SISTEMA.png" alt="El Sistema — Programa Académico Penitenciario" class="h-8 sm:h-10 w-auto object-contain filter drop-shadow hover:scale-105 transition" onerror="this.style.display='none'; document.getElementById('fb-sis').classList.remove('hidden');">
+          <img src="SISTEMA.png" alt="El Sistema" class="h-8 sm:h-10 w-auto object-contain filter drop-shadow hover:scale-105 transition" onerror="this.src='sistema.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fb-sis').classList.remove('hidden');}">
           <span id="fb-sis" class="hidden text-xs uppercase tracking-widest font-black text-white">El Sistema PAP</span>
 
           <div class="h-5 w-px bg-white/20"></div>
 
-          <img src="DA.png" alt="Ministerio del Poder Popular para el Servicio Penitenciario" class="h-8 sm:h-10 w-auto object-contain filter drop-shadow hover:scale-105 transition" onerror="this.style.display='none'; document.getElementById('fb-da').classList.remove('hidden');">
+          <img src="DA.png" alt="MPPSP" class="h-8 sm:h-10 w-auto object-contain filter drop-shadow hover:scale-105 transition" onerror="this.src='da.png'; this.onerror=function(){this.style.display='none'; document.getElementById('fb-da').classList.remove('hidden');}">
           <span id="fb-da" class="hidden text-[10px] uppercase tracking-widest font-semibold text-zinc-400">Servicio Penitenciario</span>
         </a>
       </div>
@@ -81,7 +80,7 @@
 
       <!-- Botón Directo YouTube -->
       <div class="flex items-center gap-3">
-        <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" class="bg-[#E50914] hover:bg-red-700 text-white font-extrabold px-4 sm:px-5 py-2.5 rounded-lg text-xs uppercase tracking-wider shadow-lg shadow-red-600/30 transition active:scale-95 flex items-center gap-2">
+        <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="bg-[#E50914] hover:bg-red-700 text-white font-extrabold px-4 sm:px-5 py-2.5 rounded-lg text-xs uppercase tracking-wider shadow-lg shadow-red-600/30 transition active:scale-95 flex items-center gap-2">
           <i class="fa-solid fa-play text-xs"></i>
           <span>Ver en YouTube</span>
         </a>
@@ -90,24 +89,23 @@
     </div>
   </header>
 
-  <!-- ================= BANNER HERO CINEMATOGRÁFICO CON VIDEO VÍVIDO ================= -->
-  <section id="hero" class="relative min-h-[90vh] sm:min-h-screen flex items-end sm:items-center overflow-hidden pb-16 sm:pb-0">
+  <!-- ================= BANNER HERO CON VIDEO Y RESPALDO VISUAL ================= -->
+  <section id="hero" class="relative min-h-[90vh] sm:min-h-screen flex items-end sm:items-center overflow-hidden pb-16 sm:pb-0 bg-[#0a0a0c]">
     
-    <!-- Video de fondo con alta visibilidad -->
+    <!-- Contenedor del video con imagen de respaldo inmediata -->
     <div class="absolute inset-0 w-full h-full -z-20 overflow-hidden bg-black">
-      <video id="heroVideo" autoplay muted loop playsinline class="w-full h-full object-cover filter brightness-[0.82] contrast-[1.08] scale-100 transition-all duration-700">
+      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1600&auto=format&fit=crop" class="w-full h-full object-cover filter brightness-[0.85] contrast-[1.08] transition-all duration-700">
         <source src="concierto.mp4" type="video/mp4">
+        <source src="Concierto.mp4" type="video/mp4">
       </video>
-      <!-- Gradientes sutiles: solo oscurece en la base y parte superior para mantener la imagen nítida -->
-      <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-black/60"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0c]/80 via-transparent to-transparent hidden md:block"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-black/30 to-black/70"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0c]/85 via-transparent to-transparent hidden md:block"></div>
     </div>
 
-    <!-- Contenido Hero alineado estilo cartelera Netflix -->
+    <!-- Contenido Cartelera -->
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 pt-28 sm:pt-0">
       <div class="max-w-2xl space-y-4 sm:space-y-5">
         
-        <!-- Badges Superiores -->
         <div class="flex flex-wrap items-center gap-2">
           <span class="bg-[#E50914] text-white text-[10px] font-black uppercase px-2.5 py-1 rounded tracking-widest">
             En Vivo 2026
@@ -120,7 +118,6 @@
           </span>
         </div>
 
-        <!-- Título Principal -->
         <h1 class="text-4xl sm:text-6xl md:text-7xl font-black text-white font-heading uppercase tracking-tight leading-[0.98] drop-shadow-2xl">
           Libertad <br>
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-400">
@@ -128,36 +125,29 @@
           </span>
         </h1>
 
-        <!-- Subtítulo de Colaboración -->
         <p class="text-base sm:text-xl font-bold text-amber-400 drop-shadow flex items-center gap-2">
           <span>ft. Bonny Cepeda</span>
           <span class="text-zinc-500">•</span>
           <span class="text-zinc-300 font-medium">«Mery Tu Loba»</span>
         </p>
 
-        <!-- Reconocimiento Institucional Principal -->
-        <div class="p-3.5 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 max-w-xl text-xs text-zinc-300 leading-relaxed font-light">
+        <div class="p-3.5 rounded-xl bg-black/65 backdrop-blur-md border border-white/10 max-w-xl text-xs text-zinc-300 leading-relaxed font-light">
           <strong class="text-white font-semibold">Gracias a la alianza estratégica</strong> entre el <span class="text-amber-300 font-medium">Programa Académico Penitenciario (PAP) de El Sistema</span> y el <span class="text-amber-300 font-medium">Ministerio del Poder Popular para el Servicio Penitenciario</span>, transformando vidas a través del rigor sinfónico y la dignidad cultural.
         </div>
 
-        <!-- BOTONES DE LLAMADA A LA ACCIÓN PRINCIPALES -->
         <div class="flex flex-wrap items-center gap-3 pt-2">
-          
-          <!-- BOTÓN ESTELAR PANTALLA COMPLETA -->
-          <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" class="bg-white hover:bg-zinc-200 text-black font-black px-7 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-3 shadow-2xl transition hover:scale-105 active:scale-95 group cursor-pointer glow-red">
+          <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="bg-white hover:bg-zinc-200 text-black font-black px-7 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-3 shadow-2xl transition hover:scale-105 active:scale-95 group cursor-pointer glow-red">
             <div class="w-7 h-7 rounded-full bg-[#E50914] text-white flex items-center justify-center text-xs pl-0.5 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-play"></i>
             </div>
             <span>Ver Concierto en Pantalla Completa</span>
           </a>
 
-          <!-- Botón de Ensayo / Proceso -->
-          <a href="https://www.youtube.com/watch?v=_gTlUvfCfPE" target="_blank" class="bg-zinc-800/80 hover:bg-zinc-700/90 text-white font-bold px-5 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-2.5 backdrop-blur-md border border-white/10 transition active:scale-95">
+          <a href="https://www.youtube.com/watch?v=_gTlUvfCfPE" target="_blank" rel="noopener noreferrer" class="bg-zinc-800/80 hover:bg-zinc-700/90 text-white font-bold px-5 py-3.5 rounded-xl text-sm uppercase tracking-wider flex items-center gap-2.5 backdrop-blur-md border border-white/10 transition active:scale-95">
             <i class="fa-solid fa-clapperboard text-zinc-400"></i>
             <span>Ver Ensayo El Rodeo III</span>
           </a>
 
-          <!-- Botón Sonido Ambiente Banner -->
           <button onclick="alternarAudioHero()" id="btnAudioHero" class="w-12 h-12 rounded-xl bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md flex items-center justify-center transition active:scale-90" title="Activar / Silenciar Sonido del Banner">
             <i id="iconoAudioHero" class="fa-solid fa-volume-xmark text-sm"></i>
           </button>
@@ -167,7 +157,7 @@
     </div>
   </section>
 
-  <!-- ================= SECCIÓN 1: EL EVENTO & EL SIGNIFICADO HUMANO ================= -->
+  <!-- ================= SECCIÓN 1: EL EVENTO & SIGNIFICADO ================= -->
   <section id="concierto" class="py-20 relative bg-gradient-to-b from-[#0a0a0c] via-[#121317] to-[#0a0a0c] border-t border-white/5">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 space-y-10">
       
@@ -193,15 +183,14 @@
           </p>
         </div>
 
-        <!-- Tarjeta de Acceso Directo YouTube Pantalla Completa -->
         <div class="md:col-span-4 bg-[#181920] border border-white/10 p-5 rounded-2xl flex flex-col justify-between space-y-4 shadow-xl">
           <div class="space-y-1">
             <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">Transmisión Oficial</span>
             <h4 class="text-base font-bold text-white font-heading">Concierto en Vivo</h4>
-            <p class="text-xs text-zinc-400">Audio directo de consola y multicámara HD en la Plaza El Venezolano.</p>
+            <p class="text-xs text-zinc-400">Audio directo de consola y registro multicámara en la Plaza El Venezolano.</p>
           </div>
 
-          <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" class="w-full bg-[#E50914] hover:bg-red-700 text-white font-black py-3 rounded-xl text-xs uppercase tracking-wider text-center transition flex items-center justify-center gap-2 shadow-lg shadow-red-600/30">
+          <a href="https://youtu.be/KZ9DzZzuVfI" target="_blank" rel="noopener noreferrer" class="w-full bg-[#E50914] hover:bg-red-700 text-white font-black py-3 rounded-xl text-xs uppercase tracking-wider text-center transition flex items-center justify-center gap-2 shadow-lg shadow-red-600/30">
             <i class="fa-brands fa-youtube text-sm"></i>
             <span>Abrir en Pantalla Completa</span>
           </a>
@@ -211,7 +200,7 @@
     </div>
   </section>
 
-  <!-- ================= SECCIÓN 2: ENSAYO GENERAL & VISITA MINISTERIAL (EL RODEO III) ================= -->
+  <!-- ================= SECCIÓN 2: ENSAYO GENERAL (EL RODEO III) ================= -->
   <section id="proceso" class="py-20 relative bg-[#0a0a0c] border-t border-white/5">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 space-y-8">
       
@@ -228,7 +217,7 @@
           </p>
         </div>
 
-        <a href="https://www.youtube.com/watch?v=_gTlUvfCfPE" target="_blank" class="bg-white/10 hover:bg-white/20 text-white font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider transition flex items-center gap-2 border border-white/10">
+        <a href="https://www.youtube.com/watch?v=_gTlUvfCfPE" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 text-white font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider transition flex items-center gap-2 border border-white/10">
           <i class="fa-solid fa-arrow-up-right-from-square text-xs text-amber-400"></i>
           <span>Ver Video del Ensayo</span>
         </a>
@@ -246,11 +235,10 @@
     </div>
   </section>
 
-  <!-- ================= SECCIÓN 3: REPARTO ESTILO NETFLIX (31 MÚSICOS EN ESCENA) ================= -->
+  <!-- ================= SECCIÓN 3: REPARTO ESTILO NETFLIX (31 MÚSICOS) ================= -->
   <section id="elenco" class="py-20 relative bg-[#0d0e12] border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
       
-      <!-- Cabecera de Reparto -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-5">
         <div>
           <span class="text-xs uppercase font-black text-[#E50914] tracking-widest block">
@@ -269,24 +257,21 @@
         </span>
       </div>
 
-      <!-- LISTADO MINIMALISTA ESTILO NETFLIX (Compacto, elegante, limpio) -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-2.5" id="gridMusicosNetflix">
-        <!-- Generado dinámicamente -->
-      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-2.5" id="gridMusicosNetflix"></div>
 
     </div>
   </section>
 
-  <!-- ================= PIE DE PÁGINA INSTITUCIONAL ================= -->
+  <!-- ================= PIE DE PÁGINA ================= -->
   <footer class="border-t border-white/5 bg-[#050608] py-10 text-center text-xs text-zinc-500 space-y-3">
     <div class="flex flex-wrap items-center justify-center gap-6 opacity-75 hover:opacity-100 transition">
       <div class="flex items-center gap-2">
-        <img src="SISTEMA.png" alt="El Sistema" class="h-6 w-auto object-contain" onerror="this.style.display='none'">
+        <img src="SISTEMA.png" alt="El Sistema" class="h-6 w-auto object-contain" onerror="this.src='sistema.png'; this.onerror=function(){this.style.display='none'}">
         <span class="text-[11px] font-bold text-zinc-400 uppercase">El Sistema (PAP)</span>
       </div>
       <span class="text-zinc-600">•</span>
       <div class="flex items-center gap-2">
-        <img src="DA.png" alt="MPPSP" class="h-6 w-auto object-contain" onerror="this.style.display='none'">
+        <img src="DA.png" alt="MPPSP" class="h-6 w-auto object-contain" onerror="this.src='da.png'; this.onerror=function(){this.style.display='none'}">
         <span class="text-[11px] font-bold text-zinc-400 uppercase">Servicio Penitenciario</span>
       </div>
     </div>
@@ -300,7 +285,6 @@
 
   <!-- ================= SCRIPTS ================= -->
   <script>
-    // Listado de los músicos del elenco
     const elencoMusicos = [
       { nombre: "Luis David Solórzano Guarapana", rol: "Dirección Musical" },
       { nombre: "Emerson Ewin Rodríguez Martínez", rol: "Arreglista" },
@@ -328,7 +312,6 @@
       { nombre: "Winxer Daniel Suárez Estrada", rol: "Coro" },
       { nombre: "Nilson Argenis De Sousa Pérez", rol: "Coro" },
       { nombre: "Franklin Alberto Yánez", rol: "Coro" },
-      // Integrantes complementarios de la orquesta hasta completar los 31 en escena
       { nombre: "Cuerpo de Percusión Adicional", rol: "Percusión / Accesorios" },
       { nombre: "Metales de Fila", rol: "Vientos Metales" },
       { nombre: "Cuerpo Armónico de Fila", rol: "Armonía" },
@@ -340,7 +323,7 @@
       const contenedor = document.getElementById('gridMusicosNetflix');
       if (!contenedor) return;
 
-      contenedor.innerHTML = elencoMusicos.map((m, idx) => `
+      contenedor.innerHTML = elencoMusicos.map((m) => `
         <div class="bg-white/[0.03] hover:bg-white/[0.08] p-2.5 rounded-lg border border-white/5 transition flex flex-col justify-between group">
           <span class="text-[9px] uppercase tracking-wider text-zinc-500 font-bold group-hover:text-[#E50914] transition-colors">
             ${m.rol}
@@ -366,8 +349,15 @@
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       renderMusicosNetflix();
+      
+      const vid = document.getElementById('heroVideo');
+      if (vid) {
+        vid.play().catch(() => {
+          console.warn("Autoplay bloqueado por políticas del navegador");
+        });
+      }
     });
   </script>
 </body>
