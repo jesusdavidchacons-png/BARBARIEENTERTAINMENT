@@ -6,20 +6,13 @@
   <title>Libertad Musical ft. Bonny Cepeda — Concierto por la Paz 2026</title>
 
   <!-- ================= VISTA PREVIA PARA WHATSAPP Y REDES SOCIALES ================= -->
-  <!-- Título del enlace -->
   <meta property="og:title" content="Libertad Musical ft. Bonny Cepeda — Concierto por la Paz 2026">
-  
-  <!-- Descripción -->
   <meta property="og:description" content="31 músicos en escena junto a Bonny Cepeda en vivo desde la Plaza El Venezolano, Caracas. Especial en 4K Ultra HD.">
-  
-  <!-- Imagen para WhatsApp (URL absoluta en tu dominio de GitHub / Barbarie Studios) -->
   <meta property="og:image" content="https://barbariestudios.com/PORTADAWHATSAPP.jpg">
   <meta property="og:image:secure_url" content="https://barbariestudios.com/PORTADAWHATSAPP.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  
-  <!-- URL y Tipo -->
   <meta property="og:url" content="https://barbariestudios.com/conciertoporlapaz.html">
   <meta property="og:type" content="website">
 
@@ -86,7 +79,7 @@
       <div class="flex items-center gap-3 sm:gap-10">
         <div class="flex items-center gap-2 sm:gap-3">
           <img 
-            id="logoSistema"
+            id="logoSistema" 
             src="SISTEMA.png" 
             alt="El Sistema — PAP" 
             class="h-8 sm:h-11 w-auto object-contain filter drop-shadow hover:scale-105 transition"
@@ -97,7 +90,7 @@
           <div class="h-5 sm:h-6 w-px bg-white/25"></div>
 
           <img 
-            id="logoDA"
+            id="logoDA" 
             src="DA.png" 
             alt="Ministerio Penitenciario" 
             class="h-8 sm:h-11 w-auto object-contain filter drop-shadow hover:scale-105 transition"
@@ -107,6 +100,7 @@
 
         <nav class="hidden md:flex items-center gap-5 text-sm font-medium text-zinc-300">
           <a href="#hero" class="text-white font-bold hover:text-zinc-200 transition">Inicio</a>
+          <a href="#setlist" class="hover:text-zinc-300 transition">Capítulos / Setlist</a>
           <a href="#elenco" class="hover:text-zinc-300 transition">Reparto (31 Músicos)</a>
           <a href="#detras-escena" class="hover:text-zinc-300 transition">Detrás de Escena</a>
           <a href="#alianza" class="hover:text-zinc-300 transition">Alianza PAP</a>
@@ -183,7 +177,7 @@
         </p>
 
         <!-- BOTONES DE ACCIÓN NETFLIX -->
-        <div class="flex items-center gap-3 pt-2 sm:pt-3">
+        <div class="flex flex-wrap items-center gap-3 pt-2 sm:pt-3">
           
           <a 
             href="https://www.youtube.com/watch?v=KZ9DzZzuVfI&vq=hd2160" 
@@ -196,11 +190,11 @@
           </a>
 
           <a 
-            href="#detras-escena" 
+            href="#setlist" 
             class="bg-zinc-500/40 hover:bg-zinc-500/60 text-white font-bold px-5 sm:px-8 py-3 sm:py-3.5 rounded text-xs sm:text-base flex items-center gap-2 backdrop-blur-sm transition active:scale-95 cursor-pointer"
           >
-            <i class="fa-solid fa-circle-info text-sm sm:text-lg"></i>
-            <span>Más información</span>
+            <i class="fa-solid fa-list-ol text-sm sm:text-lg"></i>
+            <span>Elegir Canción (24)</span>
           </a>
 
         </div>
@@ -219,6 +213,26 @@
       </div>
     </div>
 
+  </section>
+
+  <!-- ================= FILA 0: CAPÍTULOS / SETLIST INTERACTIVO ================= -->
+  <section id="setlist" class="py-8 sm:py-12 px-4 sm:px-8 lg:px-12 max-w-[1700px] mx-auto w-full space-y-5">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-800 pb-3">
+      <div class="flex items-center gap-3">
+        <h2 class="text-lg sm:text-2xl font-bold font-heading text-white">
+          Capítulos — Repertorio en Vivo
+        </h2>
+        <span class="bg-[#E50914]/20 border border-[#E50914]/40 text-[#E50914] text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+          24 Temas
+        </span>
+      </div>
+      <span class="text-xs text-zinc-400">
+        Haz clic en cualquier canción para ir directo al momento exacto en 4K
+      </span>
+    </div>
+
+    <!-- Grid de Canciones Estilo Episodios Netflix -->
+    <div id="gridSetlistNetflix" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-3"></div>
   </section>
 
   <!-- ================= FILA 1: REPARTO NETFLIX (31 MÚSICOS) ================= -->
@@ -356,6 +370,98 @@
 
   <!-- ================= SCRIPTS ================= -->
   <script>
+    // SETLIST / CAPÍTULOS DEL CONCIERTO
+    const setlistConcierto = [
+      { tiempo: "00:00", titulo: "Orquesta Penitenciaria Libertad Musical", artista: "Apertura Oficial", destacado: false },
+      { tiempo: "00:40", titulo: "Llorarás", artista: "Oscar D' León", destacado: false },
+      { tiempo: "06:16", titulo: "Let's Make Up", artista: "Lebrón Brothers", destacado: false },
+      { tiempo: "10:35", titulo: "Ahora No", artista: "Guaco", destacado: false },
+      { tiempo: "14:21", titulo: "Cuerpo Sin Alma", artista: "Los Adolescentes Orquesta", destacado: false },
+      { tiempo: "18:27", titulo: "El Lobo", artista: "Mery Tu Loba", destacado: true },
+      { tiempo: "24:30", titulo: "Lo Tengo Dominao", artista: "Mery Tu Loba", destacado: true },
+      { tiempo: "28:18", titulo: "Una Fotografía", artista: "Bonny Cepeda", destacado: true },
+      { tiempo: "35:19", titulo: "Asesina", artista: "Bonny Cepeda", destacado: true },
+      { tiempo: "41:29", titulo: "¡Ay Doctor!", artista: "Bonny Cepeda", destacado: true },
+      { tiempo: "49:01", titulo: "Caretas", artista: "Ismael Miranda", destacado: false },
+      { tiempo: "55:02", titulo: "La Rebelión", artista: "Joe Arroyo", destacado: false },
+      { tiempo: "01:01:01", titulo: "Apago la Luz", artista: "Hildemaro", destacado: false },
+      { tiempo: "01:05:05", titulo: "Yo Viviré", artista: "Celia Cruz", destacado: false },
+      { tiempo: "01:09:40", titulo: "Ni Siquiera", artista: "Antonio Cartagena", destacado: false },
+      { tiempo: "01:14:45", titulo: "Ajiaco Caliente", artista: "Eddie Palmieri", destacado: false },
+      { tiempo: "01:20:43", titulo: "Todo Tiene Su Final", artista: "Héctor Lavoe y Willie Colón", destacado: false },
+      { tiempo: "01:26:36", titulo: "Cama Y Mesa", artista: "Fernandito Villalona", destacado: false },
+      { tiempo: "01:30:58", titulo: "Aguanile", artista: "Willie Colón ft. Héctor Lavoe", destacado: false },
+      { tiempo: "01:37:21", titulo: "Otra Oportunidad", artista: "Jimmy Bosch", destacado: false },
+      { tiempo: "01:41:52", titulo: "Todo Tiene Su Final (Bis)", artista: "Héctor Lavoe y Willie Colón", destacado: false },
+      { tiempo: "01:51:56", titulo: "De Mi Enamórate", artista: "Tito Nieves", destacado: false },
+      { tiempo: "01:56:52", titulo: "Rumbón Melón", artista: "Joey Pastrana", destacado: false },
+      { tiempo: "02:01:08", titulo: "Quimbara", artista: "Celia Cruz · Johnny Pacheco", destacado: false }
+    ];
+
+    function tiempoASegundos(tiempoStr) {
+      const partes = tiempoStr.split(':').map(Number);
+      if (partes.length === 3) {
+        return (partes[0] * 3600) + (partes[1] * 60) + partes[2];
+      }
+      return (partes[0] * 60) + partes[1];
+    }
+
+    function renderSetlistNetflix() {
+      const contenedor = document.getElementById('gridSetlistNetflix');
+      if (!contenedor) return;
+
+      const videoId = "KZ9DzZzuVfI";
+
+      contenedor.innerHTML = setlistConcierto.map((item, index) => {
+        const segundos = tiempoASegundos(item.tiempo);
+        const urlDirecta = `https://www.youtube.com/watch?v=${videoId}&t=${segundos}s&vq=hd2160`;
+        const numCapitulo = String(index + 1).padStart(2, '0');
+
+        const bordeClase = item.destacado
+          ? "border-amber-500/40 bg-gradient-to-br from-[#231f16] to-[#1a1a1a] hover:border-amber-400"
+          : "border-zinc-800/90 bg-[#181818] hover:border-[#E50914]/70 hover:bg-[#222222]";
+
+        const badgeClase = item.destacado
+          ? "text-amber-400"
+          : "text-zinc-400 group-hover:text-zinc-300";
+
+        return `
+          <a 
+            href="${urlDirecta}" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="group relative flex items-center gap-3.5 p-3 sm:p-3.5 rounded-lg border ${bordeClase} transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl cursor-pointer overflow-hidden"
+          >
+            <!-- Número estilo ranking / episodio Netflix -->
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-md bg-black/60 border border-white/10 flex items-center justify-center shrink-0 relative overflow-hidden">
+              <span class="font-netflix text-xl sm:text-2xl text-zinc-500 group-hover:opacity-0 transition-opacity duration-200">
+                ${numCapitulo}
+              </span>
+              <i class="fa-solid fa-play text-xs sm:text-sm text-[#E50914] absolute opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-200 pl-0.5"></i>
+            </div>
+
+            <!-- Info de la canción -->
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-black/70 text-zinc-300 border border-white/10 group-hover:border-[#E50914]/50 group-hover:text-white transition-colors">
+                  ${item.tiempo}
+                </span>
+                ${item.destacado ? `<span class="text-[9px] uppercase tracking-wider font-extrabold text-amber-400 flex items-center gap-1"><i class="fa-solid fa-star text-[8px]"></i> Invitado</span>` : ''}
+              </div>
+              
+              <h3 class="text-xs sm:text-sm font-bold text-white truncate mt-1 group-hover:text-[#E50914] transition-colors">
+                ${item.titulo}
+              </h3>
+              
+              <p class="text-[11px] font-medium truncate ${badgeClase}">
+                ${item.artista}
+              </p>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
     const elencoMusicos = [
       { nombre: "Luis David Solórzano Guarapana", rol: "Dirección Musical" },
       { nombre: "Emerson Ewin Rodríguez Martínez", rol: "Arreglista" },
@@ -472,6 +578,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      renderSetlistNetflix();
       renderMusicosNetflix();
 
       const heroVid = document.getElementById('heroVideo');
