@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Venezuela Abierta al Futuro • Poster Experience</title>
-  <!-- Tipografías cinematográficas para el póster -->
+  <title>Venezuela Abierta al Futuro • Photo Experience</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #090b0e;
@@ -59,21 +58,6 @@
       gap: 9px;
       margin-bottom: 14px;
     }
-    .name-input {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(0, 0, 0, 0.38);
-      color: #fff;
-      font-size: 0.92rem;
-      font-weight: 600;
-      text-align: center;
-      outline: none;
-      transition: border-color 0.15s ease;
-    }
-    .name-input:focus { border-color: var(--accent); }
-    .name-input::placeholder { color: var(--muted); font-weight: 400; }
     .pill-group {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -84,12 +68,12 @@
       border: 1px solid var(--border);
     }
     .pill {
-      padding: 9px 6px;
+      padding: 10px 8px;
       border-radius: 10px;
       border: none;
       background: transparent;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -241,24 +225,16 @@
 
 <div class="card">
   <div class="badge">Venezuela • Abierta al Futuro</div>
-  <h1 id="heading">Protagoniza tu Póster</h1>
+  <h1 id="heading">Elige tu encuadre y destino</h1>
 
   <div id="selectors" class="selectors">
-    <input type="text" id="protagonist-name" class="name-input" placeholder="Tu Nombre y Apellido (Protagonista)" maxlength="42">
-
     <!-- Selector 1: Selfie vs Grupal -->
     <div class="pill-group">
       <button type="button" class="pill active" id="mode-selfie" onclick="setMode('selfie')">Selfie (Individual)</button>
       <button type="button" class="pill" id="mode-group" onclick="setMode('group')">Foto Grupal</button>
     </div>
 
-    <!-- Selector 2: Modo Real vs Modo Aventura -->
-    <div class="pill-group">
-      <button type="button" class="pill active" id="style-real" onclick="setStyle('real')">Modo Real (Pose Fija)</button>
-      <button type="button" class="pill" id="style-aventura" onclick="setStyle('aventura')">Modo Aventura (Cuerpo)</button>
-    </div>
-
-    <!-- Selector 3: Destino -->
+    <!-- Selector 2: Destino -->
     <div class="pill-group">
       <button type="button" class="pill active" id="dest-medanos" onclick="setDestination('medanos')">Médanos de Coro</button>
       <button type="button" class="pill" id="dest-salto" onclick="setDestination('salto')">Salto Ángel</button>
@@ -278,7 +254,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
         <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
       </svg>
-      <span>Escribe tu nombre y activa tu cámara</span>
+      <span>Activa tu cámara para comenzar</span>
     </div>
 
     <video id="video" autoplay playsinline class="hidden mirror"></video>
@@ -287,7 +263,7 @@
 
     <div id="loader" class="loader hidden">
       <div class="spinner"></div>
-      <p id="loader-text">Creando tu póster...</p>
+      <p id="loader-text">Integrando tu foto...</p>
     </div>
   </div>
 
@@ -337,10 +313,8 @@
   const selectors = document.getElementById("selectors");
   const switchCamBtn = document.getElementById("switch-cam-btn");
   const camLabel = document.getElementById("cam-label");
-  const nameInput = document.getElementById("protagonist-name");
 
   let selectedMode = "selfie";
-  let selectedStyle = "real";
   let selectedDestination = "medanos";
   let currentFacingMode = "user";
   let currentStream = null;
@@ -352,15 +326,6 @@
     document.getElementById("mode-selfie").classList.toggle("active", mode === "selfie");
     document.getElementById("mode-group").classList.toggle("active", mode === "group");
     frame.classList.toggle("group-ratio", mode === "group");
-    nameInput.placeholder = mode === "group"
-      ? "Nombre del Grupo o Familia (Protagonistas)"
-      : "Tu Nombre y Apellido (Protagonista)";
-  }
-
-  function setStyle(style) {
-    selectedStyle = style;
-    document.getElementById("style-real").classList.toggle("active", style === "real");
-    document.getElementById("style-aventura").classList.toggle("active", style === "aventura");
   }
 
   function setDestination(dest) {
@@ -503,8 +468,7 @@
     }
   }
 
-  async function composeMoviePoster(baseImageDataUrl, destination, protagonistRaw, mode) {
-    // Asegurar que las fuentes cinematográficas estén cargadas antes de dibujar
+  async function composeMoviePoster(baseImageDataUrl, destination) {
     await document.fonts.ready;
 
     const baseImg = await loadImage(baseImageDataUrl);
@@ -513,82 +477,45 @@
     posterCanvas.height = baseImg.height;
     const ctx = posterCanvas.getContext("2d");
 
-    // 1. Foto a sangre completa (sin bordes ni líneas)
+    // 1. Foto a sangre completa (sin bordes ni texto arriba)
     ctx.drawImage(baseImg, 0, 0);
 
     const w = posterCanvas.width;
     const h = posterCanvas.height;
 
-    // 2. Viñeta cinematográfica superior e inferior
-    const topGrad = ctx.createLinearGradient(0, 0, 0, h * 0.24);
-    topGrad.addColorStop(0, "rgba(0, 0, 0, 0.78)");
-    topGrad.addColorStop(0.55, "rgba(0, 0, 0, 0.32)");
-    topGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
-    ctx.fillStyle = topGrad;
-    ctx.fillRect(0, 0, w, h * 0.24);
-
-    const bottomGrad = ctx.createLinearGradient(0, h * 0.56, 0, h);
+    // 2. Degradado inferior cinematográfico para destacar el destino y el logo
+    const bottomGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
     bottomGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
-    bottomGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.65)");
-    bottomGrad.addColorStop(1, "rgba(0, 0, 0, 0.95)");
+    bottomGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.62)");
+    bottomGrad.addColorStop(1, "rgba(0, 0, 0, 0.94)");
     ctx.fillStyle = bottomGrad;
-    ctx.fillRect(0, h * 0.56, w, h * 0.44);
+    ctx.fillRect(0, h * 0.58, w, h * 0.42);
 
-    // 3. Billing Block / Crédito Estelar Superior en tipografía de cartelera (Cinzel + Montserrat)
-    const protagonistName = (protagonistRaw || "").trim().toUpperCase();
-    ctx.textAlign = "center";
-
-    if (protagonistName) {
-      const topStudio = "VENEZUELA ABIERTA AL FUTURO PRESENTA";
-      ctx.fillStyle = "rgba(255, 255, 255, 0.72)";
-      const studioSize = Math.round(w * 0.014);
-      ctx.font = `600 ${studioSize}px 'Montserrat', sans-serif`;
-      drawSpacedText(ctx, topStudio, w / 2, h * 0.042, Math.round(w * 0.005));
-
-      const starringLabel = mode === "group" ? "PROTAGONIZADA POR" : "CON LA ACTUACIÓN ESTELAR DE";
-      ctx.fillStyle = "#f59e0b";
-      const labelSize = Math.round(w * 0.015);
-      ctx.font = `700 ${labelSize}px 'Montserrat', sans-serif`;
-      drawSpacedText(ctx, starringLabel, w / 2, h * 0.066, Math.round(w * 0.006));
-
-      // Nombre con degradado metálico blanco-dorado y tipografía Cinzel
-      const actorSize = Math.round(w * 0.044);
-      ctx.font = `700 ${actorSize}px 'Cinzel', Georgia, serif`;
-      const nameGrad = ctx.createLinearGradient(0, h * 0.075, 0, h * 0.115);
-      nameGrad.addColorStop(0, "#ffffff");
-      nameGrad.addColorStop(0.65, "#f8fafc");
-      nameGrad.addColorStop(1, "#fcd34d");
-      ctx.fillStyle = nameGrad;
-      ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
-      ctx.shadowBlur = 16;
-      drawSpacedText(ctx, protagonistName, w / 2, h * 0.106, Math.round(w * 0.007));
-      ctx.shadowBlur = 0;
-    }
-
-    // 4. Título monumental del estreno en tipografía Cinzel + Tagline cinematográfico
+    // 3. Título del destino en la parte inferior con tipografía Cinzel + subtítulo Montserrat
     const titleText = destination === "salto" ? "SALTO ÁNGEL" : "MÉDANOS DE CORO";
     const taglineText = destination === "salto"
-      ? "UNA AVENTURA EN PARQUE NACIONAL CANAIMA • VENEZUELA"
-      : "UNA TRAVESÍA EN EL ESTADO FALCÓN • VENEZUELA";
+      ? "PARQUE NACIONAL CANAIMA • VENEZUELA"
+      : "ESTADO FALCÓN • VENEZUELA";
 
-    const titleSize = Math.round(w * 0.068);
+    ctx.textAlign = "center";
+    const titleSize = Math.round(w * 0.066);
     ctx.font = `800 ${titleSize}px 'Cinzel', Georgia, serif`;
     const titleGrad = ctx.createLinearGradient(0, h - h * 0.18, 0, h - h * 0.12);
     titleGrad.addColorStop(0, "#ffffff");
     titleGrad.addColorStop(0.7, "#f1f5f9");
     titleGrad.addColorStop(1, "#fbbf24");
     ctx.fillStyle = titleGrad;
-    ctx.shadowColor = "rgba(0, 0, 0, 0.92)";
-    ctx.shadowBlur = 20;
-    drawSpacedText(ctx, titleText, w / 2, h - h * 0.138, Math.round(w * 0.005));
+    ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+    ctx.shadowBlur = 18;
+    drawSpacedText(ctx, titleText, w / 2, h - h * 0.136, Math.round(w * 0.005));
     ctx.shadowBlur = 0;
 
     ctx.fillStyle = "rgba(245, 158, 11, 0.95)";
-    const subSize = Math.round(w * 0.017);
+    const subSize = Math.round(w * 0.018);
     ctx.font = `700 ${subSize}px 'Montserrat', sans-serif`;
-    drawSpacedText(ctx, taglineText, w / 2, h - h * 0.106, Math.round(w * 0.004));
+    drawSpacedText(ctx, taglineText, w / 2, h - h * 0.105, Math.round(w * 0.004));
 
-    // 5. Estampar marcapais.png centrado en la base
+    // 4. Estampar marcapais.png centrado debajo del título
     try {
       const logoImg = await loadImage(LOGO_PATH);
       const maxLogoW = w * 0.34;
@@ -620,8 +547,7 @@
         body: JSON.stringify({
           image: capturedDataUrl,
           mode: selectedMode,
-          destination: selectedDestination,
-          style: selectedStyle
+          destination: selectedDestination
         })
       });
 
@@ -631,12 +557,7 @@
         throw new Error(data.error || "Error al generar la foto");
       }
 
-      generatedDataUrl = await composeMoviePoster(
-        data.image,
-        selectedDestination,
-        nameInput.value,
-        selectedMode
-      );
+      generatedDataUrl = await composeMoviePoster(data.image, selectedDestination);
       resultImg.src = generatedDataUrl;
       heading.textContent = `¡Tu Póster en ${destName}!`;
       setStep("ui-done");
@@ -649,7 +570,7 @@
 
   async function saveToGallery() {
     if (!generatedDataUrl) return;
-    const filename = `poster-venezuela-${selectedDestination}-${selectedStyle}.jpg`;
+    const filename = `poster-venezuela-${selectedDestination}-${selectedMode}.jpg`;
 
     try {
       const response = await fetch(generatedDataUrl);
@@ -676,7 +597,7 @@
   }
 
   function resetExperience() {
-    heading.textContent = "Protagoniza tu Póster";
+    heading.textContent = "Elige tu encuadre y destino";
     resultImg.classList.add("hidden");
     video.classList.remove("hidden");
     setStep("ui-camera");
