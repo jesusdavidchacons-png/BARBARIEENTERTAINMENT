@@ -26,15 +26,15 @@ export default {
 
       const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
 
-      // 1. Regla estricta de preservación según el modo (Selfie vs Grupal)
-      const subjectInstruction = mode === "group"
-        ? "STRICT IDENTITY & CLOTHING PRESERVATION FOR EVERY PERSON IN THE GROUP: Keep ALL people from the input photo exactly as they appear. Do NOT alter, beautify, reshape, or modify any facial features, skin tones, hairstyles, body proportions, poses, or a single piece of clothing, glasses, or accessories on any person. Only replace the background behind and beneath them."
-        : "STRICT FACIAL & OUTFIT PRESERVATION: Keep the exact person from the input photo with maximum facial fidelity, preserving every facial detail, skin texture, beard/hair, expression, and their exact original clothing and accessories without altering or beautifying anything. Only integrate them naturally into the new background.";
+      // 1. Anclaje estricto de rostro, encuadre y ropa (cero cambios geométricos)
+      const identityLock = mode === "group"
+        ? "STRICT PHOTO COMPOSITING & RELIGHTING ONLY: Keep ALL people from the input image in their exact same positions, camera distance, framing, poses, facial structures, expressions, skin textures, hair, and exact original clothing. Do NOT reshape, beautify, or alter any person's face, body, or outfit. Treat their facial geometry and clothing as completely locked."
+        : "STRICT SELFIE COMPOSITING & RELIGHTING ONLY: Keep the exact selfie framing, camera angle, close-up distance, facial geometry, eyes, nose, mouth, skin texture, facial hair, expression, and original clothing 100% unchanged. Do NOT zoom out, re-pose, beautify, or alter any facial feature. Treat the subject's facial structure and outfit as completely locked.";
 
-      // 2. Escenario elegido (Médanos de Coro vs Salto Ángel desde abajo)
-      const sceneInstruction = destination === "salto"
-        ? "Place them standing at the base viewpoint looking up toward Angel Falls (Salto Ángel) in Canaima National Park, Venezuela. Towering 979-meter waterfall plunging down the massive vertical rock wall of Auyantepuy tepui in the background, lush green tropical rainforest mist, natural daylight with soft mist particles, realistic outdoor lighting matching the subjects. Shot on 35mm lens, photorealistic travel photography, natural colors, ultra sharp."
-        : "Place them standing on the golden sand dunes of Los Médanos de Coro in Falcón, Venezuela during golden hour sunset. Warm natural sunlight illuminating them softly with realistic shadows on the sand, gentle wind, vast desert dunes stretching toward the turquoise Caribbean Sea on the horizon. Shot on 35mm lens, photorealistic travel photography, natural colors, ultra sharp.";
+      // 2. Re-iluminación natural + fondo real del destino
+      const relightAndScene = destination === "salto"
+        ? "BACKGROUND & RELIGHTING: Replace ONLY the background behind the subject(s) with an authentic candid outdoor view looking up from the base viewpoint at Angel Falls (Salto Ángel) in Canaima, Venezuela, showing the massive 979-meter waterfall cascading down the Auyantepuy rock wall and lush green rainforest mist. Relight the subject(s) naturally so soft, cool-neutral outdoor daylight, subtle mist atmosphere, and natural sky fill light fall realistically across their face, hair, and clothing, making it look like an authentic photo actually taken on location."
+        : "BACKGROUND & RELIGHTING: Replace ONLY the background behind the subject(s) with an authentic candid outdoor view of the golden sand dunes of Los Médanos de Coro in Falcón, Venezuela during golden hour sunset, with wind-sculpted sand dunes and the turquoise Caribbean Sea on the horizon. Relight the subject(s) naturally so warm golden-hour sunlight, soft directional shadows, and warm sunset rim light fall realistically across their face, hair, and clothing, making it look like an authentic selfie actually taken on location.";
 
       const aspectRatio = mode === "group" ? "4:3" : "3:4";
 
@@ -53,11 +53,12 @@ export default {
                   }
                 },
                 {
-                  text: `${subjectInstruction} ${sceneInstruction}`
+                  text: `${identityLock} ${relightAndScene} Natural smartphone/35mm candid photo grain and depth of field matching the foreground focus.`
                 }
               ]
             }],
             generationConfig: {
+              temperature: 0.1,
               responseModalities: ["IMAGE"],
               imageConfig: {
                 aspectRatio: aspectRatio,
