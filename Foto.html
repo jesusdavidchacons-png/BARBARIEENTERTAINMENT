@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Venezuela Abierta al Futuro • Poster Experience</title>
+  <!-- Tipografías cinematográficas para el póster -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #090b0e;
@@ -14,7 +18,7 @@
       --muted: #94a3b8;
       --border: rgba(255, 255, 255, 0.08);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', system-ui, -apple-system, sans-serif; }
     body {
       background: var(--bg);
       color: var(--text);
@@ -36,7 +40,7 @@
     }
     .badge {
       display: inline-block;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       letter-spacing: 2.5px;
       text-transform: uppercase;
       color: var(--accent);
@@ -44,15 +48,15 @@
       margin-bottom: 6px;
     }
     h1 {
-      font-size: 1.3rem;
-      font-weight: 600;
+      font-size: 1.28rem;
+      font-weight: 700;
       margin-bottom: 14px;
       line-height: 1.3;
     }
     .selectors {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
       margin-bottom: 14px;
     }
     .name-input {
@@ -62,33 +66,30 @@
       border: 1px solid rgba(255, 255, 255, 0.14);
       background: rgba(0, 0, 0, 0.38);
       color: #fff;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
+      font-weight: 600;
       text-align: center;
       outline: none;
       transition: border-color 0.15s ease;
     }
-    .name-input:focus {
-      border-color: var(--accent);
-    }
-    .name-input::placeholder {
-      color: var(--muted);
-    }
+    .name-input:focus { border-color: var(--accent); }
+    .name-input::placeholder { color: var(--muted); font-weight: 400; }
     .pill-group {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
       background: rgba(0, 0, 0, 0.35);
-      padding: 5px;
+      padding: 4px;
       border-radius: 14px;
       border: 1px solid var(--border);
     }
     .pill {
-      padding: 10px 8px;
+      padding: 9px 6px;
       border-radius: 10px;
       border: none;
       background: transparent;
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -108,9 +109,7 @@
       border: 1px solid var(--border);
       transition: aspect-ratio 0.25s ease;
     }
-    .frame.group-ratio {
-      aspect-ratio: 4 / 3;
-    }
+    .frame.group-ratio { aspect-ratio: 4 / 3; }
     video, img {
       width: 100%;
       height: 100%;
@@ -129,7 +128,7 @@
       border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 999px;
       padding: 8px 14px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -151,7 +150,7 @@
       justify-content: center;
       padding: 24px;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       gap: 10px;
     }
     .placeholder svg {
@@ -205,8 +204,8 @@
       padding: 15px;
       border: none;
       border-radius: 14px;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 0.98rem;
+      font-weight: 700;
       cursor: pointer;
       transition: transform 0.12s ease, background 0.15s ease;
       background: var(--accent);
@@ -216,17 +215,17 @@
     .btn-main:hover { background: var(--accent-hover); }
     .btn-secondary {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       border: none;
       border-radius: 14px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 600;
       cursor: pointer;
       background: rgba(255, 255, 255, 0.08);
       color: var(--text);
     }
     .hint-text {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--muted);
       margin-top: 2px;
     }
@@ -244,14 +243,22 @@
   <div class="badge">Venezuela • Abierta al Futuro</div>
   <h1 id="heading">Protagoniza tu Póster</h1>
 
-  <!-- Datos del protagonista + Selectores -->
   <div id="selectors" class="selectors">
     <input type="text" id="protagonist-name" class="name-input" placeholder="Tu Nombre y Apellido (Protagonista)" maxlength="42">
 
+    <!-- Selector 1: Selfie vs Grupal -->
     <div class="pill-group">
       <button type="button" class="pill active" id="mode-selfie" onclick="setMode('selfie')">Selfie (Individual)</button>
       <button type="button" class="pill" id="mode-group" onclick="setMode('group')">Foto Grupal</button>
     </div>
+
+    <!-- Selector 2: Modo Real vs Modo Aventura -->
+    <div class="pill-group">
+      <button type="button" class="pill active" id="style-real" onclick="setStyle('real')">Modo Real (Pose Fija)</button>
+      <button type="button" class="pill" id="style-aventura" onclick="setStyle('aventura')">Modo Aventura (Cuerpo)</button>
+    </div>
+
+    <!-- Selector 3: Destino -->
     <div class="pill-group">
       <button type="button" class="pill active" id="dest-medanos" onclick="setDestination('medanos')">Médanos de Coro</button>
       <button type="button" class="pill" id="dest-salto" onclick="setDestination('salto')">Salto Ángel</button>
@@ -333,6 +340,7 @@
   const nameInput = document.getElementById("protagonist-name");
 
   let selectedMode = "selfie";
+  let selectedStyle = "real";
   let selectedDestination = "medanos";
   let currentFacingMode = "user";
   let currentStream = null;
@@ -347,6 +355,12 @@
     nameInput.placeholder = mode === "group"
       ? "Nombre del Grupo o Familia (Protagonistas)"
       : "Tu Nombre y Apellido (Protagonista)";
+  }
+
+  function setStyle(style) {
+    selectedStyle = style;
+    document.getElementById("style-real").classList.toggle("active", style === "real");
+    document.getElementById("style-aventura").classList.toggle("active", style === "aventura");
   }
 
   function setDestination(dest) {
@@ -479,7 +493,6 @@
     });
   }
 
-  // Función auxiliar para dibujar texto con espaciado entre letras (estilo crédito de cine)
   function drawSpacedText(ctx, text, x, y, spacing) {
     const chars = text.split("");
     const totalWidth = chars.reduce((acc, ch) => acc + ctx.measureText(ch).width, 0) + spacing * (chars.length - 1);
@@ -490,71 +503,90 @@
     }
   }
 
-  // Composición final de Póster de Película sin bordes + Protagonista + marcapais.png
   async function composeMoviePoster(baseImageDataUrl, destination, protagonistRaw, mode) {
+    // Asegurar que las fuentes cinematográficas estén cargadas antes de dibujar
+    await document.fonts.ready;
+
     const baseImg = await loadImage(baseImageDataUrl);
     const posterCanvas = document.createElement("canvas");
     posterCanvas.width = baseImg.width;
     posterCanvas.height = baseImg.height;
     const ctx = posterCanvas.getContext("2d");
 
-    // 1. Dibujar foto integrada a sangre completa (sin líneas ni márgenes)
+    // 1. Foto a sangre completa (sin bordes ni líneas)
     ctx.drawImage(baseImg, 0, 0);
 
     const w = posterCanvas.width;
     const h = posterCanvas.height;
 
-    // 2. Viñeta superior e inferior tipo póster cinematográfico
-    const topGrad = ctx.createLinearGradient(0, 0, 0, h * 0.22);
-    topGrad.addColorStop(0, "rgba(0, 0, 0, 0.72)");
-    topGrad.addColorStop(0.6, "rgba(0, 0, 0, 0.28)");
+    // 2. Viñeta cinematográfica superior e inferior
+    const topGrad = ctx.createLinearGradient(0, 0, 0, h * 0.24);
+    topGrad.addColorStop(0, "rgba(0, 0, 0, 0.78)");
+    topGrad.addColorStop(0.55, "rgba(0, 0, 0, 0.32)");
     topGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
     ctx.fillStyle = topGrad;
-    ctx.fillRect(0, 0, w, h * 0.22);
+    ctx.fillRect(0, 0, w, h * 0.24);
 
-    const bottomGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
+    const bottomGrad = ctx.createLinearGradient(0, h * 0.56, 0, h);
     bottomGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
-    bottomGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.62)");
-    bottomGrad.addColorStop(1, "rgba(0, 0, 0, 0.94)");
+    bottomGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.65)");
+    bottomGrad.addColorStop(1, "rgba(0, 0, 0, 0.95)");
     ctx.fillStyle = bottomGrad;
-    ctx.fillRect(0, h * 0.58, w, h * 0.42);
+    ctx.fillRect(0, h * 0.56, w, h * 0.44);
 
-    // 3. Crédito superior de Protagonista (estilo cartelera de cine)
+    // 3. Billing Block / Crédito Estelar Superior en tipografía de cartelera (Cinzel + Montserrat)
     const protagonistName = (protagonistRaw || "").trim().toUpperCase();
     ctx.textAlign = "center";
 
     if (protagonistName) {
-      const roleLabel = mode === "group" ? "PROTAGONIZADA POR" : "PROTAGONISTA";
-      ctx.fillStyle = "rgba(245, 158, 11, 0.95)";
-      const roleSize = Math.round(w * 0.017);
-      ctx.font = `700 ${roleSize}px system-ui, -apple-system, sans-serif`;
-      drawSpacedText(ctx, roleLabel, w / 2, h * 0.048, Math.round(w * 0.006));
+      const topStudio = "VENEZUELA ABIERTA AL FUTURO PRESENTA";
+      ctx.fillStyle = "rgba(255, 255, 255, 0.72)";
+      const studioSize = Math.round(w * 0.014);
+      ctx.font = `600 ${studioSize}px 'Montserrat', sans-serif`;
+      drawSpacedText(ctx, topStudio, w / 2, h * 0.042, Math.round(w * 0.005));
 
-      ctx.fillStyle = "#ffffff";
-      const actorSize = Math.round(w * 0.036);
-      ctx.font = `700 ${actorSize}px system-ui, -apple-system, sans-serif`;
-      ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
-      ctx.shadowBlur = 14;
-      drawSpacedText(ctx, protagonistName, w / 2, h * 0.082, Math.round(w * 0.008));
+      const starringLabel = mode === "group" ? "PROTAGONIZADA POR" : "CON LA ACTUACIÓN ESTELAR DE";
+      ctx.fillStyle = "#f59e0b";
+      const labelSize = Math.round(w * 0.015);
+      ctx.font = `700 ${labelSize}px 'Montserrat', sans-serif`;
+      drawSpacedText(ctx, starringLabel, w / 2, h * 0.066, Math.round(w * 0.006));
+
+      // Nombre con degradado metálico blanco-dorado y tipografía Cinzel
+      const actorSize = Math.round(w * 0.044);
+      ctx.font = `700 ${actorSize}px 'Cinzel', Georgia, serif`;
+      const nameGrad = ctx.createLinearGradient(0, h * 0.075, 0, h * 0.115);
+      nameGrad.addColorStop(0, "#ffffff");
+      nameGrad.addColorStop(0.65, "#f8fafc");
+      nameGrad.addColorStop(1, "#fcd34d");
+      ctx.fillStyle = nameGrad;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+      ctx.shadowBlur = 16;
+      drawSpacedText(ctx, protagonistName, w / 2, h * 0.106, Math.round(w * 0.007));
       ctx.shadowBlur = 0;
     }
 
-    // 4. Título principal del destino en la parte inferior
+    // 4. Título monumental del estreno en tipografía Cinzel + Tagline cinematográfico
     const titleText = destination === "salto" ? "SALTO ÁNGEL" : "MÉDANOS DE CORO";
-    const subText = destination === "salto" ? "PARQUE NACIONAL CANAIMA • VENEZUELA" : "ESTADO FALCÓN • VENEZUELA";
+    const taglineText = destination === "salto"
+      ? "UNA AVENTURA EN PARQUE NACIONAL CANAIMA • VENEZUELA"
+      : "UNA TRAVESÍA EN EL ESTADO FALCÓN • VENEZUELA";
 
-    ctx.fillStyle = "#ffffff";
-    const titleSize = Math.round(w * 0.062);
-    ctx.font = `800 ${titleSize}px system-ui, -apple-system, sans-serif`;
-    ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
-    ctx.shadowBlur = 18;
-    ctx.fillText(titleText, w / 2, h - h * 0.135);
-
-    ctx.fillStyle = "#f59e0b";
-    const subSize = Math.round(w * 0.02);
-    ctx.font = `700 ${subSize}px system-ui, -apple-system, sans-serif`;
-    drawSpacedText(ctx, subText, w / 2, h - h * 0.104, Math.round(w * 0.004));
+    const titleSize = Math.round(w * 0.068);
+    ctx.font = `800 ${titleSize}px 'Cinzel', Georgia, serif`;
+    const titleGrad = ctx.createLinearGradient(0, h - h * 0.18, 0, h - h * 0.12);
+    titleGrad.addColorStop(0, "#ffffff");
+    titleGrad.addColorStop(0.7, "#f1f5f9");
+    titleGrad.addColorStop(1, "#fbbf24");
+    ctx.fillStyle = titleGrad;
+    ctx.shadowColor = "rgba(0, 0, 0, 0.92)";
+    ctx.shadowBlur = 20;
+    drawSpacedText(ctx, titleText, w / 2, h - h * 0.138, Math.round(w * 0.005));
     ctx.shadowBlur = 0;
+
+    ctx.fillStyle = "rgba(245, 158, 11, 0.95)";
+    const subSize = Math.round(w * 0.017);
+    ctx.font = `700 ${subSize}px 'Montserrat', sans-serif`;
+    drawSpacedText(ctx, taglineText, w / 2, h - h * 0.106, Math.round(w * 0.004));
 
     // 5. Estampar marcapais.png centrado en la base
     try {
@@ -588,7 +620,8 @@
         body: JSON.stringify({
           image: capturedDataUrl,
           mode: selectedMode,
-          destination: selectedDestination
+          destination: selectedDestination,
+          style: selectedStyle
         })
       });
 
@@ -616,7 +649,7 @@
 
   async function saveToGallery() {
     if (!generatedDataUrl) return;
-    const filename = `poster-venezuela-${selectedDestination}-${selectedMode}.jpg`;
+    const filename = `poster-venezuela-${selectedDestination}-${selectedStyle}.jpg`;
 
     try {
       const response = await fetch(generatedDataUrl);
