@@ -26,14 +26,12 @@ export default {
 
       const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
 
-      // 1. Anclaje estricto de rostro, encuadre y ropa (cero cambios geométricos)
-      const identityLock = mode === "group"
-        ? "STRICT PHOTO COMPOSITING & RELIGHTING ONLY: Keep ALL people from the input image in their exact same positions, camera distance, framing, poses, facial structures, expressions, skin textures, hair, and exact original clothing. Do NOT reshape, beautify, or alter any person's face, body, or outfit. Treat their facial geometry and clothing as completely locked."
-        : "STRICT SELFIE COMPOSITING & RELIGHTING ONLY: Keep the exact selfie framing, camera angle, close-up distance, facial geometry, eyes, nose, mouth, skin texture, facial hair, expression, and original clothing 100% unchanged. Do NOT zoom out, re-pose, beautify, or alter any facial feature. Treat the subject's facial structure and outfit as completely locked.";
+      const identityAndSkinInstruction = mode === "group"
+        ? "STRICT PHOTO COMPOSITING, RELIGHTING & SUBTLE SKIN RETOUCH: Keep ALL people from the input image in their exact same positions, camera distance, framing, poses, facial structures, expressions, hair, and exact original clothing. Do NOT reshape any person's face, body, or outfit. Apply ONLY a subtle, natural editorial skin retouching filter to gently soften deep wrinkles, blemishes, and harsh skin shine while preserving real skin texture and 100% of each person's recognizable facial identity."
+        : "STRICT SELFIE COMPOSITING, RELIGHTING & SUBTLE SKIN RETOUCH: Keep the exact selfie framing, camera angle, close-up distance, facial geometry, eyes, nose, mouth, beard/hair, expression, and original clothing 100% unchanged. Do NOT zoom out, re-pose, or alter facial features. Apply ONLY a subtle, natural editorial skin retouching filter to gently soften fine lines, wrinkles, blemishes, and harsh skin shine while keeping natural skin pores and 100% recognizable facial identity.";
 
-      // 2. Re-iluminación natural + fondo real del destino
       const relightAndScene = destination === "salto"
-        ? "BACKGROUND & RELIGHTING: Replace ONLY the background behind the subject(s) with an authentic candid outdoor view looking up from the base viewpoint at Angel Falls (Salto Ángel) in Canaima, Venezuela, showing the massive 979-meter waterfall cascading down the Auyantepuy rock wall and lush green rainforest mist. Relight the subject(s) naturally so soft, cool-neutral outdoor daylight, subtle mist atmosphere, and natural sky fill light fall realistically across their face, hair, and clothing, making it look like an authentic photo actually taken on location."
+        ? "BACKGROUND & RELIGHTING: Replace ONLY the background behind the subject(s) with an authentic candid outdoor view looking up from the base viewpoint at Angel Falls (Salto Ángel) in Canaima, Venezuela, showing the massive 979-meter waterfall cascading down the Auyantepuy rock wall and lush green rainforest mist. Relight the subject(s) naturally so soft outdoor daylight, subtle mist atmosphere, and natural sky fill light fall realistically across their face, hair, and clothing, making it look like an authentic photo actually taken on location."
         : "BACKGROUND & RELIGHTING: Replace ONLY the background behind the subject(s) with an authentic candid outdoor view of the golden sand dunes of Los Médanos de Coro in Falcón, Venezuela during golden hour sunset, with wind-sculpted sand dunes and the turquoise Caribbean Sea on the horizon. Relight the subject(s) naturally so warm golden-hour sunlight, soft directional shadows, and warm sunset rim light fall realistically across their face, hair, and clothing, making it look like an authentic selfie actually taken on location.";
 
       const aspectRatio = mode === "group" ? "4:3" : "3:4";
@@ -53,12 +51,12 @@ export default {
                   }
                 },
                 {
-                  text: `${identityLock} ${relightAndScene} Natural smartphone/35mm candid photo grain and depth of field matching the foreground focus.`
+                  text: `${identityAndSkinInstruction} ${relightAndScene} Natural 35mm candid travel photography depth of field matching the foreground focus.`
                 }
               ]
             }],
             generationConfig: {
-              temperature: 0.1,
+              temperature: 0.15,
               responseModalities: ["IMAGE"],
               imageConfig: {
                 aspectRatio: aspectRatio,
