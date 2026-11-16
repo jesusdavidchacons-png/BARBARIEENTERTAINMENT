@@ -55,6 +55,24 @@
       gap: 10px;
       margin-bottom: 14px;
     }
+    .name-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(0, 0, 0, 0.38);
+      color: #fff;
+      font-size: 0.95rem;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .name-input:focus {
+      border-color: var(--accent);
+    }
+    .name-input::placeholder {
+      color: var(--muted);
+    }
     .pill-group {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -224,10 +242,12 @@
 
 <div class="card">
   <div class="badge">Venezuela • Abierta al Futuro</div>
-  <h1 id="heading">Crea tu Póster de Película</h1>
+  <h1 id="heading">Protagoniza tu Póster</h1>
 
-  <!-- Selectores de Modo y Destino -->
+  <!-- Datos del protagonista + Selectores -->
   <div id="selectors" class="selectors">
+    <input type="text" id="protagonist-name" class="name-input" placeholder="Tu Nombre y Apellido (Protagonista)" maxlength="42">
+
     <div class="pill-group">
       <button type="button" class="pill active" id="mode-selfie" onclick="setMode('selfie')">Selfie (Individual)</button>
       <button type="button" class="pill" id="mode-group" onclick="setMode('group')">Foto Grupal</button>
@@ -251,7 +271,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
         <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
       </svg>
-      <span>Activa tu cámara para comenzar</span>
+      <span>Escribe tu nombre y activa tu cámara</span>
     </div>
 
     <video id="video" autoplay playsinline class="hidden mirror"></video>
@@ -310,6 +330,7 @@
   const selectors = document.getElementById("selectors");
   const switchCamBtn = document.getElementById("switch-cam-btn");
   const camLabel = document.getElementById("cam-label");
+  const nameInput = document.getElementById("protagonist-name");
 
   let selectedMode = "selfie";
   let selectedDestination = "medanos";
@@ -323,6 +344,9 @@
     document.getElementById("mode-selfie").classList.toggle("active", mode === "selfie");
     document.getElementById("mode-group").classList.toggle("active", mode === "group");
     frame.classList.toggle("group-ratio", mode === "group");
+    nameInput.placeholder = mode === "group"
+      ? "Nombre del Grupo o Familia (Protagonistas)"
+      : "Tu Nombre y Apellido (Protagonista)";
   }
 
   function setDestination(dest) {
@@ -455,59 +479,84 @@
     });
   }
 
-  // Composición final de Póster de Película + Estampado nítido de marcapais.png
-  async function composeMoviePoster(baseImageDataUrl, destination) {
+  // Función auxiliar para dibujar texto con espaciado entre letras (estilo crédito de cine)
+  function drawSpacedText(ctx, text, x, y, spacing) {
+    const chars = text.split("");
+    const totalWidth = chars.reduce((acc, ch) => acc + ctx.measureText(ch).width, 0) + spacing * (chars.length - 1);
+    let currentX = x - totalWidth / 2;
+    for (const ch of chars) {
+      ctx.fillText(ch, currentX + ctx.measureText(ch).width / 2, y);
+      currentX += ctx.measureText(ch).width + spacing;
+    }
+  }
+
+  // Composición final de Póster de Película sin bordes + Protagonista + marcapais.png
+  async function composeMoviePoster(baseImageDataUrl, destination, protagonistRaw, mode) {
     const baseImg = await loadImage(baseImageDataUrl);
     const posterCanvas = document.createElement("canvas");
     posterCanvas.width = baseImg.width;
     posterCanvas.height = baseImg.height;
     const ctx = posterCanvas.getContext("2d");
 
-    // 1. Dibujar foto cinematográfica generada
+    // 1. Dibujar foto integrada a sangre completa (sin líneas ni márgenes)
     ctx.drawImage(baseImg, 0, 0);
 
     const w = posterCanvas.width;
     const h = posterCanvas.height;
 
-    // 2. Viñeta superior sutil y degradado inferior tipo póster IMAX
-    const topGrad = ctx.createLinearGradient(0, 0, 0, h * 0.18);
-    topGrad.addColorStop(0, "rgba(0, 0, 0, 0.55)");
+    // 2. Viñeta superior e inferior tipo póster cinematográfico
+    const topGrad = ctx.createLinearGradient(0, 0, 0, h * 0.22);
+    topGrad.addColorStop(0, "rgba(0, 0, 0, 0.72)");
+    topGrad.addColorStop(0.6, "rgba(0, 0, 0, 0.28)");
     topGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
     ctx.fillStyle = topGrad;
-    ctx.fillRect(0, 0, w, h * 0.18);
+    ctx.fillRect(0, 0, w, h * 0.22);
 
-    const bottomGrad = ctx.createLinearGradient(0, h * 0.62, 0, h);
+    const bottomGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
     bottomGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
-    bottomGrad.addColorStop(0.55, "rgba(0, 0, 0, 0.65)");
-    bottomGrad.addColorStop(1, "rgba(0, 0, 0, 0.92)");
+    bottomGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.62)");
+    bottomGrad.addColorStop(1, "rgba(0, 0, 0, 0.94)");
     ctx.fillStyle = bottomGrad;
-    ctx.fillRect(0, h * 0.62, w, h * 0.38);
+    ctx.fillRect(0, h * 0.58, w, h * 0.42);
 
-    // 3. Línea fina de marco editorial interior
-    const pad = Math.round(w * 0.032);
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.22)";
-    ctx.lineWidth = Math.max(2, Math.round(w * 0.002));
-    ctx.strokeRect(pad, pad, w - pad * 2, h - pad * 2);
+    // 3. Crédito superior de Protagonista (estilo cartelera de cine)
+    const protagonistName = (protagonistRaw || "").trim().toUpperCase();
+    ctx.textAlign = "center";
 
-    // 4. Título cinematográfico del destino en la parte inferior
+    if (protagonistName) {
+      const roleLabel = mode === "group" ? "PROTAGONIZADA POR" : "PROTAGONISTA";
+      ctx.fillStyle = "rgba(245, 158, 11, 0.95)";
+      const roleSize = Math.round(w * 0.017);
+      ctx.font = `700 ${roleSize}px system-ui, -apple-system, sans-serif`;
+      drawSpacedText(ctx, roleLabel, w / 2, h * 0.048, Math.round(w * 0.006));
+
+      ctx.fillStyle = "#ffffff";
+      const actorSize = Math.round(w * 0.036);
+      ctx.font = `700 ${actorSize}px system-ui, -apple-system, sans-serif`;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
+      ctx.shadowBlur = 14;
+      drawSpacedText(ctx, protagonistName, w / 2, h * 0.082, Math.round(w * 0.008));
+      ctx.shadowBlur = 0;
+    }
+
+    // 4. Título principal del destino en la parte inferior
     const titleText = destination === "salto" ? "SALTO ÁNGEL" : "MÉDANOS DE CORO";
     const subText = destination === "salto" ? "PARQUE NACIONAL CANAIMA • VENEZUELA" : "ESTADO FALCÓN • VENEZUELA";
 
-    ctx.textAlign = "center";
     ctx.fillStyle = "#ffffff";
     const titleSize = Math.round(w * 0.062);
     ctx.font = `800 ${titleSize}px system-ui, -apple-system, sans-serif`;
-    ctx.shadowColor = "rgba(0,0,0,0.8)";
-    ctx.shadowBlur = 16;
+    ctx.shadowColor = "rgba(0, 0, 0, 0.85)";
+    ctx.shadowBlur = 18;
     ctx.fillText(titleText, w / 2, h - h * 0.135);
 
     ctx.fillStyle = "#f59e0b";
-    const subSize = Math.round(w * 0.022);
+    const subSize = Math.round(w * 0.02);
     ctx.font = `700 ${subSize}px system-ui, -apple-system, sans-serif`;
-    ctx.fillText(subText, w / 2, h - h * 0.105);
+    drawSpacedText(ctx, subText, w / 2, h - h * 0.104, Math.round(w * 0.004));
     ctx.shadowBlur = 0;
 
-    // 5. Estampar marcapais.png centrado en la base del póster
+    // 5. Estampar marcapais.png centrado en la base
     try {
       const logoImg = await loadImage(LOGO_PATH);
       const maxLogoW = w * 0.34;
@@ -516,7 +565,7 @@
       const drawW = logoImg.width * ratio;
       const drawH = logoImg.height * ratio;
       const drawX = (w - drawW) / 2;
-      const drawY = h - drawH - (h * 0.024);
+      const drawY = h - drawH - (h * 0.022);
 
       ctx.drawImage(logoImg, drawX, drawY, drawW, drawH);
     } catch (e) {
@@ -528,7 +577,7 @@
 
   async function processImage() {
     const destName = selectedDestination === "salto" ? "el Salto Ángel" : "Los Médanos de Coro";
-    loaderText.textContent = `Creando tu póster en ${destName}...`;
+    loaderText.textContent = `Integrando escena en ${destName}...`;
     loader.classList.remove("hidden");
     errorBox.classList.add("hidden");
 
@@ -549,8 +598,12 @@
         throw new Error(data.error || "Error al generar la foto");
       }
 
-      // Aplicar composición de póster y estampar marcapais.png
-      generatedDataUrl = await composeMoviePoster(data.image, selectedDestination);
+      generatedDataUrl = await composeMoviePoster(
+        data.image,
+        selectedDestination,
+        nameInput.value,
+        selectedMode
+      );
       resultImg.src = generatedDataUrl;
       heading.textContent = `¡Tu Póster en ${destName}!`;
       setStep("ui-done");
@@ -590,7 +643,7 @@
   }
 
   function resetExperience() {
-    heading.textContent = "Crea tu Póster de Película";
+    heading.textContent = "Protagoniza tu Póster";
     resultImg.classList.add("hidden");
     video.classList.remove("hidden");
     setStep("ui-camera");
