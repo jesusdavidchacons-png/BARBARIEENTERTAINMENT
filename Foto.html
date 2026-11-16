@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Venezuela Abierta al Futuro • Photo Experience</title>
+  <title>Venezuela Abierta al Futuro • Poster Experience</title>
   <style>
     :root {
       --bg: #090b0e;
@@ -224,7 +224,7 @@
 
 <div class="card">
   <div class="badge">Venezuela • Abierta al Futuro</div>
-  <h1 id="heading">Elige tu modo y destino</h1>
+  <h1 id="heading">Crea tu Póster de Película</h1>
 
   <!-- Selectores de Modo y Destino -->
   <div id="selectors" class="selectors">
@@ -239,7 +239,6 @@
   </div>
 
   <div id="frame" class="frame">
-    <!-- Botón cambiar cámara frontal / trasera -->
     <button type="button" id="switch-cam-btn" class="switch-cam-btn hidden" onclick="toggleCamera()">
       <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -261,7 +260,7 @@
 
     <div id="loader" class="loader hidden">
       <div class="spinner"></div>
-      <p id="loader-text">Integrando tu foto...</p>
+      <p id="loader-text">Creando tu póster...</p>
     </div>
   </div>
 
@@ -277,15 +276,15 @@
 
   <!-- Paso 3 -->
   <div id="ui-preview" class="actions hidden">
-    <button id="generate-btn" class="btn-main" onclick="processImage()">Crear Foto en Médanos de Coro</button>
+    <button id="generate-btn" class="btn-main" onclick="processImage()">Crear Póster en Médanos de Coro</button>
     <button class="btn-secondary" onclick="retakePhoto()">Repetir Foto</button>
   </div>
 
   <!-- Paso 4 -->
   <div id="ui-done" class="actions hidden">
-    <button class="btn-main" onclick="saveToGallery()">Guardar en Galería</button>
-    <p class="hint-text">En iPhone/Android toca "Guardar imagen" para enviarla directo a Fotos</p>
-    <button class="btn-secondary" onclick="resetExperience()">Tomar Otra Foto</button>
+    <button class="btn-main" onclick="saveToGallery()">Guardar Póster en Galería</button>
+    <p class="hint-text">En iPhone/Android toca "Guardar imagen" para enviarlo directo a Fotos</p>
+    <button class="btn-secondary" onclick="resetExperience()">Crear Otro Póster</button>
   </div>
 
   <p id="error-box" class="error-msg hidden"></p>
@@ -295,6 +294,7 @@
 
 <script>
   const WORKER_URL = "https://barbarieentertainment.jesusdavid-chacons.workers.dev";
+  const LOGO_PATH = "./marcapais.png";
 
   const video = document.getElementById("video");
   const canvas = document.getElementById("canvas");
@@ -313,7 +313,7 @@
 
   let selectedMode = "selfie";
   let selectedDestination = "medanos";
-  let currentFacingMode = "user"; // "user" = frontal, "environment" = trasera
+  let currentFacingMode = "user";
   let currentStream = null;
   let capturedDataUrl = null;
   let generatedDataUrl = null;
@@ -330,7 +330,7 @@
     document.getElementById("dest-medanos").classList.toggle("active", dest === "medanos");
     document.getElementById("dest-salto").classList.toggle("active", dest === "salto");
     const destName = dest === "salto" ? "Salto Ángel" : "Médanos de Coro";
-    generateBtn.textContent = `Crear Foto en ${destName}`;
+    generateBtn.textContent = `Crear Póster en ${destName}`;
   }
 
   function setStep(step) {
@@ -424,7 +424,6 @@
 
     const ctx = canvas.getContext("2d");
     ctx.save();
-    // Solo invertir horizontalmente si es la cámara frontal (selfie)
     if (currentFacingMode === "user") {
       ctx.translate(canvas.width, 0);
       ctx.scale(-1, 1);
@@ -446,9 +445,90 @@
     setStep("ui-camera");
   }
 
+  function loadImage(src) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => resolve(img);
+      img.onerror = (e) => reject(e);
+      img.src = src;
+    });
+  }
+
+  // Composición final de Póster de Película + Estampado nítido de marcapais.png
+  async function composeMoviePoster(baseImageDataUrl, destination) {
+    const baseImg = await loadImage(baseImageDataUrl);
+    const posterCanvas = document.createElement("canvas");
+    posterCanvas.width = baseImg.width;
+    posterCanvas.height = baseImg.height;
+    const ctx = posterCanvas.getContext("2d");
+
+    // 1. Dibujar foto cinematográfica generada
+    ctx.drawImage(baseImg, 0, 0);
+
+    const w = posterCanvas.width;
+    const h = posterCanvas.height;
+
+    // 2. Viñeta superior sutil y degradado inferior tipo póster IMAX
+    const topGrad = ctx.createLinearGradient(0, 0, 0, h * 0.18);
+    topGrad.addColorStop(0, "rgba(0, 0, 0, 0.55)");
+    topGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+    ctx.fillStyle = topGrad;
+    ctx.fillRect(0, 0, w, h * 0.18);
+
+    const bottomGrad = ctx.createLinearGradient(0, h * 0.62, 0, h);
+    bottomGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
+    bottomGrad.addColorStop(0.55, "rgba(0, 0, 0, 0.65)");
+    bottomGrad.addColorStop(1, "rgba(0, 0, 0, 0.92)");
+    ctx.fillStyle = bottomGrad;
+    ctx.fillRect(0, h * 0.62, w, h * 0.38);
+
+    // 3. Línea fina de marco editorial interior
+    const pad = Math.round(w * 0.032);
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.22)";
+    ctx.lineWidth = Math.max(2, Math.round(w * 0.002));
+    ctx.strokeRect(pad, pad, w - pad * 2, h - pad * 2);
+
+    // 4. Título cinematográfico del destino en la parte inferior
+    const titleText = destination === "salto" ? "SALTO ÁNGEL" : "MÉDANOS DE CORO";
+    const subText = destination === "salto" ? "PARQUE NACIONAL CANAIMA • VENEZUELA" : "ESTADO FALCÓN • VENEZUELA";
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#ffffff";
+    const titleSize = Math.round(w * 0.062);
+    ctx.font = `800 ${titleSize}px system-ui, -apple-system, sans-serif`;
+    ctx.shadowColor = "rgba(0,0,0,0.8)";
+    ctx.shadowBlur = 16;
+    ctx.fillText(titleText, w / 2, h - h * 0.135);
+
+    ctx.fillStyle = "#f59e0b";
+    const subSize = Math.round(w * 0.022);
+    ctx.font = `700 ${subSize}px system-ui, -apple-system, sans-serif`;
+    ctx.fillText(subText, w / 2, h - h * 0.105);
+    ctx.shadowBlur = 0;
+
+    // 5. Estampar marcapais.png centrado en la base del póster
+    try {
+      const logoImg = await loadImage(LOGO_PATH);
+      const maxLogoW = w * 0.34;
+      const maxLogoH = h * 0.075;
+      const ratio = Math.min(maxLogoW / logoImg.width, maxLogoH / logoImg.height);
+      const drawW = logoImg.width * ratio;
+      const drawH = logoImg.height * ratio;
+      const drawX = (w - drawW) / 2;
+      const drawY = h - drawH - (h * 0.024);
+
+      ctx.drawImage(logoImg, drawX, drawY, drawW, drawH);
+    } catch (e) {
+      console.warn("No se encontró marcapais.png en la raíz del repositorio:", e);
+    }
+
+    return posterCanvas.toDataURL("image/jpeg", 0.94);
+  }
+
   async function processImage() {
     const destName = selectedDestination === "salto" ? "el Salto Ángel" : "Los Médanos de Coro";
-    loaderText.textContent = `Integrando en ${destName}...`;
+    loaderText.textContent = `Creando tu póster en ${destName}...`;
     loader.classList.remove("hidden");
     errorBox.classList.add("hidden");
 
@@ -469,9 +549,10 @@
         throw new Error(data.error || "Error al generar la foto");
       }
 
-      generatedDataUrl = data.image;
+      // Aplicar composición de póster y estampar marcapais.png
+      generatedDataUrl = await composeMoviePoster(data.image, selectedDestination);
       resultImg.src = generatedDataUrl;
-      heading.textContent = `¡Tu recuerdo en ${destName}!`;
+      heading.textContent = `¡Tu Póster en ${destName}!`;
       setStep("ui-done");
     } catch (err) {
       showError("Error: " + err.message);
@@ -482,14 +563,13 @@
 
   async function saveToGallery() {
     if (!generatedDataUrl) return;
-    const filename = `venezuela-${selectedDestination}-${selectedMode}.jpg`;
+    const filename = `poster-venezuela-${selectedDestination}-${selectedMode}.jpg`;
 
     try {
       const response = await fetch(generatedDataUrl);
       const blob = await response.blob();
       const file = new File([blob], filename, { type: "image/jpeg" });
 
-      // En iOS / Android abre la hoja nativa para "Guardar imagen" directo en la galería Fotos
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
@@ -498,10 +578,9 @@
         return;
       }
     } catch (err) {
-      if (err.name === "AbortError") return; // El usuario cerró el menú compartir
+      if (err.name === "AbortError") return;
     }
 
-    // Fallback para escritorio o navegadores sin Web Share API
     const a = document.createElement("a");
     a.href = generatedDataUrl;
     a.download = filename;
@@ -511,7 +590,7 @@
   }
 
   function resetExperience() {
-    heading.textContent = "Elige tu modo y destino";
+    heading.textContent = "Crea tu Póster de Película";
     resultImg.classList.add("hidden");
     video.classList.remove("hidden");
     setStep("ui-camera");
