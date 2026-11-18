@@ -106,10 +106,10 @@
       top: 12px;
       right: 12px;
       z-index: 10;
-      background: rgba(9, 11, 14, 0.72);
+      background: rgba(9, 11, 14, 0.78);
       backdrop-filter: blur(8px);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.22);
       border-radius: 999px;
       padding: 8px 14px;
       font-size: 0.75rem;
@@ -224,7 +224,8 @@
     .error-msg {
       color: #f87171;
       font-size: 0.85rem;
-      margin-top: 8px;
+      margin-top: 10px;
+      line-height: 1.4;
       word-break: break-word;
     }
   </style>
@@ -236,13 +237,11 @@
   <h1 id="heading">Elige tu encuadre y destino</h1>
 
   <div id="selectors" class="selectors">
-    <!-- Selector 1: Selfie vs Grupal -->
     <div class="pill-group">
       <button type="button" class="pill active" id="mode-selfie" onclick="setMode('selfie')">Selfie (Individual)</button>
       <button type="button" class="pill" id="mode-group" onclick="setMode('group')">Foto Grupal</button>
     </div>
 
-    <!-- Selector 2: Destino -->
     <div class="pill-group">
       <button type="button" class="pill active" id="dest-medanos" onclick="setDestination('medanos')">Médanos de Coro</button>
       <button type="button" class="pill" id="dest-salto" onclick="setDestination('salto')">Salto Ángel</button>
@@ -265,7 +264,7 @@
       <span>Activa tu cámara para comenzar</span>
     </div>
 
-    <video id="video" autoplay playsinline class="hidden mirror"></video>
+    <video id="video" autoplay playsinline muted class="hidden"></video>
     <img id="result-img" class="hidden" alt="Resultado">
     <div id="countdown" class="countdown hidden">3</div>
 
@@ -326,7 +325,7 @@
   let selectedDestination = "medanos";
   let videoDevices = [];
   let currentDeviceIndex = 0;
-  let isMirrored = true;
+  let isMirrored = false;
   let currentStream = null;
   let capturedDataUrl = null;
   let generatedDataUrl = null;
@@ -361,25 +360,28 @@
     errorBox.classList.remove("hidden");
   }
 
+  function stopCurrentStream() {
+    if (currentStream) {
+      currentStream.getTracks().forEach(track => track.stop());
+      currentStream = null;
+    }
+  }
+
   function formatCameraName(device, index) {
     if (!device || !device.label) return `Cámara ${index + 1}`;
     const label = device.label.toLowerCase();
     if (label.includes("front") || label.includes("user") || label.includes("frontal")) return "Cámara Selfie";
     if (label.includes("back") || label.includes("environment") || label.includes("trasera")) return "Cámara Trasera";
-    // Limpia el ID de hardware entre paréntesis en PC (ej. "Logitech HD Webcam (046d:0825)" -> "Logitech HD Webcam")
     return device.label.replace(/\s*\([0-9a-f]{4}:[0-9a-f]{4}\)\s*/i, "").trim();
   }
 
   function checkShouldMirror(track) {
     const settings = track.getSettings ? track.getSettings() : {};
-    if (settings.facingMode === "environment") return false;
+    // Solo espejar si explícitamente es una cámara frontal de teléfono
     if (settings.facingMode === "user") return true;
-
     const label = (track.label || "").toLowerCase();
-    if (label.includes("back") || label.includes("environment") || label.includes("trasera") || label.includes("rear")) {
-      return false;
-    }
-    return true;
+    if (label.includes("front") || label.includes("frontal")) return true;
+    return false;
   }
 
   async function refreshVideoDevices(activeTrack) {
@@ -402,27 +404,55 @@
     }
   }
 
-  async function initCamera(deviceId = null) {
+  async function requestStreamWithFallback(deviceId = null) {
+    // Intento 1: Con el deviceId específico (si se eligió alternar cámara)
+    if (deviceId) {
+      try {
+        return await navigator.mediaDevices.getUserMedia({
+          video: { deviceId: { exact: deviceId } },
+          audio: false
+        });
+      } catch (e) {
+        // Si falla el exact, intenta con ideal
+        return await navigator.mediaDevices.getUserMedia({
+          video: { deviceId: { ideal: deviceId } },
+          audio: false
+        });
+      }
+    }
+
+    // Intento 2: Estándar universal sin restricciones estrictas (ideal para webcams USB en Android)
     try {
-      if (currentStream) {
-        currentStream.getTracks().forEach(track => track.stop());
-      }
-
-      const videoConstraints = {
-        width: { ideal: 1280 },
-        height: { ideal: 1280 }
-      };
-
-      if (deviceId) {
-        videoConstraints.deviceId = { exact: deviceId };
-      } else {
-        videoConstraints.facingMode = { ideal: "user" };
-      }
-
-      currentStream = await navigator.mediaDevices.getUserMedia({
-        video: videoConstraints,
+      return await navigator.mediaDevices.getUserMedia({
+        video: true,
         audio: false
       });
+    } catch (firstErr) {
+      // Intento 3: Si Android bloquea { video: true } por falta de facingMode, probar environment y user
+      try {
+        return await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+          audio: false
+        });
+      } catch (secondErr) {
+        return await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user" },
+          audio: false
+        });
+      }
+    }
+  }
+
+  async function initCamera(deviceId = null) {
+    try {
+      stopCurrentStream();
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showError("Navegador sin acceso a cámara. Abre esta web mediante HTTPS (no como archivo local file://).");
+        return;
+      }
+
+      currentStream = await requestStreamWithFallback(deviceId);
 
       const activeTrack = currentStream.getVideoTracks()[0];
       await refreshVideoDevices(activeTrack);
@@ -431,12 +461,25 @@
       video.srcObject = currentStream;
       video.classList.toggle("mirror", isMirrored);
 
+      // Asegura reproducción automática en Android WebView / Chrome
+      await video.play().catch(() => {});
+
       placeholder.classList.add("hidden");
       resultImg.classList.add("hidden");
       video.classList.remove("hidden");
       setStep("ui-camera");
     } catch (e) {
-      showError("No se pudo abrir la cámara. Verifica los permisos del navegador o que no esté en uso por otra app.");
+      let detail = "";
+      if (e.name === "NotAllowedError" || e.name === "PermissionDeniedError") {
+        detail = "Permiso denegado. Activa el permiso de cámara en Chrome/Android.";
+      } else if (e.name === "NotFoundError" || e.name === "DevicesNotFoundError") {
+        detail = "No se detectó ninguna cámara conectada al dispositivo.";
+      } else if (e.name === "NotReadableError" || e.name === "TrackStartError") {
+        detail = "La cámara está siendo usada por otra aplicación (cierra la app de Cámara en segundo plano).";
+      } else {
+        detail = `${e.name}: ${e.message}`;
+      }
+      showError(detail);
     }
   }
 
@@ -465,8 +508,8 @@
 
   function capture() {
     const targetRatio = selectedMode === "group" ? 4 / 3 : 3 / 4;
-    const vw = video.videoWidth;
-    const vh = video.videoHeight;
+    const vw = video.videoWidth || 1280;
+    const vh = video.videoHeight || 720;
     const videoRatio = vw / vh;
 
     let sx = 0, sy = 0, sw = vw, sh = vh;
@@ -539,13 +582,11 @@
     posterCanvas.height = baseImg.height;
     const ctx = posterCanvas.getContext("2d");
 
-    // 1. Foto a sangre completa
     ctx.drawImage(baseImg, 0, 0);
 
     const w = posterCanvas.width;
     const h = posterCanvas.height;
 
-    // 2. Degradado inferior cinematográfico
     const bottomGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
     bottomGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
     bottomGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.62)");
@@ -553,7 +594,6 @@
     ctx.fillStyle = bottomGrad;
     ctx.fillRect(0, h * 0.58, w, h * 0.42);
 
-    // 3. Título del destino y subtítulo
     const titleText = destination === "salto" ? "SALTO ÁNGEL" : "MÉDANOS DE CORO";
     const taglineText = destination === "salto"
       ? "PARQUE NACIONAL CANAIMA • VENEZUELA"
@@ -577,7 +617,6 @@
     ctx.font = `700 ${subSize}px 'Montserrat', sans-serif`;
     drawSpacedText(ctx, taglineText, w / 2, h - h * 0.105, Math.round(w * 0.004));
 
-    // 4. Estampar marcapais.png
     try {
       const logoImg = await loadImage(LOGO_PATH);
       const maxLogoW = w * 0.34;
@@ -590,7 +629,7 @@
 
       ctx.drawImage(logoImg, drawX, drawY, drawW, drawH);
     } catch (e) {
-      console.warn("No se encontró marcapais.png en la raíz del repositorio:", e);
+      console.warn("No se encontró marcapais.png:", e);
     }
 
     return posterCanvas.toDataURL("image/jpeg", 0.94);
