@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Destinos Ven — Portal Holográfico WebXR</title>
+  <style>
+    * { box-sizing: border-box; user-select: none; }
+    body {
+      margin: 0;
+      background: #03070c;
+      color: #e6f7ff;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+    }
+
+    /* PANTALLA INICIAL (LOBBY) */
+    #landing {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(0, 240, 255, 0.14) 0%, rgba(3, 7, 12, 0.96) 65%),
+        linear-gradient(180deg, #040b14 0%, #020509 100%);
+      z-index: 10;
+    }
+
+    /* Cuadrícula futurista de fondo en el lobby */
+    #landing::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .badge {
+      font-size: 11px;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: #00f0ff;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 7px 16px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      background: rgba(0, 240, 255, 0.08);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(32px, 6vw, 52px);
+      letter-spacing: 3px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffffff 0%, #00f0ff 50%, #00ff9d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      max-width: 520px;
+      color: #93b4c8;
+      font-size: 15px;
+      line-height: 1.55;
+      margin: 0 0 26px;
+    }
+
+    /* Panel de carga de videos locales del Quest 3 */
+    .offline-panel {
+      background: rgba(8, 20, 34, 0.75);
+      border: 1px solid rgba(0, 240, 255, 0.22);
+      border-radius: 18px;
+      padding: 16px 22px;
+      margin-bottom: 26px;
+      max-width: 480px;
+      width: 100%;
+      backdrop-filter: blur(12px);
+    }
+
+    .offline-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #7fa6bd;
+      margin-bottom: 12px;
+    }
+
+    .status-chips {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .chip {
+      font-size: 11px;
+      font-family: monospace;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #9bb8cc;
+    }
+
+    .chip.loaded {
+      background: rgba(0, 255, 157, 0.12);
+      border-color: rgba(0, 255, 157, 0.45);
+      color: #00ff9d;
+    }
+
+    .actions-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      border: none;
+      padding: 15px 30px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    button:active { transform: scale(0.96); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00f0ff 0%, #00ff9d 100%);
+      color: #021218;
+      box-shadow: 0 0 28px rgba(0, 240, 255, 0.38);
+    }
+
+    .btn-secondary {
+      background: rgba(0, 240, 255, 0.1);
+      color: #00f0ff;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+    }
+
+    .btn-small {
+      padding: 10px 20px;
+      font-size: 12px;
+    }
+
+    /* HUD FLOTANTE DENTRO DEL VISOR O VISTA PREVIA */
+    #xr-overlay {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(4, 14, 24, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.38);
+      backdrop-filter: blur(12px);
+      padding: 10px 20px;
+      border-radius: 999px;
+      align-items: center;
+      gap: 14px;
+      z-index: 20;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      white-space: nowrap;
+    }
+
+    #status-pill {
+      font-size: 13px;
+      letter-spacing: 0.4px;
+      color: #d6f8ff;
+    }
+
+    #recenter-btn, #exit-preview-btn {
+      padding: 8px 16px;
+      font-size: 11px;
+    }
+  </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.170.0/build/three.module.js"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- PANTALLA DE INICIO -->
+  <div id="landing">
+    <div class="badge">Portal Espacial · Meta Quest 3</div>
+    <h1>DESTINOS VEN</h1>
+    <p class="subtitle">
+      Interfaz holográfica en Realidad Mixta. Toca los portales flotantes con tus manos para explorar Táchira, Aragua y Lara.
+    </p>
+
+    <!-- Selector de archivos internos del Quest 3 (Modo Offline) -->
+    <div class="offline-panel">
+      <div class="offline-title">Memoria Interna del Visor (Opcional · Sin Wi-Fi)</div>
+      <input type="file" id="local-videos-input" accept="video/mp4,video/webm" multiple style="display: none;" />
+      <button id="load-local-btn" class="btn-secondary btn-small">
+        Cargar Videos desde el Quest 3
+      </button>
+      <div class="status-chips">
+        <span id="chip-tachira" class="chip">TÁCHIRA: Demo</span>
+        <span id="chip-aragua" class="chip">ARAGUA: Demo</span>
+        <span id="chip-lara" class="chip">LARA: Demo</span>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button id="enter-xr" class="btn-primary">Iniciar Hologramas (Quest 3)</button>
+      <button id="preview-3d" class="btn-secondary">Vista Previa en Pantalla</button>
+    </div>
+  </div>
+
+  <!-- BARRA FLOTANTE INFERIOR EN EXPERIENCIA -->
+  <div id="xr-overlay">
+    <span id="status-pill">Toca con tu dedo o haz pellizco sobre un destino</span>
+    <button id="recenter-btn" class="btn-primary">Re-centrar</button>
+    <button id="exit-preview-btn" class="btn-secondary" style="display: none;">Salir</button>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+
+    // =========================================================================
+    // 1. DATOS DE LOS DESTINOS (Puedes poner rutas relativas ./videos/tachira.mp4)
+    // =========================================================================
+    const DESTINOS = [
+      {
+        id: 'tachira',
+        nombre: 'TÁCHIRA',
+        subtitulo: 'MONTAÑA · CAFÉ DE ALTURA · PÁRAMO',
+        coords: "07°46'N  72°13'W",
+        color: '#00ff9d',
+        hex: 0x00ff9d,
+        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+        anguloArco: -0.54
+      },
+      {
+        id: 'aragua',
+        nombre: 'ARAGUA',
+        subtitulo: 'SELVA NUBLADA · COLONIA · COSTA',
+        coords: "10°14'N  67°35'W",
+        color: '#00f0ff',
+        hex: 0x00f0ff,
+        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+        anguloArco: 0
+      },
+      {
+        id: 'lara',
+        nombre: 'LARA',
+        subtitulo: 'CREPÚSCULO · CULTURA · TRADICIÓN',
+        coords: "10°04'N  69°19'W",
+        color: '#ffbe0b',
+        hex: 0xffbe0b,
+        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+        anguloArco: 0.54
+      }
+    ];
+
+    let camera, scene, renderer;
+    let holoRoot, previewGrid;
+    let mode = 'HUB'; // 'HUB' | 'DETAIL'
+    let isDesktopPreview = false;
+    let selectedCard = null;
+    let lastInteractionTime = 0;
+    let mouseNorm = { x: 0, y: 0 };
+
+    const cards = [];
+    const detailButtons = [];
+    const fingerTips = [];
+    let completionBanner = null;
+    let audioCtx = null;
+
+    init();
+
+    function init() {
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.05, 30);
+      camera.position.set(0, 1.38, 0.25);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.xr.enabled = true;
+      document.body.appendChild(renderer.domElement);
+
+      // Cuadrícula espacial solo visible en "Vista Previa en Pantalla" (PC/Mac)
+      previewGrid = new THREE.GridHelper(10, 24, 0x00f0ff, 0x0a2236);
+      previewGrid.position.y = 0;
+      previewGrid.visible = false;
+      scene.add(previewGrid);
+
+      holoRoot = new THREE.Group();
+      scene.add(holoRoot);
+
+      // Construir los 3 portales holográficos
+      DESTINOS.forEach((destino, idx) => {
+        const card = createHologramPortal(destino, idx);
+        holoRoot.add(card);
+        cards.push(card);
+      });
+
+      createDetailControls();
+      createCompletionBanner();
+      setupHands();
+      setupLocalVideoLoader();
+      setupDesktopPreviewControls();
+
+      document.getElementById('enter-xr').addEventListener('click', startXR);
+      document.getElementById('preview-3d').addEventListener('click', startDesktopPreview);
+
+      document.getElementById('recenter-btn').addEventListener('click', () => {
+        playSciFiTone('click');
+        if (!isDesktopPreview) alignHologramsToUser();
+      });
+
+      document.getElementById('exit-preview-btn').addEventListener('click', () => {
+        isDesktopPreview = false;
+        previewGrid.visible = false;
+        renderer.setAnimationLoop(null);
+        document.getElementById('landing').style.display = 'flex';
+        document.getElementById('xr-overlay').style.display = 'none';
+        document.getElementById('exit-preview-btn').style.display = 'none';
+      });
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // =========================================================================
+    // 2. CARGA DE VIDEOS LOCALES DESDE MEMORIA INTERNA DEL META QUEST 3
+    // =========================================================================
+    function setupLocalVideoLoader() {
+      const localInput = document.getElementById('local-videos-input');
+      document.getElementById('load-local-btn').addEventListener('click', () => {
+        localInput.click();
+      });
+
+      localInput.addEventListener('change', (event) => {
+        const files = Array.from(event.target.files);
+        if (!files.length) return;
+
+        files.forEach((file) => {
+          const cleanName = file.name
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+
+          const blobUrl = URL.createObjectURL(file);
+          const targetCard = cards.find(c => cleanName.includes(c.userData.destino.id));
+
+          if (targetCard) {
+            targetCard.userData.video.src = blobUrl;
+            targetCard.userData.video.load();
+            targetCard.userData.video.play().catch(() => {});
+
+            const chip = document.getElementById(`chip-${targetCard.userData.destino.id}`);
+            if (chip) {
+              chip.textContent = `${targetCard.userData.destino.nombre}: Local ✓`;
+              chip.classList.add('loaded');
+            }
+          }
+        });
+      });
+    }
+
+    // =========================================================================
+    // 3. GENERADORES DE INTERFAZ HOLOGRÁFICA (HUD, BOTONES Y SELLO FINAL)
+    // =========================================================================
+    function buildHudTexture(destino, visited = false) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 640;
+      const ctx = canvas.getContext('2d');
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Líneas de escaneo holográfico
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.035)';
+      for (let y = 24; y < canvas.height - 24; y += 6) {
+        ctx.fillRect(24, y, canvas.width - 48, 2);
+      }
+
+      // Marco perimetral fino
+      ctx.strokeStyle = destino.color;
+      ctx.lineWidth = 3;
+      ctx.globalAlpha = 0.55;
+      ctx.strokeRect(24, 24, canvas.width - 48, canvas.height - 48);
+
+      // Esquinas tecnológicas (Brackets)
+      ctx.globalAlpha = 1.0;
+      ctx.lineWidth = 8;
+      const b = 52;
+      const p = 18;
+      ctx.beginPath(); ctx.moveTo(p, p + b); ctx.lineTo(p, p); ctx.lineTo(p + b, p); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(canvas.width - p - b, p); ctx.lineTo(canvas.width - p, p); ctx.lineTo(canvas.width - p, p + b); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p, canvas.height - p - b); ctx.lineTo(p, canvas.height - p); ctx.lineTo(p + b, canvas.height - p); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(canvas.width - p - b, canvas.height - p); ctx.lineTo(canvas.width - p, canvas.height - p); ctx.lineTo(canvas.width - p, canvas.height - p - b); ctx.stroke();
+
+      // Barra superior de telemetría
+      ctx.fillStyle = 'rgba(3, 12, 22, 0.82)';
+      ctx.fillRect(38, 36, canvas.width - 76, 46);
+      ctx.fillStyle = destino.color;
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText(`DESTINOS VEN // ${destino.coords}`, 58, 66);
+
+      ctx.textAlign = 'right';
+      ctx.fillText(visited ? '✓ SELLADO' : '● TOCAR PARA ENTRAR', canvas.width - 58, 66);
+      ctx.textAlign = 'left';
+
+      // Degradado inferior y tipografía del Estado
+      const grad = ctx.createLinearGradient(0, canvas.height - 185, 0, canvas.height - 28);
+      grad.addColorStop(0, 'rgba(3, 10, 18, 0.0)');
+      grad.addColorStop(0.35, 'rgba(3, 10, 18, 0.9)');
+      grad.addColorStop(1, 'rgba(3, 10, 18, 0.98)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(28, canvas.height - 185, canvas.width - 56, 157);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 66px system-ui, sans-serif';
+      ctx.fillText(destino.nombre, 58, canvas.height - 86);
+
+      ctx.fillStyle = destino.color;
+      ctx.font = 'bold 22px monospace';
+      ctx.fillText(destino.subtitulo, 60, canvas.height - 50);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    function buildButtonTexture(label, accentColor) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 128;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = 'rgba(4, 16, 28, 0.92)';
+      ctx.beginPath();
+      ctx.roundRect(8, 8, 496, 112, 56);
+      ctx.fill();
+
+      ctx.strokeStyle = accentColor;
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 30px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, 256, 66);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    function createHologramPortal(destino, index) {
+      const group = new THREE.Group();
+
+      const video = document.createElement('video');
+      video.src = destino.videoUrl;
+      video.crossOrigin = 'anonymous';
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+
+      const videoTex = new THREE.VideoTexture(video);
+      videoTex.colorSpace = THREE.SRGBColorSpace;
+
+      const videoMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.64, 0.40),
+        new THREE.MeshBasicMaterial({ map: videoTex, side: THREE.DoubleSide })
+      );
+
+      // Capa HUD adelantada (+1.4 cm) para profundidad estereoscópica real
+      const hudTex = buildHudTexture(destino, false);
+      const hudMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.68, 0.43),
+        new THREE.MeshBasicMaterial({
+          map: hudTex,
+          transparent: true,
+          depthWrite: false,
+          side: THREE.DoubleSide
+        })
+      );
+      hudMesh.position.z = 0.014;
+
+      // Anillo orbital holográfico trasero
+      const orbitalRing = new THREE.Mesh(
+        new THREE.RingGeometry(0.365, 0.378, 64, 1, 0, Math.PI * 1.35),
+        new THREE.MeshBasicMaterial({
+          color: destino.hex,
+          transparent: true,
+          opacity: 0.5,
+          side: THREE.DoubleSide
+        })
+      );
+      orbitalRing.position.z = -0.025;
+
+      // Línea proyectora inferior estilo holograma
+      const beamMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.42, 0.006),
+        new THREE.MeshBasicMaterial({ color: destino.hex, transparent: true, opacity: 0.7 })
+      );
+      beamMesh.position.y = -0.255;
+
+      group.add(videoMesh, hudMesh, orbitalRing, beamMesh);
+
+      const radius = 1.25;
+      const hubPos = new THREE.Vector3(
+        Math.sin(destino.anguloArco) * radius,
+        1.36,
+        -Math.cos(destino.anguloArco) * radius
+      );
+      group.position.copy(hubPos);
+      group.lookAt(0, 1.36, 0);
+
+      group.userData = {
+        destino,
+        index,
+        video,
+        hudMesh,
+        hitTarget: hudMesh,
+        orbitalRing,
+        hubPos: hubPos.clone(),
+        hubQuat: group.quaternion.clone(),
+        targetPos: hubPos.clone(),
+        targetScale: 1,
+        visited: false
+      };
+
+      return group;
+    }
+
+    function createDetailControls() {
+      const checkinMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.46, 0.115),
+        new THREE.MeshBasicMaterial({
+          map: buildButtonTexture('◈ SELLAR DESTINO', '#00ff9d'),
+          transparent: true,
+          side: THREE.DoubleSide
+        })
+      );
+      checkinMesh.position.set(-0.26, 0.84, -1.05);
+      checkinMesh.visible = false;
+      checkinMesh.userData = { action: 'CHECKIN' };
+
+      const backMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.46, 0.115),
+        new THREE.MeshBasicMaterial({
+          map: buildButtonTexture('✕ VOLVER AL MAPA', '#00f0ff'),
+          transparent: true,
+          side: THREE.DoubleSide
+        })
+      );
+      backMesh.position.set(0.26, 0.84, -1.05);
+      backMesh.visible = false;
+      backMesh.userData = { action: 'BACK' };
+
+      holoRoot.add(checkinMesh, backMesh);
+      detailButtons.push(checkinMesh, backMesh);
+    }
+
+    function createCompletionBanner() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 180;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = 'rgba(4, 22, 32, 0.92)';
+      ctx.beginPath();
+      ctx.roundRect(12, 12, 1000, 156, 32);
+      ctx.fill();
+
+      ctx.strokeStyle = '#00ff9d';
+      ctx.lineWidth = 5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#00ff9d';
+      ctx.font = '900 34px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('★ PASAPORTE DESTINOS VEN COMPLETADO ★', 512, 74);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '600 24px monospace';
+      ctx.fillText('3/3 DESTINOS EXPLORADOS · RECLAMA TU INSIGNIA EN EL STAND', 512, 124);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+
+      completionBanner = new THREE.Mesh(
+        new THREE.PlaneGeometry(1.15, 0.20),
+        new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide })
+      );
+      completionBanner.position.set(0, 1.78, -1.2);
+      completionBanner.visible = false;
+      holoRoot.add(completionBanner);
+    }
+
+    // =========================================================================
+    // 4. RASTREO DE MANOS EN QUEST 3 (TOQUE DIRECTO + PELLIZCO)
+    // =========================================================================
+    function setupHands() {
+      for (let i = 0; i < 2; i++) {
+        const controller = renderer.xr.getController(i);
+        controller.addEventListener('select', () => handleRaySelect(controller));
+        scene.add(controller);
+
+        const rayGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(0, 0, 0),
+          new THREE.Vector3(0, 0, -1.6)
+        ]);
+        const rayLine = new THREE.Line(
+          rayGeo,
+          new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.3 })
+        );
+        controller.add(rayLine);
+
+        const hand = renderer.xr.getHand(i);
+        scene.add(hand);
+
+        const tipCursor = new THREE.Mesh(
+          new THREE.SphereGeometry(0.012, 16, 16),
+          new THREE.MeshBasicMaterial({ color: 0x00ff9d })
+        );
+        tipCursor.visible = false;
+        scene.add(tipCursor);
+
+        fingerTips.push({ hand, tipCursor });
+      }
+    }
+
+    function handleRaySelect(controller) {
+      const now = performance.now();
+      if (now - lastInteractionTime < 600) return;
+
+      const tempMatrix = new THREE.Matrix4().identity().extractRotation(controller.matrixWorld);
+      const raycaster = new THREE.Raycaster();
+      raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+      raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+
+      processRayHits(raycaster, now);
+    }
+
+    function processRayHits(raycaster, now) {
+      if (mode === 'HUB') {
+        const targets = cards.map(c => c.userData.hitTarget);
+        const hits = raycaster.intersectObjects(targets);
+        if (hits.length > 0) {
+          lastInteractionTime = now;
+          enterDestination(hits[0].object.parent);
+        }
+      } else if (mode === 'DETAIL') {
+        const hits = raycaster.intersectObjects(detailButtons);
+        if (hits.length > 0) {
+          lastInteractionTime = now;
+          handleDetailButton(hits[0].object.userData.action);
+        }
+      }
+    }
+
+    function checkDirectFingerTouch() {
+      const now = performance.now();
+      for (const item of fingerTips) {
+        const indexJoint = item.hand.joints && item.hand.joints['index-finger-tip'];
+        if (indexJoint && indexJoint.visible) {
+          item.tipCursor.visible = true;
+          item.tipCursor.position.copy(indexJoint.position);
+
+          if (now - lastInteractionTime < 750) continue;
+
+          if (mode === 'HUB') {
+            for (const card of cards) {
+              const cardWorldPos = new THREE.Vector3();
+              card.getWorldPosition(cardWorldPos);
+              if (indexJoint.position.distanceTo(cardWorldPos) < 0.18) {
+                lastInteractionTime = now;
+                enterDestination(card);
+                return;
+              }
+            }
+          } else if (mode === 'DETAIL') {
+            for (const btn of detailButtons) {
+              if (!btn.visible) continue;
+              const btnWorldPos = new THREE.Vector3();
+              btn.getWorldPosition(btnWorldPos);
+              if (indexJoint.position.distanceTo(btnWorldPos) < 0.13) {
+                lastInteractionTime = now;
+                handleDetailButton(btn.userData.action);
+                return;
+              }
+            }
+          }
+        } else {
+          item.tipCursor.visible = false;
+        }
+      }
+    }
+
+    // =========================================================================
+    // 5. VISTA PREVIA EN PANTALLA (PARA PROBAR EN PC / MAC SIN LENTES)
+    // =========================================================================
+    function setupDesktopPreviewControls() {
+      window.addEventListener('pointermove', (e) => {
+        if (!isDesktopPreview) return;
+        mouseNorm.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseNorm.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      });
+
+      window.addEventListener('pointerdown', (e) => {
+        if (!isDesktopPreview) return;
+        const pointer = new THREE.Vector2(
+          (e.clientX / window.innerWidth) * 2 - 1,
+          -(e.clientY / window.innerHeight) * 2 + 1
+        );
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(pointer, camera);
+        processRayHits(raycaster, performance.now());
+      });
+    }
+
+    function startDesktopPreview() {
+      isDesktopPreview = true;
+      previewGrid.visible = true;
+      holoRoot.position.set(0, 0, 0);
+      holoRoot.rotation.set(0, 0, 0);
+
+      cards.forEach(c => c.userData.video.play().catch(() => {}));
+
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('xr-overlay').style.display = 'flex';
+      document.getElementById('recenter-btn').style.display = 'none';
+      document.getElementById('exit-preview-btn').style.display = 'inline-block';
+      document.getElementById('status-pill').textContent =
+        'Vista Previa 3D: Haz clic sobre Táchira, Aragua o Lara para probar';
+
+      renderer.setAnimationLoop(animateScene);
+    }
+
+    // =========================================================================
+    // 6. NAVEGACIÓN ENTRE HUB Y DESTINO SELECCIONADO
+    // =========================================================================
+    function enterDestination(card) {
+      mode = 'DETAIL';
+      selectedCard = card;
+      completionBanner.visible = false;
+      playSciFiTone('open');
+
+      cards.forEach(c => {
+        if (c === card) {
+          c.userData.targetPos.set(0, 1.38, -1.15);
+          c.userData.targetScale = 2.05;
+          c.userData.video.currentTime = 0;
+          c.userData.video.muted = false;
+          c.userData.video.play().catch(() => {});
+        } else {
+          c.userData.targetScale = 0.001;
+          c.userData.video.muted = true;
+        }
+      });
+
+      detailButtons.forEach(btn => { btn.visible = true; });
+      document.getElementById('status-pill').textContent =
+        `Explorando ${card.userData.destino.nombre} · Toca SELLAR DESTINO o VOLVER`;
+    }
+
+    function returnToHub() {
+      mode = 'HUB';
+      playSciFiTone('close');
+
+      cards.forEach(c => {
+        c.userData.targetPos.copy(c.userData.hubPos);
+        c.userData.targetScale = 1.0;
+        c.userData.video.muted = true;
+      });
+
+      detailButtons.forEach(btn => { btn.visible = false; });
+      selectedCard = null;
+
+      const visitedCount = cards.filter(c => c.userData.visited).length;
+      if (visitedCount === cards.length) {
+        completionBanner.visible = true;
+        document.getElementById('status-pill').textContent =
+          '¡Felicidades! Has sellado los 3 destinos de Destinos Ven';
+      } else {
+        document.getElementById('status-pill').textContent =
+          `Destinos sellados: ${visitedCount}/${cards.length} · Toca otro destino para explorar`;
+      }
+    }
+
+    function handleDetailButton(action) {
+      if (action === 'BACK') {
+        returnToHub();
+      } else if (action === 'CHECKIN' && selectedCard) {
+        playSciFiTone('success');
+        if (!selectedCard.userData.visited) {
+          selectedCard.userData.visited = true;
+          selectedCard.userData.hudMesh.material.map.dispose();
+          selectedCard.userData.hudMesh.material.map =
+            buildHudTexture(selectedCard.userData.destino, true);
+          selectedCard.userData.hudMesh.material.needsUpdate = true;
+        }
+        returnToHub();
+      }
+    }
+
+    function alignHologramsToUser() {
+      const xrCam = renderer.xr.getCamera();
+      const camPos = new THREE.Vector3();
+      const camDir = new THREE.Vector3();
+      xrCam.getWorldPosition(camPos);
+      xrCam.getWorldDirection(camDir);
+
+      const yaw = Math.atan2(-camDir.x, -camDir.z);
+      holoRoot.position.set(camPos.x, 0, camPos.z);
+      holoRoot.rotation.y = yaw;
+    }
+
+    // =========================================================================
+    // 7. AUDIO SINTETIZADO DE INTERFAZ FUTURISTA
+    // =========================================================================
+    function playSciFiTone(type) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        if (type === 'open') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        } else if (type === 'close' || type === 'click') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(640, now);
+          osc.frequency.exponentialRampToValueAtTime(280, now + 0.18);
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        } else if (type === 'success') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.1);
+          osc.frequency.setValueAtTime(1046.5, now + 0.2);
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+          osc.start(now);
+          osc.stop(now + 0.42);
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // 8. SESIÓN WEBXR (META QUEST 3) Y BUCLE DE RENDERIZADO
+    // =========================================================================
+    async function startXR() {
+      if (!navigator.xr) {
+        alert('No se detectó un visor WebXR. Usa el botón "Vista Previa en Pantalla" para probarlo en tu PC o ábrelo en el navegador de Meta Quest 3.');
+        return;
+      }
+
+      const overlay = document.getElementById('xr-overlay');
+      const session = await navigator.xr.requestSession('immersive-ar', {
+        optionalFeatures: ['hand-tracking', 'local-floor', 'dom-overlay'],
+        domOverlay: { root: overlay }
+      });
+
+      renderer.xr.setReferenceSpaceType('local-floor');
+      await renderer.xr.setSession(session);
+
+      cards.forEach(c => c.userData.video.play().catch(() => {}));
+
+      document.getElementById('landing').style.display = 'none';
+      overlay.style.display = 'flex';
+      document.getElementById('recenter-btn').style.display = 'inline-block';
+      document.getElementById('exit-preview-btn').style.display = 'none';
+
+      setTimeout(alignHologramsToUser, 300);
+
+      session.addEventListener('end', () => {
+        document.getElementById('landing').style.display = 'flex';
+        overlay.style.display = 'none';
+      });
+
+      renderer.setAnimationLoop(animateScene);
+    }
+
+    function animateScene(time) {
+      const t = time * 0.001;
+
+      if (isDesktopPreview) {
+        // Paralaje suave con el ratón en vista previa de escritorio
+        camera.position.x = THREE.MathUtils.lerp(camera.position.x, mouseNorm.x * 0.25, 0.08);
+        camera.position.y = THREE.MathUtils.lerp(camera.position.y, 1.38 + mouseNorm.y * 0.12, 0.08);
+        camera.lookAt(0, 1.35, -1.15);
+      } else {
+        checkDirectFingerTouch();
+      }
+
+      cards.forEach((c, idx) => {
+        const floatOffset = mode === 'HUB' ? Math.sin(t * 2 + idx) * 0.016 : 0;
+        const desiredPos = c.userData.targetPos.clone();
+        desiredPos.y += floatOffset;
+
+        c.position.lerp(desiredPos, 0.12);
+
+        const s = THREE.MathUtils.lerp(c.scale.x, c.userData.targetScale, 0.14);
+        c.scale.set(s, s, s);
+        c.visible = s > 0.02;
+
+        c.userData.orbitalRing.rotation.z = t * (idx % 2 === 0 ? 0.45 : -0.45);
+
+        if (mode === 'DETAIL' && c === selectedCard) {
+          c.quaternion.slerp(new THREE.Quaternion(), 0.14);
+        } else {
+          c.quaternion.slerp(c.userData.hubQuat, 0.14);
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+  </script>
+</body>
+</html>
