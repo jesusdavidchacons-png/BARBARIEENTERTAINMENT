@@ -106,23 +106,31 @@
       top: 12px;
       right: 12px;
       z-index: 10;
-      background: rgba(9, 11, 14, 0.68);
+      background: rgba(9, 11, 14, 0.72);
       backdrop-filter: blur(8px);
       color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 999px;
       padding: 8px 14px;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 600;
       display: flex;
       align-items: center;
       gap: 6px;
       cursor: pointer;
+      max-width: calc(100% - 24px);
+    }
+    .switch-cam-btn span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
     }
     .switch-cam-btn:active { transform: scale(0.95); }
     .switch-cam-btn svg {
       width: 16px;
       height: 16px;
+      flex-shrink: 0;
       stroke: var(--accent);
     }
     .placeholder {
@@ -246,7 +254,7 @@
       <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
       </svg>
-      <span id="cam-label">Cámara Trasera</span>
+      <span id="cam-label">Cambiar Cámara</span>
     </button>
 
     <div id="placeholder" class="placeholder">
@@ -316,7 +324,9 @@
 
   let selectedMode = "selfie";
   let selectedDestination = "medanos";
-  let currentFacingMode = "user";
+  let videoDevices = [];
+  let currentDeviceIndex = 0;
+  let isMirrored = true;
   let currentStream = null;
   let capturedDataUrl = null;
   let generatedDataUrl = null;
@@ -342,7 +352,7 @@
     });
     document.getElementById(step).classList.remove("hidden");
     selectors.classList.toggle("hidden", step === "ui-done");
-    switchCamBtn.classList.toggle("hidden", step !== "ui-camera");
+    switchCamBtn.classList.toggle("hidden", step !== "ui-camera" || videoDevices.length <= 1);
     errorBox.classList.add("hidden");
   }
 
@@ -351,37 +361,89 @@
     errorBox.classList.remove("hidden");
   }
 
-  async function initCamera() {
+  function formatCameraName(device, index) {
+    if (!device || !device.label) return `Cámara ${index + 1}`;
+    const label = device.label.toLowerCase();
+    if (label.includes("front") || label.includes("user") || label.includes("frontal")) return "Cámara Selfie";
+    if (label.includes("back") || label.includes("environment") || label.includes("trasera")) return "Cámara Trasera";
+    // Limpia el ID de hardware entre paréntesis en PC (ej. "Logitech HD Webcam (046d:0825)" -> "Logitech HD Webcam")
+    return device.label.replace(/\s*\([0-9a-f]{4}:[0-9a-f]{4}\)\s*/i, "").trim();
+  }
+
+  function checkShouldMirror(track) {
+    const settings = track.getSettings ? track.getSettings() : {};
+    if (settings.facingMode === "environment") return false;
+    if (settings.facingMode === "user") return true;
+
+    const label = (track.label || "").toLowerCase();
+    if (label.includes("back") || label.includes("environment") || label.includes("trasera") || label.includes("rear")) {
+      return false;
+    }
+    return true;
+  }
+
+  async function refreshVideoDevices(activeTrack) {
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      videoDevices = devices.filter(d => d.kind === "videoinput");
+
+      const currentDeviceId = activeTrack?.getSettings?.()?.deviceId;
+      if (currentDeviceId && videoDevices.length > 0) {
+        const foundIdx = videoDevices.findIndex(d => d.deviceId === currentDeviceId);
+        if (foundIdx !== -1) currentDeviceIndex = foundIdx;
+      }
+
+      if (videoDevices.length > 1) {
+        const nextIndex = (currentDeviceIndex + 1) % videoDevices.length;
+        camLabel.textContent = formatCameraName(videoDevices[nextIndex], nextIndex);
+      }
+    } catch (err) {
+      console.warn("No se pudieron listar cámaras:", err);
+    }
+  }
+
+  async function initCamera(deviceId = null) {
     try {
       if (currentStream) {
         currentStream.getTracks().forEach(track => track.stop());
       }
 
+      const videoConstraints = {
+        width: { ideal: 1280 },
+        height: { ideal: 1280 }
+      };
+
+      if (deviceId) {
+        videoConstraints.deviceId = { exact: deviceId };
+      } else {
+        videoConstraints.facingMode = { ideal: "user" };
+      }
+
       currentStream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: { ideal: currentFacingMode },
-          width: { ideal: 1280 },
-          height: { ideal: 1280 }
-        },
+        video: videoConstraints,
         audio: false
       });
 
+      const activeTrack = currentStream.getVideoTracks()[0];
+      await refreshVideoDevices(activeTrack);
+
+      isMirrored = checkShouldMirror(activeTrack);
       video.srcObject = currentStream;
-      video.classList.toggle("mirror", currentFacingMode === "user");
-      camLabel.textContent = currentFacingMode === "user" ? "Cámara Trasera" : "Cámara Selfie";
+      video.classList.toggle("mirror", isMirrored);
 
       placeholder.classList.add("hidden");
       resultImg.classList.add("hidden");
       video.classList.remove("hidden");
       setStep("ui-camera");
     } catch (e) {
-      showError("No se pudo abrir la cámara. Verifica los permisos del navegador.");
+      showError("No se pudo abrir la cámara. Verifica los permisos del navegador o que no esté en uso por otra app.");
     }
   }
 
   function toggleCamera() {
-    currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
-    initCamera();
+    if (videoDevices.length <= 1) return;
+    currentDeviceIndex = (currentDeviceIndex + 1) % videoDevices.length;
+    initCamera(videoDevices[currentDeviceIndex].deviceId);
   }
 
   function startCountdown() {
@@ -427,7 +489,7 @@
 
     const ctx = canvas.getContext("2d");
     ctx.save();
-    if (currentFacingMode === "user") {
+    if (isMirrored) {
       ctx.translate(canvas.width, 0);
       ctx.scale(-1, 1);
     }
@@ -477,13 +539,13 @@
     posterCanvas.height = baseImg.height;
     const ctx = posterCanvas.getContext("2d");
 
-    // 1. Foto a sangre completa (sin bordes ni texto arriba)
+    // 1. Foto a sangre completa
     ctx.drawImage(baseImg, 0, 0);
 
     const w = posterCanvas.width;
     const h = posterCanvas.height;
 
-    // 2. Degradado inferior cinematográfico para destacar el destino y el logo
+    // 2. Degradado inferior cinematográfico
     const bottomGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
     bottomGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
     bottomGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.62)");
@@ -491,7 +553,7 @@
     ctx.fillStyle = bottomGrad;
     ctx.fillRect(0, h * 0.58, w, h * 0.42);
 
-    // 3. Título del destino en la parte inferior con tipografía Cinzel + subtítulo Montserrat
+    // 3. Título del destino y subtítulo
     const titleText = destination === "salto" ? "SALTO ÁNGEL" : "MÉDANOS DE CORO";
     const taglineText = destination === "salto"
       ? "PARQUE NACIONAL CANAIMA • VENEZUELA"
@@ -515,7 +577,7 @@
     ctx.font = `700 ${subSize}px 'Montserrat', sans-serif`;
     drawSpacedText(ctx, taglineText, w / 2, h - h * 0.105, Math.round(w * 0.004));
 
-    // 4. Estampar marcapais.png centrado debajo del título
+    // 4. Estampar marcapais.png
     try {
       const logoImg = await loadImage(LOGO_PATH);
       const maxLogoW = w * 0.34;
