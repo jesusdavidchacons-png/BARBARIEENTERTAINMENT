@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El mar que me regalas — Dossier Cinematográfico | Barbarie Entertainment</title>
+  <meta name="description" content="Propuesta oficial de largometraje de ficción: El mar que me regalas. Thriller Político / Drama Psicológico / Neo-noir ambientado en Caracas y La Guaira. Presentado por Barbarie Entertainment." />
+
+  <!-- Google Fonts: Editorial Serif + Modern Sans + Technical Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#08090B',
+            slatefilm: '#111318',
+            charcoal: '#181B22',
+            ivory: '#F2EFE9',
+            mist: '#A7A49E',
+            amberfilm: '#D4A359',
+            amberdeep: '#9E7334',
+            atlantic: '#1B3B48',
+            atlanticlight: '#2A586B'
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"Space Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Base & Scrollbar */
+    :root {
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: #08090B;
+      color: #F2EFE9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #08090B;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #282C35;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #D4A359;
+    }
+
+    /* Grano cinematográfico sutil (35mm / finales de los 80) */
+    .film-grain {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 60;
+      opacity: 0.038;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Viñeta cinematográfica para el Hero */
+    .hero-vignette {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(8, 9, 11, 0.25) 0%, rgba(8, 9, 11, 0.78) 72%, rgba(8, 9, 11, 0.96) 100%),
+        linear-gradient(180deg, rgba(8, 9, 11, 0.72) 0%, rgba(8, 9, 11, 0.28) 45%, rgba(8, 9, 11, 0.98) 100%);
+    }
+
+    /* Animaciones de revelado al hacer scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Líneas divisorias editoriales */
+    .hairline {
+      border-color: rgba(242, 239, 233, 0.11);
+    }
+
+    /* Modo Sala Oscura para el Tráiler */
+    body.cinema-lights-off #cinemaBackdrop {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Transiciones suaves para tarjetas y pestañas */
+    .tab-indicator {
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-amberfilm/30 selection:text-ivory">
+
+  <!-- Textura sutil de grano cinematográfico -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Telón oscuro para modo "Apagar Luces" en el Tráiler -->
+  <div id="cinemaBackdrop" onclick="toggleCinemaLights(false)" class="fixed inset-0 bg-obsidian/92 z-30 opacity-0 pointer-events-none transition-opacity duration-500"></div>
+
+  <!-- =====================================================================
+       1. NAVEGACIÓN SUPERIOR MINIMALISTA (STICKY GLASSMORPHISM)
+  ====================================================================== -->
+  <header id="topNav" class="fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b border-transparent">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 h-20 flex items-center justify-between gap-4">
+      <!-- Marca tipográfica -->
+      <a href="#inicio" class="group flex flex-col">
+        <span class="font-serif text-lg sm:text-xl tracking-[0.14em] uppercase text-ivory group-hover:text-amberfilm transition-colors">
+          El mar que me regalas
+        </span>
+        <span class="font-mono text-[10px] tracking-[0.26em] uppercase text-mist/80">
+          Dossier Cinematográfico
+        </span>
+      </a>
+
+      <!-- Enlaces de navegación (Desktop) -->
+      <nav class="hidden lg:flex items-center gap-7 text-xs font-mono uppercase tracking-[0.16em] text-mist">
+        <a href="#sinopsis" class="hover:text-ivory transition-colors py-2">Sinopsis</a>
+        <a href="#trailer" class="hover:text-ivory transition-colors py-2">Tráiler</a>
+        <a href="#vision" class="hover:text-ivory transition-colors py-2">Visión Visual</a>
+        <a href="#personajes" class="hover:text-ivory transition-colors py-2">Personajes</a>
+        <a href="#estructura" class="hover:text-ivory transition-colors py-2">Estructura</a>
+        <a href="#produccion" class="hover:text-ivory transition-colors py-2">Producción</a>
+      </nav>
+
+      <!-- Acciones derecha -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button onclick="openTrailerModal()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-amberfilm/15 hover:bg-amberfilm text-amberfilm hover:text-obsidian border border-amberfilm/40 font-mono text-[11px] uppercase tracking-[0.16em] transition-all duration-300 cursor-pointer">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <span>Ver Tráiler</span>
+        </button>
+
+        <!-- Botón menú móvil -->
+        <button id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Abrir menú" class="lg:hidden p-2.5 rounded-xl border hairline text-ivory hover:border-amberfilm/50 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú desplegable móvil -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-slatefilm/95 backdrop-blur-xl border-b hairline px-6 py-6">
+      <nav class="flex flex-col gap-3 font-mono text-xs uppercase tracking-[0.18em] text-mist">
+        <a href="#sinopsis" onclick="toggleMobileMenu()" class="py-2.5 border-b hairline hover:text-amberfilm">01 · Sinopsis</a>
+        <a href="#trailer" onclick="toggleMobileMenu()" class="py-2.5 border-b hairline hover:text-amberfilm">02 · Tráiler Oficial</a>
+        <a href="#vision" onclick="toggleMobileMenu()" class="py-2.5 border-b hairline hover:text-amberfilm">03 · Visión Visual</a>
+        <a href="#personajes" onclick="toggleMobileMenu()" class="py-2.5 border-b hairline hover:text-amberfilm">04 · Personajes</a>
+        <a href="#estructura" onclick="toggleMobileMenu()" class="py-2.5 border-b hairline hover:text-amberfilm">05 · Estructura en 3 Actos</a>
+        <a href="#produccion" onclick="toggleMobileMenu()" class="py-2.5 hover:text-amberfilm">06 · Producción & Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       2. PORTADA HERO CINEMATOGRÁFICA (100VH) CON VIDEO "peli.mp4"
+  ====================================================================== -->
+  <section id="inicio" class="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+    <!-- Fondo Canvas atmosférico (respaldo automático elegante mientras carga o si peli.mp4 es local) -->
+    <canvas id="seaAtmosphereCanvas" class="absolute inset-0 w-full h-full object-cover z-0"></canvas>
+
+    <!-- Video de portada cinematográfico (peli.mp4) -->
+    <video
+      id="heroVideo"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      class="absolute inset-0 w-full h-full object-cover z-0 opacity-0 transition-opacity duration-1000"
+    >
+      <source src="peli.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Capa de degradado y viñeta neo-noir -->
+    <div class="hero-vignette absolute inset-0 z-10 pointer-events-none"></div>
+
+    <!-- Líneas sutiles de encuadre cinematográfico (Aspect Ratio Guide 2.39:1) -->
+    <div class="hidden md:block absolute inset-x-10 top-24 bottom-12 border border-ivory/[0.06] rounded-2xl pointer-events-none z-10">
+      <div class="absolute top-3 left-4 font-mono text-[10px] tracking-[0.25em] text-ivory/35 uppercase">
+        REC · 24 FPS · CARACAS / LA GUAIRA
+      </div>
+      <div class="absolute top-3 right-4 font-mono text-[10px] tracking-[0.25em] text-amberfilm/50 uppercase">
+        BARBARIE ENTERTAINMENT
+      </div>
+    </div>
+
+    <!-- Contenido principal sobre el Hero -->
+    <div class="relative z-20 max-w-5xl mx-auto px-5 sm:px-8 pt-24 pb-20 text-center flex flex-col items-center">
+      <!-- Presentación de casa productora -->
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-obsidian/65 backdrop-blur-md border border-amberfilm/30 mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-amberfilm animate-pulse"></span>
+        <span class="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-amberfilm">
+          Barbarie Entertainment presenta
+        </span>
+      </div>
+
+      <!-- Kicker de género -->
+      <p class="font-mono text-[11px] sm:text-xs uppercase tracking-[0.26em] text-mist mb-4">
+        Propuesta de Largometraje de Ficción · Thriller Político / Neo-Noir
+      </p>
+
+      <!-- Título monumental editorial -->
+      <h1 class="font-serif font-medium text-5xl sm:text-7xl md:text-8xl lg:text-[6.2rem] leading-[0.96] tracking-[-0.01em] text-ivory mb-6 drop-shadow-2xl">
+        El mar que me <span class="italic font-normal text-amberfilm">regalas</span>
+      </h1>
+
+      <!-- Logline ejecutivo -->
+      <p class="max-w-2xl font-sans font-light text-base sm:text-lg md:text-xl leading-relaxed text-ivory/90 mb-10">
+        En la Caracas fracturada de finales de los 80, un secuestro improvisado desata una cacería de Estado; frente al mar Caribe, el cautiverio se convierte en la única libertad posible.
+      </p>
+
+      <!-- Botones de acción -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+        <button onclick="openTrailerModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-amberfilm hover:bg-[#e0b26b] text-obsidian font-mono text-xs font-bold uppercase tracking-[0.2em] shadow-lg shadow-amberfilm/20 transition-all duration-300 cursor-pointer">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <span>Ver Tráiler Oficial</span>
+        </button>
+
+        <a href="#ficha" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-obsidian/60 hover:bg-ivory/10 backdrop-blur-md text-ivory border border-ivory/25 hover:border-ivory/50 font-mono text-xs uppercase tracking-[0.2em] transition-all duration-300">
+          <span>Leer Dossier</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Indicador de desplazamiento -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 hidden sm:flex flex-col items-center gap-2 text-mist/60">
+      <span class="font-mono text-[9px] uppercase tracking-[0.3em]">Deslizar</span>
+      <div class="w-px h-7 bg-gradient-to-b from-amberfilm/70 to-transparent"></div>
+    </div>
+
+    <!-- Control discretísimo en esquina inferior derecha para cargar peli.mp4 local si se desea previsualizar -->
+    <div class="absolute bottom-4 right-4 z-30">
+      <label for="localVideoInput" title="Previsualizar archivo peli.mp4 desde tu equipo" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-obsidian/70 hover:bg-slatefilm backdrop-blur-md border border-ivory/15 hover:border-amberfilm/40 text-mist/70 hover:text-amberfilm font-mono text-[10px] tracking-wider cursor-pointer transition-all">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        <span id="videoStatusLabel">Cargar peli.mp4 local</span>
+      </label>
+      <input id="localVideoInput" type="file" accept="video/mp4,video/*" class="hidden" />
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       3. FICHA TÉCNICA PROMOCIONAL
+  ====================================================================== -->
+  <section id="ficha" class="relative py-16 sm:py-20 bg-slatefilm border-y hairline">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4 reveal">
+        <div>
+          <span class="font-mono text-[11px] uppercase tracking-[0.26em] text-amberfilm block mb-2">
+            00 · Especificaciones del Proyecto
+          </span>
+          <h2 class="font-serif text-3xl sm:text-4xl text-ivory">
+            Ficha Técnica Promocional
+          </h2>
+        </div>
+        <p class="font-mono text-xs text-mist tracking-wider">
+          ESTADO: DESARROLLO AVANZADO · PAQUETE DE COPRODUCCIÓN
+        </p>
+      </div>
+
+      <!-- Grilla estructurada -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ivory/10 rounded-2xl overflow-hidden border hairline reveal">
+        <div class="bg-obsidian/90 p-6 sm:p-7">
+          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-mist block mb-2">Título de la Obra</span>
+          <p class="font-serif text-2xl text-ivory">El mar que me regalas</p>
+        </div>
+
+        <div class="bg-obsidian/90 p-6 sm:p-7">
+          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-mist block mb-2">Género Cinematográfico</span>
+          <p class="font-sans text-base font-medium text-ivory">Thriller Político · Drama Psicológico · Cine Negro (Neo-noir)</p>
+        </div>
+
+        <div class="bg-obsidian/90 p-6 sm:p-7">
+          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-mist block mb-2">Formato y Duración</span>
+          <p class="font-sans text-base font-medium text-ivory">Largometraje de ficción · 115 min (est.)</p>
+        </div>
+
+        <div class="bg-obsidian/90 p-6 sm:p-7">
+          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-mist block mb-2">Ambientación e Historia</span>
+          <p class="font-sans text-base text-ivory/90">Caracas y costas de La Guaira, Venezuela (finales de los años 80 / principios de los 90)</p>
+        </div>
+
+        <div class="bg-obsidian/90 p-6 sm:p-7">
+          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-mist block mb-2">Tono Visual y Fotografía</span>
+          <p class="font-sans text-base text-ivory/90">Estética neorrealista con iluminación claroscura; contraste directo entre caos urbano y luz caribeña</p>
+        </div>
+
+        <div class="bg-obsidian/90 p-6 sm:p-7">
+          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-amberfilm block mb-2">Casa Productora</span>
+          <p class="font-serif text-2xl text-ivory">Barbarie Entertainment</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       4. SINOPSIS CINEMATOGRÁFICA Y PREMISA DRAMÁTICA
+  ====================================================================== -->
+  <section id="sinopsis" class="relative py-24 sm:py-32 bg-obsidian">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <!-- Columna izquierda: Encabezado + Cita destacada -->
+        <div class="lg:col-span-5 lg:sticky lg:top-28 reveal">
+          <span class="font-mono text-[11px] uppercase tracking-[0.26em] text-amberfilm block mb-3">
+            01 · Argumento & Premisa
+          </span>
+          <h2 class="font-serif text-4xl sm:text-5xl leading-[1.08] text-ivory mb-8">
+            Sinopsis <span class="italic text-amberfilm">Cinematográfica</span>
+          </h2>
+
+          <!-- Pull Quote sobre la paradoja central -->
+          <blockquote class="p-7 rounded-2xl bg-gradient-to-br from-slatefilm to-atlantic/25 border border-amberfilm/25 relative">
+            <span class="font-serif text-6xl text-amberfilm/35 leading-none block mb-2">“</span>
+            <p class="font-serif italic text-2xl sm:text-[1.65rem] leading-snug text-ivory mb-4">
+              Arrancado de su jaula de cristal corporativa, un hombre descubre frente al Caribe que el verdadero cautiverio era la vida que dejó atrás.
+            </p>
+            <footer class="font-mono text-[11px] uppercase tracking-[0.2em] text-amberfilm">
+              — La paradoja central del relato
+            </footer>
+          </blockquote>
+
+          <!-- Datos de contexto histórico -->
+          <div class="mt-8 p-5 rounded-xl bg-slatefilm/70 border hairline flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-atlantic/40 border border-atlanticlight/40 flex items-center justify-center shrink-0 text-amberfilm font-mono text-xs">
+              89/90
+            </div>
+            <div>
+              <h3 class="font-mono text-xs uppercase tracking-wider text-ivory mb-1">Contexto Socio-Histórico</h3>
+              <p class="text-xs leading-relaxed text-mist">
+                La Venezuela bisagra entre décadas: fractura social, ecos de estallidos populares, crisis sanitaria y una ciudad que oscurece mientras el litoral permanece como testigo inmóvil.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna derecha: Narrativa completa -->
+        <div class="lg:col-span-7 space-y-6 text-base sm:text-lg font-light leading-[1.85] text-ivory/90 reveal">
+          <p class="first-letter:font-serif first-letter:text-6xl first-letter:float-left first-letter:mr-3.5 first-letter:leading-[0.85] first-letter:text-amberfilm">
+            En la Caracas caótica y fracturada por los ecos de las protestas populares, <strong class="font-medium text-ivory">Paul White</strong>, un apático e insatisfecho ejecutivo estadounidense de la farmacéutica multinacional <strong class="font-medium text-ivory">Lucerna</strong>, es secuestrado sorpresivamente en su residencia. Sin embargo, la operación no la ejecuta un comando profesional de la guerrilla, sino un improbable trío movido por el resentimiento, la desesperación y la marginalidad: <strong class="font-medium text-ivory">Rafa</strong>, un expromotor médico expulsado de la misma empresa; el <strong class="font-medium text-ivory">Gordo Carlos</strong>, un excéntrico físico y cosmólogo atrapado como profesor de secundaria; y <strong class="font-medium text-ivory">Marleen</strong>, una mujer trans marcada por un pasado desgarrador de violencia.
+          </p>
+
+          <p>
+            Trasladado hacia el litoral en un viejo Ford Galaxie y custodiado en cautiverio por <strong class="font-medium text-ivory">Etelvina</strong>, una viuda de pescador que administra una humilde choza frente al Caribe en La Guaira, los captores improvisados formulan un pliego tan audaz como desesperado: exigen un millón y medio de dólares, la entrega inmediata de alimentos a los barrios vulnerables y la liberación de tratamientos gratuitos contra el VIH. Para legitimarse ante la opinión pública y el Estado, bautizan su célula ficticia como los <span class="text-amberfilm font-normal">«Grupos Organizados por la Liberación de Venezuela» (GOLVE)</span>.
+          </p>
+
+          <p>
+            Lo que inicia como una extorsión ideológica y de venganza personal pronto desata un terremoto político de proporciones incontrolables: el gobierno nacional intenta sofocar el escándalo culpando a extremistas, la Inteligencia Militar desata una cacería implacable por tierra y costa, y <strong class="font-medium text-ivory">Arsenio Henríquez</strong>, el desenfrenado presidente regional de Lucerna, maniobra entre excesos para encubrir la corrupción interna de la corporación en medio del pánico.
+          </p>
+
+          <p>
+            Mientras los detectives <strong class="font-medium text-ivory">Euclides Smith</strong> y <strong class="font-medium text-ivory">Péndulo</strong> arman metódicamente las piezas de este rompecabezas hasta descubrir la verdadera naturaleza amateur del grupo, dentro de la choza costera ocurre lo inesperado: despojado de sus privilegios corporativos y de su apatía existencial, Paul establece una insólita y profunda conexión humana con Etelvina, descubriendo en su cautiverio una extraña e incipiente paz mientras el cerco policial amenaza con destruirlos a todos.
+          </p>
+
+          <!-- Puntos clave del conflicto -->
+          <div class="pt-6 border-t hairline grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 rounded-xl bg-slatefilm border hairline">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-amberfilm block mb-1">El Detonante</span>
+              <p class="text-xs text-mist leading-relaxed">Un comando amateur inventa una guerrilla ficticia con demandas sanitarias y sociales profundamente reales.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slatefilm border hairline">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-amberfilm block mb-1">La Cacería</span>
+              <p class="text-xs text-mist leading-relaxed">El Estado, la Inteligencia Militar y la cúpula corrupta de Lucerna reaccionan con fuerza desproporcionada.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slatefilm border hairline">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-amberfilm block mb-1">El Refugio</span>
+              <p class="text-xs text-mist leading-relaxed">La convivencia frente al mar en La Guaira transforma el secuestro en un espacio de redención mutua.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       5. SALA DE PROYECCIÓN: TRÁILER OFICIAL (YOUTUBE EMBED)
+  ====================================================================== -->
+  <section id="trailer" class="relative py-24 sm:py-28 bg-slatefilm border-y hairline z-40">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6 reveal">
+        <div>
+          <span class="font-mono text-[11px] uppercase tracking-[0.26em] text-amberfilm block mb-2">
+            02 · Sala de Proyección
+          </span>
+          <h2 class="font-serif text-4xl sm:text-5xl text-ivory">
+            Teaser / Tráiler <span class="italic text-amberfilm">Oficial</span>
+          </h2>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="cinemaLightsBtn" onclick="toggleCinemaLights()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-obsidian hover:bg-charcoal border hairline text-xs font-mono uppercase tracking-wider text-mist hover:text-amberfilm transition-colors cursor-pointer">
+            <span class="w-2 h-2 rounded-full bg-amberfilm"></span>
+            <span id="cinemaLightsText">Modo Sala Oscura</span>
+          </button>
+
+          <a href="https://youtu.be/qPYaXXnXR_U" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-amberfilm/15 hover:bg-amberfilm text-amberfilm hover:text-obsidian border border-amberfilm/35 text-xs font-mono uppercase tracking-wider transition-all">
+            <span>Abrir en YouTube ↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Marco cinematográfico 16:9 -->
+      <div class="relative rounded-2xl overflow-hidden bg-obsidian border border-ivory/15 shadow-[0_25px_90px_-15px_rgba(0,0,0,0.9)] reveal">
+        <!-- Barra superior estilo sala de proyección -->
+        <div class="px-5 py-3 bg-obsidian/95 border-b hairline flex items-center justify-between text-[11px] font-mono text-mist">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-amberfilm"></span>
+            <span class="tracking-widest uppercase">PROYECCIÓN DE DESARROLLO · EL MAR QUE ME REGALAS</span>
+          </div>
+          <span class="hidden sm:inline text-mist/60">HD · STEREO · BARBARIE ENTERTAINMENT</span>
+        </div>
+
+        <!-- Contenedor Responsivo 16:9 -->
+        <div class="relative w-full aspect-video bg-obsidian">
+          <iframe
+            id="youtubeInlineFrame"
+            class="absolute inset-0 w-full h-full"
+            src="https://www.youtube.com/embed/qPYaXXnXR_U?rel=0&modestbranding=1"
+            title="Tráiler Oficial — El mar que me regalas"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <!-- Pie de marco con respaldo directo -->
+        <div class="px-5 py-3.5 bg-obsidian/95 border-t hairline flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-mist">
+          <span>¿Problemas con la reproducción incrustada o video aún en procesamiento?</span>
+          <a href="https://youtu.be/qPYaXXnXR_U" target="_blank" rel="noopener noreferrer" class="font-mono text-amberfilm hover:underline">
+            Ver directamente en https://youtu.be/qPYaXXnXR_U ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       6. PROPUESTA ESTÉTICA Y VISIÓN DE DIRECCIÓN (LOOKBOOK CONCEPTUAL)
+  ====================================================================== -->
+  <section id="vision" class="relative py-24 sm:py-32 bg-obsidian">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+      <div class="max-w-3xl mb-14 reveal">
+        <span class="font-mono text-[11px] uppercase tracking-[0.26em] text-amberfilm block mb-3">
+          03 · Tratamiento Audiovisual & Lookbook Conceptual
+        </span>
+        <h2 class="font-serif text-4xl sm:text-5xl text-ivory mb-5">
+          Dos Mundos, <span class="italic text-amberfilm">Dos Texturas</span>
+        </h2>
+        <p class="text-base sm:text-lg font-light text-mist leading-relaxed">
+          La puesta en escena se articula sobre una fractura geográfica y sensorial: el descenso desde la arquitectura opresiva y sombría de Caracas hacia la claridad salina del litoral central.
+        </p>
+      </div>
+
+      <!-- Comparativa Dual Interactiva -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-14 reveal">
+        <!-- Polo 1: CARACAS -->
+        <article class="group relative rounded-2xl overflow-hidden border hairline bg-gradient-to-b from-charcoal to-obsidian p-8 sm:p-10 flex flex-col justify-between transition-all duration-500 hover:border-ivory/30">
+          <!-- Ilustración abstracta SVG de luz claroscura urbana -->
+          <div class="absolute inset-0 opacity-20 pointer-events-none">
+            <svg class="w-full h-full" viewBox="0 0 600 400" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="caracasGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#D4A359" stop-opacity="0.35"/>
+                  <stop offset="55%" stop-color="#111318" stop-opacity="0.1"/>
+                  <stop offset="100%" stop-color="#08090B" stop-opacity="0.9"/>
+                </linearGradient>
+              </defs>
+              <rect width="600" height="400" fill="url(#caracasGrad)"/>
+              <polygon points="0,0 240,0 110,400 0,400" fill="#D4A359" fill-opacity="0.12"/>
+              <line x1="0" y1="120" x2="600" y2="120" stroke="#F2EFE9" stroke-opacity="0.08" stroke-width="1"/>
+              <line x1="0" y1="260" x2="600" y2="260" stroke="#F2EFE9" stroke-opacity="0.06" stroke-width="1"/>
+            </svg>
+          </div>
+
+          <div class="relative z-10">
+            <div class="flex items-center justify-between gap-4 mb-6">
+              <span class="px-3 py-1 rounded-full bg-obsidian/80 border hairline font-mono text-[10px] uppercase tracking-[0.2em] text-mist">
+                POLO I · ESPACIO URBANO
+              </span>
+              <span class="font-mono text-xs text-amberfilm">CLAROSCURO / NEO-NOIR</span>
+            </div>
+
+            <h3 class="font-serif text-3xl sm:text-4xl text-ivory mb-4">
+              Caracas: El Laberinto Institucional
+            </h3>
+
+            <p class="text-sm sm:text-base font-light text-ivory/85 leading-relaxed mb-6">
+              Encuadres cerrados, sombras densas y geometrías rígidas. Los pasillos corporativos de Laboratorios Lucerna, los despachos gubernamentales y las calles en tensión se filman con lentes anamórficos de contraste marcado, reflejando un sistema en descomposición moral.
+            </p>
+          </div>
+
+          <div class="relative z-10 pt-6 border-t hairline grid grid-cols-3 gap-3 font-mono text-[11px]">
+            <div>
+              <span class="text-mist/60 block text-[9px] uppercase">Paleta</span>
+              <span class="text-ivory">Obsidiana · Ámbar</span>
+            </div>
+            <div>
+              <span class="text-mist/60 block text-[9px] uppercase">Cámara</span>
+              <span class="text-ivory">Contenida / Tensa</span>
+            </div>
+            <div>
+              <span class="text-mist/60 block text-[9px] uppercase">Atmósfera</span>
+              <span class="text-ivory">Asfalto · Humo</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Polo 2: LA GUAIRA -->
+        <article class="group relative rounded-2xl overflow-hidden border border-atlanticlight/40 bg-gradient-to-b from-atlantic/45 via-slatefilm to-obsidian p-8 sm:p-10 flex flex-col justify-between transition-all duration-500 hover:border-amberfilm/45">
+          <!-- Ilustración abstracta SVG de horizonte marino -->
+          <div class="absolute inset-0 opacity-30 pointer-events-none">
+            <svg class="w-full h-full" viewBox="0 0 600 400" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="seaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#D4A359" stop-opacity="0.28"/>
+                  <stop offset="48%" stop-color="#2A586B" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#08090B" stop-opacity="0.95"/>
+                </linearGradient>
+              </defs>
+              <rect width="600" height="400" fill="url(#seaGrad)"/>
+              <line x1="0" y1="195" x2="600" y2="195" stroke="#F2EFE9" stroke-opacity="0.22" stroke-width="1"/>
+              <path d="M0 235 Q 150 225, 300 235 T 600 235" fill="none" stroke="#F2EFE9" stroke-opacity="0.1" stroke-width="1.2"/>
+              <path d="M0 275 Q 150 265, 300 275 T 600 275" fill="none" stroke="#F2EFE9" stroke-opacity="0.08" stroke-width="1.2"/>
+            </svg>
+          </div>
+
+          <div class="relative z-10">
+            <div class="flex items-center justify-between gap-4 mb-6">
+              <span class="px-3 py-1 rounded-full bg-atlantic/60 border border-atlanticlight/50 font-mono text-[10px] uppercase tracking-[0.2em] text-ivory">
+                POLO II · ESPACIO LITORAL
+              </span>
+              <span class="font-mono text-xs text-amberfilm">LUZ SALINA / NEORREALISMO</span>
+            </div>
+
+            <h3 class="font-serif text-3xl sm:text-4xl text-ivory mb-4">
+              La Guaira: El Horizonte Humano
+            </h3>
+
+            <p class="text-sm sm:text-base font-light text-ivory/85 leading-relaxed mb-6">
+              Al cruzar el túnel hacia la costa, el aire entra en el plano. La choza de Etelvina frente al Caribe se ilumina con luz natural cálida y texturas orgánicas: madera curtida por el salitre, redes de pesca y planos amplios donde las jerarquías sociales se disuelven.
+            </p>
+          </div>
+
+          <div class="relative z-10 pt-6 border-t hairline grid grid-cols-3 gap-3 font-mono text-[11px]">
+            <div>
+              <span class="text-mist/60 block text-[9px] uppercase">Paleta</span>
+              <span class="text-ivory">Azul Atlántico · Oro</span>
+            </div>
+            <div>
+              <span class="text-mist/60 block text-[9px] uppercase">Cámara</span>
+              <span class="text-ivory">Respirada / Libre</span>
+            </div>
+            <div>
+              <span class="text-mist/60 block text-[9px] uppercase">Atmósfera</span>
+              <span class="text-ivory">Salitre · Oleaje</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Pilares Narrativos y Motivos Simbólicos -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+        <div class="p-7 rounded-2xl bg-slatefilm border hairline">
+          <div class="font-mono text-xs text-amberfilm mb-3">MOTIVO I · EL TRÁNSITO</div>
+          <h4 class="font-serif text-2xl text-ivory mb-2">El Ford Galaxie</h4>
+          <p class="text-sm font-light text-mist leading-relaxed">
+            Más que un vehículo de huida, es la cápsula de transición entre dos épocas y dos estados mentales: el descenso físico desde la capital hacia la desnudez emocional de la costa.
+          </p>
+        </div>
+
+        <div class="p-7 rounded-2xl bg-slatefilm border hairline">
+          <div class="font-mono text-xs text-amberfilm mb-3">MOTIVO II · EL ORDEN OCULTO</div>
+          <h4 class="font-serif text-2xl text-ivory mb-2">La Sucesión de Fibonacci</h4>
+          <p class="text-sm font-light text-mist leading-relaxed">
+            Los apuntes cosmológicos del Gordo Carlos trazan una proporción áurea entre el caos político y la naturaleza del mar, dotando de poesía matemática a una rebelión improvisada.
+          </p>
+        </div>
+
+        <div class="p-7 rounded-2xl bg-slatefilm border hairline">
+          <div class="font-mono text-xs text-amberfilm mb-3">MOTIVO III · DISEÑO SONORO</div>
+          <h4 class="font-serif text-2xl text-ivory mb-2">Boletines vs. Marea</h4>
+          <p class="text-sm font-light text-mist leading-relaxed">
+            Contrapunto acústico constante entre la estática radial de los comunicados del GOLVE, sirenas lejanas y el pulso hipnótico de las olas rompiendo contra la orilla de La Guaira.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       7. PERSONAJES PRINCIPALES (DRAMATIS PERSONAE)
+  ====================================================================== -->
+  <section id="personajes" class="relative py-24 sm:py-32 bg-slatefilm border-y hairline">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-6 reveal">
+        <div>
+          <span class="font-mono text-[11px] uppercase tracking-[0.26em] text-amberfilm block mb-3">
+            04 · Dramatis Personae
+          </span>
+          <h2 class="font-serif text-4xl sm:text-5xl text-ivory">
+            Personajes <span class="italic text-amberfilm">Principales</span>
+          </h2>
+        </div>
+
+        <!-- Filtros interactivos por facción -->
+        <div class="flex flex-wrap gap-2" role="tablist" aria-label="Filtrar personajes">
+          <button onclick="filterCharacters('all', this)" class="char-filter-btn active px-4 py-2 rounded-full bg-amberfilm text-obsidian font-mono text-[11px] uppercase tracking-wider transition-all cursor-pointer">
+            Todos (7)
+          </button>
+          <button onclick="filterCharacters('litoral', this)" class="char-filter-btn px-4 py-2 rounded-full bg-obsidian/70 hover:bg-obsidian text-mist hover:text-ivory border hairline font-mono text-[11px] uppercase tracking-wider transition-all cursor-pointer">
+            Rehén y Litoral
+          </button>
+          <button onclick="filterCharacters('golve', this)" class="char-filter-btn px-4 py-2 rounded-full bg-obsidian/70 hover:bg-obsidian text-mist hover:text-ivory border hairline font-mono text-[11px] uppercase tracking-wider transition-all cursor-pointer">
+            Los Captores (GOLVE)
+          </button>
+          <button onclick="filterCharacters('poder', this)" class="char-filter-btn px-4 py-2 rounded-full bg-obsidian/70 hover:bg-obsidian text-mist hover:text-ivory border hairline font-mono text-[11px] uppercase tracking-wider transition-all cursor-pointer">
+            El Poder y la Pesquisa
+          </button>
+        </div>
+      </div>
+
+      <!-- Grilla de Personajes -->
+      <div id="charactersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- 1. Paul White -->
+        <article data-group="litoral" class="char-card rounded-2xl bg-obsidian border hairline p-7 flex flex-col justify-between hover:border-amberfilm/45 transition-all duration-300 reveal">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded bg-atlantic/40 text-ivory border border-atlanticlight/40">
+                El Rehén · 55 años
+              </span>
+              <span class="font-mono text-xs text-amberfilm">01</span>
+            </div>
+            <h3 class="font-serif text-3xl text-ivory mb-1">Paul White</h3>
+            <p class="font-mono text-[11px] text-mist uppercase tracking-wider mb-4">Ejecutivo Estadounidense · Lucerna</p>
+            <p class="text-sm font-light text-ivory/85 leading-relaxed">
+              Atrapado en una rutina corporativa estéril y deshumanizada. Durante su cautiverio en La Guaira experimenta una profunda metamorfosis interior, transitando desde el terror inicial hasta una serenidad inédita frente al mar.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t hairline flex items-center justify-between font-mono text-[10px] text-mist">
+            <span>ARCO: APATÍA → DESPERTAR</span>
+            <span class="text-amberfilm">PROTAGONISTA</span>
+          </div>
+        </article>
+
+        <!-- 2. Rafael "Rafa" Suárez -->
+        <article data-group="golve" class="char-card rounded-2xl bg-obsidian border hairline p-7 flex flex-col justify-between hover:border-amberfilm/45 transition-all duration-300 reveal">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded bg-amberfilm/15 text-amberfilm border border-amberfilm/30">
+                GOLVE · Estratega
+              </span>
+              <span class="font-mono text-xs text-amberfilm">02</span>
+            </div>
+            <h3 class="font-serif text-3xl text-ivory mb-1">Rafael «Rafa» Suárez</h3>
+            <p class="font-mono text-[11px] text-mist uppercase tracking-wider mb-4">Exvisitador Médico Despedido</p>
+            <p class="text-sm font-light text-ivory/85 leading-relaxed">
+              El cerebro detrás del secuestro. Impulsado por el rencor acumulado contra Laboratorios Lucerna y la precariedad económica, canaliza su frustración personal hacia una causa colectiva que pronto supera su propio control.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t hairline flex items-center justify-between font-mono text-[10px] text-mist">
+            <span>ARCO: RENCOR → DESBORDE</span>
+            <span class="text-amberfilm">GOLVE</span>
+          </div>
+        </article>
+
+        <!-- 3. El Gordo Carlos -->
+        <article data-group="golve" class="char-card rounded-2xl bg-obsidian border hairline p-7 flex flex-col justify-between hover:border-amberfilm/45 transition-all duration-300 reveal">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded bg-amberfilm/15 text-amberfilm border border-amberfilm/30">
+                GOLVE · Ideólogo
+              </span>
+              <span class="font-mono text-xs text-amberfilm">03</span>
+            </div>
+            <h3 class="font-serif text-3xl text-ivory mb-1">El Gordo Carlos</h3>
+            <p class="font-mono text-[11px] text-mist uppercase tracking-wider mb-4">Físico y Profesor de Bachillerato</p>
+            <p class="text-sm font-light text-ivory/85 leading-relaxed">
+              Excéntrico cosmólogo atrapado en las aulas de secundaria. Aporta al grupo la dimensión filosófica, conceptos de física y la sucesión de Fibonacci, además de una devoción leal y protectora hacia Marleen.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t hairline flex items-center justify-between font-mono text-[10px] text-mist">
+            <span>ARCO: UTOPÍA → SACRIFICIO</span>
+            <span class="text-amberfilm">GOLVE</span>
+          </div>
+        </article>
+
+        <!-- 4. Marleen -->
+        <article data-group="golve" class="char-card rounded-2xl bg-obsidian border hairline p-7 flex flex-col justify-between hover:border-amberfilm/45 transition-all duration-300 reveal">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded bg-amberfilm/15 text-amberfilm border border-amberfilm/30">
+                GOLVE · Ejecución
+              </span>
+              <span class="font-mono text-xs text-amberfilm">04</span>
+            </div>
+            <h3 class="font-serif text-3xl text-ivory mb-1">Marleen</h3>
+            <p class="font-mono text-[11px] text-mist uppercase tracking-wider mb-4">Superviviente · Templada y Lucida</p>
+            <p class="text-sm font-light text-ivory/85 leading-relaxed">
+              Mujer trans fuerte, magnética y compleja. Pieza clave en la ejecución operativa del secuestro; aporta nervio templado y lucidez al trío mientras lidia con las cicatrices de un pasado traumático de abusos y exclusión.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t hairline flex items-center justify-between font-mono text-[10px] text-mist">
+            <span>ARCO: SUPERVIVENCIA → DIGNIDAD</span>
+            <span class="text-amberfilm">GOLVE</span>
+          </div>
+        </article>
+
+        <!-- 5. Etelvina -->
+        <article data-group="litoral" class="char-card rounded-2xl bg-obsidian border hairline p-7 flex flex-col justify-between hover:border-amberfilm/45 transition-all duration-300 reveal">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded bg-atlantic/40 text-ivory border border-atlanticlight/40">
+                El Litoral · Anfitriona
+              </span>
+              <span class="font-mono text-xs text-amberfilm">05</span>
+            </div>
+            <h3 class="font-serif text-3xl text-ivory mb-1">Etelvina</h3>
+            <p class="font-mono text-[11px] text-mist uppercase tracking-wider mb-4">Viuda de Pescador · La Guaira</p>
+            <p class="text-sm font-light text-ivory/85 leading-relaxed">
+              Administra la choza costera donde se oculta a Paul. Su calidez espontánea, su risa franca y su temple ante la adversidad desarman las defensas del rehén y transforman la reclusión en una convivencia reveladora.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t hairline flex items-center justify-between font-mono text-[10px] text-mist">
+            <span>ARCO: HOSPITALIDAD → GRACIA</span>
+            <span class="text-amberfilm">CORAZÓN DEL FILM</span>
+          </div>
+        </article>
+
+        <!-- 6. Euclides Smith (& Péndulo) -->
+        <article data-group="poder" class="char-card rounded-2xl bg-obsidian border hairline p-7 flex flex-col justify-between hover:border-amberfilm/45 transition-all duration-300 reveal">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span class="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded bg-charcoal text-mist border hairline">
+                La Pesquisa · Detective
+              </span>
+              <span class="font-mono text-xs text-amberfilm">06</span>
+            </div>
+            <h3 class="font-serif text-3xl text-ivory mb-1">Euclides Smith</h3>
+            <p class="font-mono text-[11px] text-mist uppercase tracking-wider mb-4">Investigador Privado y Exoficial (con Péndulo)</p>
+            <p class="text-sm font-light text-ivory/85 leading-relaxed">
+              Analítico, sobrio y metódico. Junto a su compañero Péndulo, sigue las grietas lógicas del caso más allá del discurso oficial, desentrañando la verdadera naturaleza amateur y humana detrás de las siglas del GOLVE.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t hairline flex items-center justify-between font-mono text-[10px] text-mist">
+            <span>ARCO: DEDUCCIÓN → LUCIDEZ</span>
+            <span class="text-amberfilm">NEO-NOIR</span>
+          </div>
+        </article>
+
+        <!-- 7. Arsenio Henríquez -->
+        <article data-group="poder" class="char-card md:col-span-2 lg:col-span-3 rounded-2xl bg-gradient-to-r from-obsidian via-charcoal/80 to-obsidian border hairline p-7 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6 hover:border-amberfilm/45 transition-all duration-300 reveal">
+          <div class="max-w-3xl">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded bg-charcoal text-mist border hairline">
+                El Poder Corporativo · Antagonista
+              </span>
+              <span class="font-mono text-xs text-amberfilm">07</span>
+            </div>
+            <h3 class="font-serif text-3xl text-ivory mb-1">Arsenio Henríquez</h3>
+            <p class="font-mono text-[11px] text-mist uppercase tracking-wider mb-3">Presidente Regional de Laboratorios Lucerna</p>
+            <p class="text-sm sm:text-base font-light text-ivory/85 leading-relaxed">
+              Hedonista, volátil y dependiente de sustancias. Acorralado por las revelaciones del secuestro, su prioridad absoluta no es rescatar con vida a Paul White, sino encubrir la corrupción farmacéutica de la multinacional y salvar las apariencias corporativas a cualquier costo.
+            </p>
+          </div>
+          <div class="lg:text-right shrink-0 border-t lg:border-t-0 lg:border-l hairline pt-4 lg:pt-0 lg:pl-8 font-mono text-[11px]">
+            <span class="text-mist block mb-1">ARCO DRAMÁTICO</span>
+            <span class="text-amberfilm uppercase tracking-wider">IMPUNIDAD → PARANOIA</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       8. ARCOS DE ESTRUCTURA NARRATIVA (GUION EN TRES ACTOS)
+  ====================================================================== -->
+  <section id="estructura" class="relative py-24 sm:py-32 bg-obsidian">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10">
+      <div class="text-center max-w-3xl mx-auto mb-14 reveal">
+        <span class="font-mono text-[11px] uppercase tracking-[0.26em] text-amberfilm block mb-3">
+          05 · Arquitectura del Guion
+        </span>
+        <h2 class="font-serif text-4xl sm:text-5xl text-ivory mb-4">
+          Estructura en <span class="italic text-amberfilm">Tres Actos</span>
+        </h2>
+        <p class="text-base font-light text-mist">
+          Una progresión dramática calibrada donde la tensión externa del thriller policial converge hacia la intimidad emocional de la costa.
+        </p>
+      </div>
+
+      <!-- Selector interactivo de Actos -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8 reveal">
+        <button onclick="selectAct(1)" id="actBtn1" class="act-btn p-5 rounded-2xl border border-amberfilm bg-slatefilm text-left transition-all cursor-pointer">
+          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-amberfilm block mb-1">ACTO I · PÁGS. 1–28</span>
+          <span class="font-serif text-2xl text-ivory block">El Inusual Secuestro</span>
+        </button>
+
+        <button onclick="selectAct(2)" id="actBtn2" class="act-btn p-5 rounded-2xl border hairline bg-slatefilm/50 hover:bg-slatefilm text-left transition-all cursor-pointer">
+          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-mist block mb-1">ACTO II · PÁGS. 29–85</span>
+          <span class="font-serif text-2xl text-ivory block">El Manifiesto y la Persecución</span>
+        </button>
+
+        <button onclick="selectAct(3)" id="actBtn3" class="act-btn p-5 rounded-2xl border hairline bg-slatefilm/50 hover:bg-slatefilm text-left transition-all cursor-pointer">
+          <span class="font-mono text-[10px] uppercase tracking-[0.22em] text-mist block mb-1">ACTO III · PÁGS. 86–115</span>
+          <span class="font-serif text-2xl text-ivory block">El Desenlace e Inevitabilidad</span>
+        </button>
+      </div>
+
+      <!-- Panel de detalle del Acto activo -->
+      <div id="actDisplayPanel" class="rounded-2xl bg-slatefilm border hairline p-8 sm:p-12 reveal">
+        <!-- Contenido inyectado dinámicamente por JS (con Acto I precargado para SEO/render inicial) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amberfilm/15 border border-amberfilm/30 font-mono text-[10px] uppercase tracking-[0.2em] text-amberfilm mb-4">
+              DETONANTE & CRUCE DE UMBRAL
+            </div>
+            <h3 class="font-serif text-3xl sm:text-4xl text-ivory mb-4">
+              Acto I: El Inusual Secuestro
+            </h3>
+            <p class="text-base sm:text-lg font-light text-ivory/90 leading-relaxed mb-6">
+              Presentación de una Caracas desigual y corrupta marcada por las secuelas de las protestas populares y la opacidad de Laboratorios Lucerna. La incursión nocturna en la residencia de Paul White revela rápidamente la naturaleza improvisada de sus captores. El traslado en el Ford Galaxie hacia La Guaira sella la alianza marginal entre Rafa, el Gordo Carlos y Marleen.
+            </p>
+            <div class="p-4 rounded-xl bg-obsidian/80 border hairline font-mono text-xs text-mist">
+              <strong class="text-amberfilm uppercase">Punto de Giro I:</strong> El cruce hacia el litoral caribeño y la entrega de Paul bajo la custodia de Etelvina.
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 space-y-3">
+            <div class="p-4 rounded-xl bg-obsidian/70 border hairline">
+              <span class="font-mono text-[10px] text-amberfilm uppercase tracking-widest block mb-1">Secuencia 01</span>
+              <p class="text-sm text-ivory/90">Retrato del vacío corporativo de Paul White y la cúpula hedonista de Lucerna.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-obsidian/70 border hairline">
+              <span class="font-mono text-[10px] text-amberfilm uppercase tracking-widest block mb-1">Secuencia 02</span>
+              <p class="text-sm text-ivory/90">El asalto doméstico: tensión y torpeza humana en la captura del ejecutivo.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-obsidian/70 border hairline">
+              <span class="font-mono text-[10px] text-amberfilm uppercase tracking-widest block mb-1">Secuencia 03</span>
+              <p class="text-sm text-ivory/90">Huida nocturna en el Ford Galaxie rumbo al mar de La Guaira.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       9. VIABILIDAD DE PRODUCCIÓN Y CONTACTO PARA COPRODUCCIÓN
+  ====================================================================== -->
+  <section id="produccion" class="relative py-24 sm:py-32 bg-slatefilm border-t hairline">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <!-- Argumentos de producción aterrizados -->
+        <div class="lg:col-span-7 reveal">
+          <span class="font-mono text-[11px] uppercase tracking-[0.26em] text-amberfilm block mb-3">
+            06 · Viabilidad & Modelo de Producción
+          </span>
+          <h2 class="font-serif text-4xl sm:text-5xl text-ivory mb-6">
+            Una Propuesta <span class="italic text-amberfilm">Aterrizada</span> y Competitiva
+          </h2>
+          <p class="text-base sm:text-lg font-light text-mist leading-relaxed mb-10">
+            Concebida por <strong class="font-medium text-ivory">Barbarie Entertainment</strong> con visión de coproducción iberoamericana y circulación en festivales internacionales, la película equilibra ambición estética con eficiencia operativa.
+          </p>
+
+          <div class="space-y-5">
+            <div class="p-6 rounded-2xl bg-obsidian border hairline flex gap-5">
+              <div class="w-11 h-11 rounded-xl bg-amberfilm/15 border border-amberfilm/35 flex items-center justify-center shrink-0 font-mono text-sm text-amberfilm">
+                01
+              </div>
+              <div>
+                <h3 class="font-serif text-2xl text-ivory mb-1.5">Logística de Rodaje Optimizada</h3>
+                <p class="text-sm font-light text-mist leading-relaxed">
+                  Dos polos de rodaje contiguos (Caracas y el litoral de La Guaira, separados por menos de 35 kilómetros), reduciendo drásticamente tiempos de traslado, pernoctas y costos operativos sin sacrificar riqueza visual.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-obsidian border hairline flex gap-5">
+              <div class="w-11 h-11 rounded-xl bg-amberfilm/15 border border-amberfilm/35 flex items-center justify-center shrink-0 font-mono text-sm text-amberfilm">
+                02
+              </div>
+              <div>
+                <h3 class="font-serif text-2xl text-ivory mb-1.5">Unidad Dramática Contenida</h3>
+                <p class="text-sm font-light text-mist leading-relaxed">
+                  El corazón emocional del segundo y tercer acto transcurre en una locación costera única (la choza frente al Caribe), permitiendo concentrar el presupuesto en dirección de fotografía, arte de época y trabajo actoral de alto calibre.
+                </p>
+              </div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-obsidian border hairline flex gap-5">
+              <div class="w-11 h-11 rounded-xl bg-amberfilm/15 border border-amberfilm/35 flex items-center justify-center shrink-0 font-mono text-sm text-amberfilm">
+                03
+              </div>
+              <div>
+                <h3 class="font-serif text-2xl text-ivory mb-1.5">Relevancia Temática y Potencial de Mercado</h3>
+                <p class="text-sm font-light text-mist leading-relaxed">
+                  Un thriller político latinoamericano de época con resonancia contemporánea: crisis farmacéutica, acceso a tratamientos contra el VIH, diversidad humana y una historia de redención universal atractiva para fondos, ventas internacionales y plataformas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta Ejecutiva de Barbarie Entertainment -->
+        <div class="lg:col-span-5 reveal">
+          <div class="rounded-2xl bg-gradient-to-b from-charcoal to-obsidian border border-amberfilm/35 p-8 sm:p-10 shadow-2xl">
+            <div class="font-mono text-[10px] uppercase tracking-[0.26em] text-amberfilm mb-2">
+              DOSSIER DE COPRODUCCIÓN
+            </div>
+            <h3 class="font-serif text-3xl sm:text-4xl text-ivory mb-3">
+              Barbarie Entertainment
+            </h3>
+            <p class="text-sm font-light text-mist leading-relaxed mb-7">
+              ¿Deseas recibir el tratamiento extendido, el guion literario o agendar una reunión de presentación con el equipo creativo y de producción?
+            </p>
+
+            <!-- Resumen rápido descargable/copiable -->
+            <div class="p-4 rounded-xl bg-obsidian/90 border hairline mb-6 space-y-2 font-mono text-[11px]">
+              <div class="flex justify-between">
+                <span class="text-mist">PROYECTO:</span>
+                <span class="text-ivory">El mar que me regalas</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-mist">FORMATO:</span>
+                <span class="text-ivory">Largometraje Ficción (115')</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-mist">GÉNERO:</span>
+                <span class="text-ivory">Thriller Político / Neo-Noir</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-mist">TRÁILER:</span>
+                <a href="https://youtu.be/qPYaXXnXR_U" target="_blank" rel="noopener noreferrer" class="text-amberfilm hover:underline">youtu.be/qPYaXXnXR_U ↗</a>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <button onclick="openContactModal()" class="w-full py-4 px-6 rounded-full bg-amberfilm hover:bg-[#e0b26b] text-obsidian font-mono text-xs font-bold uppercase tracking-[0.2em] transition-all cursor-pointer">
+                Solicitar Guion & Reunión
+              </button>
+
+              <button onclick="copyPitchSummary()" class="w-full py-3.5 px-6 rounded-full bg-obsidian hover:bg-ivory/10 text-ivory border border-ivory/20 font-mono text-[11px] uppercase tracking-[0.18em] transition-all cursor-pointer">
+                Copiar Resumen Ejecutivo (One-Sheet)
+              </button>
+            </div>
+
+            <p id="copyFeedback" class="mt-3 text-center font-mono text-[11px] text-amberfilm opacity-0 transition-opacity duration-300">
+              ✓ Ficha ejecutiva copiada al portapapeles
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       FOOTER EDITORIAL
+  ====================================================================== -->
+  <footer class="bg-obsidian border-t hairline py-12">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <div>
+        <p class="font-serif text-xl tracking-[0.12em] uppercase text-ivory">El mar que me regalas</p>
+        <p class="font-mono text-[11px] text-mist mt-1">
+          © Barbarie Entertainment · Todos los derechos reservados · Dossier Confidencial de Desarrollo
+        </p>
+      </div>
+
+      <div class="flex items-center gap-6 font-mono text-[11px] uppercase tracking-wider text-mist">
+        <a href="#inicio" class="hover:text-amberfilm transition-colors">Inicio ↑</a>
+        <a href="https://youtu.be/qPYaXXnXR_U" target="_blank" rel="noopener noreferrer" class="hover:text-amberfilm transition-colors">Tráiler YouTube ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       MODAL DE TRÁILER EN PANTALLA COMPLETA
+  ====================================================================== -->
+  <div id="trailerModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-obsidian/95 backdrop-blur-xl p-4 sm:p-8">
+    <div class="relative w-full max-w-5xl rounded-2xl bg-slatefilm border border-ivory/20 overflow-hidden shadow-2xl">
+      <div class="px-5 py-3.5 bg-obsidian border-b hairline flex items-center justify-between">
+        <span class="font-mono text-xs uppercase tracking-[0.2em] text-amberfilm">
+          Tráiler Oficial · El mar que me regalas
+        </span>
+        <button onclick="closeTrailerModal()" class="px-3 py-1 rounded-full bg-ivory/10 hover:bg-amberfilm text-ivory hover:text-obsidian font-mono text-xs uppercase tracking-wider transition-colors cursor-pointer">
+          Cerrar ✕
+        </button>
+      </div>
+      <div class="relative w-full aspect-video bg-obsidian">
+        <iframe
+          id="youtubeModalFrame"
+          class="absolute inset-0 w-full h-full"
+          src=""
+          title="Tráiler Oficial en Pantalla Completa"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="px-5 py-3 bg-obsidian border-t hairline flex items-center justify-between text-xs text-mist">
+        <span>Barbarie Entertainment · Propuesta Cinematográfica</span>
+        <a href="https://youtu.be/qPYaXXnXR_U" target="_blank" rel="noopener noreferrer" class="font-mono text-amberfilm hover:underline">
+          Abrir en YouTube ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       MODAL DE CONTACTO / SOLICITUD DE DOSSIER
+  ====================================================================== -->
+  <div id="contactModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-obsidian/90 backdrop-blur-lg p-4">
+    <div class="relative w-full max-w-lg rounded-2xl bg-slatefilm border border-amberfilm/35 p-7 sm:p-9 shadow-2xl">
+      <button onclick="closeContactModal()" aria-label="Cerrar ventana" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-obsidian border hairline text-mist hover:text-ivory flex items-center justify-center font-mono text-xs cursor-pointer">
+        ✕
+      </button>
+
+      <span class="font-mono text-[10px] uppercase tracking-[0.24em] text-amberfilm block mb-2">
+        BARBARIE ENTERTAINMENT
+      </span>
+      <h3 class="font-serif text-3xl text-ivory mb-2">
+        Contacto de Coproducción
+      </h3>
+      <p class="text-sm font-light text-mist mb-6">
+        Completa tus datos para generar una solicitud formal de acceso al guion literario y carpeta financiera de <em class="text-ivory">El mar que me regalas</em>.
+      </p>
+
+      <form id="producerForm" onsubmit="handleProducerSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block font-mono text-[10px] uppercase tracking-wider text-mist mb-1.5">Nombre / Productora o Fondo</label>
+          <input type="text" required placeholder="Ej. Elena Gómez · Atlántica Cine" class="w-full px-4 py-3 rounded-xl bg-obsidian border hairline text-sm text-ivory focus:outline-none focus:border-amberfilm" />
+        </div>
+        <div>
+          <label class="block font-mono text-[10px] uppercase tracking-wider text-mist mb-1.5">Correo Electrónico Profesional</label>
+          <input type="email" required placeholder="productora@ejemplo.com" class="w-full px-4 py-3 rounded-xl bg-obsidian border hairline text-sm text-ivory focus:outline-none focus:border-amberfilm" />
+        </div>
+        <div>
+          <label class="block font-mono text-[10px] uppercase tracking-wider text-mist mb-1.5">Área de Interés</label>
+          <select class="w-full px-4 py-3 rounded-xl bg-obsidian border hairline text-sm text-ivory focus:outline-none focus:border-amberfilm">
+            <option>Coproducción Internacional</option>
+            <option>Inversión Ejecutiva / Financiamiento</option>
+            <option>Ventas Internacionales / Distribución</option>
+            <option>Selección de Talentos / Casting</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-full bg-amberfilm hover:bg-[#e0b26b] text-obsidian font-mono text-xs font-bold uppercase tracking-[0.2em] transition-all cursor-pointer">
+          Registrar Solicitud
+        </button>
+      </form>
+
+      <div id="formSuccessBox" class="hidden mt-4 p-4 rounded-xl bg-atlantic/40 border border-atlanticlight text-xs text-ivory leading-relaxed">
+        ✓ Solicitud registrada correctamente. El equipo de <strong>Barbarie Entertainment</strong> ha preparado el envío del paquete confidencial de <em>El mar que me regalas</em>.
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT: VIDEO HERO, CANVAS ATMOSFÉRICO, INTERACTIVIDAD Y REVELADO
+  ====================================================================== -->
+  <script>
+    /* -----------------------------------------------------------------------
+       1. GESTIÓN DEL VIDEO PORTADA ("peli.mp4") + FALLBACK ATMOSFÉRICO EN CANVAS
+    ----------------------------------------------------------------------- */
+    const heroVideo = document.getElementById('heroVideo');
+    const localVideoInput = document.getElementById('localVideoInput');
+    const videoStatusLabel = document.getElementById('videoStatusLabel');
+
+    function revealHeroVideo() {
+      heroVideo.classList.remove('opacity-0');
+      heroVideo.classList.add('opacity-100');
+    }
+
+    // Si peli.mp4 existe y carga fotogramas, mostrarlo suavemente
+    heroVideo.addEventListener('loadeddata', () => {
+      if (heroVideo.readyState >= 2) {
+        revealHeroVideo();
+        videoStatusLabel.textContent = 'peli.mp4 activo';
+      }
+    });
+
+    // Permitir al director cargar su archivo peli.mp4 local para previsualización en vivo
+    localVideoInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const objectURL = URL.createObjectURL(file);
+      heroVideo.src = objectURL;
+      heroVideo.load();
+      heroVideo.play().then(() => {
+        revealHeroVideo();
+        videoStatusLabel.textContent = file.name;
+      }).catch(() => {});
+    });
+
+    // Canvas atmosférico nocturno (Caracas claroscuro + reflejo marino de La Guaira)
+    (function initAtmosphereCanvas() {
+      const canvas = document.getElementById('seaAtmosphereCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height, animationId;
+      let time = 0;
+
+      function resizeCanvas() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      function render() {
+        time += 0.008;
+        ctx.clearRect(0, 0, width, height);
+
+        // Cielo nocturno neo-noir con halo ámbar en el horizonte
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
+        skyGrad.addColorStop(0, '#08090B');
+        skyGrad.addColorStop(0.52, '#0F1820');
+        skyGrad.addColorStop(0.64, '#1B3B48');
+        skyGrad.addColorStop(1, '#08090B');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Resplandor cálido en la línea de horizonte (contrastando ciudad y costa)
+        const horizonY = height * 0.62;
+        const glowGrad = ctx.createRadialGradient(
+          width * 0.5 + Math.sin(time * 0.4) * 40,
+          horizonY,
+          10,
+          width * 0.5,
+          horizonY,
+          width * 0.55
+        );
+        glowGrad.addColorStop(0, 'rgba(212, 163, 89, 0.22)');
+        glowGrad.addColorStop(0.5, 'rgba(27, 59, 72, 0.14)');
+        glowGrad.addColorStop(1, 'rgba(8, 9, 11, 0)');
+        ctx.fillStyle = glowGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Ondas sutiles del mar Caribe bajo el horizonte
+        for (let i = 0; i < 14; i++) {
+          const progress = i / 14;
+          const yBase = horizonY + progress * (height - horizonY);
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(212, 163, 89, ${0.03 + (1 - progress) * 0.07})`;
+          ctx.lineWidth = 1 + progress * 1.2;
+
+          for (let x = 0; x <= width; x += 24) {
+            const wave =
+              Math.sin(x * 0.006 + time * (1.2 + progress) + i) * (2 + progress * 5) +
+              Math.cos(x * 0.014 - time * 0.8) * 1.5;
+            if (x === 0) ctx.moveTo(x, yBase + wave);
+            else ctx.lineTo(x, yBase + wave);
+          }
+          ctx.stroke();
+        }
+
+        animationId = requestAnimationFrame(render);
+      }
+
+      render();
+    })();
+
+    /* -----------------------------------------------------------------------
+       2. NAVEGACIÓN GLASSMORPHISM AL HACER SCROLL & MENÚ MÓVIL
+    ----------------------------------------------------------------------- */
+    const topNav = document.getElementById('topNav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        topNav.classList.add('bg-obsidian/85', 'backdrop-blur-xl', 'border-ivory/10');
+        topNav.classList.remove('border-transparent');
+      } else {
+        topNav.classList.remove('bg-obsidian/85', 'backdrop-blur-xl', 'border-ivory/10');
+        topNav.classList.add('border-transparent');
+      }
+    });
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    /* -----------------------------------------------------------------------
+       3. SALA DE PROYECCIÓN & MODAL DE TRÁILER YOUTUBE
+    ----------------------------------------------------------------------- */
+    const YT_EMBED_URL = 'https://www.youtube.com/embed/qPYaXXnXR_U?rel=0&modestbranding=1&autoplay=1';
+
+    function openTrailerModal() {
+      const modal = document.getElementById('trailerModal');
+      const frame = document.getElementById('youtubeModalFrame');
+      frame.src = YT_EMBED_URL;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTrailerModal() {
+      const modal = document.getElementById('trailerModal');
+      const frame = document.getElementById('youtubeModalFrame');
+      frame.src = '';
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function toggleCinemaLights(forceState) {
+      const body = document.body;
+      const btnText = document.getElementById('cinemaLightsText');
+      const shouldTurnOff = typeof forceState === 'boolean'
+        ? forceState
+        : !body.classList.contains('cinema-lights-off');
+
+      if (shouldTurnOff) {
+        body.classList.add('cinema-lights-off');
+        btnText.textContent = 'Encender Luces';
+      } else {
+        body.classList.remove('cinema-lights-off');
+        btnText.textContent = 'Modo Sala Oscura';
+      }
+    }
+
+    /* -----------------------------------------------------------------------
+       4. FILTRO DE PERSONAJES (DRAMATIS PERSONAE)
+    ----------------------------------------------------------------------- */
+    function filterCharacters(group, btnElement) {
+      document.querySelectorAll('.char-filter-btn').forEach((btn) => {
+        btn.classList.remove('bg-amberfilm', 'text-obsidian');
+        btn.classList.add('bg-obsidian/70', 'text-mist');
+      });
+      btnElement.classList.remove('bg-obsidian/70', 'text-mist');
+      btnElement.classList.add('bg-amberfilm', 'text-obsidian');
+
+      document.querySelectorAll('.char-card').forEach((card) => {
+        if (group === 'all' || card.dataset.group === group) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    /* -----------------------------------------------------------------------
+       5. ESTRUCTURA DRAMÁTICA EN TRES ACTOS (INTERACTIVA)
+    ----------------------------------------------------------------------- */
+    const actsData = {
+      1: {
+        badge: 'DETONANTE & CRUCE DE UMBRAL',
+        title: 'Acto I: El Inusual Secuestro',
+        summary:
+          'Presentación de una Caracas desigual y corrupta marcada por las secuelas de las protestas populares y la opacidad de Laboratorios Lucerna. La incursión nocturna en la residencia de Paul White revela rápidamente la naturaleza improvisada de sus captores. El traslado en el Ford Galaxie hacia La Guaira sella la alianza marginal entre Rafa, el Gordo Carlos y Marleen.',
+        turningPointLabel: 'Punto de Giro I:',
+        turningPointText: 'El cruce hacia el litoral caribeño y la entrega de Paul bajo la custodia de Etelvina.',
+        beats: [
+          { code: 'Secuencia 01', text: 'Retrato del vacío corporativo de Paul White y la cúpula hedonista de Lucerna.' },
+          { code: 'Secuencia 02', text: 'El asalto doméstico: tensión y torpeza humana en la captura del ejecutivo.' },
+          { code: 'Secuencia 03', text: 'Huida nocturna en el Ford Galaxie rumbo al mar de La Guaira.' }
+        ]
+      },
+      2: {
+        badge: 'CONFRONTACIÓN & METAMORFOSIS',
+        title: 'Acto II: El Manifiesto y la Persecución',
+        summary:
+          'Publicación del comunicado del GOLVE exigiendo un millón y medio de dólares, alimentos para los barrios vulnerables y liberación de tratamientos gratuitos contra el VIH. Estalla la paranoia en el palacio de gobierno y en la sede de Lucerna, donde Arsenio Henríquez prioriza encubrir su corrupción. En paralelo, la investigación de Euclides Smith y Péndulo avanza mientras Paul se humaniza junto a Etelvina frente al mar.',
+        turningPointLabel: 'Punto de Giro II:',
+        turningPointText: 'Smith descubre la identidad real del grupo amateur mientras la Inteligencia Militar ubica la zona costera.',
+        beats: [
+          { code: 'Secuencia 04', text: 'Difusión del manifiesto del GOLVE y pánico en la directiva de Laboratorios Lucerna.' },
+          { code: 'Secuencia 05', text: 'Convivencia en la choza: la risa de Etelvina y los apuntes de Fibonacci de Carlos.' },
+          { code: 'Secuencia 06', text: 'La pesquisa de Euclides Smith y Péndulo desmonta la fachada guerrillera.' }
+        ]
+      },
+      3: {
+        badge: 'CLÍMAX & RESOLUCIÓN AGRIDULCE',
+        title: 'Acto III: El Desenlace e Inevitabilidad',
+        summary:
+          'Las negociaciones al límite dirigidas por el Ministerio del Interior chocan con la intransigencia política y el encubrimiento empresarial. El cerco de las fuerzas del Estado converge sobre la choza frente al Caribe, desencadenando el choque final con un grupo de secuestradores aficionados y culminando en una resolución agridulce sobre la pérdida, la memoria y la verdadera libertad personal.',
+        turningPointLabel: 'Clímax & Coda:',
+        turningPointText: 'El asalto final en la orilla del Caribe y la huella imborrable del mar en la memoria de Paul.',
+        beats: [
+          { code: 'Secuencia 07', text: 'Negociación fracturada bajo la presión del Ministerio del Interior y Lucerna.' },
+          { code: 'Secuencia 08', text: 'El cerco táctico sobre la choza de Etelvina al amanecer en La Guaira.' },
+          { code: 'Secuencia 09', text: 'Resolución emocional: el precio de la rebelión y el regalo irreversible del mar.' }
+        ]
+      }
+    };
+
+    function selectAct(actNumber) {
+      [1, 2, 3].forEach((num) => {
+        const btn = document.getElementById(`actBtn${num}`);
+        const kicker = btn.querySelector('span:first-child');
+        if (num === actNumber) {
+          btn.classList.remove('border-ivory/10', 'bg-slatefilm/50');
+          btn.classList.add('border-amberfilm', 'bg-slatefilm');
+          kicker.classList.remove('text-mist');
+          kicker.classList.add('text-amberfilm');
+        } else {
+          btn.classList.remove('border-amberfilm', 'bg-slatefilm');
+          btn.classList.add('border-ivory/10', 'bg-slatefilm/50');
+          kicker.classList.remove('text-amberfilm');
+          kicker.classList.add('text-mist');
+        }
+      });
+
+      const data = actsData[actNumber];
+      const panel = document.getElementById('actDisplayPanel');
+      panel.innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amberfilm/15 border border-amberfilm/30 font-mono text-[10px] uppercase tracking-[0.2em] text-amberfilm mb-4">
+              ${data.badge}
+            </div>
+            <h3 class="font-serif text-3xl sm:text-4xl text-ivory mb-4">
+              ${data.title}
+            </h3>
+            <p class="text-base sm:text-lg font-light text-ivory/90 leading-relaxed mb-6">
+              ${data.summary}
+            </p>
+            <div class="p-4 rounded-xl bg-obsidian/80 border hairline font-mono text-xs text-mist">
+              <strong class="text-amberfilm uppercase">${data.turningPointLabel}</strong> ${data.turningPointText}
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 space-y-3">
+            ${data.beats
+              .map(
+                (b) => `
+              <div class="p-4 rounded-xl bg-obsidian/70 border hairline">
+                <span class="font-mono text-[10px] text-amberfilm uppercase tracking-widest block mb-1">${b.code}</span>
+                <p class="text-sm text-ivory/90">${b.text}</p>
+              </div>
+            `
+              )
+              .join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    /* -----------------------------------------------------------------------
+       6. COPIAR RESUMEN EJECUTIVO (ONE-SHEET) Y MODAL DE CONTACTO
+    ----------------------------------------------------------------------- */
+    function copyPitchSummary() {
+      const pitchText = [
+        'EL MAR QUE ME REGALAS — DOSSIER CINEMATOGRÁFICO',
+        'Presentado por: Barbarie Entertainment',
+        'Género: Thriller Político / Drama Psicológico / Cine Negro (Neo-noir)',
+        'Formato: Largometraje de ficción (115 min est.)',
+        'Ambientación: Caracas y costas de La Guaira, Venezuela (finales de los 80 / principios de los 90)',
+        'Logline: En la Caracas fracturada de finales de los 80, un secuestro improvisado desata una cacería de Estado; frente al mar Caribe, el cautiverio se convierte en la única libertad posible.',
+        'Tráiler Oficial: https://youtu.be/qPYaXXnXR_U'
+      ].join('\n');
+
+      const tempInput = document.createElement('textarea');
+      tempInput.value = pitchText;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        const feedback = document.getElementById('copyFeedback');
+        feedback.classList.remove('opacity-0');
+        setTimeout(() => feedback.classList.add('opacity-0'), 3500);
+      } catch (err) {
+        // Fallback silencioso
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    function openContactModal() {
+      const modal = document.getElementById('contactModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeContactModal() {
+      const modal = document.getElementById('contactModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function handleProducerSubmit(e) {
+      e.preventDefault();
+      document.getElementById('formSuccessBox').classList.remove('hidden');
+      e.target.reset();
+    }
+
+    // Cerrar modales con tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeTrailerModal();
+        closeContactModal();
+        toggleCinemaLights(false);
+      }
+    });
+
+    /* -----------------------------------------------------------------------
+       7. ANIMACIONES DE REVELADO AL HACER SCROLL (INTERSECTION OBSERVER)
+    ----------------------------------------------------------------------- */
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
