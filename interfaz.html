@@ -1,734 +1,1048 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Venezuela Abierta al Futuro · Experiencia VR 360° por Estado</title>
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome 6 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <!-- Three.js para Visor Esférico 360° -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Destinos Ven — Portal Holográfico WebXR</title>
   <style>
-    body { font-family: 'Montserrat', sans-serif; background-color: #060b14; color: #f8fafc; }
-    .font-cinema { font-family: 'Cinzel', serif; letter-spacing: 0.08em; }
-    .glass {
-      background: rgba(13, 23, 42, 0.82);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.09);
+    * { box-sizing: border-box; user-select: none; }
+    body {
+      margin: 0;
+      background: #03070c;
+      color: #e6f7ff;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
     }
-    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-    .custom-scroll::-webkit-scrollbar-track { background: rgba(6, 11, 20, 0.8); }
-    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.45); border-radius: 9999px; }
+
+    /* PANTALLA INICIAL (LOBBY) */
+    #landing {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(0, 240, 255, 0.14) 0%, rgba(3, 7, 12, 0.97) 68%),
+        linear-gradient(180deg, #040b14 0%, #020509 100%);
+      z-index: 10;
+      overflow-y: auto;
+    }
+
+    #landing::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+      pointer-events: none;
+    }
+
+    .badge {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #00f0ff;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(30px, 5vw, 48px);
+      letter-spacing: 3px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffffff 0%, #00f0ff 50%, #00ff9d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      max-width: 540px;
+      color: #93b4c8;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0 0 22px;
+    }
+
+    /* TARJETAS INDIVIDUALES DE CARGA DE VIDEO */
+    .upload-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(210px, 1fr));
+      gap: 14px;
+      max-width: 760px;
+      width: 100%;
+      margin-bottom: 24px;
+      z-index: 2;
+    }
+
+    @media (max-width: 720px) {
+      .upload-grid { grid-template-columns: 1fr; max-width: 380px; }
+    }
+
+    .upload-card {
+      background: rgba(7, 19, 32, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.25s ease, transform 0.2s ease;
+    }
+
+    .upload-card.ready {
+      border-color: rgba(0, 255, 157, 0.6);
+      box-shadow: 0 0 20px rgba(0, 255, 157, 0.12);
+    }
+
+    .state-name {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .state-tag {
+      font-size: 10px;
+      font-family: monospace;
+      color: #7fa6bd;
+      letter-spacing: 0.5px;
+    }
+
+    .file-status {
+      font-size: 11px;
+      font-family: monospace;
+      color: #8ba8bc;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 6px 10px;
+      border-radius: 8px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-status.ok { color: #00ff9d; }
+    .file-status.err { color: #ff5c7c; }
+
+    .actions-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    button {
+      border: none;
+      padding: 14px 28px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.2s ease;
+    }
+
+    button:active { transform: scale(0.96); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00f0ff 0%, #00ff9d 100%);
+      color: #021218;
+      box-shadow: 0 0 26px rgba(0, 240, 255, 0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(0, 240, 255, 0.12);
+      color: #00f0ff;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+    }
+
+    .btn-upload {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .btn-upload:hover {
+      background: rgba(0, 240, 255, 0.18);
+      border-color: #00f0ff;
+    }
+
+    /* HUD FLOTANTE DENTRO DEL VISOR O VISTA PREVIA */
+    #xr-overlay {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(4, 14, 24, 0.88);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      backdrop-filter: blur(12px);
+      padding: 10px 20px;
+      border-radius: 999px;
+      align-items: center;
+      gap: 14px;
+      z-index: 20;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+      white-space: nowrap;
+    }
+
+    #status-pill {
+      font-size: 13px;
+      color: #d6f8ff;
+    }
+
+    #recenter-btn, #exit-preview-btn {
+      padding: 8px 16px;
+      font-size: 11px;
+    }
   </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.170.0/build/three.module.js"
+      }
+    }
+  </script>
 </head>
-<body class="min-h-full selection:bg-amber-400 selection:text-black pb-16">
+<body>
 
-  <!-- ================= BARRA SUPERIOR ================= -->
-  <header class="sticky top-0 z-40 bg-[#060b14]/95 backdrop-blur-md border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-amber-400/15 border border-amber-400/40 text-amber-400 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-vr-cardboard"></i>
-        </div>
-        <div>
-          <span class="text-[10px] uppercase tracking-widest text-amber-400 font-bold block">
-            Venezuela · Abierta al Futuro
-          </span>
-          <h1 id="tituloHeader" class="font-cinema text-sm sm:text-base font-bold text-white uppercase">
-            Catálogo VR 360° por Estado
-          </h1>
-        </div>
+  <!-- PANTALLA DE INICIO -->
+  <div id="landing">
+    <div class="badge">Portal Espacial · Meta Quest 3</div>
+    <h1>DESTINOS VEN</h1>
+    <p class="subtitle">
+      Asigna el video correspondiente a cada estado desde tu dispositivo o memoria interna del Meta Quest 3 y entra al entorno holográfico.
+    </p>
+
+    <!-- 3 SLOTS INDEPENDIENTES PARA SUBIR CADA DESTINO POR SEPARADO -->
+    <div class="upload-grid">
+      <!-- TÁCHIRA -->
+      <div class="upload-card" id="card-box-tachira">
+        <div class="state-name" style="color: #00ff9d;">TÁCHIRA</div>
+        <div class="state-tag">MONTAÑA · PÁRAMO · CAFÉ</div>
+        <input type="file" id="input-tachira" accept="video/mp4,video/webm,video/*" style="display: none;" />
+        <button class="btn-upload" onclick="document.getElementById('input-tachira').click()">
+          + Subir Video Táchira
+        </button>
+        <div class="file-status" id="status-tachira">Sin video cargado</div>
       </div>
 
-      <!-- Controles de Modo y Página Alterna -->
-      <div id="controlesHeaderAdmin" class="flex flex-wrap items-center gap-2">
-        <div class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-300">
-          <i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i>
-          <span id="contadorCargados">0</span> / 24 Estados con Video
-        </div>
-
-        <button onclick="abrirPaginaAlternaMonitor()" class="px-3.5 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/30 border border-blue-400/40 text-blue-300 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer">
-          <i class="fa-solid fa-display"></i>
-          <span>Abrir Página Alterna (Monitor)</span>
+      <!-- ARAGUA -->
+      <div class="upload-card" id="card-box-aragua">
+        <div class="state-name" style="color: #00f0ff;">ARAGUA</div>
+        <div class="state-tag">SELVA NUBLADA · COSTA</div>
+        <input type="file" id="input-aragua" accept="video/mp4,video/webm,video/*" style="display: none;" />
+        <button class="btn-upload" onclick="document.getElementById('input-aragua').click()">
+          + Subir Video Aragua
         </button>
-
-        <button onclick="abrirMetaCasting()" class="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold flex items-center gap-1.5 transition cursor-pointer">
-          <i class="fa-solid fa-eye"></i>
-          <span>Ver Ojos Quest 3 (Cast)</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- ================= VISTA PRINCIPAL: GESTOR Y SELECTOR POR ESTADO ================= -->
-  <main id="vistaPrincipal" class="max-w-7xl mx-auto px-4 pt-6 space-y-5">
-
-    <!-- Buscador y Filtros por Estado -->
-    <div class="glass rounded-2xl p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-      <div class="relative flex-1">
-        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-        <input
-          type="text"
-          id="inputBuscarEstado"
-          oninput="renderizarEstados()"
-          placeholder="Buscar por Estado o destino (ej. Mérida, Bolívar, Falcón, Táchira, Lara)..."
-          class="w-full bg-black/40 border border-white/15 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400"
-        />
+        <div class="file-status" id="status-aragua">Sin video cargado</div>
       </div>
 
-      <div class="flex flex-wrap items-center gap-2">
-        <button onclick="setFiltro('TODOS')" id="btnFiltroTODOS" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 cursor-pointer">
-          Todos (24)
+      <!-- LARA -->
+      <div class="upload-card" id="card-box-lara">
+        <div class="state-name" style="color: #ffbe0b;">LARA</div>
+        <div class="state-tag">CREPÚSCULO · CULTURA</div>
+        <input type="file" id="input-lara" accept="video/mp4,video/webm,video/*" style="display: none;" />
+        <button class="btn-upload" onclick="document.getElementById('input-lara').click()">
+          + Subir Video Lara
         </button>
-        <button onclick="setFiltro('LISTOS')" id="btnFiltroLISTOS" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/10 text-slate-300 hover:bg-white/15 cursor-pointer">
-          Con Video Listo
-        </button>
-        <button onclick="setFiltro('PENDIENTES')" id="btnFiltroPENDIENTES" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/10 text-slate-300 hover:bg-white/15 cursor-pointer">
-          Faltan por Subir
-        </button>
+        <div class="file-status" id="status-lara">Sin video cargado</div>
       </div>
     </div>
 
-    <!-- Aviso Técnico de Compatibilidad -->
-    <div class="bg-blue-950/35 border border-blue-400/25 rounded-2xl px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-300">
-      <div>
-        <strong class="text-amber-400"><i class="fa-solid fa-circle-info mr-1"></i> Consejo para que los videos siempre se vean:</strong>
-        Sube archivos <strong>.MP4 en códec H.264</strong> (proporción 2:1 equirrectangular). Cada video queda guardado dentro de la ficha de su Estado con miniatura automática.
-      </div>
-    </div>
-
-    <!-- Cuadrícula de los 24 Estados -->
-    <div id="gridEstados" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
-  </main>
-
-  <!-- ================= VISTA ALTERNA: MONITOR EN VIVO DE LO QUE SE VE EN QUEST 3 ================= -->
-  <section id="vistaMonitorAlterna" class="hidden max-w-6xl mx-auto px-4 pt-6 space-y-5">
-    <div class="glass rounded-3xl p-5 sm:p-6 border border-blue-400/30 space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
-        <div>
-          <span class="inline-flex items-center gap-1.5 text-[10px] uppercase font-bold text-emerald-400 tracking-widest">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Pantalla Alterna Sincronizada en Vivo
-          </span>
-          <h2 id="monitorTituloEstado" class="font-cinema text-xl sm:text-2xl font-bold text-white uppercase mt-0.5">
-            Esperando selección en Kiosco...
-          </h2>
-          <p id="monitorSubtitulo" class="text-xs text-slate-300">
-            Cuando el visitante elija un Estado en la tablet principal, esta pantalla mostrará la experiencia 360° automáticamente.
-          </p>
-        </div>
-
-        <div class="flex flex-wrap gap-2">
-          <button onclick="abrirMetaCasting()" class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg cursor-pointer">
-            <i class="fa-solid fa-vr-cardboard"></i> Abrir Transmisión Directa Quest 3 (Casting)
-          </button>
-          <a href="?" class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white">
-            Volver al Catálogo
-          </a>
-        </div>
-      </div>
-
-      <!-- Lienzo Espejo 360° Sincronizado -->
-      <div class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-white/15 flex items-center justify-center">
-        <div id="monitorCanvas360" class="w-full h-full"></div>
-        <div id="monitorPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 space-y-3 bg-[#080f1d]">
-          <i class="fa-solid fa-satellite-dish text-4xl text-amber-400/80"></i>
-          <div class="text-sm font-bold text-white">Monitor Público Listo</div>
-          <p class="text-xs text-slate-400 max-w-md">
-            Selecciona cualquier Estado en la pestaña principal para proyectar aquí su recorrido 360°, o pulsa <strong>Abrir Transmisión Directa Quest 3</strong> para ver el movimiento exacto de cabeza desde las gafas.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= MODAL VISOR 360° INTERACTIVO ================= -->
-  <div id="modalVisor360" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg hidden flex-col">
-    <!-- Barra superior del visor -->
-    <div class="px-4 py-3 bg-[#091220] border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-center gap-3">
-        <span id="visorBadgeEstado" class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-extrabold uppercase">
-          ESTADO
-        </span>
-        <div>
-          <h3 id="visorTituloDestino" class="font-cinema text-sm sm:text-base font-bold text-white">Destino Turístico</h3>
-          <span class="text-[11px] text-slate-400">Arrastra con el dedo o ratón para mirar en 360° · Sincronizado con Monitor Alterno</span>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <button id="btnAudioVisor" onclick="toggleAudioVisor()" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white cursor-pointer">
-          <i class="fa-solid fa-volume-xmark mr-1 text-amber-400"></i> Activar Sonido
-        </button>
-
-        <button onclick="cerrarVisor360()" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold cursor-pointer">
-          <i class="fa-solid fa-xmark mr-1"></i> Cerrar Visor
-        </button>
-      </div>
-    </div>
-
-    <!-- Contenedor WebGL 360° -->
-    <div id="contenedorEsfera360" class="relative flex-1 w-full bg-black overflow-hidden cursor-grab active:cursor-grabbing">
-      <div id="avisoCodec" class="hidden absolute inset-0 z-20 bg-black/90 flex flex-col items-center justify-center p-6 text-center space-y-3">
-        <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-400"></i>
-        <h4 class="text-base font-bold text-white">Este video está codificado en H.265 (HEVC)</h4>
-        <p class="text-xs text-slate-300 max-w-md leading-relaxed">
-          Tu navegador web no soporta reproducir archivos H.265 directamente. Para que se vea aquí y en la pantalla alterna, expórtalo en formato <strong>MP4 H.264</strong> (o reprodúcelo directamente dentro de tus Meta Quest 3).
-        </p>
-      </div>
+    <div class="actions-row">
+      <button id="enter-xr" class="btn-primary">Iniciar Hologramas (Quest 3)</button>
+      <button id="preview-3d" class="btn-secondary">Vista Previa en Pantalla</button>
     </div>
   </div>
 
-  <!-- ================= MODAL SUBIR / EDITAR VIDEO POR ESTADO ================= -->
-  <div id="modalSubirVideo" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
-    <div class="w-full max-w-md bg-[#0d172a] border border-white/20 rounded-3xl p-6 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
-        <div>
-          <span class="text-[10px] uppercase font-bold text-amber-400 tracking-widest block">Asignación de Video 360°</span>
-          <h3 id="modalSubirTitulo" class="font-cinema text-lg font-bold text-white uppercase">Estado</h3>
-        </div>
-        <button onclick="cerrarModalSubir()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer">
-          <i class="fa-solid fa-xmark text-sm"></i>
-        </button>
-      </div>
-
-      <div class="space-y-3 text-left">
-        <div>
-          <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">Nombre del Destino / Atracción</label>
-          <input type="text" id="inputDestinoModal" class="w-full bg-black/40 border border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400" />
-        </div>
-
-        <!-- Opción A: Subir archivo local MP4 -->
-        <div class="border border-dashed border-amber-400/50 rounded-2xl p-4 bg-amber-400/5 text-center space-y-2">
-          <i class="fa-solid fa-cloud-arrow-up text-2xl text-amber-400"></i>
-          <div class="text-xs font-bold text-white">Subir archivo de video 360° (.MP4 H.264)</div>
-          <p class="text-[10px] text-slate-400">Se guarda en este equipo vinculado exclusivamente a este Estado.</p>
-          <label class="inline-block px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs cursor-pointer transition">
-            Seleccionar Archivo MP4
-            <input type="file" id="inputArchivoVideo" accept="video/mp4,video/webm,video/*" class="hidden" onchange="procesarSubidaArchivo(this)" />
-          </label>
-          <div id="estadoProcesandoSubida" class="hidden text-xs text-emerald-400 font-semibold pt-1">
-            <i class="fa-solid fa-spinner fa-spin mr-1"></i> Generando miniatura y guardando video...
-          </div>
-        </div>
-
-        <!-- Opción B: Enlace directo MP4 -->
-        <div>
-          <label class="text-[11px] uppercase font-semibold text-slate-300 block mb-1">O pegar enlace directo (.mp4 en servidor/GitHub)</label>
-          <div class="flex gap-2">
-            <input type="url" id="inputUrlExterna" placeholder="https://.../video360.mp4" class="flex-1 bg-black/40 border border-white/20 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400" />
-            <button type="button" onclick="guardarUrlExterna()" class="px-4 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold text-white cursor-pointer">
-              Guardar URL
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex items-center justify-between pt-2 border-t border-white/10">
-        <button type="button" id="btnEliminarVideoEstado" onclick="eliminarVideoEstado()" class="hidden px-3.5 py-2 rounded-xl bg-red-500/20 text-red-300 text-xs font-bold cursor-pointer">
-          Quitar Video
-        </button>
-        <button type="button" onclick="cerrarModalSubir()" class="ml-auto px-4 py-2 rounded-xl bg-white/10 text-xs font-semibold text-slate-300 cursor-pointer">
-          Cerrar
-        </button>
-      </div>
-    </div>
+  <!-- BARRA FLOTANTE INFERIOR -->
+  <div id="xr-overlay">
+    <span id="status-pill">Toca con tu dedo o haz pellizco sobre un destino</span>
+    <button id="recenter-btn" class="btn-primary">Re-centrar</button>
+    <button id="exit-preview-btn" class="btn-secondary" style="display: none;">Salir</button>
   </div>
 
-  <!-- Elemento de video oculto para textura 360 -->
-  <video id="videoTextura360" playsinline muted loop crossorigin="anonymous" class="hidden"></video>
+  <script type="module">
+    import * as THREE from 'three';
 
-  <script>
-    // Catálogo oficial de los 23 Estados + Distrito Capital
-    const ESTADOS_VENEZUELA = [
-      { id: "amazonas", estado: "Amazonas", destinoDefault: "Cerro Autana y Selva Amazónica" },
-      { id: "anzoategui", estado: "Anzoátegui", destinoDefault: "Parque Nacional Mochima" },
-      { id: "apure", estado: "Apure", destinoDefault: "Médanos de la Soledad y Llanos" },
-      { id: "aragua", estado: "Aragua", destinoDefault: "Colonia Tovar y Choroní" },
-      { id: "barinas", estado: "Barinas", destinoDefault: "Ríos y Llanos de Barinas" },
-      { id: "bolivar", estado: "Bolívar", destinoDefault: "Salto Ángel · Parque Nacional Canaima" },
-      { id: "carabobo", estado: "Carabobo", destinoDefault: "Bahía de Patanemo y Campo Carabobo" },
-      { id: "cojedes", estado: "Cojedes", destinoDefault: "Hato Piñero y Llanos Centrales" },
-      { id: "delta", estado: "Delta Amacuro", destinoDefault: "Caños del Orinoco" },
-      { id: "distrito", estado: "Distrito Capital", destinoDefault: "Waraira Repano (El Ávila) y Caracas" },
-      { id: "falcon", estado: "Falcón", destinoDefault: "Médanos de Coro y Morrocoy" },
-      { id: "guarico", estado: "Guárico", destinoDefault: "Morros de San Juan" },
-      { id: "laguaira", estado: "La Guaira", destinoDefault: "Cinta Costera y Galipán" },
-      { id: "lara", estado: "Lara", destinoDefault: "Manto de María y Hundición de Yay" },
-      { id: "merida", estado: "Mérida", destinoDefault: "Teleférico Mukumbarí y Sierra Nevada" },
-      { id: "miranda", estado: "Miranda", destinoDefault: "Higuerote y Birongo" },
-      { id: "monagas", estado: "Monagas", destinoDefault: "Cueva del Guácharo" },
-      { id: "nuevaesparta", estado: "Nueva Esparta", destinoDefault: "Isla de Margarita y Coche" },
-      { id: "portuguesa", estado: "Portuguesa", destinoDefault: "Basílica de Coromoto" },
-      { id: "sucre", estado: "Sucre", destinoDefault: "Playa Medina y Península de Paria" },
-      { id: "tachira", estado: "Táchira", destinoDefault: "Páramo El Zumbador y Cordero" },
-      { id: "trujillo", estado: "Trujillo", destinoDefault: "Monumento a la Paz" },
-      { id: "yaracuy", estado: "Yaracuy", destinoDefault: "Montaña de Sorte" },
-      { id: "zulia", estado: "Zulia", destinoDefault: "Relámpago del Catatumbo y Puente sobre el Lago" }
+    const DESTINOS = [
+      {
+        id: 'tachira',
+        nombre: 'TÁCHIRA',
+        subtitulo: 'MONTAÑA · CAFÉ DE ALTURA · PÁRAMO',
+        coords: "07°46'N  72°13'W",
+        color: '#00ff9d',
+        hex: 0x00ff9d,
+        anguloArco: -0.54
+      },
+      {
+        id: 'aragua',
+        nombre: 'ARAGUA',
+        subtitulo: 'SELVA NUBLADA · COLONIA · COSTA',
+        coords: "10°14'N  67°35'W",
+        color: '#00f0ff',
+        hex: 0x00f0ff,
+        anguloArco: 0
+      },
+      {
+        id: 'lara',
+        nombre: 'LARA',
+        subtitulo: 'CREPÚSCULO · CULTURA · TRADICIÓN',
+        coords: "10°04'N  69°19'W",
+        color: '#ffbe0b',
+        hex: 0xffbe0b,
+        anguloArco: 0.54
+      }
     ];
 
-    const DB_NAME = "VenezuelaVR360_DB";
-    const STORE_NAME = "videos_estados";
-    const canalSync = new BroadcastChannel("kiosco_vr_venezuela_sync");
+    let camera, scene, renderer;
+    let holoRoot, previewGrid;
+    let mode = 'HUB'; // 'HUB' | 'DETAIL'
+    let isDesktopPreview = false;
+    let selectedCard = null;
+    let lastInteractionTime = 0;
+    let mouseNorm = { x: 0, y: 0 };
 
-    let db = null;
-    let videosGuardados = {};
-    let filtroActual = "TODOS";
-    let estadoEditandoId = null;
-    let esModoMonitor = false;
+    const cards = [];
+    const detailButtons = [];
+    const fingerTips = [];
+    let completionBanner = null;
+    let audioCtx = null;
 
-    // Variables Three.js 360°
-    let scene, camera, renderer, sphereMesh;
-    let isUserInteracting = false, onPointerDownMouseX = 0, onPointerDownMouseY = 0;
-    let lon = 0, onPointerDownLon = 0, lat = 0, onPointerDownLat = 0;
-    let animFrameId = null;
-    let estadoReproduciendoActual = null;
+    init();
 
-    // ================= INDEXEDDB (ALMACENAMIENTO DE VIDEOS POR ESTADO) =================
-    function abrirBaseDeDatos() {
-      return new Promise((resolve, reject) => {
-        const req = indexedDB.open(DB_NAME, 1);
-        req.onupgradeneeded = (e) => {
-          const database = e.target.result;
-          if (!database.objectStoreNames.contains(STORE_NAME)) {
-            database.createObjectStore(STORE_NAME, { keyPath: "estadoId" });
-          }
-        };
-        req.onsuccess = (e) => {
-          db = e.target.result;
-          resolve(db);
-        };
-        req.onerror = (e) => reject(e);
-      });
-    }
-
-    function cargarTodosLosVideos() {
-      return new Promise((resolve) => {
-        if (!db) return resolve({});
-        const tx = db.transaction(STORE_NAME, "readonly");
-        const store = tx.objectStore(STORE_NAME);
-        const req = store.getAll();
-        req.onsuccess = () => {
-          const map = {};
-          (req.result || []).forEach(item => { map[item.estadoId] = item; });
-          videosGuardados = map;
-          resolve(map);
-        };
-      });
-    }
-
-    function guardarRegistroEnDB(registro) {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction(STORE_NAME, "readwrite");
-        const store = tx.objectStore(STORE_NAME);
-        const req = store.put(registro);
-        req.onsuccess = () => {
-          videosGuardados[registro.estadoId] = registro;
-          resolve();
-        };
-        req.onerror = (e) => reject(e);
-      });
-    }
-
-    function borrarRegistroEnDB(estadoId) {
-      return new Promise((resolve) => {
-        const tx = db.transaction(STORE_NAME, "readwrite");
-        const store = tx.objectStore(STORE_NAME);
-        store.delete(estadoId).onsuccess = () => {
-          delete videosGuardados[estadoId];
-          resolve();
-        };
-      });
-    }
-
-    // Extrae una captura visual del video para identificarlo al instante
-    function generarMiniaturaDesdeBlob(file) {
-      return new Promise((resolve) => {
-        const tempVideo = document.createElement("video");
-        tempVideo.muted = true;
-        tempVideo.playsInline = true;
-        const url = URL.createObjectURL(file);
-        tempVideo.src = url;
-
-        tempVideo.onloadeddata = () => {
-          tempVideo.currentTime = Math.min(1.5, (tempVideo.duration || 2) / 2);
-        };
-
-        tempVideo.onseeked = () => {
-          if (tempVideo.videoWidth === 0) {
-            URL.revokeObjectURL(url);
-            resolve({ thumb: null, compatible: false });
-            return;
-          }
-          const c = document.createElement("canvas");
-          c.width = 480;
-          c.height = 240;
-          const ctx = c.getContext("2d");
-          ctx.drawImage(tempVideo, 0, 0, c.width, c.height);
-          const thumb = c.toDataURL("image/jpeg", 0.8);
-          URL.revokeObjectURL(url);
-          resolve({ thumb, compatible: true });
-        };
-
-        tempVideo.onerror = () => {
-          URL.revokeObjectURL(url);
-          resolve({ thumb: null, compatible: false });
-        };
-      });
-    }
-
-    // ================= RENDERIZADO DE TARJETAS POR ESTADO =================
-    function setFiltro(f) {
-      filtroActual = f;
-      ["TODOS", "LISTOS", "PENDIENTES"].forEach(k => {
-        const btn = document.getElementById(`btnFiltro${k}`);
-        btn.className = k === f
-          ? "px-3.5 py-2 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 cursor-pointer"
-          : "px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/10 text-slate-300 hover:bg-white/15 cursor-pointer";
-      });
-      renderizarEstados();
-    }
-
-    function renderizarEstados() {
-      const q = document.getElementById("inputBuscarEstado").value.toLowerCase().trim();
-      const grid = document.getElementById("gridEstados");
-
-      const totalListos = Object.keys(videosGuardados).length;
-      document.getElementById("contadorCargados").innerText = totalListos;
-
-      const filtrados = ESTADOS_VENEZUELA.filter(item => {
-        const guardado = videosGuardados[item.id];
-        const destino = guardado?.destino || item.destinoDefault;
-        const coincide = `${item.estado} ${destino}`.toLowerCase().includes(q);
-        if (!coincide) return false;
-        if (filtroActual === "LISTOS") return Boolean(guardado);
-        if (filtroActual === "PENDIENTES") return !guardado;
-        return true;
-      });
-
-      grid.innerHTML = filtrados.map(item => {
-        const guardado = videosGuardados[item.id];
-        const destino = guardado?.destino || item.destinoDefault;
-        const tieneVideo = Boolean(guardado);
-
-        return `
-          <div class="glass rounded-2xl overflow-hidden flex flex-col justify-between transition hover:border-amber-400/50">
-            <!-- Miniatura o Estado Pendiente -->
-            <div class="relative aspect-video bg-slate-950 overflow-hidden group">
-              ${guardado?.thumb
-                ? `<img src="${guardado.thumb}" alt="${item.estado}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />`
-                : `<div class="w-full h-full flex flex-col items-center justify-center text-slate-500 p-4 text-center bg-gradient-to-br from-slate-900 to-slate-950">
-                     <i class="fa-solid ${tieneVideo ? "fa-film text-amber-400" : "fa-video-slash"} text-2xl mb-1.5"></i>
-                     <span class="text-[10px]">${tieneVideo ? (guardado.fileName || "Enlace 360° asignado") : "Sin video asignado"}</span>
-                   </div>`
-              }
-
-              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none"></div>
-
-              <!-- Etiqueta Clara del Estado -->
-              <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md border border-white/15 text-[10px] font-extrabold uppercase tracking-wider text-amber-300">
-                ${item.estado}
-              </span>
-
-              <!-- Estado de Carga -->
-              <span class="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[9px] font-bold ${tieneVideo ? "bg-emerald-500/25 text-emerald-300 border border-emerald-400/40" : "bg-white/10 text-slate-400"}">
-                ${tieneVideo ? "● Listo" : "Pendiente"}
-              </span>
-
-              ${tieneVideo ? `
-                <button onclick="reproducirEstado('${item.id}')" class="absolute inset-0 m-auto w-12 h-12 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-lg pl-0.5 shadow-xl hover:scale-110 transition cursor-pointer" title="Ver en 360°">
-                  <i class="fa-solid fa-play"></i>
-                </button>
-              ` : ""}
-            </div>
-
-            <!-- Pie de Tarjeta -->
-            <div class="p-3.5 space-y-3">
-              <div>
-                <h3 class="font-cinema text-xs font-bold text-white uppercase truncate">${item.estado}</h3>
-                <p class="text-[11px] text-slate-300 truncate">${destino}</p>
-              </div>
-
-              <div class="flex items-center gap-2">
-                ${tieneVideo ? `
-                  <button onclick="reproducirEstado('${item.id}')" class="flex-1 py-2 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition">
-                    <i class="fa-solid fa-vr-cardboard"></i> Ver 360°
-                  </button>
-                  <button onclick="abrirModalSubir('${item.id}')" class="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs text-slate-200 cursor-pointer" title="Cambiar video de ${item.estado}">
-                    <i class="fa-solid fa-pen"></i>
-                  </button>
-                ` : `
-                  <button onclick="abrirModalSubir('${item.id}')" class="w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-amber-400 hover:text-slate-950 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition">
-                    <i class="fa-solid fa-upload"></i> Subir Video de ${item.estado}
-                  </button>
-                `}
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    // ================= MODAL DE SUBIDA POR ESTADO =================
-    function abrirModalSubir(estadoId) {
-      estadoEditandoId = estadoId;
-      const base = ESTADOS_VENEZUELA.find(e => e.id === estadoId);
-      const guardado = videosGuardados[estadoId];
-
-      document.getElementById("modalSubirTitulo").innerText = `Estado ${base.estado}`;
-      document.getElementById("inputDestinoModal").value = guardado?.destino || base.destinoDefault;
-      document.getElementById("inputUrlExterna").value = guardado?.externalUrl || "";
-      document.getElementById("inputArchivoVideo").value = "";
-      document.getElementById("estadoProcesandoSubida").classList.add("hidden");
-
-      const btnDel = document.getElementById("btnEliminarVideoEstado");
-      if (guardado) btnDel.classList.remove("hidden");
-      else btnDel.classList.add("hidden");
-
-      const m = document.getElementById("modalSubirVideo");
-      m.classList.remove("hidden");
-      m.classList.add("flex");
-    }
-
-    function cerrarModalSubir() {
-      const m = document.getElementById("modalSubirVideo");
-      m.classList.add("hidden");
-      m.classList.remove("flex");
-    }
-
-    async function procesarSubidaArchivo(input) {
-      const file = input.files[0];
-      if (!file || !estadoEditandoId) return;
-
-      document.getElementById("estadoProcesandoSubida").classList.remove("hidden");
-      const destino = document.getElementById("inputDestinoModal").value.trim();
-      const { thumb, compatible } = await generarMiniaturaDesdeBlob(file);
-
-      await guardarRegistroEnDB({
-        estadoId: estadoEditandoId,
-        destino,
-        fileName: file.name,
-        blob: file,
-        thumb,
-        compatible,
-        externalUrl: ""
-      });
-
-      cerrarModalSubir();
-      renderizarEstados();
-    }
-
-    async function guardarUrlExterna() {
-      const url = document.getElementById("inputUrlExterna").value.trim();
-      if (!url || !estadoEditandoId) return;
-      const destino = document.getElementById("inputDestinoModal").value.trim();
-
-      await guardarRegistroEnDB({
-        estadoId: estadoEditandoId,
-        destino,
-        fileName: "Video en línea",
-        blob: null,
-        thumb: null,
-        compatible: true,
-        externalUrl: url
-      });
-
-      cerrarModalSubir();
-      renderizarEstados();
-    }
-
-    async function eliminarVideoEstado() {
-      if (!estadoEditandoId) return;
-      await borrarRegistroEnDB(estadoEditandoId);
-      cerrarModalSubir();
-      renderizarEstados();
-    }
-
-    // ================= VISOR ESFÉRICO 360° + SINCRONIZACIÓN CON MONITOR =================
-    function iniciarEscenaThreeJS(contenedorEl) {
-      if (renderer) {
-        cancelAnimationFrame(animFrameId);
-        renderer.dispose();
-      }
-      contenedorEl.querySelectorAll("canvas").forEach(c => c.remove());
-
-      const w = contenedorEl.clientWidth || window.innerWidth;
-      const h = contenedorEl.clientHeight || window.innerHeight;
-
+    function init() {
       scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(75, w / h, 1, 1100);
-      camera.target = new THREE.Vector3(0, 0, 0);
+      camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.05, 30);
+      camera.position.set(0, 1.38, 0.25);
 
-      const geometry = new THREE.SphereGeometry(500, 60, 40);
-      geometry.scale(-1, 1, 1);
-
-      const videoEl = document.getElementById("videoTextura360");
-      const texture = new THREE.VideoTexture(videoEl);
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-
-      const material = new THREE.MeshBasicMaterial({ map: texture });
-      sphereMesh = new THREE.Mesh(geometry, material);
-      scene.add(sphereMesh);
-
-      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(w, h);
-      contenedorEl.appendChild(renderer.domElement);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.xr.enabled = true;
+      document.body.appendChild(renderer.domElement);
 
-      // Control táctil / ratón en 360°
-      contenedorEl.onpointerdown = (e) => {
-        isUserInteracting = true;
-        onPointerDownMouseX = e.clientX;
-        onPointerDownMouseY = e.clientY;
-        onPointerDownLon = lon;
-        onPointerDownLat = lat;
-      };
-      contenedorEl.onpointermove = (e) => {
-        if (!isUserInteracting) return;
-        lon = (onPointerDownMouseX - e.clientX) * 0.18 + onPointerDownLon;
-        lat = (e.clientY - onPointerDownMouseY) * 0.18 + onPointerDownLat;
-        if (!esModoMonitor && estadoReproduciendoActual) {
-          canalSync.postMessage({ tipo: "CAMARA_360", lon, lat });
-        }
-      };
-      contenedorEl.onpointerup = () => { isUserInteracting = false; };
+      previewGrid = new THREE.GridHelper(10, 24, 0x00f0ff, 0x0a2236);
+      previewGrid.position.y = 0;
+      previewGrid.visible = false;
+      scene.add(previewGrid);
 
-      const animar = () => {
-        animFrameId = requestAnimationFrame(animar);
-        lat = Math.max(-85, Math.min(85, lat));
-        const phi = THREE.MathUtils.degToRad(90 - lat);
-        const theta = THREE.MathUtils.degToRad(lon);
+      holoRoot = new THREE.Group();
+      scene.add(holoRoot);
 
-        camera.target.x = 500 * Math.sin(phi) * Math.cos(theta);
-        camera.target.y = 500 * Math.cos(phi);
-        camera.target.z = 500 * Math.sin(phi) * Math.sin(theta);
-        camera.lookAt(camera.target);
-        renderer.render(scene, camera);
-      };
-      animar();
-    }
-
-    function reproducirEstado(estadoId) {
-      const base = ESTADOS_VENEZUELA.find(e => e.id === estadoId);
-      const guardado = videosGuardados[estadoId];
-      if (!guardado) return;
-
-      estadoReproduciendoActual = estadoId;
-      const videoEl = document.getElementById("videoTextura360");
-      const avisoCodec = document.getElementById("avisoCodec");
-      avisoCodec.classList.add("hidden");
-
-      if (guardado.blob) {
-        videoEl.src = URL.createObjectURL(guardado.blob);
-      } else if (guardado.externalUrl) {
-        videoEl.src = guardado.externalUrl;
-      }
-
-      videoEl.muted = true;
-      videoEl.play().then(() => {
-        if (videoEl.videoWidth === 0) avisoCodec.classList.remove("hidden");
-      }).catch(() => {
-        avisoCodec.classList.remove("hidden");
+      // Crear los 3 portales holográficos y conectar sus inputs individuales
+      DESTINOS.forEach((destino, idx) => {
+        const card = createHologramPortal(destino, idx);
+        holoRoot.add(card);
+        cards.push(card);
+        bindIndividualUploader(destino.id, card);
       });
 
-      if (!esModoMonitor) {
-        document.getElementById("visorBadgeEstado").innerText = base.estado;
-        document.getElementById("visorTituloDestino").innerText = guardado.destino;
-        const modal = document.getElementById("modalVisor360");
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
+      createDetailControls();
+      createCompletionBanner();
+      setupHands();
+      setupDesktopPreviewControls();
 
-        setTimeout(() => {
-          iniciarEscenaThreeJS(document.getElementById("contenedorEsfera360"));
-        }, 60);
+      document.getElementById('enter-xr').addEventListener('click', startXR);
+      document.getElementById('preview-3d').addEventListener('click', startDesktopPreview);
 
-        // Notificar a la Página Alterna (Monitor) qué Estado se está viendo
-        canalSync.postMessage({
-          tipo: "INICIAR_ESTADO",
-          estadoId,
-          estadoNombre: base.estado,
-          destino: guardado.destino
-        });
+      document.getElementById('recenter-btn').addEventListener('click', () => {
+        playSciFiTone('click');
+        if (!isDesktopPreview) alignHologramsToUser();
+      });
+
+      document.getElementById('exit-preview-btn').addEventListener('click', () => {
+        isDesktopPreview = false;
+        previewGrid.visible = false;
+        cards.forEach(c => { c.userData.video.muted = true; });
+        renderer.setAnimationLoop(null);
+        document.getElementById('landing').style.display = 'flex';
+        document.getElementById('xr-overlay').style.display = 'none';
+        document.getElementById('exit-preview-btn').style.display = 'none';
+      });
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // =========================================================================
+    // 1. CARGA INDEPENDIENTE POR CADA ESTADO (SIN RESTRICCIÓN DE NOMBRE)
+    // =========================================================================
+    function bindIndividualUploader(stateId, card) {
+      const inputEl = document.getElementById(`input-${stateId}`);
+      const statusEl = document.getElementById(`status-${stateId}`);
+      const cardBoxEl = document.getElementById(`card-box-${stateId}`);
+
+      inputEl.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Liberar memoria si ya había un video previo cargado en este estado
+        if (card.userData.blobUrl) {
+          URL.revokeObjectURL(card.userData.blobUrl);
+        }
+
+        const blobUrl = URL.createObjectURL(file);
+        card.userData.blobUrl = blobUrl;
+
+        const video = card.userData.video;
+        video.removeAttribute('crossorigin'); // Evita bloqueos WebGL con archivos locales
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.src = blobUrl;
+
+        statusEl.textContent = 'Procesando video...';
+        statusEl.className = 'file-status';
+
+        video.onloadeddata = () => {
+          // Crear textura de video limpia y asignarla al plano 3D
+          if (card.userData.videoTexture) {
+            card.userData.videoTexture.dispose();
+          }
+          const newVideoTex = new THREE.VideoTexture(video);
+          newVideoTex.colorSpace = THREE.SRGBColorSpace;
+          newVideoTex.minFilter = THREE.LinearFilter;
+          newVideoTex.magFilter = THREE.LinearFilter;
+
+          card.userData.videoTexture = newVideoTex;
+          card.userData.videoMesh.material.map = newVideoTex;
+          card.userData.videoMesh.material.needsUpdate = true;
+          card.userData.hasVideo = true;
+
+          video.play().catch(() => {});
+
+          statusEl.textContent = `✓ ${file.name} (${video.videoWidth}x${video.videoHeight})`;
+          statusEl.className = 'file-status ok';
+          cardBoxEl.classList.add('ready');
+        };
+
+        video.onerror = () => {
+          statusEl.textContent = '✕ Formato no soportado (usa MP4 H.264)';
+          statusEl.className = 'file-status err';
+          cardBoxEl.classList.remove('ready');
+        };
+
+        video.load();
+      });
+    }
+
+    // =========================================================================
+    // 2. TEXTURAS DE INTERFAZ Y PLACEHOLDER HOLOGRÁFICO
+    // =========================================================================
+    function buildPlaceholderTexture(destino) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 640;
+      canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#051320';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Cuadrícula interna de espera
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.12)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 32) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 32) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+      }
+
+      // Círculo radar central
+      ctx.strokeStyle = destino.color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(320, 175, 48, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = destino.color;
+      ctx.font = 'bold 18px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`PORTAL ${destino.nombre} EN ESPERA`, 320, 255);
+
+      ctx.fillStyle = '#7fa6bd';
+      ctx.font = '14px monospace';
+      ctx.fillText('SUBE UN VIDEO MP4 EN EL MENÚ INICIAL', 320, 280);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    function buildHudTexture(destino, visited = false) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 640;
+      const ctx = canvas.getContext('2d');
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.03)';
+      for (let y = 24; y < canvas.height - 24; y += 6) {
+        ctx.fillRect(24, y, canvas.width - 48, 2);
+      }
+
+      ctx.strokeStyle = destino.color;
+      ctx.lineWidth = 3;
+      ctx.globalAlpha = 0.55;
+      ctx.strokeRect(24, 24, canvas.width - 48, canvas.height - 48);
+
+      ctx.globalAlpha = 1.0;
+      ctx.lineWidth = 8;
+      const b = 52;
+      const p = 18;
+      ctx.beginPath(); ctx.moveTo(p, p + b); ctx.lineTo(p, p); ctx.lineTo(p + b, p); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(canvas.width - p - b, p); ctx.lineTo(canvas.width - p, p); ctx.lineTo(canvas.width - p, p + b); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p, canvas.height - p - b); ctx.lineTo(p, canvas.height - p); ctx.lineTo(p + b, canvas.height - p); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(canvas.width - p - b, canvas.height - p); ctx.lineTo(canvas.width - p, canvas.height - p); ctx.lineTo(canvas.width - p, canvas.height - p - b); ctx.stroke();
+
+      ctx.fillStyle = 'rgba(3, 12, 22, 0.82)';
+      ctx.fillRect(38, 36, canvas.width - 76, 46);
+      ctx.fillStyle = destino.color;
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText(`DESTINOS VEN // ${destino.coords}`, 58, 66);
+
+      ctx.textAlign = 'right';
+      ctx.fillText(visited ? '✓ SELLADO' : '● TOCAR PARA ENTRAR', canvas.width - 58, 66);
+      ctx.textAlign = 'left';
+
+      const grad = ctx.createLinearGradient(0, canvas.height - 185, 0, canvas.height - 28);
+      grad.addColorStop(0, 'rgba(3, 10, 18, 0.0)');
+      grad.addColorStop(0.35, 'rgba(3, 10, 18, 0.9)');
+      grad.addColorStop(1, 'rgba(3, 10, 18, 0.98)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(28, canvas.height - 185, canvas.width - 56, 157);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 66px system-ui, sans-serif';
+      ctx.fillText(destino.nombre, 58, canvas.height - 86);
+
+      ctx.fillStyle = destino.color;
+      ctx.font = 'bold 22px monospace';
+      ctx.fillText(destino.subtitulo, 60, canvas.height - 50);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    function buildButtonTexture(label, accentColor) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 128;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = 'rgba(4, 16, 28, 0.92)';
+      ctx.beginPath();
+      ctx.roundRect(8, 8, 496, 112, 56);
+      ctx.fill();
+
+      ctx.strokeStyle = accentColor;
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 30px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, 256, 66);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    // =========================================================================
+    // 3. CONSTRUCCIÓN DE PORTALES 3D
+    // =========================================================================
+    function createHologramPortal(destino, index) {
+      const group = new THREE.Group();
+
+      const video = document.createElement('video');
+      video.loop = true;
+      video.muted = true;
+      video.playsInline = true;
+
+      const placeholderTex = buildPlaceholderTexture(destino);
+
+      const videoMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.64, 0.40),
+        new THREE.MeshBasicMaterial({ map: placeholderTex, side: THREE.DoubleSide })
+      );
+
+      const hudTex = buildHudTexture(destino, false);
+      const hudMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.68, 0.43),
+        new THREE.MeshBasicMaterial({
+          map: hudTex,
+          transparent: true,
+          depthWrite: false,
+          side: THREE.DoubleSide
+        })
+      );
+      hudMesh.position.z = 0.014;
+
+      const orbitalRing = new THREE.Mesh(
+        new THREE.RingGeometry(0.365, 0.378, 64, 1, 0, Math.PI * 1.35),
+        new THREE.MeshBasicMaterial({
+          color: destino.hex,
+          transparent: true,
+          opacity: 0.5,
+          side: THREE.DoubleSide
+        })
+      );
+      orbitalRing.position.z = -0.025;
+
+      const beamMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.42, 0.006),
+        new THREE.MeshBasicMaterial({ color: destino.hex, transparent: true, opacity: 0.7 })
+      );
+      beamMesh.position.y = -0.255;
+
+      group.add(videoMesh, hudMesh, orbitalRing, beamMesh);
+
+      const radius = 1.25;
+      const hubPos = new THREE.Vector3(
+        Math.sin(destino.anguloArco) * radius,
+        1.36,
+        -Math.cos(destino.anguloArco) * radius
+      );
+      group.position.copy(hubPos);
+      group.lookAt(0, 1.36, 0);
+
+      group.userData = {
+        destino,
+        index,
+        video,
+        videoMesh,
+        videoTexture: null,
+        blobUrl: null,
+        hasVideo: false,
+        hudMesh,
+        hitTarget: hudMesh,
+        orbitalRing,
+        hubPos: hubPos.clone(),
+        hubQuat: group.quaternion.clone(),
+        targetPos: hubPos.clone(),
+        targetScale: 1,
+        visited: false
+      };
+
+      return group;
+    }
+
+    function createDetailControls() {
+      const checkinMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.46, 0.115),
+        new THREE.MeshBasicMaterial({
+          map: buildButtonTexture('◈ SELLAR DESTINO', '#00ff9d'),
+          transparent: true,
+          side: THREE.DoubleSide
+        })
+      );
+      checkinMesh.position.set(-0.26, 0.84, -1.05);
+      checkinMesh.visible = false;
+      checkinMesh.userData = { action: 'CHECKIN' };
+
+      const backMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.46, 0.115),
+        new THREE.MeshBasicMaterial({
+          map: buildButtonTexture('✕ VOLVER AL MAPA', '#00f0ff'),
+          transparent: true,
+          side: THREE.DoubleSide
+        })
+      );
+      backMesh.position.set(0.26, 0.84, -1.05);
+      backMesh.visible = false;
+      backMesh.userData = { action: 'BACK' };
+
+      holoRoot.add(checkinMesh, backMesh);
+      detailButtons.push(checkinMesh, backMesh);
+    }
+
+    function createCompletionBanner() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 180;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = 'rgba(4, 22, 32, 0.92)';
+      ctx.beginPath();
+      ctx.roundRect(12, 12, 1000, 156, 32);
+      ctx.fill();
+
+      ctx.strokeStyle = '#00ff9d';
+      ctx.lineWidth = 5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#00ff9d';
+      ctx.font = '900 34px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('★ PASAPORTE DESTINOS VEN COMPLETADO ★', 512, 74);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '600 24px monospace';
+      ctx.fillText('3/3 DESTINOS EXPLORADOS · RECLAMA TU INSIGNIA EN EL STAND', 512, 124);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+
+      completionBanner = new THREE.Mesh(
+        new THREE.PlaneGeometry(1.15, 0.20),
+        new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide })
+      );
+      completionBanner.position.set(0, 1.78, -1.2);
+      completionBanner.visible = false;
+      holoRoot.add(completionBanner);
+    }
+
+    // =========================================================================
+    // 4. RASTREO DE MANOS Y CONTROLES DE ESCRITORIO
+    // =========================================================================
+    function setupHands() {
+      for (let i = 0; i < 2; i++) {
+        const controller = renderer.xr.getController(i);
+        controller.addEventListener('select', () => handleRaySelect(controller));
+        scene.add(controller);
+
+        const rayGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(0, 0, 0),
+          new THREE.Vector3(0, 0, -1.6)
+        ]);
+        const rayLine = new THREE.Line(
+          rayGeo,
+          new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.3 })
+        );
+        controller.add(rayLine);
+
+        const hand = renderer.xr.getHand(i);
+        scene.add(hand);
+
+        const tipCursor = new THREE.Mesh(
+          new THREE.SphereGeometry(0.012, 16, 16),
+          new THREE.MeshBasicMaterial({ color: 0x00ff9d })
+        );
+        tipCursor.visible = false;
+        scene.add(tipCursor);
+
+        fingerTips.push({ hand, tipCursor });
+      }
+    }
+
+    function handleRaySelect(controller) {
+      const now = performance.now();
+      if (now - lastInteractionTime < 600) return;
+
+      const tempMatrix = new THREE.Matrix4().identity().extractRotation(controller.matrixWorld);
+      const raycaster = new THREE.Raycaster();
+      raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+      raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+
+      processRayHits(raycaster, now);
+    }
+
+    function processRayHits(raycaster, now) {
+      if (mode === 'HUB') {
+        const targets = cards.map(c => c.userData.hitTarget);
+        const hits = raycaster.intersectObjects(targets);
+        if (hits.length > 0) {
+          lastInteractionTime = now;
+          enterDestination(hits[0].object.parent);
+        }
+      } else if (mode === 'DETAIL') {
+        const hits = raycaster.intersectObjects(detailButtons);
+        if (hits.length > 0) {
+          lastInteractionTime = now;
+          handleDetailButton(hits[0].object.userData.action);
+        }
+      }
+    }
+
+    function checkDirectFingerTouch() {
+      const now = performance.now();
+      for (const item of fingerTips) {
+        const indexJoint = item.hand.joints && item.hand.joints['index-finger-tip'];
+        if (indexJoint && indexJoint.visible) {
+          item.tipCursor.visible = true;
+          item.tipCursor.position.copy(indexJoint.position);
+
+          if (now - lastInteractionTime < 750) continue;
+
+          if (mode === 'HUB') {
+            for (const card of cards) {
+              const cardWorldPos = new THREE.Vector3();
+              card.getWorldPosition(cardWorldPos);
+              if (indexJoint.position.distanceTo(cardWorldPos) < 0.18) {
+                lastInteractionTime = now;
+                enterDestination(card);
+                return;
+              }
+            }
+          } else if (mode === 'DETAIL') {
+            for (const btn of detailButtons) {
+              if (!btn.visible) continue;
+              const btnWorldPos = new THREE.Vector3();
+              btn.getWorldPosition(btnWorldPos);
+              if (indexJoint.position.distanceTo(btnWorldPos) < 0.13) {
+                lastInteractionTime = now;
+                handleDetailButton(btn.userData.action);
+                return;
+              }
+            }
+          }
+        } else {
+          item.tipCursor.visible = false;
+        }
+      }
+    }
+
+    function setupDesktopPreviewControls() {
+      window.addEventListener('pointermove', (e) => {
+        if (!isDesktopPreview) return;
+        mouseNorm.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseNorm.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      });
+
+      window.addEventListener('pointerdown', (e) => {
+        if (!isDesktopPreview) return;
+        const pointer = new THREE.Vector2(
+          (e.clientX / window.innerWidth) * 2 - 1,
+          -(e.clientY / window.innerHeight) * 2 + 1
+        );
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(pointer, camera);
+        processRayHits(raycaster, performance.now());
+      });
+    }
+
+    function startDesktopPreview() {
+      isDesktopPreview = true;
+      previewGrid.visible = true;
+      holoRoot.position.set(0, 0, 0);
+      holoRoot.rotation.set(0, 0, 0);
+
+      cards.forEach(c => {
+        if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
+      });
+
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('xr-overlay').style.display = 'flex';
+      document.getElementById('recenter-btn').style.display = 'none';
+      document.getElementById('exit-preview-btn').style.display = 'inline-block';
+      document.getElementById('status-pill').textContent =
+        'Vista Previa 3D: Haz clic sobre Táchira, Aragua o Lara para probar';
+
+      renderer.setAnimationLoop(animateScene);
+    }
+
+    // =========================================================================
+    // 5. NAVEGACIÓN ENTRE HUB Y DESTINO
+    // =========================================================================
+    function enterDestination(card) {
+      mode = 'DETAIL';
+      selectedCard = card;
+      completionBanner.visible = false;
+      playSciFiTone('open');
+
+      cards.forEach(c => {
+        if (c === card) {
+          c.userData.targetPos.set(0, 1.38, -1.15);
+          c.userData.targetScale = 2.05;
+          if (c.userData.hasVideo) {
+            c.userData.video.currentTime = 0;
+            c.userData.video.muted = false;
+            c.userData.video.play().catch(() => {});
+          }
+        } else {
+          c.userData.targetScale = 0.001;
+          c.userData.video.muted = true;
+        }
+      });
+
+      detailButtons.forEach(btn => { btn.visible = true; });
+      document.getElementById('status-pill').textContent =
+        `Explorando ${card.userData.destino.nombre} · Toca SELLAR DESTINO o VOLVER`;
+    }
+
+    function returnToHub() {
+      mode = 'HUB';
+      playSciFiTone('close');
+
+      cards.forEach(c => {
+        c.userData.targetPos.copy(c.userData.hubPos);
+        c.userData.targetScale = 1.0;
+        c.userData.video.muted = true;
+      });
+
+      detailButtons.forEach(btn => { btn.visible = false; });
+      selectedCard = null;
+
+      const visitedCount = cards.filter(c => c.userData.visited).length;
+      if (visitedCount === cards.length) {
+        completionBanner.visible = true;
+        document.getElementById('status-pill').textContent =
+          '¡Felicidades! Has sellado los 3 destinos de Destinos Ven';
       } else {
-        document.getElementById("monitorPlaceholder").classList.add("hidden");
-        document.getElementById("monitorTituloEstado").innerText = `${base.estado} · ${guardado.destino}`;
-        document.getElementById("monitorSubtitulo").innerText = "Reproduciendo en vivo · Vista sincronizada con el Kiosco";
-        iniciarEscenaThreeJS(document.getElementById("monitorCanvas360"));
+        document.getElementById('status-pill').textContent =
+          `Destinos sellados: ${visitedCount}/${cards.length} · Toca otro destino para explorar`;
       }
     }
 
-    function cerrarVisor360() {
-      const videoEl = document.getElementById("videoTextura360");
-      videoEl.pause();
-      cancelAnimationFrame(animFrameId);
-      const modal = document.getElementById("modalVisor360");
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-      estadoReproduciendoActual = null;
-      canalSync.postMessage({ tipo: "DETENER" });
-    }
-
-    function toggleAudioVisor() {
-      const videoEl = document.getElementById("videoTextura360");
-      videoEl.muted = !videoEl.muted;
-      const btn = document.getElementById("btnAudioVisor");
-      btn.innerHTML = videoEl.muted
-        ? `<i class="fa-solid fa-volume-xmark mr-1 text-amber-400"></i> Activar Sonido`
-        : `<i class="fa-solid fa-volume-high mr-1 text-emerald-400"></i> Silenciar`;
-    }
-
-    // ================= PÁGINA ALTERNA (MONITOR) Y META CASTING =================
-    function abrirPaginaAlternaMonitor() {
-      const baseUrl = window.location.href.split("?")[0];
-      window.open(`${baseUrl}?vista=monitor`, "MonitorVRQuest3", "width=1100,height=720");
-    }
-
-    function abrirMetaCasting() {
-      window.open("https://www.oculus.com/casting", "MetaQuestCasting", "width=1100,height=720");
-    }
-
-    canalSync.onmessage = async (event) => {
-      if (!esModoMonitor) return;
-      const msg = event.data;
-      if (msg.tipo === "INICIAR_ESTADO") {
-        await cargarTodosLosVideos();
-        reproducirEstado(msg.estadoId);
-      } else if (msg.tipo === "CAMARA_360") {
-        lon = msg.lon;
-        lat = msg.lat;
-      } else if (msg.tipo === "DETENER") {
-        const videoEl = document.getElementById("videoTextura360");
-        videoEl.pause();
-        document.getElementById("monitorPlaceholder").classList.remove("hidden");
-        document.getElementById("monitorTituloEstado").innerText = "Esperando selección en Kiosco...";
+    function handleDetailButton(action) {
+      if (action === 'BACK') {
+        returnToHub();
+      } else if (action === 'CHECKIN' && selectedCard) {
+        playSciFiTone('success');
+        if (!selectedCard.userData.visited) {
+          selectedCard.userData.visited = true;
+          selectedCard.userData.hudMesh.material.map.dispose();
+          selectedCard.userData.hudMesh.material.map =
+            buildHudTexture(selectedCard.userData.destino, true);
+          selectedCard.userData.hudMesh.material.needsUpdate = true;
+        }
+        returnToHub();
       }
-    };
+    }
 
-    // ================= INICIALIZACIÓN =================
-    document.addEventListener("DOMContentLoaded", async () => {
-      await abrirBaseDeDatos();
-      await cargarTodosLosVideos();
+    function alignHologramsToUser() {
+      const xrCam = renderer.xr.getCamera();
+      const camPos = new THREE.Vector3();
+      const camDir = new THREE.Vector3();
+      xrCam.getWorldPosition(camPos);
+      xrCam.getWorldDirection(camDir);
 
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("vista") === "monitor") {
-        esModoMonitor = true;
-        document.getElementById("vistaPrincipal").classList.add("hidden");
-        document.getElementById("controlesHeaderAdmin").classList.add("hidden");
-        document.getElementById("tituloHeader").innerText = "Monitor Público · Vista Meta Quest 3";
-        document.getElementById("vistaMonitorAlterna").classList.remove("hidden");
+      const yaw = Math.atan2(-camDir.x, -camDir.z);
+      holoRoot.position.set(camPos.x, 0, camPos.z);
+      holoRoot.rotation.y = yaw;
+    }
+
+    function playSciFiTone(type) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        if (type === 'open') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        } else if (type === 'close' || type === 'click') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(640, now);
+          osc.frequency.exponentialRampToValueAtTime(280, now + 0.18);
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        } else if (type === 'success') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.1);
+          osc.frequency.setValueAtTime(1046.5, now + 0.2);
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+          osc.start(now);
+          osc.stop(now + 0.42);
+        }
+      } catch (e) {}
+    }
+
+    async function startXR() {
+      if (!navigator.xr) {
+        alert('No se detectó un visor WebXR. Usa el botón "Vista Previa en Pantalla" en tu PC o ábrelo en el navegador de Meta Quest 3.');
+        return;
+      }
+
+      const overlay = document.getElementById('xr-overlay');
+      const session = await navigator.xr.requestSession('immersive-ar', {
+        optionalFeatures: ['hand-tracking', 'local-floor', 'dom-overlay'],
+        domOverlay: { root: overlay }
+      });
+
+      renderer.xr.setReferenceSpaceType('local-floor');
+      await renderer.xr.setSession(session);
+
+      cards.forEach(c => {
+        if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
+      });
+
+      document.getElementById('landing').style.display = 'none';
+      overlay.style.display = 'flex';
+      document.getElementById('recenter-btn').style.display = 'inline-block';
+      document.getElementById('exit-preview-btn').style.display = 'none';
+
+      setTimeout(alignHologramsToUser, 300);
+
+      session.addEventListener('end', () => {
+        document.getElementById('landing').style.display = 'flex';
+        overlay.style.display = 'none';
+      });
+
+      renderer.setAnimationLoop(animateScene);
+    }
+
+    function animateScene(time) {
+      const t = time * 0.001;
+
+      if (isDesktopPreview) {
+        camera.position.x = THREE.MathUtils.lerp(camera.position.x, mouseNorm.x * 0.25, 0.08);
+        camera.position.y = THREE.MathUtils.lerp(camera.position.y, 1.38 + mouseNorm.y * 0.12, 0.08);
+        camera.lookAt(0, 1.35, -1.15);
       } else {
-        renderizarEstados();
+        checkDirectFingerTouch();
       }
-    });
+
+      cards.forEach((c, idx) => {
+        const floatOffset = mode === 'HUB' ? Math.sin(t * 2 + idx) * 0.016 : 0;
+        const desiredPos = c.userData.targetPos.clone();
+        desiredPos.y += floatOffset;
+
+        c.position.lerp(desiredPos, 0.12);
+
+        const s = THREE.MathUtils.lerp(c.scale.x, c.userData.targetScale, 0.14);
+        c.scale.set(s, s, s);
+        c.visible = s > 0.02;
+
+        c.userData.orbitalRing.rotation.z = t * (idx % 2 === 0 ? 0.45 : -0.45);
+
+        if (mode === 'DETAIL' && c === selectedCard) {
+          c.quaternion.slerp(new THREE.Quaternion(), 0.14);
+        } else {
+          c.quaternion.slerp(c.userData.hubQuat, 0.14);
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
   </script>
 </body>
 </html>
