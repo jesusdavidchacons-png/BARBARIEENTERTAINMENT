@@ -14,7 +14,7 @@
       overflow: hidden;
     }
 
-    /* PANTALLA INICIAL (LOBBY) */
+    /* PANTALLA INICIAL (Usa visibility en lugar de display:none para que Chromium no pause los videos en WebXR) */
     #landing {
       position: fixed;
       inset: 0;
@@ -29,6 +29,13 @@
         linear-gradient(180deg, #040b14 0%, #020509 100%);
       z-index: 10;
       overflow-y: auto;
+      transition: opacity 0.25s ease;
+    }
+
+    #landing.hidden-layer {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
     #landing::before {
@@ -51,13 +58,13 @@
       border: 1px solid rgba(0, 240, 255, 0.4);
       padding: 6px 14px;
       border-radius: 999px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       background: rgba(0, 240, 255, 0.08);
     }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: clamp(30px, 5vw, 48px);
+      margin: 0 0 6px;
+      font-size: clamp(28px, 5vw, 46px);
       letter-spacing: 3px;
       font-weight: 900;
       background: linear-gradient(90deg, #ffffff 0%, #00f0ff 50%, #00ff9d 100%);
@@ -68,63 +75,88 @@
     p.subtitle {
       max-width: 540px;
       color: #93b4c8;
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 0 0 22px;
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 0 0 20px;
     }
 
-    /* TARJETAS INDIVIDUALES DE CARGA DE VIDEO */
+    /* TARJETAS INDIVIDUALES CON PREVIEW EN VIVO */
     .upload-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(210px, 1fr));
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
       gap: 14px;
-      max-width: 760px;
+      max-width: 800px;
       width: 100%;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       z-index: 2;
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 740px) {
       .upload-grid { grid-template-columns: 1fr; max-width: 380px; }
     }
 
     .upload-card {
-      background: rgba(7, 19, 32, 0.85);
+      background: rgba(7, 19, 32, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 16px;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       backdrop-filter: blur(10px);
-      transition: border-color 0.25s ease, transform 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .upload-card.ready {
-      border-color: rgba(0, 255, 157, 0.6);
-      box-shadow: 0 0 20px rgba(0, 255, 157, 0.12);
+      border-color: rgba(0, 255, 157, 0.65);
+      box-shadow: 0 0 22px rgba(0, 255, 157, 0.14);
     }
 
     .state-name {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 800;
       letter-spacing: 1.5px;
     }
 
-    .state-tag {
-      font-size: 10px;
+    .preview-box {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #040c14;
+      border-radius: 10px;
+      border: 1px dashed rgba(0, 240, 255, 0.25);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-box video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
       font-family: monospace;
-      color: #7fa6bd;
-      letter-spacing: 0.5px;
+      color: #5c8199;
+      pointer-events: none;
     }
 
     .file-status {
       font-size: 11px;
       font-family: monospace;
       color: #8ba8bc;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 6px 10px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 5px 8px;
       border-radius: 8px;
       width: 100%;
       overflow: hidden;
@@ -152,7 +184,7 @@
       text-transform: uppercase;
       border-radius: 999px;
       cursor: pointer;
-      transition: transform 0.15s ease, opacity 0.2s ease;
+      transition: transform 0.15s ease;
     }
 
     button:active { transform: scale(0.96); }
@@ -171,7 +203,7 @@
 
     .btn-upload {
       width: 100%;
-      padding: 10px 14px;
+      padding: 9px 12px;
       font-size: 11px;
       background: rgba(255, 255, 255, 0.1);
       color: #ffffff;
@@ -228,42 +260,50 @@
     <div class="badge">Portal Espacial · Meta Quest 3</div>
     <h1>DESTINOS VEN</h1>
     <p class="subtitle">
-      Asigna el video correspondiente a cada estado desde tu dispositivo o memoria interna del Meta Quest 3 y entra al entorno holográfico.
+      Selecciona los videos locales de cada estado desde la memoria del visor y entra al portal holográfico.
     </p>
 
-    <!-- 3 SLOTS INDEPENDIENTES PARA SUBIR CADA DESTINO POR SEPARADO -->
     <div class="upload-grid">
       <!-- TÁCHIRA -->
       <div class="upload-card" id="card-box-tachira">
         <div class="state-name" style="color: #00ff9d;">TÁCHIRA</div>
-        <div class="state-tag">MONTAÑA · PÁRAMO · CAFÉ</div>
-        <input type="file" id="input-tachira" accept="video/mp4,video/webm,video/*" style="display: none;" />
+        <div class="preview-box">
+          <video id="video-tachira" muted loop playsinline preload="auto"></video>
+          <div class="preview-placeholder" id="ph-tachira">SIN SEÑAL</div>
+        </div>
+        <input type="file" id="input-tachira" accept="video/*" style="display: none;" />
         <button class="btn-upload" onclick="document.getElementById('input-tachira').click()">
-          + Subir Video Táchira
+          Seleccionar Video Táchira
         </button>
-        <div class="file-status" id="status-tachira">Sin video cargado</div>
+        <div class="file-status" id="status-tachira">Listo para cargar</div>
       </div>
 
       <!-- ARAGUA -->
       <div class="upload-card" id="card-box-aragua">
         <div class="state-name" style="color: #00f0ff;">ARAGUA</div>
-        <div class="state-tag">SELVA NUBLADA · COSTA</div>
-        <input type="file" id="input-aragua" accept="video/mp4,video/webm,video/*" style="display: none;" />
+        <div class="preview-box">
+          <video id="video-aragua" muted loop playsinline preload="auto"></video>
+          <div class="preview-placeholder" id="ph-aragua">SIN SEÑAL</div>
+        </div>
+        <input type="file" id="input-aragua" accept="video/*" style="display: none;" />
         <button class="btn-upload" onclick="document.getElementById('input-aragua').click()">
-          + Subir Video Aragua
+          Seleccionar Video Aragua
         </button>
-        <div class="file-status" id="status-aragua">Sin video cargado</div>
+        <div class="file-status" id="status-aragua">Listo para cargar</div>
       </div>
 
       <!-- LARA -->
       <div class="upload-card" id="card-box-lara">
         <div class="state-name" style="color: #ffbe0b;">LARA</div>
-        <div class="state-tag">CREPÚSCULO · CULTURA</div>
-        <input type="file" id="input-lara" accept="video/mp4,video/webm,video/*" style="display: none;" />
+        <div class="preview-box">
+          <video id="video-lara" muted loop playsinline preload="auto"></video>
+          <div class="preview-placeholder" id="ph-lara">SIN SEÑAL</div>
+        </div>
+        <input type="file" id="input-lara" accept="video/*" style="display: none;" />
         <button class="btn-upload" onclick="document.getElementById('input-lara').click()">
-          + Subir Video Lara
+          Seleccionar Video Lara
         </button>
-        <div class="file-status" id="status-lara">Sin video cargado</div>
+        <div class="file-status" id="status-lara">Listo para cargar</div>
       </div>
     </div>
 
@@ -348,12 +388,12 @@
       holoRoot = new THREE.Group();
       scene.add(holoRoot);
 
-      // Crear los 3 portales holográficos y conectar sus inputs individuales
       DESTINOS.forEach((destino, idx) => {
-        const card = createHologramPortal(destino, idx);
+        const videoEl = document.getElementById(`video-${destino.id}`);
+        const card = createHologramPortal(destino, idx, videoEl);
         holoRoot.add(card);
         cards.push(card);
-        bindIndividualUploader(destino.id, card);
+        bindInstantLocalLoader(destino.id, card);
       });
 
       createDetailControls();
@@ -372,9 +412,12 @@
       document.getElementById('exit-preview-btn').addEventListener('click', () => {
         isDesktopPreview = false;
         previewGrid.visible = false;
-        cards.forEach(c => { c.userData.video.muted = true; });
+        cards.forEach(c => {
+          c.userData.video.muted = true;
+          if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
+        });
         renderer.setAnimationLoop(null);
-        document.getElementById('landing').style.display = 'flex';
+        document.getElementById('landing').classList.remove('hidden-layer');
         document.getElementById('xr-overlay').style.display = 'none';
         document.getElementById('exit-preview-btn').style.display = 'none';
       });
@@ -387,18 +430,19 @@
     }
 
     // =========================================================================
-    // 1. CARGA INDEPENDIENTE POR CADA ESTADO (SIN RESTRICCIÓN DE NOMBRE)
+    // 1. CARGA INSTANTÁNEA DESDE MEMORIA LOCAL (SIN BLOQUEOS DE DECODIFICACIÓN)
     // =========================================================================
-    function bindIndividualUploader(stateId, card) {
+    function bindInstantLocalLoader(stateId, card) {
       const inputEl = document.getElementById(`input-${stateId}`);
       const statusEl = document.getElementById(`status-${stateId}`);
       const cardBoxEl = document.getElementById(`card-box-${stateId}`);
+      const placeholderEl = document.getElementById(`ph-${stateId}`);
+      const video = card.userData.video;
 
       inputEl.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Liberar memoria si ya había un video previo cargado en este estado
         if (card.userData.blobUrl) {
           URL.revokeObjectURL(card.userData.blobUrl);
         }
@@ -406,45 +450,36 @@
         const blobUrl = URL.createObjectURL(file);
         card.userData.blobUrl = blobUrl;
 
-        const video = card.userData.video;
-        video.removeAttribute('crossorigin'); // Evita bloqueos WebGL con archivos locales
-        video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.src = blobUrl;
-
-        statusEl.textContent = 'Procesando video...';
-        statusEl.className = 'file-status';
-
-        video.onloadeddata = () => {
-          // Crear textura de video limpia y asignarla al plano 3D
-          if (card.userData.videoTexture) {
-            card.userData.videoTexture.dispose();
-          }
-          const newVideoTex = new THREE.VideoTexture(video);
-          newVideoTex.colorSpace = THREE.SRGBColorSpace;
-          newVideoTex.minFilter = THREE.LinearFilter;
-          newVideoTex.magFilter = THREE.LinearFilter;
-
-          card.userData.videoTexture = newVideoTex;
-          card.userData.videoMesh.material.map = newVideoTex;
-          card.userData.videoMesh.material.needsUpdate = true;
-          card.userData.hasVideo = true;
-
-          video.play().catch(() => {});
-
+        // Registrar listeners ANTES de asignar src para no perder eventos rápidos
+        video.onloadedmetadata = () => {
+          placeholderEl.style.display = 'none';
           statusEl.textContent = `✓ ${file.name} (${video.videoWidth}x${video.videoHeight})`;
           statusEl.className = 'file-status ok';
           cardBoxEl.classList.add('ready');
+
+          if (!card.userData.videoTexture) {
+            const tex = new THREE.VideoTexture(video);
+            tex.colorSpace = THREE.SRGBColorSpace;
+            tex.minFilter = THREE.LinearFilter;
+            tex.magFilter = THREE.LinearFilter;
+            card.userData.videoTexture = tex;
+            card.userData.videoMesh.material.map = tex;
+            card.userData.videoMesh.material.needsUpdate = true;
+          }
+          card.userData.hasVideo = true;
         };
 
         video.onerror = () => {
-          statusEl.textContent = '✕ Formato no soportado (usa MP4 H.264)';
+          const code = video.error ? video.error.code : '?';
+          statusEl.textContent = `✕ Error códec (${code}): exporta MP4 H.264 8-bit`;
           statusEl.className = 'file-status err';
           cardBoxEl.classList.remove('ready');
         };
 
-        video.load();
+        video.muted = true;
+        video.src = blobUrl;
+        // Llamar play() de inmediato fuerza al decodificador por hardware a arrancar al instante
+        video.play().catch(() => {});
       });
     }
 
@@ -460,7 +495,6 @@
       ctx.fillStyle = '#051320';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Cuadrícula interna de espera
       ctx.strokeStyle = 'rgba(0, 240, 255, 0.12)';
       ctx.lineWidth = 1;
       for (let x = 0; x < canvas.width; x += 32) {
@@ -470,7 +504,6 @@
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
       }
 
-      // Círculo radar central
       ctx.strokeStyle = destino.color;
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -484,7 +517,7 @@
 
       ctx.fillStyle = '#7fa6bd';
       ctx.font = '14px monospace';
-      ctx.fillText('SUBE UN VIDEO MP4 EN EL MENÚ INICIAL', 320, 280);
+      ctx.fillText('SELECCIONA EL VIDEO EN EL MENÚ', 320, 280);
 
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
@@ -577,13 +610,8 @@
     // =========================================================================
     // 3. CONSTRUCCIÓN DE PORTALES 3D
     // =========================================================================
-    function createHologramPortal(destino, index) {
+    function createHologramPortal(destino, index, videoEl) {
       const group = new THREE.Group();
-
-      const video = document.createElement('video');
-      video.loop = true;
-      video.muted = true;
-      video.playsInline = true;
 
       const placeholderTex = buildPlaceholderTexture(destino);
 
@@ -635,7 +663,7 @@
       group.userData = {
         destino,
         index,
-        video,
+        video: videoEl,
         videoMesh,
         videoTexture: null,
         blobUrl: null,
@@ -847,7 +875,7 @@
         if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
       });
 
-      document.getElementById('landing').style.display = 'none';
+      document.getElementById('landing').classList.add('hidden-layer');
       document.getElementById('xr-overlay').style.display = 'flex';
       document.getElementById('recenter-btn').style.display = 'none';
       document.getElementById('exit-preview-btn').style.display = 'inline-block';
@@ -858,7 +886,7 @@
     }
 
     // =========================================================================
-    // 5. NAVEGACIÓN ENTRE HUB Y DESTINO
+    // 5. NAVEGACIÓN ENTRE HUB Y DESTINO (CON OPTIMIZACIÓN DE DECODIFICADOR)
     // =========================================================================
     function enterDestination(card) {
       mode = 'DETAIL';
@@ -876,8 +904,10 @@
             c.userData.video.play().catch(() => {});
           }
         } else {
+          // Pausa los otros 2 videos para dedicar 100% de potencia del Quest 3 al activo
           c.userData.targetScale = 0.001;
           c.userData.video.muted = true;
+          if (c.userData.hasVideo) c.userData.video.pause();
         }
       });
 
@@ -894,6 +924,7 @@
         c.userData.targetPos.copy(c.userData.hubPos);
         c.userData.targetScale = 1.0;
         c.userData.video.muted = true;
+        if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
       });
 
       detailButtons.forEach(btn => { btn.visible = false; });
@@ -978,7 +1009,7 @@
 
     async function startXR() {
       if (!navigator.xr) {
-        alert('No se detectó un visor WebXR. Usa el botón "Vista Previa en Pantalla" en tu PC o ábrelo en el navegador de Meta Quest 3.');
+        alert('No se detectó un visor WebXR. Usa "Vista Previa en Pantalla" en tu PC o ábrelo en el navegador de Meta Quest 3.');
         return;
       }
 
@@ -995,7 +1026,7 @@
         if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
       });
 
-      document.getElementById('landing').style.display = 'none';
+      document.getElementById('landing').classList.add('hidden-layer');
       overlay.style.display = 'flex';
       document.getElementById('recenter-btn').style.display = 'inline-block';
       document.getElementById('exit-preview-btn').style.display = 'none';
@@ -1003,7 +1034,7 @@
       setTimeout(alignHologramsToUser, 300);
 
       session.addEventListener('end', () => {
-        document.getElementById('landing').style.display = 'flex';
+        document.getElementById('landing').classList.remove('hidden-layer');
         overlay.style.display = 'none';
       });
 
