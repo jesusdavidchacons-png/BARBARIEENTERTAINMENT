@@ -317,6 +317,12 @@
   const WORKER_URL = "https://barbarieentertainment.jesusdavid-chacons.workers.dev";
   const LOGO_PATH = "./marcapais.png";
 
+  // Modelo rápido de alta calidad (Nano Banana Flash) + salida 2K
+  const FAST_MODEL_CONFIG = {
+    model: "gemini-2.5-flash-image",
+    resolution: "2K"
+  };
+
   const video = document.getElementById("video");
   const canvas = document.getElementById("canvas");
   const resultImg = document.getElementById("result-img");
@@ -413,7 +419,6 @@
   async function openSpecificCamera(deviceId, mirrorFlag = false) {
     stopCurrentStream();
 
-    // Pedimos 1080p / 30fps ideal para evitar que el flujo 4K60 sature Chrome en Android
     const constraintsList = [
       {
         video: {
@@ -469,7 +474,6 @@
         return;
       }
 
-      // 1. Obtener permiso inicial para leer los nombres reales de los dispositivos USB/internos
       const initialStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       const devices = await navigator.mediaDevices.enumerateDevices();
       const videoInputs = devices.filter(d => d.kind === "videoinput");
@@ -482,7 +486,6 @@
 
       let chosenDevice = null;
       if (mode === "usb") {
-        // Prioriza DJI / Osmo / USB / UVC / cámara secundaria
         chosenDevice = videoInputs.find(isUsbOrExternal) || videoInputs[videoInputs.length - 1];
       } else {
         chosenDevice = videoInputs.find(d => !isUsbOrExternal(d)) || videoInputs[0];
@@ -490,7 +493,6 @@
 
       const initialTrackId = initialStream.getVideoTracks()[0]?.getSettings?.()?.deviceId;
 
-      // Si el stream inicial ya es la cámara que queríamos y no es USB 4K60, lo aprovechamos; si no, abrimos la elegida
       if (chosenDevice.deviceId === initialTrackId && mode === "internal") {
         currentStream = initialStream;
         isMirrored = true;
@@ -550,7 +552,8 @@
       sy = (vh - sh) / 2;
     }
 
-    const maxDim = 1152;
+    // 1024px agiliza la subida sin perder nitidez facial para el modelo 2K
+    const maxDim = 1024;
     if (sw >= sh) {
       canvas.width = Math.min(maxDim, sw);
       canvas.height = canvas.width / targetRatio;
@@ -568,7 +571,7 @@
     ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
-    capturedDataUrl = canvas.toDataURL("image/jpeg", 0.9);
+    capturedDataUrl = canvas.toDataURL("image/jpeg", 0.85);
     resultImg.src = capturedDataUrl;
 
     video.classList.add("hidden");
@@ -661,7 +664,7 @@
       console.warn("No se encontró marcapais.png:", e);
     }
 
-    return posterCanvas.toDataURL("image/jpeg", 0.94);
+    return posterCanvas.toDataURL("image/jpeg", 0.92);
   }
 
   async function processImage() {
@@ -677,7 +680,9 @@
         body: JSON.stringify({
           image: capturedDataUrl,
           mode: selectedMode,
-          destination: selectedDestination
+          destination: selectedDestination,
+          model: FAST_MODEL_CONFIG.model,
+          resolution: FAST_MODEL_CONFIG.resolution
         })
       });
 
