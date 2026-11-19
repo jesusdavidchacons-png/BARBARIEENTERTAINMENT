@@ -2,2970 +2,1078 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Cuyagua Surf VR — Simulación Óptica 3D</title>
-
-  <!-- Tipografías editoriales cinematográficas -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Three.js r128 y Post-Procesado Óptico desde CDNJS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/shaders/CopyShader.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/shaders/LuminosityHighPassShader.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/EffectComposer.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/RenderPass.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/ShaderPass.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/postprocessing/UnrealBloomPass.js"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Destinos Ven — Portal Holográfico WebXR</title>
   <style>
-    /* =========================================================================
-       1. TOKENS DE DISEÑO Y ESTÉTICA ANAMÓRFICA DE CINE
-    ========================================================================= */
-    :root {
-      --bg-abyss: #020d14;
-      --glass-cinema: rgba(4, 17, 26, 0.74);
-      --glass-drawer: rgba(5, 21, 32, 0.90);
-      --emerald-core: #10b981;
-      --aqua-bright: #5eead4;
-      --gold-amber: #f5b963;
-      --gold-cream: #fef3c7;
-      --border-aqua: rgba(94, 234, 212, 0.25);
-      --border-gold: rgba(245, 185, 99, 0.38);
-      --text-primary: #f8fafc;
-      --text-secondary: #cbd5e1;
-      --font-serif: 'Cormorant Garamond', Georgia, serif;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
+    * { box-sizing: border-box; user-select: none; }
+    body {
       margin: 0;
-      padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
+      background: #03070c;
+      color: #e6f7ff;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       overflow: hidden;
-      background-color: var(--bg-abyss);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      -webkit-font-smoothing: antialiased;
     }
 
-    /* Lienzo principal WebGL */
-    #webgl-stage {
+    /* PANTALLA INICIAL (Usa visibility en lugar de display:none para que Chromium no pause los videos en WebXR) */
+    #landing {
       position: fixed;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      touch-action: none;
-    }
-
-    /* Capa 2D de respaldo óptico si el navegador bloquea post-procesado externo */
-    #lens-fallback-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    /* Viñeteo anamórfico sutil */
-    .anamorphic-vignette {
-      position: fixed;
-      inset: 0;
-      z-index: 3;
-      pointer-events: none;
-      background: radial-gradient(ellipse at 50% 50%, transparent 62%, rgba(2, 9, 15, 0.54) 100%);
-    }
-
-    /* Resplandor esmeralda envolvente al entrar al tubo */
-    .barrel-tunnel-glow {
-      position: fixed;
-      inset: 0;
-      z-index: 4;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.24s ease;
-      box-shadow: inset 0 0 130px rgba(16, 185, 129, 0.52), inset 0 0 46px rgba(94, 234, 212, 0.38);
-    }
-
-    .barrel-tunnel-glow.active {
-      opacity: 1;
-    }
-
-    /* =========================================================================
-       2. HUD MINIMALISTA Y PANEL COLAPSABLE "CALIBRACIÓN DOP"
-    ========================================================================= */
-    .hud-layer {
-      position: fixed;
-      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(0, 240, 255, 0.14) 0%, rgba(3, 7, 12, 0.97) 68%),
+        linear-gradient(180deg, #040b14 0%, #020509 100%);
       z-index: 10;
-      pointer-events: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 0.9rem;
+      overflow-y: auto;
+      transition: opacity 0.25s ease;
     }
 
-    @media (min-width: 768px) {
-      .hud-layer {
-        padding: 1.35rem 2rem;
-      }
-    }
-
-    .hud-top {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .cinema-watermark {
-      pointer-events: auto;
-      background: var(--glass-cinema);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--border-aqua);
-      border-radius: 14px;
-      padding: 0.55rem 1rem;
-    }
-
-    .watermark-kicker {
-      display: block;
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gold-amber);
-      margin-bottom: 0.12rem;
-    }
-
-    .watermark-title {
-      font-family: var(--font-serif);
-      font-size: clamp(1.05rem, 2vw, 1.36rem);
-      font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.15;
-    }
-
-    /* Telemetría minimalista de sesión */
-    .telemetry-pill {
-      display: none;
-      align-items: center;
-      gap: 0.85rem;
-      background: var(--glass-cinema);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--border-aqua);
-      border-radius: 9999px;
-      padding: 0.45rem 1.25rem;
-    }
-
-    .telemetry-pill.visible {
-      display: flex;
-    }
-
-    .t-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 56px;
-    }
-
-    .t-lbl {
-      font-size: 0.56rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    .t-val {
-      font-size: 1.02rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      color: var(--text-primary);
-    }
-
-    .t-val.gold {
-      color: var(--gold-amber);
-    }
-
-    .t-val.aqua {
-      color: var(--aqua-bright);
-    }
-
-    .t-sep {
-      width: 1px;
-      height: 24px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-
-    /* Botones superiores derechos y panel DOP */
-    .dop-column {
-      pointer-events: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 0.5rem;
-    }
-
-    .top-actions {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 0.45rem;
-    }
-
-    .hud-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.38rem;
-      padding: 0.5rem 0.92rem;
-      border-radius: 9999px;
-      background: var(--glass-cinema);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--border-aqua);
-      color: var(--text-primary);
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .hud-btn:hover {
-      border-color: var(--aqua-bright);
-      background: rgba(10, 34, 50, 0.92);
-    }
-
-    .dop-drawer {
-      display: none;
-      width: 312px;
-      background: var(--glass-drawer);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--border-gold);
-      border-radius: 16px;
-      padding: 0.95rem 1.05rem;
-      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.62);
-    }
-
-    .dop-drawer.open {
-      display: block;
-    }
-
-    .dop-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.64rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gold-amber);
-      padding-bottom: 0.45rem;
-      margin-bottom: 0.75rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .dop-block {
-      margin-bottom: 0.8rem;
-    }
-
-    .dop-block:last-child {
-      margin-bottom: 0;
-    }
-
-    .dop-lbl {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: var(--text-secondary);
-      margin-bottom: 0.35rem;
-    }
-
-    .chip-row-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.35rem;
-    }
-
-    .chip-row-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.4rem;
-    }
-
-    .dop-chip {
-      padding: 0.44rem 0.24rem;
-      border-radius: 9px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text-secondary);
-      font-size: 0.61rem;
-      font-weight: 500;
-      line-height: 1.25;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.18s ease;
-    }
-
-    .dop-chip:hover {
-      border-color: var(--gold-amber);
-      color: var(--text-primary);
-    }
-
-    .dop-chip.active {
-      background: rgba(245, 185, 99, 0.22);
-      border-color: var(--gold-amber);
-      color: var(--gold-cream);
-      font-weight: 600;
-    }
-
-    .dop-slider {
-      width: 100%;
-      accent-color: var(--emerald-core);
-      cursor: pointer;
-    }
-
-    /* =========================================================================
-       3. NOTIFICADOR DE ZONA Y CONTROLES INFERIORES
-    ========================================================================= */
-    .hud-center {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .zone-pill {
+    #landing.hidden-layer {
       opacity: 0;
-      transform: translateY(6px) scale(0.96);
-      transition: all 0.22s ease;
-      padding: 0.45rem 1.3rem;
-      border-radius: 9999px;
-      background: rgba(6, 78, 59, 0.86);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--aqua-bright);
-      font-family: var(--font-serif);
-      font-size: clamp(1.15rem, 2.5vw, 1.62rem);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: #ecfdf5;
-      text-shadow: 0 2px 14px rgba(16, 185, 129, 0.78);
+      visibility: hidden;
+      pointer-events: none;
     }
 
-    .zone-pill.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    .zone-pill.pocket {
-      background: rgba(9, 36, 54, 0.82);
-      border-color: var(--gold-amber);
-      color: var(--gold-cream);
-      font-size: clamp(0.95rem, 2vw, 1.25rem);
-    }
-
-    .zone-pill.foam {
-      background: rgba(127, 29, 29, 0.8);
-      border-color: #fca5a5;
-      color: #fee2e2;
-      font-size: clamp(0.95rem, 2vw, 1.2rem);
-    }
-
-    .hud-bottom {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .hud-bottom.visible {
-      display: flex;
-    }
-
-    .touch-controls {
-      pointer-events: auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.65rem;
-    }
-
-    .action-pill-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.76rem 1.35rem;
-      border-radius: 9999px;
-      background: var(--glass-cinema);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--border-aqua);
-      color: var(--text-primary);
-      font-size: 0.76rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .action-pill-btn.pressed,
-    .action-pill-btn:active {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      border-color: #a7f3d0;
-      color: #022c22;
-      transform: scale(0.97);
-    }
-
-    .key-hint-bar {
-      background: rgba(3, 14, 22, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 9999px;
-      padding: 0.34rem 1rem;
-      font-size: 0.68rem;
-      color: var(--text-secondary);
-      text-align: center;
-      letter-spacing: 0.04em;
-    }
-
-    /* =========================================================================
-       4. PANTALLA INICIAL Y RESULTADOS FINALES CINEMATOGRÁFICOS
-    ========================================================================= */
-    .overlay-screen {
-      position: fixed;
+    #landing::before {
+      content: "";
+      position: absolute;
       inset: 0;
-      z-index: 25;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.25rem;
-      background: radial-gradient(circle at 50% 50%, rgba(2, 13, 20, 0.28) 0%, rgba(2, 9, 15, 0.74) 100%);
-      transition: opacity 0.4s ease;
-    }
-
-    .overlay-screen.hidden {
-      opacity: 0;
+      background-image:
+        linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
       pointer-events: none;
     }
 
-    .cinema-modal {
-      width: 100%;
-      max-width: 660px;
-      background: rgba(4, 18, 28, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border-gold);
-      border-radius: 22px;
-      padding: 2rem 1.65rem;
-      text-align: center;
-      box-shadow: 0 30px 75px rgba(0, 0, 0, 0.7);
-    }
-
-    @media (min-width: 640px) {
-      .cinema-modal {
-        padding: 2.65rem 2.85rem;
-      }
-    }
-
-    .modal-eyebrow {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
+    .badge {
+      font-size: 11px;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--gold-amber);
-      background: rgba(245, 185, 99, 0.12);
-      border: 1px solid var(--border-gold);
-      padding: 0.35rem 0.95rem;
-      border-radius: 9999px;
-      margin-bottom: 1rem;
+      color: #00f0ff;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      background: rgba(0, 240, 255, 0.08);
     }
 
-    .modal-title {
-      font-family: var(--font-serif);
-      font-size: clamp(2.15rem, 5vw, 3.35rem);
-      font-weight: 600;
-      line-height: 1.06;
-      color: var(--text-primary);
-      margin-bottom: 0.65rem;
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(28px, 5vw, 46px);
+      letter-spacing: 3px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffffff 0%, #00f0ff 50%, #00ff9d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .modal-title em {
-      font-style: italic;
-      color: var(--aqua-bright);
-    }
-
-    .modal-subtitle {
-      font-size: 0.95rem;
-      line-height: 1.65;
-      color: var(--text-secondary);
+    p.subtitle {
       max-width: 540px;
-      margin: 0 auto 1.6rem;
+      color: #93b4c8;
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 0 0 20px;
     }
 
-    .guides-grid {
+    /* TARJETAS INDIVIDUALES CON PREVIEW EN VIVO */
+    .upload-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.6rem;
-      margin-bottom: 1.85rem;
-      text-align: left;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap: 14px;
+      max-width: 800px;
+      width: 100%;
+      margin-bottom: 22px;
+      z-index: 2;
     }
 
-    .guide-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(94, 234, 212, 0.16);
-      border-radius: 12px;
-      padding: 0.72rem 0.78rem;
+    @media (max-width: 740px) {
+      .upload-grid { grid-template-columns: 1fr; max-width: 380px; }
     }
 
-    .guide-title {
-      display: block;
-      font-size: 0.67rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--aqua-bright);
-      margin-bottom: 0.22rem;
-    }
-
-    .guide-desc {
-      font-size: 0.72rem;
-      line-height: 1.42;
-      color: var(--text-secondary);
-    }
-
-    .cta-group {
+    .upload-card {
+      background: rgba(7, 19, 32, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 16px;
+      padding: 14px;
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .upload-card.ready {
+      border-color: rgba(0, 255, 157, 0.65);
+      box-shadow: 0 0 22px rgba(0, 255, 157, 0.14);
+    }
+
+    .state-name {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .preview-box {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #040c14;
+      border-radius: 10px;
+      border: 1px dashed rgba(0, 240, 255, 0.25);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-box video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-family: monospace;
+      color: #5c8199;
+      pointer-events: none;
+    }
+
+    .file-status {
+      font-size: 11px;
+      font-family: monospace;
+      color: #8ba8bc;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 5px 8px;
+      border-radius: 8px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-status.ok { color: #00ff9d; }
+    .file-status.err { color: #ff5c7c; }
+
+    .actions-row {
+      display: flex;
+      gap: 14px;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 0.85rem;
+      z-index: 2;
     }
 
-    .btn-surf-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.92rem 1.9rem;
-      border-radius: 9999px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #022c22;
-      border: 1px solid #6ee7b7;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.13em;
+    button {
+      border: none;
+      padding: 14px 28px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.1px;
       text-transform: uppercase;
+      border-radius: 999px;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.36);
+      transition: transform 0.15s ease;
     }
 
-    .btn-surf-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 36px rgba(16, 185, 129, 0.52);
+    button:active { transform: scale(0.96); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00f0ff 0%, #00ff9d 100%);
+      color: #021218;
+      box-shadow: 0 0 26px rgba(0, 240, 255, 0.35);
     }
 
-    .btn-surf-vr {
-      display: inline-flex;
+    .btn-secondary {
+      background: rgba(0, 240, 255, 0.12);
+      color: #00f0ff;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+    }
+
+    .btn-upload {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .btn-upload:hover {
+      background: rgba(0, 240, 255, 0.18);
+      border-color: #00f0ff;
+    }
+
+    /* HUD FLOTANTE DENTRO DEL VISOR O VISTA PREVIA */
+    #xr-overlay {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(4, 14, 24, 0.88);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      backdrop-filter: blur(12px);
+      padding: 10px 20px;
+      border-radius: 999px;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.92rem 1.7rem;
-      border-radius: 9999px;
-      background: linear-gradient(135deg, #f5b963 0%, #d97706 100%);
-      color: #1c0f02;
-      border: 1px solid #fde68a;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: transform 0.2s ease;
+      gap: 14px;
+      z-index: 20;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+      white-space: nowrap;
     }
 
-    .btn-surf-vr:hover {
-      transform: translateY(-2px);
+    #status-pill {
+      font-size: 13px;
+      color: #d6f8ff;
     }
 
-    .stats-summary-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
-      margin: 1.5rem 0 1.8rem;
-    }
-
-    .stat-card-end {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-aqua);
-      border-radius: 14px;
-      padding: 0.9rem 0.5rem;
-    }
-
-    .stat-end-num {
-      display: block;
-      font-family: var(--font-serif);
-      font-size: clamp(1.55rem, 3.5vw, 2.25rem);
-      font-weight: 700;
-      color: var(--gold-cream);
-      line-height: 1.1;
-    }
-
-    .stat-end-lbl {
-      display: block;
-      font-size: 0.63rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      margin-top: 0.3rem;
-    }
-
-    .rank-title-display {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 1.6rem;
-      color: var(--aqua-bright);
-      margin-bottom: 0.4rem;
+    #recenter-btn, #exit-preview-btn {
+      padding: 8px 16px;
+      font-size: 11px;
     }
   </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.170.0/build/three.module.js"
+      }
+    }
+  </script>
 </head>
 <body>
 
-  <!-- Escenario WebGL 3D / WebXR -->
-  <div id="webgl-stage" aria-label="Cuyagua Surf VR — Simulación Óptica 3D"></div>
+  <!-- PANTALLA DE INICIO -->
+  <div id="landing">
+    <div class="badge">Portal Espacial · Meta Quest 3</div>
+    <h1>DESTINOS VEN</h1>
+    <p class="subtitle">
+      Selecciona los videos locales de cada estado desde la memoria del visor y entra al portal holográfico.
+    </p>
 
-  <!-- Capa 2D de respaldo óptico -->
-  <canvas id="lens-fallback-canvas"></canvas>
-
-  <!-- Viñeteo Anamórfico y Resplandor Esmeralda del Tubo -->
-  <div class="anamorphic-vignette"></div>
-  <div class="barrel-tunnel-glow" id="barrelGlow"></div>
-
-  <!-- Capa HUD Minimalista -->
-  <div class="hud-layer">
-    <header class="hud-top">
-      <div class="cinema-watermark">
-        <span class="watermark-kicker">Parque Nacional Henri Pittier &middot; Aragua, Venezuela</span>
-        <h1 class="watermark-title">Cuyagua Surf VR — Simulación Óptica 3D</h1>
+    <div class="upload-grid">
+      <!-- TÁCHIRA -->
+      <div class="upload-card" id="card-box-tachira">
+        <div class="state-name" style="color: #00ff9d;">TÁCHIRA</div>
+        <div class="preview-box">
+          <video id="video-tachira" muted loop playsinline preload="auto"></video>
+          <div class="preview-placeholder" id="ph-tachira">SIN SEÑAL</div>
+        </div>
+        <input type="file" id="input-tachira" accept="video/*" style="display: none;" />
+        <button class="btn-upload" onclick="document.getElementById('input-tachira').click()">
+          Seleccionar Video Táchira
+        </button>
+        <div class="file-status" id="status-tachira">Listo para cargar</div>
       </div>
 
-      <!-- Telemetría en vivo durante los 90 segundos -->
-      <div class="telemetry-pill" id="telemetryPill" aria-live="polite">
-        <div class="t-cell">
-          <span class="t-lbl">Tiempo</span>
-          <span class="t-val" id="hudTimer">01:30</span>
+      <!-- ARAGUA -->
+      <div class="upload-card" id="card-box-aragua">
+        <div class="state-name" style="color: #00f0ff;">ARAGUA</div>
+        <div class="preview-box">
+          <video id="video-aragua" muted loop playsinline preload="auto"></video>
+          <div class="preview-placeholder" id="ph-aragua">SIN SEÑAL</div>
         </div>
-        <div class="t-sep"></div>
-        <div class="t-cell">
-          <span class="t-lbl">Puntos</span>
-          <span class="t-val gold" id="hudScore">0</span>
-        </div>
-        <div class="t-sep"></div>
-        <div class="t-cell">
-          <span class="t-lbl">Mult.</span>
-          <span class="t-val aqua" id="hudMult">x1</span>
-        </div>
-        <div class="t-sep"></div>
-        <div class="t-cell">
-          <span class="t-lbl">En Tubo</span>
-          <span class="t-val" id="hudBarrelTime">0.0s</span>
-        </div>
+        <input type="file" id="input-aragua" accept="video/*" style="display: none;" />
+        <button class="btn-upload" onclick="document.getElementById('input-aragua').click()">
+          Seleccionar Video Aragua
+        </button>
+        <div class="file-status" id="status-aragua">Listo para cargar</div>
       </div>
 
-      <!-- Controles Superiores y Calibración DOP -->
-      <div class="dop-column">
-        <div class="top-actions">
-          <button type="button" class="hud-btn" id="dopToggleBtn" aria-expanded="false">
-            &#9881; Calibración DOP
-          </button>
-          <button type="button" class="hud-btn" id="audioToggleBtn">
-            &#128266; Audio: ON
-          </button>
+      <!-- LARA -->
+      <div class="upload-card" id="card-box-lara">
+        <div class="state-name" style="color: #ffbe0b;">LARA</div>
+        <div class="preview-box">
+          <video id="video-lara" muted loop playsinline preload="auto"></video>
+          <div class="preview-placeholder" id="ph-lara">SIN SEÑAL</div>
         </div>
-
-        <aside class="dop-drawer" id="dopDrawer" aria-label="Calibración DOP">
-          <div class="dop-head">
-            <span>Calibración DOP</span>
-            <span>Refracción + ACES</span>
-          </div>
-
-          <div class="dop-block">
-            <div class="dop-lbl">
-              <span>Iluminación Solar</span>
-            </div>
-            <div class="chip-row-3">
-              <button type="button" class="dop-chip active" data-preset="dawn">Amanecer Dorado 06:30</button>
-              <button type="button" class="dop-chip" data-preset="caribbean">Sol Caribeño 11:00</button>
-              <button type="button" class="dop-chip" data-preset="sunset">Hora Dorada 17:45</button>
-            </div>
-          </div>
-
-          <div class="dop-block">
-            <div class="dop-lbl">
-              <label for="waveHeightSlider">Altura de la Ola</label>
-              <span id="waveHeightVal">2.3 m</span>
-            </div>
-            <input type="range" id="waveHeightSlider" class="dop-slider" min="1.5" max="3.2" step="0.1" value="2.3" />
-          </div>
-
-          <div class="dop-block">
-            <div class="dop-lbl">
-              <span>Perspectiva de Cámara</span>
-            </div>
-            <div class="chip-row-2">
-              <button type="button" class="dop-chip active" data-cam="first">Lente Acuático (1ra Persona)</button>
-              <button type="button" class="dop-chip" data-cam="drone">Dron FPV Cine</button>
-            </div>
-          </div>
-        </aside>
+        <input type="file" id="input-lara" accept="video/*" style="display: none;" />
+        <button class="btn-upload" onclick="document.getElementById('input-lara').click()">
+          Seleccionar Video Lara
+        </button>
+        <div class="file-status" id="status-lara">Listo para cargar</div>
       </div>
-    </header>
-
-    <!-- Indicador Central de Zona -->
-    <div class="hud-center">
-      <div class="zone-pill" id="zoneBanner">¡EN EL TUBO DE CUYAGUA!</div>
     </div>
 
-    <!-- Controles Táctiles / Teclado Inferiores -->
-    <footer class="hud-bottom" id="hudBottom">
-      <div class="touch-controls">
-        <button type="button" class="action-pill-btn" id="crouchTouchBtn">
-          &#8595; Agacharse (Entrar al Tubo)
-        </button>
-        <button type="button" class="action-pill-btn" id="handTouchBtn">
-          &#9995; Mano en la Pared (Hand-Drag)
-        </button>
-      </div>
-      <div class="key-hint-bar">
-        Ratón / Táctil / Flechas / A-D: Carving en el Pocket &middot; Espacio / &#8595;: Agacharse al Tubo &middot; Clic Izquierdo / E: Mano en Pared
-      </div>
-    </footer>
+    <div class="actions-row">
+      <button id="enter-xr" class="btn-primary">Iniciar Hologramas (Quest 3)</button>
+      <button id="preview-3d" class="btn-secondary">Vista Previa en Pantalla</button>
+    </div>
   </div>
 
-  <!-- =======================================================================
-       PANTALLA INICIAL CINEMATOGRÁFICA
-  ======================================================================== -->
-  <section class="overlay-screen" id="welcomeScreen" aria-label="Bienvenida Cuyagua Surf VR">
-    <div class="cinema-modal">
-      <span class="modal-eyebrow">Simulación Óptica WebGL &middot; Bahía de Cuyagua</span>
-      <h2 class="modal-title">Cuyagua <em>Surf VR</em></h2>
-      <p class="modal-subtitle">
-        Refracción real del lecho marino con cáusticas solares, absorción Beer-Lambert y dispersión esmeralda en un tubo hueco frente al Parque Nacional Henri Pittier.
-      </p>
+  <!-- BARRA FLOTANTE INFERIOR -->
+  <div id="xr-overlay">
+    <span id="status-pill">Toca con tu dedo o haz pellizco sobre un destino</span>
+    <button id="recenter-btn" class="btn-primary">Re-centrar</button>
+    <button id="exit-preview-btn" class="btn-secondary" style="display: none;">Salir</button>
+  </div>
 
-      <div class="guides-grid">
-        <div class="guide-card">
-          <span class="guide-title">1. Carving &amp; Pocket</span>
-          <span class="guide-desc">Mueve el ratón, flechas o A/D para cortar la pared y subir el multiplicador hasta x5.</span>
-        </div>
-        <div class="guide-card">
-          <span class="guide-title">2. Entrar al Tubo</span>
-          <span class="guide-desc">Mantén Espacio, &#8595; o flexiona rodillas en Quest para meterte dentro de la caverna de agua.</span>
-        </div>
-        <div class="guide-card">
-          <span class="guide-title">3. Hand-Drag</span>
-          <span class="guide-desc">Mantén Clic Izquierdo o E para rozar la pared con la mano y salpicar gotas sobre el lente.</span>
-        </div>
-      </div>
+  <script type="module">
+    import * as THREE from 'three';
 
-      <div class="cta-group">
-        <button type="button" class="btn-surf-primary" id="startSurfBtn">
-          &#9654; Surfear Cuyagua
-        </button>
-        <button type="button" class="btn-surf-vr" id="startVRBtn">
-          &#129405; Entrar en VR (Meta Quest)
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- =======================================================================
-       PANTALLA DE RESULTADOS FINALES (01:30)
-  ======================================================================== -->
-  <section class="overlay-screen hidden" id="resultsScreen" aria-label="Resultados de Sesión">
-    <div class="cinema-modal">
-      <span class="modal-eyebrow">Sesión Finalizada &middot; 01:30</span>
-      <h2 class="modal-title">Espíritu de <em>Cuyagua</em></h2>
-      <p class="rank-title-display" id="endRankLabel">Leyenda de Cuyagua</p>
-      <p class="modal-subtitle" id="endSummaryLabel">
-        Has dominado la pared esmeralda de Cuyagua con fluidez cinematográfica frente a la selva del Henri Pittier.
-      </p>
-
-      <div class="stats-summary-grid">
-        <div class="stat-card-end">
-          <span class="stat-end-num" id="endScoreVal">0</span>
-          <span class="stat-end-lbl">Puntaje Total</span>
-        </div>
-        <div class="stat-card-end">
-          <span class="stat-end-num" id="endBarrelVal">0.0s</span>
-          <span class="stat-end-lbl">Tiempo en Tubo</span>
-        </div>
-        <div class="stat-card-end">
-          <span class="stat-end-num" id="endMultVal">x1</span>
-          <span class="stat-end-lbl">Mult. Máximo</span>
-        </div>
-      </div>
-
-      <div class="cta-group">
-        <button type="button" class="btn-surf-primary" id="replaySurfBtn">
-          &#8635; Volver a Surfear
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================================
-       MOTOR ÓPTICO THREE.JS r128: DOBLE PASADA REFRACCIÓN + FFT NORMALS + COMPOSER
-  ========================================================================= -->
-  <script>
-    window.onload = function () {
-      'use strict';
-
-      // =======================================================================
-      // 1. AUDIO ESPACIAL PROCEDURAL (OLEAJE + FILTRO CAVERNOSO DE TUBO + SPRAY)
-      // =======================================================================
-      class CuyaguaAudioEngine {
-        constructor() {
-          this.ctx = null;
-          this.muted = false;
-          this.ready = false;
-          this.masterGain = null;
-          this.oceanFilter = null;
-          this.oceanGain = null;
-          this.carveFilter = null;
-          this.carveGain = null;
-        }
-
-        init() {
-          if (this.ready) {
-            if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
-            return;
-          }
-          const AudioCtx = window.AudioContext || window.webkitAudioContext;
-          if (!AudioCtx) return;
-
-          this.ctx = new AudioCtx();
-          const sr = this.ctx.sampleRate;
-
-          this.masterGain = this.ctx.createGain();
-          this.masterGain.gain.value = this.muted ? 0 : 0.88;
-          this.masterGain.connect(this.ctx.destination);
-
-          // Ruido marrón filtrado para oleaje profundo y rompiente continua
-          const surfLen = sr * 5;
-          const surfBuf = this.ctx.createBuffer(1, surfLen, sr);
-          const surfData = surfBuf.getChannelData(0);
-          let brown = 0;
-          for (let i = 0; i < surfLen; i++) {
-            const white = Math.random() * 2 - 1;
-            brown = (brown + 0.034 * white) / 1.034;
-            const swellMod = 0.78 + 0.22 * Math.sin((i / surfLen) * Math.PI * 4);
-            surfData[i] = brown * 3.1 * swellMod;
-          }
-
-          const surfSrc = this.ctx.createBufferSource();
-          surfSrc.buffer = surfBuf;
-          surfSrc.loop = true;
-
-          // Filtro resonante: dentro del tubo cae a ~285Hz simulando acústica cerrada
-          this.oceanFilter = this.ctx.createBiquadFilter();
-          this.oceanFilter.type = 'lowpass';
-          this.oceanFilter.frequency.value = 1850;
-          this.oceanFilter.Q.value = 1.0;
-
-          this.oceanGain = this.ctx.createGain();
-          this.oceanGain.gain.value = 0.34;
-
-          surfSrc.connect(this.oceanFilter);
-          this.oceanFilter.connect(this.oceanGain);
-          this.oceanGain.connect(this.masterGain);
-          surfSrc.start();
-
-          // Canal de corte de quillas y mano en pared (Hand-Drag)
-          const sprayLen = sr * 2;
-          const sprayBuf = this.ctx.createBuffer(1, sprayLen, sr);
-          const sprayData = sprayBuf.getChannelData(0);
-          for (let i = 0; i < sprayLen; i++) {
-            sprayData[i] = Math.random() * 2 - 1;
-          }
-
-          const spraySrc = this.ctx.createBufferSource();
-          spraySrc.buffer = sprayBuf;
-          spraySrc.loop = true;
-
-          this.carveFilter = this.ctx.createBiquadFilter();
-          this.carveFilter.type = 'bandpass';
-          this.carveFilter.frequency.value = 2200;
-          this.carveFilter.Q.value = 1.6;
-
-          this.carveGain = this.ctx.createGain();
-          this.carveGain.gain.value = 0.015;
-
-          spraySrc.connect(this.carveFilter);
-          this.carveFilter.connect(this.carveGain);
-          this.carveGain.connect(this.masterGain);
-          spraySrc.start();
-
-          this.ready = true;
-        }
-
-        toggleMute() {
-          this.muted = !this.muted;
-          if (this.masterGain && this.ctx) {
-            this.masterGain.gain.setTargetAtTime(this.muted ? 0 : 0.88, this.ctx.currentTime, 0.06);
-          }
-          return this.muted;
-        }
-
-        update(inBarrel, carveAmt, handDrag, speedNorm) {
-          if (!this.ready || !this.ctx) return;
-          const now = this.ctx.currentTime;
-
-          const targetFreq = inBarrel ? 285 : (1750 + speedNorm * 720);
-          const targetQ = inBarrel ? 4.8 : 1.0;
-          const targetVol = inBarrel ? 0.58 : (0.28 + speedNorm * 0.12);
-
-          this.oceanFilter.frequency.setTargetAtTime(targetFreq, now, 0.11);
-          this.oceanFilter.Q.setTargetAtTime(targetQ, now, 0.11);
-          this.oceanGain.gain.setTargetAtTime(targetVol, now, 0.11);
-
-          const hissVol = Math.min(0.32, carveAmt * 0.16 + (handDrag ? 0.2 : 0.015));
-          const hissFreq = handDrag ? 3300 : (1900 + carveAmt * 1150);
-          this.carveGain.gain.setTargetAtTime(hissVol, now, 0.08);
-          this.carveFilter.frequency.setTargetAtTime(hissFreq, now, 0.08);
-        }
-
-        playHarmonicCue(pitch = 1.0) {
-          if (this.muted) return;
-          this.init();
-          if (!this.ctx) return;
-          const now = this.ctx.currentTime;
-          [523.25, 659.25, 783.99].forEach((f, idx) => {
-            const osc = this.ctx.createOscillator();
-            const g = this.ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(f * pitch, now + idx * 0.055);
-            g.gain.setValueAtTime(0.0001, now + idx * 0.055);
-            g.gain.exponentialRampToValueAtTime(0.075, now + idx * 0.055 + 0.03);
-            g.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.055 + 0.62);
-            osc.connect(g);
-            g.connect(this.masterGain);
-            osc.start(now + idx * 0.055);
-            osc.stop(now + idx * 0.055 + 0.68);
-          });
-        }
+    const DESTINOS = [
+      {
+        id: 'tachira',
+        nombre: 'TÁCHIRA',
+        subtitulo: 'MONTAÑA · CAFÉ DE ALTURA · PÁRAMO',
+        coords: "07°46'N  72°13'W",
+        color: '#00ff9d',
+        hex: 0x00ff9d,
+        anguloArco: -0.54
+      },
+      {
+        id: 'aragua',
+        nombre: 'ARAGUA',
+        subtitulo: 'SELVA NUBLADA · COLONIA · COSTA',
+        coords: "10°14'N  67°35'W",
+        color: '#00f0ff',
+        hex: 0x00f0ff,
+        anguloArco: 0
+      },
+      {
+        id: 'lara',
+        nombre: 'LARA',
+        subtitulo: 'CREPÚSCULO · CULTURA · TRADICIÓN',
+        coords: "10°04'N  69°19'W",
+        color: '#ffbe0b',
+        hex: 0xffbe0b,
+        anguloArco: 0.54
       }
+    ];
 
-      const audioEngine = new CuyaguaAudioEngine();
+    let camera, scene, renderer;
+    let holoRoot, previewGrid;
+    let mode = 'HUB'; // 'HUB' | 'DETAIL'
+    let isDesktopPreview = false;
+    let selectedCard = null;
+    let lastInteractionTime = 0;
+    let mouseNorm = { x: 0, y: 0 };
 
-      // =======================================================================
-      // 2. ESCENA, RENDERIZADOR Y RENDER TARGET DE REFRACCIÓN EN TIEMPO REAL
-      // =======================================================================
-      const stageEl = document.getElementById('webgl-stage');
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(64, window.innerWidth / window.innerHeight, 0.08, 450);
+    const cards = [];
+    const detailButtons = [];
+    const fingerTips = [];
+    let completionBanner = null;
+    let audioCtx = null;
 
-      const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-      const dpr = Math.min(window.devicePixelRatio, 2);
-      renderer.setPixelRatio(dpr);
+    init();
+
+    function init() {
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.05, 30);
+      camera.position.set(0, 1.38, 0.25);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.outputEncoding = THREE.sRGBEncoding;
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.12;
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       renderer.xr.enabled = true;
-      stageEl.appendChild(renderer.domElement);
+      document.body.appendChild(renderer.domElement);
 
-      // WebGLRenderTarget dedicado para la pasada de refracción del fondo marino
-      const rtWidth = Math.max(512, Math.floor(window.innerWidth * dpr * 0.75));
-      const rtHeight = Math.max(512, Math.floor(window.innerHeight * dpr * 0.75));
-      const refractionRT = new THREE.WebGLRenderTarget(rtWidth, rtHeight, {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.LinearFilter,
-        format: THREE.RGBAFormat,
-        type: THREE.UnsignedByteType
+      previewGrid = new THREE.GridHelper(10, 24, 0x00f0ff, 0x0a2236);
+      previewGrid.position.y = 0;
+      previewGrid.visible = false;
+      scene.add(previewGrid);
+
+      holoRoot = new THREE.Group();
+      scene.add(holoRoot);
+
+      DESTINOS.forEach((destino, idx) => {
+        const videoEl = document.getElementById(`video-${destino.id}`);
+        const card = createHologramPortal(destino, idx, videoEl);
+        holoRoot.add(card);
+        cards.push(card);
+        bindInstantLocalLoader(destino.id, card);
       });
 
-      const sceneFog = new THREE.FogExp2(0xe2cbb2, 0.0042);
-      scene.fog = sceneFog;
+      createDetailControls();
+      createCompletionBanner();
+      setupHands();
+      setupDesktopPreviewControls();
 
-      // Iluminación direccional solar y hemisférica
-      const sunLight = new THREE.DirectionalLight(0xffd699, 2.95);
-      sunLight.castShadow = true;
-      sunLight.shadow.mapSize.set(2048, 2048);
-      sunLight.shadow.camera.near = 1;
-      sunLight.shadow.camera.far = 45;
-      sunLight.shadow.camera.left = -10;
-      sunLight.shadow.camera.right = 10;
-      sunLight.shadow.camera.top = 10;
-      sunLight.shadow.camera.bottom = -10;
-      sunLight.shadow.bias = -0.0005;
-      scene.add(sunLight);
+      document.getElementById('enter-xr').addEventListener('click', startXR);
+      document.getElementById('preview-3d').addEventListener('click', startDesktopPreview);
 
-      const hemiLight = new THREE.HemisphereLight(0xffe6c7, 0x0b3a3a, 0.92);
-      scene.add(hemiLight);
-
-      // Luz interior esmeralda del tubo
-      const barrelInnerLight = new THREE.PointLight(0x10b981, 2.0, 12);
-      barrelInnerLight.position.set(-1.1, 1.35, -0.5);
-      scene.add(barrelInnerLight);
-
-      // =======================================================================
-      // 3. TEXTURAS PRE-HORNEADAS SEAMLESS 512x512 (NORMALES FFT + ESPUMA CELULAR)
-      // =======================================================================
-      // 3A. Mapa de Normales Oceánicas Espectrales Multi-direccionales (FFT/Gerstner 512x512)
-      function bakeSpectralOceanNormalMap() {
-        const size = 512;
-        const canvas = document.createElement('canvas');
-        canvas.width = canvas.height = size;
-        const ctx = canvas.getContext('2d');
-        const img = ctx.createImageData(size, size);
-
-        // 28 componentes espectrales con vectores de onda enteros (kx, ky) para tile 100% seamless
-        const waves = [];
-        for (let i = 0; i < 28; i++) {
-          const angle = (i / 28) * Math.PI * 2 + Math.sin(i * 7.3) * 0.35;
-          const freq = 2 + Math.floor(Math.pow(i / 28, 1.45) * 26);
-          const kx = Math.round(Math.cos(angle) * freq);
-          const ky = Math.round(Math.sin(angle) * freq);
-          if (kx === 0 && ky === 0) continue;
-          const kLen = Math.hypot(kx, ky);
-          // Espectro tipo Phillips/JONSWAP: amplitud decrece con frecuencia
-          const amp = (0.42 / Math.pow(kLen, 1.32)) * (0.7 + 0.5 * Math.sin(i * 13.7));
-          const phase = (i * 2.39996) % (Math.PI * 2);
-          waves.push({ kx, ky, amp, phase });
-        }
-
-        const twoPi = Math.PI * 2;
-        for (let y = 0; y < size; y++) {
-          const v = (y / size) * twoPi;
-          for (let x = 0; x < size; x++) {
-            const u = (x / size) * twoPi;
-            let dhdx = 0;
-            let dhdy = 0;
-
-            for (let w = 0; w < waves.length; w++) {
-              const wave = waves[w];
-              const arg = wave.kx * u + wave.ky * v + wave.phase;
-              const c = Math.cos(arg);
-              // Incluye micro-cresta afilada (segundo armónico) para destellos GGX realistas
-              const c2 = Math.cos(arg * 2.0 + 0.6) * 0.28;
-              const deriv = (c + c2) * wave.amp;
-              dhdx += wave.kx * deriv;
-              dhdy += wave.ky * deriv;
-            }
-
-            // Normal tangente-espacio (nx, ny, nz)
-            let nx = -dhdx * 0.85;
-            let ny = -dhdy * 0.85;
-            let nz = 1.0;
-            const invLen = 1.0 / Math.hypot(nx, ny, nz);
-            nx *= invLen;
-            ny *= invLen;
-            nz *= invLen;
-
-            const idx = (y * size + x) * 4;
-            img.data[idx] = Math.round((nx * 0.5 + 0.5) * 255);
-            img.data[idx + 1] = Math.round((ny * 0.5 + 0.5) * 255);
-            img.data[idx + 2] = Math.round((nz * 0.5 + 0.5) * 255);
-            img.data[idx + 3] = 255;
-          }
-        }
-
-        ctx.putImageData(img, 0, 0);
-        const tex = new THREE.CanvasTexture(canvas);
-        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-        tex.needsUpdate = true;
-        return tex;
-      }
-
-      // 3B. Textura Seamless 512x512 de Espuma Marina Celular + Mapa Normal de Burbujas
-      function bakeCellularSeaFoamTextures() {
-        const size = 512;
-        const foamCanvas = document.createElement('canvas');
-        const normCanvas = document.createElement('canvas');
-        foamCanvas.width = normCanvas.width = size;
-        foamCanvas.height = normCanvas.height = size;
-
-        const fCtx = foamCanvas.getContext('2d');
-        const nCtx = normCanvas.getContext('2d');
-
-        fCtx.fillStyle = '#080808';
-        fCtx.fillRect(0, 0, size, size);
-
-        // Red celular orgánica de burbujas en 3 escalas con envoltura periódica
-        const bubbles = [];
-        for (let i = 0; i < 1150; i++) {
-          const cx = ((Math.sin(i * 12.9898) * 0.5 + 0.5)) * size;
-          const cy = ((Math.cos(i * 78.233) * 0.5 + 0.5)) * size;
-          const tier = i % 10;
-          const rad = tier === 0 ? 15 + (i % 6) * 2.5 : (tier < 4 ? 7 + (i % 5) * 1.6 : 2.5 + (i % 4) * 1.1);
-          bubbles.push({ cx, cy, rad, bright: tier < 4 ? 0.82 : 0.65 });
-        }
-
-        for (let b = 0; b < bubbles.length; b++) {
-          const { cx, cy, rad, bright } = bubbles[b];
-          for (let ox = -1; ox <= 1; ox++) {
-            for (let oy = -1; oy <= 1; oy++) {
-              const px = cx + ox * size;
-              const py = cy + oy * size;
-              if (px < -rad || px > size + rad || py < -rad || py > size + rad) continue;
-
-              // Pared brillante de burbuja con interior traslúcido (encaje marino real)
-              const grad = fCtx.createRadialGradient(px, py, rad * 0.22, px, py, rad);
-              grad.addColorStop(0.0, 'rgba(20, 20, 20, 0.28)');
-              grad.addColorStop(0.68, `rgba(248, 250, 252, ${bright})`);
-              grad.addColorStop(0.9, 'rgba(255, 255, 255, 0.92)');
-              grad.addColorStop(1.0, 'rgba(255, 255, 255, 0.0)');
-
-              fCtx.fillStyle = grad;
-              fCtx.beginPath();
-              fCtx.arc(px, py, rad, 0, Math.PI * 2);
-              fCtx.fill();
-            }
-          }
-        }
-
-        // Derivar mapa normal de relieve celular a partir de la luminancia de espuma
-        const fData = fCtx.getImageData(0, 0, size, size).data;
-        const nImg = nCtx.createImageData(size, size);
-        for (let y = 0; y < size; y++) {
-          const ym = (y - 1 + size) % size;
-          const yp = (y + 1) % size;
-          for (let x = 0; x < size; x++) {
-            const xm = (x - 1 + size) % size;
-            const xp = (x + 1) % size;
-
-            const hL = fData[(y * size + xm) * 4] / 255;
-            const hR = fData[(y * size + xp) * 4] / 255;
-            const hD = fData[(ym * size + x) * 4] / 255;
-            const hU = fData[(yp * size + x) * 4] / 255;
-
-            let nx = (hL - hR) * 2.2;
-            let ny = (hD - hU) * 2.2;
-            let nz = 1.0;
-            const inv = 1.0 / Math.hypot(nx, ny, nz);
-            nx *= inv;
-            ny *= inv;
-            nz *= inv;
-
-            const idx = (y * size + x) * 4;
-            nImg.data[idx] = Math.round((nx * 0.5 + 0.5) * 255);
-            nImg.data[idx + 1] = Math.round((ny * 0.5 + 0.5) * 255);
-            nImg.data[idx + 2] = Math.round((nz * 0.5 + 0.5) * 255);
-            nImg.data[idx + 3] = 255;
-          }
-        }
-        nCtx.putImageData(nImg, 0, 0);
-
-        const foamMap = new THREE.CanvasTexture(foamCanvas);
-        foamMap.wrapS = foamMap.wrapT = THREE.RepeatWrapping;
-
-        const foamNormalMap = new THREE.CanvasTexture(normCanvas);
-        foamNormalMap.wrapS = foamNormalMap.wrapT = THREE.RepeatWrapping;
-
-        return { foamMap, foamNormalMap };
-      }
-
-      const oceanNormalTex = bakeSpectralOceanNormalMap();
-      const { foamMap: foamPatternTex, foamNormalMap } = bakeCellularSeaFoamTextures();
-
-      // =======================================================================
-      // 4. CIELO ATMOSFÉRICO RAYLEIGH/MIE GLSL + PMREM IBL REAL
-      // =======================================================================
-      const skyUniforms = {
-        uSunDir: { value: new THREE.Vector3(-0.46, 0.15, -0.87).normalize() },
-        uZenithColor: { value: new THREE.Color(0x133858) },
-        uHorizonColor: { value: new THREE.Color(0xf6be7a) },
-        uSunColor: { value: new THREE.Color(0xfff0cc) },
-        uTime: { value: 0 }
-      };
-
-      const skyMat = new THREE.ShaderMaterial({
-        side: THREE.BackSide,
-        depthWrite: false,
-        uniforms: skyUniforms,
-        vertexShader: `
-          varying vec3 vWorldDir;
-          void main() {
-            vec4 wp = modelMatrix * vec4(position, 1.0);
-            vWorldDir = wp.xyz;
-            gl_Position = projectionMatrix * viewMatrix * wp;
-          }
-        `,
-        fragmentShader: `
-          uniform vec3 uSunDir;
-          uniform vec3 uZenithColor;
-          uniform vec3 uHorizonColor;
-          uniform vec3 uSunColor;
-          uniform float uTime;
-          varying vec3 vWorldDir;
-
-          float hash(vec2 p) {
-            return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-          }
-
-          float noise(vec2 p) {
-            vec2 i = floor(p);
-            vec2 f = fract(p);
-            f = f * f * (3.0 - 2.0 * f);
-            float a = hash(i);
-            float b = hash(i + vec2(1.0, 0.0));
-            float c = hash(i + vec2(0.0, 1.0));
-            float d = hash(i + vec2(1.0, 1.0));
-            return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-          }
-
-          float fbm(vec2 p) {
-            float v = 0.0;
-            float a = 0.5;
-            for (int i = 0; i < 4; i++) {
-              v += a * noise(p);
-              p = p * 2.03 + vec2(1.7, 9.2);
-              a *= 0.5;
-            }
-            return v;
-          }
-
-          void main() {
-            vec3 dir = normalize(vWorldDir);
-            float elev = clamp(dir.y, -0.15, 1.0);
-            float horizonFactor = pow(1.0 - max(elev, 0.0), 3.1);
-
-            vec3 col = mix(uZenithColor, uHorizonColor, horizonFactor);
-
-            float sunAmt = max(dot(dir, normalize(uSunDir)), 0.0);
-            col += uSunColor * pow(sunAmt, 14.0) * 0.42;
-            col += uSunColor * pow(sunAmt, 240.0) * 1.75;
-            col += vec3(1.0, 0.99, 0.94) * smoothstep(0.9991, 0.9997, sunAmt) * 3.4;
-
-            if (dir.y > 0.03) {
-              vec2 cloudUV = dir.xz / (dir.y + 0.18) * 1.4 + vec2(uTime * 0.008, -uTime * 0.005);
-              float c = fbm(cloudUV);
-              float cloudMask = smoothstep(0.52, 0.82, c) * smoothstep(0.03, 0.25, dir.y);
-              vec3 cloudLit = mix(uHorizonColor * 1.08, uSunColor * 1.25, pow(sunAmt, 3.0));
-              col = mix(col, cloudLit, cloudMask * 0.46);
-            }
-
-            gl_FragColor = vec4(col, 1.0);
-          }
-        `
+      document.getElementById('recenter-btn').addEventListener('click', () => {
+        playSciFiTone('click');
+        if (!isDesktopPreview) alignHologramsToUser();
       });
 
-      const skyDome = new THREE.Mesh(new THREE.SphereGeometry(380, 48, 32), skyMat);
-      scene.add(skyDome);
-
-      const pmremGenerator = new THREE.PMREMGenerator(renderer);
-      pmremGenerator.compileEquirectangularShader();
-      let currentEnvRT = null;
-
-      function rebuildEnvironmentIBL() {
-        const envScene = new THREE.Scene();
-        const envSky = new THREE.Mesh(new THREE.SphereGeometry(60, 32, 24), skyMat);
-        envScene.add(envSky);
-        const nextRT = pmremGenerator.fromScene(envScene, 0.04);
-        scene.environment = nextRT.texture;
-        if (currentEnvRT) currentEnvRT.dispose();
-        currentEnvRT = nextRT;
-      }
-
-      // =======================================================================
-      // 5. FONDO MARINO 3D CON ARENA ONDULADA Y CÁUSTICAS SOLARES ANIMADAS
-      // =======================================================================
-      const seabedGeo = new THREE.PlaneGeometry(140, 140, 64, 64);
-      seabedGeo.rotateX(-Math.PI / 2);
-      const sbPos = seabedGeo.attributes.position;
-      for (let i = 0; i < sbPos.count; i++) {
-        const sx = sbPos.getX(i);
-        // Pendiente batimétrica: más somera hacia la orilla izquierda (-x) y profunda hacia mar abierto (+x)
-        const depthY = -0.35 - THREE.MathUtils.clamp((sx + 8.0) / 28.0, 0.0, 1.0) * 3.8;
-        sbPos.setY(i, depthY);
-      }
-      seabedGeo.computeVertexNormals();
-
-      const seabedUniforms = {
-        uTime: { value: 0 },
-        uScrollZ: { value: 0 },
-        uSunDir: skyUniforms.uSunDir,
-        uSunColor: skyUniforms.uSunColor
-      };
-
-      const seabedShaderMat = new THREE.ShaderMaterial({
-        uniforms: seabedUniforms,
-        vertexShader: `
-          varying vec3 vWorldPos;
-          void main() {
-            vec4 wp = modelMatrix * vec4(position, 1.0);
-            vWorldPos = wp.xyz;
-            gl_Position = projectionMatrix * viewMatrix * wp;
-          }
-        `,
-        fragmentShader: `
-          uniform float uTime;
-          uniform float uScrollZ;
-          uniform vec3 uSunDir;
-          uniform vec3 uSunColor;
-          varying vec3 vWorldPos;
-
-          // Red celular de cáusticas solares proyectadas sobre el lecho de arena
-          float causticPattern(vec2 uv, float t) {
-            vec2 p = mod(uv * 6.2831853, 6.2831853) - 250.0;
-            vec2 i = p;
-            float c = 1.0;
-            float inten = 0.005;
-            for (int n = 0; n < 4; n++) {
-              float time = t * (1.0 - (3.5 / float(n + 1)));
-              i = p + vec2(
-                cos(time - i.x) + sin(time + i.y),
-                sin(time - i.y) + cos(time + i.x)
-              );
-              c += 1.0 / length(vec2(
-                p.x / (sin(i.x + time) / inten),
-                p.y / (cos(i.y + time) / inten)
-              ));
-            }
-            c /= 4.0;
-            c = 1.17 - pow(c, 1.4);
-            return pow(abs(c), 7.5);
-          }
-
-          void main() {
-            vec2 flowXZ = vec2(vWorldPos.x, vWorldPos.z - uScrollZ);
-
-            // Ondulaciones de arena submarina (sand ripples)
-            float ripple = sin(flowXZ.x * 4.5 + sin(flowXZ.y * 1.4) * 1.8) * 0.5 + 0.5;
-            float fineGrain = fract(sin(dot(floor(flowXZ * 42.0), vec2(12.9898, 78.233))) * 43758.5453);
-
-            vec3 sandBase = mix(vec3(0.58, 0.49, 0.34), vec3(0.76, 0.66, 0.48), ripple * 0.7 + fineGrain * 0.3);
-
-            // Cáusticas solares animadas en dos capas cruzadas
-            float c1 = causticPattern(flowXZ * 0.14, uTime * 0.85);
-            float c2 = causticPattern(flowXZ * 0.21 + vec2(0.37, 0.61), -uTime * 0.65);
-            float caustics = clamp((c1 + c2) * 0.72, 0.0, 1.4);
-
-            // Atenuación con la profundidad del fondo marino
-            float shallowFactor = clamp(1.0 + vWorldPos.y * 0.22, 0.15, 1.0);
-            vec3 litSand = sandBase * (0.45 + 0.65 * max(uSunDir.y, 0.15));
-            litSand += uSunColor * caustics * 0.85 * shallowFactor;
-
-            gl_FragColor = vec4(litSand, 1.0);
-          }
-        `
-      });
-
-      const seabedMesh = new THREE.Mesh(seabedGeo, seabedShaderMat);
-      seabedMesh.position.set(6.0, 0, -24.0);
-      scene.add(seabedMesh);
-
-      // =======================================================================
-      // 6. OLA TUBULAR HUECA CON REFRACCIÓN REAL + BEER-LAMBERT + DISPERSION RGB
-      // =======================================================================
-      const uSegs = 112;
-      const zSegs = 120;
-      const waveGeo = new THREE.BufferGeometry();
-      const vertCount = (uSegs + 1) * (zSegs + 1);
-      const wavePositions = new Float32Array(vertCount * 3);
-      const waveUVs = new Float32Array(vertCount * 2);
-      const waveIndices = [];
-
-      for (let iz = 0; iz <= zSegs; iz++) {
-        for (let iu = 0; iu <= uSegs; iu++) {
-          const idx = iz * (uSegs + 1) + iu;
-          waveUVs[idx * 2] = iu / uSegs;
-          waveUVs[idx * 2 + 1] = iz / zSegs;
-        }
-      }
-
-      for (let iz = 0; iz < zSegs; iz++) {
-        for (let iu = 0; iu < uSegs; iu++) {
-          const a = iz * (uSegs + 1) + iu;
-          const b = a + 1;
-          const c = (iz + 1) * (uSegs + 1) + iu;
-          const d = c + 1;
-          waveIndices.push(a, c, b, b, c, d);
-        }
-      }
-
-      waveGeo.setAttribute('position', new THREE.BufferAttribute(wavePositions, 3));
-      waveGeo.setAttribute('uv', new THREE.BufferAttribute(waveUVs, 2));
-      waveGeo.setIndex(waveIndices);
-
-      const waveUniforms = {
-        uTime: { value: 0 },
-        uScrollZ: { value: 0 },
-        uWaveHeight: { value: 2.3 },
-        uSunDir: skyUniforms.uSunDir,
-        uSunColor: skyUniforms.uSunColor,
-        uSkyZenith: skyUniforms.uZenithColor,
-        uSkyHorizon: skyUniforms.uHorizonColor,
-        uNormalMap: { value: oceanNormalTex },
-        uFoamTex: { value: foamPatternTex },
-        uFoamNormalMap: { value: foamNormalMap },
-        uRefractionTex: { value: refractionRT.texture },
-        uResolution: { value: new THREE.Vector2(rtWidth, rtHeight) },
-        uIsStereo: { value: 0.0 },
-        uAbsorptionCoeff: { value: new THREE.Vector3(0.46, 0.14, 0.09) }, // Ley de Beer-Lambert (absorbe rojo rápido, deja pasar turquesa/esmeralda)
-        uEmeraldSSS: { value: new THREE.Color(0x10d996) },
-        uFogColor: { value: new THREE.Color(0xe2cbb2) },
-        uFogDensity: { value: 0.0042 },
-        uSurferPos: { value: new THREE.Vector3(0.45, 0.15, 0.0) }
-      };
-
-      const waveShaderMat = new THREE.ShaderMaterial({
-        side: THREE.DoubleSide,
-        uniforms: waveUniforms,
-        vertexShader: `
-          varying vec3 vWorldPos;
-          varying vec3 vNormalW;
-          varying vec2 vUv;
-
-          void main() {
-            vUv = uv;
-            vec4 wp = modelMatrix * vec4(position, 1.0);
-            vWorldPos = wp.xyz;
-            vNormalW = normalize(mat3(modelMatrix) * normal);
-            gl_Position = projectionMatrix * viewMatrix * wp;
-          }
-        `,
-        fragmentShader: `
-          uniform float uTime;
-          uniform float uScrollZ;
-          uniform float uWaveHeight;
-          uniform vec3 uSunDir;
-          uniform vec3 uSunColor;
-          uniform vec3 uSkyZenith;
-          uniform vec3 uSkyHorizon;
-          uniform sampler2D uNormalMap;
-          uniform sampler2D uFoamTex;
-          uniform sampler2D uFoamNormalMap;
-          uniform sampler2D uRefractionTex;
-          uniform vec2 uResolution;
-          uniform float uIsStereo;
-          uniform vec3 uAbsorptionCoeff;
-          uniform vec3 uEmeraldSSS;
-          uniform vec3 uFogColor;
-          uniform float uFogDensity;
-          uniform vec3 uSurferPos;
-
-          varying vec3 vWorldPos;
-          varying vec3 vNormalW;
-          varying vec2 vUv;
-
-          // Decodificar normal tangente-espacio de mapa pre-horneado FFT/Gerstner
-          vec3 sampleOceanNormalOctave(vec2 uv) {
-            vec3 n = texture2D(uNormalMap, uv).xyz * 2.0 - 1.0;
-            return vec3(n.x, n.z, n.y);
-          }
-
-          // Distribución microfaceta GGX para destellos solares realistas (sun glitter)
-          float distributionGGX(vec3 N, vec3 H, float roughness) {
-            float a = roughness * roughness;
-            float a2 = a * a;
-            float NdotH = max(dot(N, H), 0.0);
-            float NdotH2 = NdotH * NdotH;
-            float denom = (NdotH2 * (a2 - 1.0) + 1.0);
-            denom = 3.14159265 * denom * denom;
-            return a2 / max(denom, 0.00001);
-          }
-
-          // Respaldo estéreo seguro de cáusticas sobre arena para modo VR 90fps
-          vec3 sampleStereoSeabedFallback(vec2 xz, float t) {
-            float ripple = sin(xz.x * 4.5 + sin(xz.y * 1.4) * 1.8) * 0.5 + 0.5;
-            float c = sin(xz.x * 1.3 + t * 1.9) * cos(xz.y * 1.3 - t * 1.5);
-            c = pow(clamp(c * 0.5 + 0.5, 0.0, 1.0), 5.0);
-            vec3 sand = mix(vec3(0.55, 0.46, 0.31), vec3(0.74, 0.64, 0.46), ripple);
-            return sand * 0.6 + uSunColor * c * 0.65;
-          }
-
-          void main() {
-            float u = vUv.x; // 0 (mar abierto) -> 0.56 (cresta) -> 0.86 (labio tubo) -> 1.0 (impacto)
-            vec2 flowXZ = vec2(vWorldPos.x + u * 2.2, vWorldPos.z - uScrollZ);
-
-            // 1. Muestreo de 4 octavas en movimiento del mapa normal espectral FFT/Gerstner 512x512
-            vec3 nOct1 = sampleOceanNormalOctave(flowXZ * 0.065 + vec2(uTime * 0.028, -uTime * 0.042));
-            vec3 nOct2 = sampleOceanNormalOctave(flowXZ * 0.190 + vec2(-uTime * 0.052, uTime * 0.036));
-            vec3 nOct3 = sampleOceanNormalOctave(flowXZ * 0.540 + vec2(uTime * 0.088, uTime * 0.074));
-            vec3 nOct4 = sampleOceanNormalOctave(flowXZ * 1.450 + vec2(-uTime * 0.140, -uTime * 0.115));
-
-            vec3 microRipple = normalize(
-              nOct1 * 0.45 +
-              nOct2 * 0.30 +
-              nOct3 * 0.16 +
-              nOct4 * 0.09
-            );
-
-            vec3 baseN = normalize(vNormalW);
-            if (!gl_FrontFacing) baseN = -baseN;
-
-            // Suavizar levemente el micro-rizo en la pared vítrea del tubo para mantener nitidez óptica
-            float glassyFace = smoothstep(0.32, 0.62, u) * (1.0 - smoothstep(0.84, 0.96, u));
-            float rippleStrength = mix(0.62, 0.34, glassyFace);
-            vec3 N = normalize(baseN + vec3(microRipple.x, 0.0, microRipple.z) * rippleStrength);
-
-            vec3 V = normalize(cameraPosition - vWorldPos);
-            vec3 L = normalize(uSunDir);
-
-            // 2. Reflexión Fresnel exacta de Schlick (F0 = 0.02 para agua marina)
-            float NdotV = max(dot(N, V), 0.0);
-            float F0 = 0.02;
-            float fresnel = F0 + (1.0 - F0) * pow(1.0 - NdotV, 5.0);
-            fresnel = clamp(fresnel, 0.02, 0.96);
-
-            vec3 R = reflect(-V, N);
-            float reflElev = clamp(R.y, 0.0, 1.0);
-            vec3 skyRefl = mix(uSkyHorizon, uSkyZenith, pow(reflElev, 0.55));
-            // Silueta de la cordillera Henri Pittier reflejada en la cara vítrea de la ola
-            float mountainRefl = smoothstep(0.20, 0.01, reflElev) * smoothstep(-0.85, 0.25, -R.x);
-            skyRefl = mix(skyRefl, vec3(0.035, 0.125, 0.085), mountainRefl * 0.68);
-
-            // 3. Refracción Real de Doble Pasada + Dispersión Cromática RGB + Ley de Beer-Lambert
-            vec3 refractedCol;
-            if (uIsStereo < 0.5) {
-              vec2 screenUV = gl_FragCoord.xy / uResolution;
-              vec2 refrOffset = N.xz * mix(0.048, 0.024, glassyFace);
-
-              // Dispersión cromática RGB (índices de refracción ligeramente distintos por longitud de onda)
-              vec2 uvR = clamp(screenUV + refrOffset * 0.94, vec2(0.002), vec2(0.998));
-              vec2 uvG = clamp(screenUV + refrOffset * 1.00, vec2(0.002), vec2(0.998));
-              vec2 uvB = clamp(screenUV + refrOffset * 1.07, vec2(0.002), vec2(0.998));
-
-              refractedCol = vec3(
-                texture2D(uRefractionTex, uvR).r,
-                texture2D(uRefractionTex, uvG).g,
-                texture2D(uRefractionTex, uvB).b
-              );
-            } else {
-              refractedCol = sampleStereoSeabedFallback(flowXZ, uTime);
-            }
-
-            // Espesor óptico de la columna de agua (delgado en la bóveda del tubo y orilla, profundo en mar abierto)
-            float opticalDepth = mix(5.8, 0.65, smoothstep(0.25, 0.72, u));
-            vec3 transmittance = exp(-uAbsorptionCoeff * opticalDepth * 1.35);
-            vec3 deepScattering = vec3(0.015, 0.14, 0.20) * (1.0 - transmittance);
-            vec3 waterVolume = refractedCol * transmittance + deepScattering;
-
-            // 4. Dispersión Subsuperficial (Subsurface Scattering) Esmeralda a Contraluz en el Tubo
-            float archThinness = smoothstep(0.44, 0.66, u) * (1.0 - smoothstep(0.84, 0.97, u));
-            float viewThroughSun = pow(clamp(dot(V, -L + N * 0.55), 0.0, 1.0), 2.2);
-            float sunGrazing = clamp(dot(N, L) * 0.5 + 0.5, 0.0, 1.0);
-            float sssFactor = archThinness * (0.42 + 0.95 * viewThroughSun + 0.35 * sunGrazing);
-
-            waterVolume = mix(waterVolume, uEmeraldSSS, clamp(sssFactor * 0.85, 0.0, 0.92));
-            waterVolume += uEmeraldSSS * pow(sssFactor, 2.3) * 0.45;
-
-            // Combinación Fresnel entre volumen refractado/SSS y reflejo del cielo
-            vec3 color = mix(waterVolume, skyRefl, fresnel);
-
-            // 5. Destellos Especulares GGX del Sol (Sun Glitter microfaceta)
-            vec3 H = normalize(L + V);
-            float ggxSharp = distributionGGX(N, H, 0.055) * 0.22;
-            float ggxBroad = distributionGGX(N, H, 0.22) * 0.35;
-            float NdotL = max(dot(N, L), 0.0);
-            color += uSunColor * (ggxSharp + ggxBroad) * (0.35 + 0.65 * NdotL);
-
-            // 6. Espuma Marina Celular con Relieve Normal Propio (Cresta, Impacto, Estela de Tabla)
-            vec2 foamUV1 = vec2(vWorldPos.x * 0.46 + u * 2.8, (vWorldPos.z - uScrollZ) * 0.26);
-            vec2 foamUV2 = vec2(vWorldPos.x * 1.25 - u * 4.2, (vWorldPos.z - uScrollZ) * 0.68);
-            float cellA = texture2D(uFoamTex, foamUV1).r;
-            float cellB = texture2D(uFoamTex, foamUV2).r;
-            float cellularWeb = clamp(cellA * 0.64 + cellB * 0.56, 0.0, 1.0);
-
-            // Relieve normal propio de las burbujas de espuma
-            vec3 fNorm = texture2D(uFoamNormalMap, foamUV1).xyz * 2.0 - 1.0;
-            vec3 foamN = normalize(baseN + vec3(fNorm.x, 0.0, fNorm.y) * 0.55);
-            float foamDiffuse = 0.55 + 0.55 * max(dot(foamN, L), 0.0);
-
-            // Zona de labio plunging e impacto blanco (u > 0.84)
-            float lipPlungeFoam = smoothstep(0.82, 0.94, u) * smoothstep(0.14, 0.58, cellularWeb + (u - 0.82) * 4.2);
-            // Filamentos orgánicos arrastrados por la cara de la ola
-            float faceFilaments = smoothstep(0.42, 0.84, u) * smoothstep(0.66, 0.90, cellularWeb) * 0.58;
-            // Espuma turbulenta detrás del tubo (vWorldPos.z > 1.5)
-            float rearBoil = smoothstep(1.4, 4.8, vWorldPos.z) * (1.0 - smoothstep(0.15 * uWaveHeight, 1.25 * uWaveHeight, vWorldPos.x));
-            float rearBoilFoam = rearBoil * smoothstep(0.16, 0.56, cellularWeb + 0.26);
-
-            // Estela de espuma dinámica generada por las quillas de la tabla
-            vec2 toBoard = vec2((vWorldPos.x - uSurferPos.x) * 1.45, (vWorldPos.z - uSurferPos.z) * 0.40);
-            float boardTrail = exp(-dot(toBoard, toBoard) * 2.1) * step(-0.35, vWorldPos.z - uSurferPos.z);
-            float boardFoam = boardTrail * smoothstep(0.18, 0.62, cellularWeb + 0.36);
-
-            float foamMask = clamp(lipPlungeFoam + faceFilaments + rearBoilFoam + boardFoam, 0.0, 1.0);
-            vec3 foamColor = mix(vec3(0.76, 0.90, 0.92), vec3(0.99, 0.995, 1.0) * foamDiffuse, 0.82);
-            color = mix(color, foamColor, foamMask);
-
-            // 7. Niebla atmosférica de horizonte
-            float dist = length(cameraPosition - vWorldPos);
-            float fogFactor = 1.0 - exp(-uFogDensity * uFogDensity * dist * dist);
-            color = mix(color, uFogColor, clamp(fogFactor, 0.0, 1.0));
-
-            gl_FragColor = vec4(color, 1.0);
-          }
-        `
-      });
-
-      const waveMesh = new THREE.Mesh(waveGeo, waveShaderMat);
-      scene.add(waveMesh);
-
-      // Altura de la pared de ola donde apoya la tabla de surf (coincide con el perfil continuo)
-      function sampleWaveSurfaceY(x, H) {
-        if (x >= 1.45 * H) {
-          const t = Math.min(1, (x - 1.45 * H) / 18.0);
-          return -0.34 * H * t;
-        }
-        if (x <= -0.45 * H) return 0.64 * H;
-        const t = Math.max(0, Math.min(1, (1.45 * H - x) / (1.90 * H)));
-        return 0.64 * H * Math.pow(t, 1.85);
-      }
-
-      // Geometría paramétrica continua de ola tubular hueca (plunging barrel wave)
-      function updateHollowBarrelGeometry(scrollZ, H, barrelClosure) {
-        const pos = waveGeo.attributes.position;
-        const zStart = -56;
-        const zEnd = 18;
-        const zSpan = zEnd - zStart;
-
-        for (let iz = 0; iz <= zSegs; iz++) {
-          const z = zStart + (iz / zSegs) * zSpan;
-          const zFlow = z - scrollZ;
-
-          // Variación natural de cierre del labio a lo largo del frente de ola
-          const sectionClosure = Math.max(0.45, Math.min(1.06, barrelClosure + Math.sin(zFlow * 0.08) * 0.14));
-
-          for (let iu = 0; iu <= uSegs; iu++) {
-            const u = iu / uSegs;
-            const idx = iz * (uSegs + 1) + iu;
-
-            const swell =
-              Math.sin(zFlow * 0.52 + u * 7.5) * 0.038 +
-              Math.cos(zFlow * 1.15 - u * 12.5) * 0.018;
-
-            let x = 0;
-            let y = 0;
-
-            if (u < 0.30) {
-              // 1. Mar abierto subiendo suavemente hacia el hombro
-              const t = u / 0.30;
-              x = THREE.MathUtils.lerp(32.0, 1.45 * H, t);
-              y = THREE.MathUtils.lerp(-0.36 * H, 0.0, Math.pow(t, 1.12)) + swell;
-            } else if (u < 0.56) {
-              // 2. Pared cóncava del Pocket (unión C1 continua con la bóveda en u = 0.56)
-              const t = (u - 0.30) / 0.26;
-              x = THREE.MathUtils.lerp(1.45 * H, -0.45 * H, t);
-              y = 0.64 * H * Math.pow(t, 1.85) + swell * 0.65;
-            } else if (u < 0.86) {
-              // 3. Bóveda cilíndrica hueca por encima de la cabeza del surfista
-              const s = (u - 0.56) / 0.30;
-              const endTheta = -0.15 * Math.PI * sectionClosure;
-              const theta = THREE.MathUtils.lerp(Math.PI, endTheta, s);
-              const cx = 0.22 * H;
-              const cy = 0.64 * H;
-              const rx = 0.67 * H;
-              const ry = 0.44 * H;
-
-              x = cx + Math.cos(theta) * rx + swell * 0.3;
-              y = cy + Math.sin(theta) * ry + swell * 0.3;
-            } else {
-              // 4. Labio plunging cayendo en cortina parabólica hacia el impacto en el trough
-              const p = (u - 0.86) / 0.14;
-              const endTheta = -0.15 * Math.PI * sectionClosure;
-              const lipX = 0.22 * H + Math.cos(endTheta) * (0.67 * H);
-              const lipY = 0.64 * H + Math.sin(endTheta) * (0.44 * H);
-
-              x = lipX + p * (0.16 * H) + swell * 0.4;
-              y = THREE.MathUtils.lerp(lipY, 0.02 * H, Math.pow(p, 1.55)) + swell * 0.4;
-            }
-
-            pos.setXYZ(idx, x, y, z);
-          }
-        }
-
-        pos.needsUpdate = true;
-        waveGeo.computeVertexNormals();
-      }
-
-      // =======================================================================
-      // 7. ENTORNO FOTORREALISTA: PLAYA CUYAGUA Y CORDILLERA HENRI PITTIER
-      // =======================================================================
-      const bayGroup = new THREE.Group();
-      scene.add(bayGroup);
-
-      const mountainGeo = new THREE.PlaneGeometry(300, 145, 156, 78);
-      mountainGeo.rotateX(-Math.PI / 2);
-      const mPos = mountainGeo.attributes.position;
-
-      function fbm2D(x, z) {
-        let val = 0;
-        let amp = 0.5;
-        let freq = 1.0;
-        for (let o = 0; o < 5; o++) {
-          val += amp * (Math.sin(x * freq + o * 1.7) * Math.cos(z * freq - o * 2.3) * 0.5 + 0.5);
-          freq *= 2.08;
-          amp *= 0.48;
-        }
-        return val;
-      }
-
-      for (let i = 0; i < mPos.count; i++) {
-        const vx = mPos.getX(i);
-        const vz = mPos.getZ(i);
-        const inland = Math.max(0, (40 - vz) / 112);
-
-        // Cañón central en vx = -14 donde desemboca el Río Cuyagua
-        const riverGorge = 1.0 - Math.exp(-Math.pow((vx + 14) / 13.5, 2)) * 0.78;
-        const ridges = Math.pow(fbm2D(vx * 0.042, vz * 0.042), 1.35);
-        const spurs = Math.abs(Math.sin(vx * 0.09 + vz * 0.05)) * 0.38;
-        const elev = Math.pow(inland, 1.28) * (56 * ridges + 18 * spurs) * riverGorge - 0.55;
-        mPos.setY(i, elev);
-      }
-      mountainGeo.computeVertexNormals();
-
-      const mountainShaderMat = new THREE.ShaderMaterial({
-        uniforms: {
-          uSunDir: skyUniforms.uSunDir,
-          uSunColor: skyUniforms.uSunColor,
-          uFogColor: waveUniforms.uFogColor,
-          uFogDensity: waveUniforms.uFogDensity
-        },
-        vertexShader: `
-          varying vec3 vWorldPos;
-          varying vec3 vNormalW;
-          void main() {
-            vec4 wp = modelMatrix * vec4(position, 1.0);
-            vWorldPos = wp.xyz;
-            vNormalW = normalize(mat3(modelMatrix) * normal);
-            gl_Position = projectionMatrix * viewMatrix * wp;
-          }
-        `,
-        fragmentShader: `
-          uniform vec3 uSunDir;
-          uniform vec3 uSunColor;
-          uniform vec3 uFogColor;
-          uniform float uFogDensity;
-          varying vec3 vWorldPos;
-          varying vec3 vNormalW;
-
-          float hash(vec2 p) {
-            return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-          }
-          float noise(vec2 p) {
-            vec2 i = floor(p);
-            vec2 f = fract(p);
-            f = f * f * (3.0 - 2.0 * f);
-            return mix(
-              mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
-              mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
-              f.y
-            );
-          }
-
-          void main() {
-            vec3 N = normalize(vNormalW);
-            vec3 L = normalize(uSunDir);
-
-            float canopy = noise(vWorldPos.xz * 0.55) * 0.65 + noise(vWorldPos.xz * 1.9) * 0.35;
-            float slope = 1.0 - clamp(N.y, 0.0, 1.0);
-
-            vec3 deepForest = vec3(0.042, 0.145, 0.072);
-            vec3 lushCanopy = vec3(0.115, 0.27, 0.125);
-            vec3 forestCol = mix(deepForest, lushCanopy, canopy);
-
-            vec3 darkRock = vec3(0.13, 0.13, 0.12) * (0.75 + 0.5 * canopy);
-            float rockMask = smoothstep(0.36, 0.62, slope);
-            vec3 baseAlbedo = mix(forestCol, darkRock, rockMask);
-
-            float altitudeMist = smoothstep(16.0, 38.0, vWorldPos.y);
-            baseAlbedo = mix(baseAlbedo, vec3(0.14, 0.25, 0.22), altitudeMist * 0.42);
-
-            float NdotL = max(dot(N, L), 0.0);
-            vec3 lit = baseAlbedo * (0.34 + 0.85 * NdotL * uSunColor);
-
-            float dist = length(cameraPosition - vWorldPos);
-            float fogFactor = 1.0 - exp(-uFogDensity * uFogDensity * dist * dist);
-            lit = mix(lit, uFogColor, clamp(fogFactor, 0.0, 1.0));
-
-            gl_FragColor = vec4(lit, 1.0);
-          }
-        `
-      });
-
-      const henriPittierMesh = new THREE.Mesh(mountainGeo, mountainShaderMat);
-      henriPittierMesh.position.set(-42, 0, -114);
-      henriPittierMesh.rotation.y = 0.26;
-      bayGroup.add(henriPittierMesh);
-
-      // Neblina baja coronando las cumbres del Henri Pittier
-      const mistCanvas = document.createElement('canvas');
-      mistCanvas.width = 512;
-      mistCanvas.height = 128;
-      const mCtx = mistCanvas.getContext('2d');
-      const mGrad = mCtx.createRadialGradient(256, 64, 8, 256, 64, 245);
-      mGrad.addColorStop(0, 'rgba(255, 252, 246, 0.58)');
-      mGrad.addColorStop(1, 'rgba(255, 252, 246, 0.0)');
-      mCtx.fillStyle = mGrad;
-      mCtx.fillRect(0, 0, 512, 128);
-      const mistTex = new THREE.CanvasTexture(mistCanvas);
-
-      const mountainMistClouds = [];
-      for (let i = 0; i < 8; i++) {
-        const sp = new THREE.Sprite(
-          new THREE.SpriteMaterial({ map: mistTex, transparent: true, opacity: 0.62, depthWrite: false })
-        );
-        sp.position.set(-88 + i * 24, 18 + (i % 3) * 5.2, -126 - (i % 2) * 16);
-        sp.scale.set(64, 14, 1);
-        bayGroup.add(sp);
-        mountainMistClouds.push(sp);
-      }
-
-      // Arena dorada húmeda con reflejo especular en la orilla
-      const wetSandMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(260, 36, 48, 16).rotateX(-Math.PI / 2),
-        new THREE.MeshStandardMaterial({
-          color: 0xb98e52,
-          roughness: 0.22,
-          metalness: 0.08
-        })
-      );
-      wetSandMesh.position.set(-34, -0.14, -66);
-      wetSandMesh.rotation.y = 0.26;
-      bayGroup.add(wetSandMesh);
-
-      // Desembocadura del Río Cuyagua
-      const riverMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(15, 52, 16, 24).rotateX(-Math.PI / 2),
-        new THREE.MeshPhysicalMaterial({
-          color: 0x0f4c45,
-          roughness: 0.10,
-          metalness: 0.08,
-          clearcoat: 0.94,
-          clearcoatRoughness: 0.08
-        })
-      );
-      riverMesh.position.set(-52, -0.05, -62);
-      riverMesh.rotation.y = 0.26;
-      bayGroup.add(riverMesh);
-
-      // Bosque de palmeras cocoteras instanciadas
-      const palmCount = 60;
-      const trunkGeo = new THREE.CylinderGeometry(0.11, 0.21, 6.4, 8, 6);
-      const tPos = trunkGeo.attributes.position;
-      for (let i = 0; i < tPos.count; i++) {
-        const py = tPos.getY(i) + 3.2;
-        tPos.setY(i, py);
-        tPos.setX(i, tPos.getX(i) + Math.pow(py / 6.4, 1.85) * 0.92);
-      }
-      trunkGeo.computeVertexNormals();
-
-      const palmTrunks = new THREE.InstancedMesh(
-        trunkGeo,
-        new THREE.MeshStandardMaterial({ color: 0x473222, roughness: 0.9 }),
-        palmCount
-      );
-
-      const crownGeo = new THREE.ConeGeometry(2.25, 1.35, 10, 1, true);
-      crownGeo.scale(1, 0.52, 1);
-      const palmCrowns = new THREE.InstancedMesh(
-        crownGeo,
-        new THREE.MeshStandardMaterial({ color: 0x1b522c, roughness: 0.56, side: THREE.DoubleSide }),
-        palmCount
-      );
-
-      const palmData = [];
-      const dummyObj = new THREE.Object3D();
-
-      for (let i = 0; i < palmCount; i++) {
-        const side = i < palmCount / 2 ? -1 : 1;
-        const spread = (i % (palmCount / 2)) * 3.4 + 7.5;
-        const px = -50 + side * spread + (Math.random() - 0.5) * 2.5;
-        const pz = -68 - Math.random() * 16;
-        const scale = 0.78 + Math.random() * 0.48;
-        const rotY = Math.random() * Math.PI * 2;
-        palmData.push({ x: px, z: pz, scale, rotY, phase: Math.random() * 6.28 });
-      }
-      bayGroup.add(palmTrunks, palmCrowns);
-
-      // =======================================================================
-      // 8. TABLA SHORTBOARD HIPERREALISTA + ROCÍO VOLUMÉTRICO (SPRAY & MIST)
-      // =======================================================================
-      function createSurfWaxTextures() {
-        const size = 512;
-        const albedo = document.createElement('canvas');
-        const bump = document.createElement('canvas');
-        albedo.width = bump.width = size;
-        albedo.height = bump.height = size;
-
-        const aCtx = albedo.getContext('2d');
-        const bCtx = bump.getContext('2d');
-
-        aCtx.fillStyle = '#f8fafc';
-        aCtx.fillRect(0, 0, size, size);
-
-        // Bandas decorativas esmeralda y oro
-        aCtx.fillStyle = '#0d9488';
-        aCtx.fillRect(size * 0.13, 0, size * 0.048, size);
-        aCtx.fillRect(size * 0.822, 0, size * 0.048, size);
-
-        aCtx.fillStyle = '#eab308';
-        aCtx.fillRect(size * 0.188, 0, size * 0.018, size);
-        aCtx.fillRect(size * 0.794, 0, size * 0.018, size);
-
-        // Stringer central de madera de cedro
-        aCtx.fillStyle = '#6b3410';
-        aCtx.fillRect(size * 0.491, 0, size * 0.018, size);
-
-        // Trama de fibra de vidrio + parafina rugosa
-        bCtx.fillStyle = '#808080';
-        bCtx.fillRect(0, 0, size, size);
-        for (let i = 0; i < 2800; i++) {
-          const wx = size * (0.22 + Math.random() * 0.56);
-          const wy = size * (0.15 + Math.random() * 0.72);
-          const r = 1.4 + Math.random() * 2.8;
-          bCtx.fillStyle = 'rgba(242, 242, 242, 0.6)';
-          bCtx.beginPath();
-          bCtx.arc(wx, wy, r, 0, Math.PI * 2);
-          bCtx.fill();
-        }
-
-        const map = new THREE.CanvasTexture(albedo);
-        map.encoding = THREE.sRGBEncoding;
-        const bumpMap = new THREE.CanvasTexture(bump);
-        return { map, bumpMap };
-      }
-
-      function buildHyperRealisticSurfboard() {
-        const group = new THREE.Group();
-        const length = 1.94;
-        const geo = new THREE.BoxGeometry(0.50, 0.056, length, 26, 4, 48);
-        const pos = geo.attributes.position;
-
-        for (let i = 0; i < pos.count; i++) {
-          const vx = pos.getX(i);
-          const vy = pos.getY(i);
-          const vz = pos.getZ(i);
-          const t = (vz + length * 0.5) / length;
-
-          const outline = Math.sin(Math.pow(t, 0.72) * Math.PI * 0.88);
-          const rail = Math.sqrt(Math.max(0.05, 1 - Math.pow(vx / 0.25, 2)));
-          const noseRocker = Math.pow(Math.max(0, 0.45 - t) / 0.45, 2.2) * 0.14;
-          const tailRocker = Math.pow(Math.max(0, t - 0.65) / 0.35, 2.0) * 0.038;
-
-          pos.setX(i, vx * Math.max(0.035, outline));
-          pos.setY(i, vy * rail * Math.max(0.25, outline) + noseRocker + tailRocker);
-        }
-        geo.computeVertexNormals();
-
-        const wax = createSurfWaxTextures();
-        const boardMat = new THREE.MeshPhysicalMaterial({
-          map: wax.map,
-          bumpMap: wax.bumpMap,
-          bumpScale: 0.0045,
-          roughness: 0.12,
-          metalness: 0.02,
-          clearcoat: 1.0,
-          clearcoatRoughness: 0.06,
-          envMapIntensity: 1.4
+      document.getElementById('exit-preview-btn').addEventListener('click', () => {
+        isDesktopPreview = false;
+        previewGrid.visible = false;
+        cards.forEach(c => {
+          c.userData.video.muted = true;
+          if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
         });
-
-        const deck = new THREE.Mesh(geo, boardMat);
-        deck.castShadow = true;
-        deck.receiveShadow = true;
-        group.add(deck);
-
-        // Traction Pad EVA antideslizante
-        const pad = new THREE.Mesh(
-          new THREE.BoxGeometry(0.26, 0.012, 0.34),
-          new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.92 })
-        );
-        pad.position.set(0, 0.032, 0.69);
-        group.add(pad);
-
-        // Tres quillas Thruster
-        const finMat = new THREE.MeshPhysicalMaterial({
-          color: 0x064e3b,
-          roughness: 0.14,
-          clearcoat: 0.95
-        });
-        const finShape = new THREE.Shape();
-        finShape.moveTo(0, 0);
-        finShape.lineTo(0.11, 0);
-        finShape.quadraticCurveTo(0.09, -0.09, 0.02, -0.115);
-        finShape.lineTo(0, 0);
-        const finGeo = new THREE.ExtrudeGeometry(finShape, { depth: 0.006, bevelEnabled: false });
-        finGeo.rotateY(Math.PI / 2);
-
-        [
-          [0, -0.022, 0.79, 0],
-          [-0.12, -0.018, 0.67, 0.08],
-          [0.12, -0.018, 0.67, -0.08]
-        ].forEach(([fx, fy, fz, toe]) => {
-          const fin = new THREE.Mesh(finGeo, finMat);
-          fin.position.set(fx, fy, fz);
-          fin.rotation.y = toe;
-          group.add(fin);
-        });
-
-        return group;
-      }
-
-      const surfboard = buildHyperRealisticSurfboard();
-      scene.add(surfboard);
-
-      // Mano 3D húmeda para Hand-Drag en 1ra persona
-      const wetSkinMat = new THREE.MeshPhysicalMaterial({
-        color: 0xb97a56,
-        roughness: 0.26,
-        clearcoat: 0.78,
-        clearcoatRoughness: 0.15
+        renderer.setAnimationLoop(null);
+        document.getElementById('landing').classList.remove('hidden-layer');
+        document.getElementById('xr-overlay').style.display = 'none';
+        document.getElementById('exit-preview-btn').style.display = 'none';
       });
 
-      const fpHand = new THREE.Group();
-      const armMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.036, 0.048, 0.44, 16), wetSkinMat);
-      armMesh.rotation.z = Math.PI / 2;
-      armMesh.position.set(-0.22, 0, 0);
-      const palmMesh = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.028, 0.092), wetSkinMat);
-      palmMesh.position.set(-0.47, -0.005, 0);
-      fpHand.add(armMesh, palmMesh);
-      for (let f = 0; f < 4; f++) {
-        const finger = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.01, 0.075, 10), wetSkinMat);
-        finger.rotation.z = Math.PI / 2;
-        finger.position.set(-0.55, -0.008, -0.032 + f * 0.021);
-        fpHand.add(finger);
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // =========================================================================
+    // 1. CARGA INSTANTÁNEA DESDE MEMORIA LOCAL (SIN BLOQUEOS DE DECODIFICACIÓN)
+    // =========================================================================
+    function bindInstantLocalLoader(stateId, card) {
+      const inputEl = document.getElementById(`input-${stateId}`);
+      const statusEl = document.getElementById(`status-${stateId}`);
+      const cardBoxEl = document.getElementById(`card-box-${stateId}`);
+      const placeholderEl = document.getElementById(`ph-${stateId}`);
+      const video = card.userData.video;
+
+      inputEl.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (card.userData.blobUrl) {
+          URL.revokeObjectURL(card.userData.blobUrl);
+        }
+
+        const blobUrl = URL.createObjectURL(file);
+        card.userData.blobUrl = blobUrl;
+
+        // Registrar listeners ANTES de asignar src para no perder eventos rápidos
+        video.onloadedmetadata = () => {
+          placeholderEl.style.display = 'none';
+          statusEl.textContent = `✓ ${file.name} (${video.videoWidth}x${video.videoHeight})`;
+          statusEl.className = 'file-status ok';
+          cardBoxEl.classList.add('ready');
+
+          if (!card.userData.videoTexture) {
+            const tex = new THREE.VideoTexture(video);
+            tex.colorSpace = THREE.SRGBColorSpace;
+            tex.minFilter = THREE.LinearFilter;
+            tex.magFilter = THREE.LinearFilter;
+            card.userData.videoTexture = tex;
+            card.userData.videoMesh.material.map = tex;
+            card.userData.videoMesh.material.needsUpdate = true;
+          }
+          card.userData.hasVideo = true;
+        };
+
+        video.onerror = () => {
+          const code = video.error ? video.error.code : '?';
+          statusEl.textContent = `✕ Error códec (${code}): exporta MP4 H.264 8-bit`;
+          statusEl.className = 'file-status err';
+          cardBoxEl.classList.remove('ready');
+        };
+
+        video.muted = true;
+        video.src = blobUrl;
+        // Llamar play() de inmediato fuerza al decodificador por hardware a arrancar al instante
+        video.play().catch(() => {});
+      });
+    }
+
+    // =========================================================================
+    // 2. TEXTURAS DE INTERFAZ Y PLACEHOLDER HOLOGRÁFICO
+    // =========================================================================
+    function buildPlaceholderTexture(destino) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 640;
+      canvas.height = 400;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#051320';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.12)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 32) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
       }
-      fpHand.visible = false;
-      scene.add(fpHand);
-
-      // Surfista 3D articulado para Dron FPV Cine
-      function buildArticulatedSurfer() {
-        const root = new THREE.Group();
-        const shortsMat = new THREE.MeshStandardMaterial({ color: 0x0f766e, roughness: 0.65 });
-        const lycraMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.48 });
-
-        const pelvis = new THREE.Group();
-        pelvis.position.y = 0.86;
-        pelvis.add(new THREE.Mesh(new THREE.BoxGeometry(0.30, 0.22, 0.18), shortsMat));
-
-        const torso = new THREE.Group();
-        torso.position.y = 0.11;
-        const chest = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.14, 0.46, 16), lycraMat);
-        chest.position.y = 0.23;
-        chest.castShadow = true;
-
-        const head = new THREE.Mesh(new THREE.SphereGeometry(0.115, 20, 20), wetSkinMat);
-        head.position.y = 0.56;
-        head.castShadow = true;
-
-        const leftArm = new THREE.Group();
-        leftArm.position.set(-0.20, 0.40, 0);
-        const lArmMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.036, 0.56, 12), wetSkinMat);
-        lArmMesh.position.y = -0.26;
-        lArmMesh.castShadow = true;
-        leftArm.add(lArmMesh);
-
-        const rightArm = new THREE.Group();
-        rightArm.position.set(0.20, 0.40, 0);
-        const rArmMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.036, 0.56, 12), wetSkinMat);
-        rArmMesh.position.y = -0.26;
-        rArmMesh.castShadow = true;
-        rightArm.add(rArmMesh);
-
-        torso.add(chest, head, leftArm, rightArm);
-        pelvis.add(torso);
-
-        const leftLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.068, 0.052, 0.84, 14), wetSkinMat);
-        leftLeg.position.set(-0.08, 0.44, -0.24);
-        leftLeg.rotation.x = 0.24;
-        leftLeg.castShadow = true;
-
-        const rightLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.068, 0.052, 0.84, 14), wetSkinMat);
-        rightLeg.position.set(0.08, 0.44, 0.26);
-        rightLeg.rotation.x = -0.24;
-        rightLeg.castShadow = true;
-
-        root.add(pelvis, leftLeg, rightLeg);
-        root.visible = false;
-        return { root, pelvis, torso, leftArm, rightArm };
-      }
-
-      const surferModel = buildArticulatedSurfer();
-      surfboard.add(surferModel.root);
-
-      // Textura suave radial para partículas volumétricas de spray y mist
-      function createSoftMistTexture() {
-        const size = 128;
-        const c = document.createElement('canvas');
-        c.width = c.height = size;
-        const g = c.getContext('2d');
-        const grad = g.createRadialGradient(64, 64, 4, 64, 64, 60);
-        grad.addColorStop(0.0, 'rgba(255, 255, 255, 0.95)');
-        grad.addColorStop(0.45, 'rgba(236, 253, 245, 0.48)');
-        grad.addColorStop(1.0, 'rgba(255, 255, 255, 0.0)');
-        g.fillStyle = grad;
-        g.fillRect(0, 0, size, size);
-        const tex = new THREE.CanvasTexture(c);
-        return tex;
+      for (let y = 0; y < canvas.height; y += 32) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
       }
 
-      const sprayCount = 340;
-      const sprayPos = new Float32Array(sprayCount * 3);
-      const sprayVel = [];
-      for (let i = 0; i < sprayCount; i++) {
-        sprayPos[i * 3 + 1] = -30;
-        sprayVel.push({ vx: 0, vy: 0, vz: 0, life: 0 });
+      ctx.strokeStyle = destino.color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(320, 175, 48, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = destino.color;
+      ctx.font = 'bold 18px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`PORTAL ${destino.nombre} EN ESPERA`, 320, 255);
+
+      ctx.fillStyle = '#7fa6bd';
+      ctx.font = '14px monospace';
+      ctx.fillText('SELECCIONA EL VIDEO EN EL MENÚ', 320, 280);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    function buildHudTexture(destino, visited = false) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 640;
+      const ctx = canvas.getContext('2d');
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.03)';
+      for (let y = 24; y < canvas.height - 24; y += 6) {
+        ctx.fillRect(24, y, canvas.width - 48, 2);
       }
-      const sprayGeo = new THREE.BufferGeometry();
-      sprayGeo.setAttribute('position', new THREE.BufferAttribute(sprayPos, 3));
-      const sprayPoints = new THREE.Points(
-        sprayGeo,
-        new THREE.PointsMaterial({
-          map: createSoftMistTexture(),
-          color: 0xf8fafc,
-          size: 0.26,
+
+      ctx.strokeStyle = destino.color;
+      ctx.lineWidth = 3;
+      ctx.globalAlpha = 0.55;
+      ctx.strokeRect(24, 24, canvas.width - 48, canvas.height - 48);
+
+      ctx.globalAlpha = 1.0;
+      ctx.lineWidth = 8;
+      const b = 52;
+      const p = 18;
+      ctx.beginPath(); ctx.moveTo(p, p + b); ctx.lineTo(p, p); ctx.lineTo(p + b, p); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(canvas.width - p - b, p); ctx.lineTo(canvas.width - p, p); ctx.lineTo(canvas.width - p, p + b); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(p, canvas.height - p - b); ctx.lineTo(p, canvas.height - p); ctx.lineTo(p + b, canvas.height - p); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(canvas.width - p - b, canvas.height - p); ctx.lineTo(canvas.width - p, canvas.height - p); ctx.lineTo(canvas.width - p, canvas.height - p - b); ctx.stroke();
+
+      ctx.fillStyle = 'rgba(3, 12, 22, 0.82)';
+      ctx.fillRect(38, 36, canvas.width - 76, 46);
+      ctx.fillStyle = destino.color;
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText(`DESTINOS VEN // ${destino.coords}`, 58, 66);
+
+      ctx.textAlign = 'right';
+      ctx.fillText(visited ? '✓ SELLADO' : '● TOCAR PARA ENTRAR', canvas.width - 58, 66);
+      ctx.textAlign = 'left';
+
+      const grad = ctx.createLinearGradient(0, canvas.height - 185, 0, canvas.height - 28);
+      grad.addColorStop(0, 'rgba(3, 10, 18, 0.0)');
+      grad.addColorStop(0.35, 'rgba(3, 10, 18, 0.9)');
+      grad.addColorStop(1, 'rgba(3, 10, 18, 0.98)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(28, canvas.height - 185, canvas.width - 56, 157);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 66px system-ui, sans-serif';
+      ctx.fillText(destino.nombre, 58, canvas.height - 86);
+
+      ctx.fillStyle = destino.color;
+      ctx.font = 'bold 22px monospace';
+      ctx.fillText(destino.subtitulo, 60, canvas.height - 50);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    function buildButtonTexture(label, accentColor) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 128;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = 'rgba(4, 16, 28, 0.92)';
+      ctx.beginPath();
+      ctx.roundRect(8, 8, 496, 112, 56);
+      ctx.fill();
+
+      ctx.strokeStyle = accentColor;
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 30px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label, 256, 66);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    // =========================================================================
+    // 3. CONSTRUCCIÓN DE PORTALES 3D
+    // =========================================================================
+    function createHologramPortal(destino, index, videoEl) {
+      const group = new THREE.Group();
+
+      const placeholderTex = buildPlaceholderTexture(destino);
+
+      const videoMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.64, 0.40),
+        new THREE.MeshBasicMaterial({ map: placeholderTex, side: THREE.DoubleSide })
+      );
+
+      const hudTex = buildHudTexture(destino, false);
+      const hudMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.68, 0.43),
+        new THREE.MeshBasicMaterial({
+          map: hudTex,
           transparent: true,
-          opacity: 0.72,
-          depthWrite: false
+          depthWrite: false,
+          side: THREE.DoubleSide
         })
       );
-      scene.add(sprayPoints);
+      hudMesh.position.z = 0.014;
 
-      let sprayIdx = 0;
-      function spawnVolumetricSpray(origin, count, spread, upVel) {
-        const attr = sprayGeo.attributes.position;
-        for (let i = 0; i < count; i++) {
-          const k = sprayIdx % sprayCount;
-          sprayIdx++;
-          attr.setXYZ(
-            k,
-            origin.x + (Math.random() - 0.5) * 0.28,
-            origin.y + Math.random() * 0.16,
-            origin.z + (Math.random() - 0.5) * 0.28
-          );
-          const v = sprayVel[k];
-          v.vx = (Math.random() - 0.32) * spread;
-          v.vy = upVel * (0.65 + Math.random() * 0.85);
-          v.vz = 4.5 + Math.random() * 6.5;
-          v.life = 0.5 + Math.random() * 0.45;
+      const orbitalRing = new THREE.Mesh(
+        new THREE.RingGeometry(0.365, 0.378, 64, 1, 0, Math.PI * 1.35),
+        new THREE.MeshBasicMaterial({
+          color: destino.hex,
+          transparent: true,
+          opacity: 0.5,
+          side: THREE.DoubleSide
+        })
+      );
+      orbitalRing.position.z = -0.025;
+
+      const beamMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.42, 0.006),
+        new THREE.MeshBasicMaterial({ color: destino.hex, transparent: true, opacity: 0.7 })
+      );
+      beamMesh.position.y = -0.255;
+
+      group.add(videoMesh, hudMesh, orbitalRing, beamMesh);
+
+      const radius = 1.25;
+      const hubPos = new THREE.Vector3(
+        Math.sin(destino.anguloArco) * radius,
+        1.36,
+        -Math.cos(destino.anguloArco) * radius
+      );
+      group.position.copy(hubPos);
+      group.lookAt(0, 1.36, 0);
+
+      group.userData = {
+        destino,
+        index,
+        video: videoEl,
+        videoMesh,
+        videoTexture: null,
+        blobUrl: null,
+        hasVideo: false,
+        hudMesh,
+        hitTarget: hudMesh,
+        orbitalRing,
+        hubPos: hubPos.clone(),
+        hubQuat: group.quaternion.clone(),
+        targetPos: hubPos.clone(),
+        targetScale: 1,
+        visited: false
+      };
+
+      return group;
+    }
+
+    function createDetailControls() {
+      const checkinMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.46, 0.115),
+        new THREE.MeshBasicMaterial({
+          map: buildButtonTexture('◈ SELLAR DESTINO', '#00ff9d'),
+          transparent: true,
+          side: THREE.DoubleSide
+        })
+      );
+      checkinMesh.position.set(-0.26, 0.84, -1.05);
+      checkinMesh.visible = false;
+      checkinMesh.userData = { action: 'CHECKIN' };
+
+      const backMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.46, 0.115),
+        new THREE.MeshBasicMaterial({
+          map: buildButtonTexture('✕ VOLVER AL MAPA', '#00f0ff'),
+          transparent: true,
+          side: THREE.DoubleSide
+        })
+      );
+      backMesh.position.set(0.26, 0.84, -1.05);
+      backMesh.visible = false;
+      backMesh.userData = { action: 'BACK' };
+
+      holoRoot.add(checkinMesh, backMesh);
+      detailButtons.push(checkinMesh, backMesh);
+    }
+
+    function createCompletionBanner() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 180;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = 'rgba(4, 22, 32, 0.92)';
+      ctx.beginPath();
+      ctx.roundRect(12, 12, 1000, 156, 32);
+      ctx.fill();
+
+      ctx.strokeStyle = '#00ff9d';
+      ctx.lineWidth = 5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#00ff9d';
+      ctx.font = '900 34px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('★ PASAPORTE DESTINOS VEN COMPLETADO ★', 512, 74);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '600 24px monospace';
+      ctx.fillText('3/3 DESTINOS EXPLORADOS · RECLAMA TU INSIGNIA EN EL STAND', 512, 124);
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+
+      completionBanner = new THREE.Mesh(
+        new THREE.PlaneGeometry(1.15, 0.20),
+        new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide })
+      );
+      completionBanner.position.set(0, 1.78, -1.2);
+      completionBanner.visible = false;
+      holoRoot.add(completionBanner);
+    }
+
+    // =========================================================================
+    // 4. RASTREO DE MANOS Y CONTROLES DE ESCRITORIO
+    // =========================================================================
+    function setupHands() {
+      for (let i = 0; i < 2; i++) {
+        const controller = renderer.xr.getController(i);
+        controller.addEventListener('select', () => handleRaySelect(controller));
+        scene.add(controller);
+
+        const rayGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(0, 0, 0),
+          new THREE.Vector3(0, 0, -1.6)
+        ]);
+        const rayLine = new THREE.Line(
+          rayGeo,
+          new THREE.LineBasicMaterial({ color: 0x00f0ff, transparent: true, opacity: 0.3 })
+        );
+        controller.add(rayLine);
+
+        const hand = renderer.xr.getHand(i);
+        scene.add(hand);
+
+        const tipCursor = new THREE.Mesh(
+          new THREE.SphereGeometry(0.012, 16, 16),
+          new THREE.MeshBasicMaterial({ color: 0x00ff9d })
+        );
+        tipCursor.visible = false;
+        scene.add(tipCursor);
+
+        fingerTips.push({ hand, tipCursor });
+      }
+    }
+
+    function handleRaySelect(controller) {
+      const now = performance.now();
+      if (now - lastInteractionTime < 600) return;
+
+      const tempMatrix = new THREE.Matrix4().identity().extractRotation(controller.matrixWorld);
+      const raycaster = new THREE.Raycaster();
+      raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+      raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+
+      processRayHits(raycaster, now);
+    }
+
+    function processRayHits(raycaster, now) {
+      if (mode === 'HUB') {
+        const targets = cards.map(c => c.userData.hitTarget);
+        const hits = raycaster.intersectObjects(targets);
+        if (hits.length > 0) {
+          lastInteractionTime = now;
+          enterDestination(hits[0].object.parent);
         }
-        attr.needsUpdate = true;
+      } else if (mode === 'DETAIL') {
+        const hits = raycaster.intersectObjects(detailButtons);
+        if (hits.length > 0) {
+          lastInteractionTime = now;
+          handleDetailButton(hits[0].object.userData.action);
+        }
       }
+    }
 
-      // =======================================================================
-      // 9. POST-PROCESADO ÓPTICO: EFFECTCOMPOSER + UNREALBLOOM + GOTAS GPU
-      // =======================================================================
-      const MAX_DROPLETS = 16;
-      const dropletVecArray = [];
-      for (let i = 0; i < MAX_DROPLETS; i++) {
-        dropletVecArray.push(new THREE.Vector4(-10, -10, 0, 0));
-      }
+    function checkDirectFingerTouch() {
+      const now = performance.now();
+      for (const item of fingerTips) {
+        const indexJoint = item.hand.joints && item.hand.joints['index-finger-tip'];
+        if (indexJoint && indexJoint.visible) {
+          item.tipCursor.visible = true;
+          item.tipCursor.position.copy(indexJoint.position);
 
-      const activeDroplets = [];
-      function spawnLensDroplet(emeraldTint = false) {
-        if (activeDroplets.length >= MAX_DROPLETS) activeDroplets.shift();
-        activeDroplets.push({
-          u: 0.1 + Math.random() * 0.8,
-          v: 0.25 + Math.random() * 0.68,
-          r: 0.016 + Math.random() * 0.024,
-          vy: 0.028 + Math.random() * 0.045,
-          life: 1.0,
-          decay: 0.16 + Math.random() * 0.14,
-          emerald: emeraldTint
-        });
-      }
+          if (now - lastInteractionTime < 750) continue;
 
-      // ShaderPass personalizado de óptica de lente (gotas refractivas reales + grano 35mm + viñeta)
-      const CinemaOpticsShader = {
-        uniforms: {
-          tDiffuse: { value: null },
-          uTime: { value: 0 },
-          uAspect: { value: window.innerWidth / window.innerHeight },
-          uDroplets: { value: dropletVecArray }
-        },
-        vertexShader: `
-          varying vec2 vUv;
-          void main() {
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          uniform sampler2D tDiffuse;
-          uniform float uTime;
-          uniform float uAspect;
-          uniform vec4 uDroplets[16];
-          varying vec2 vUv;
-
-          float hash12(vec2 p) {
-            vec3 p3 = fract(vec3(p.xyx) * 0.1031);
-            p3 += dot(p3, p3.yzx + 33.33);
-            return fract((p3.x + p3.y) * p3.z);
-          }
-
-          void main() {
-            vec2 uv = vUv;
-            vec3 tintAccum = vec3(0.0);
-            float specAccum = 0.0;
-
-            // Refracción real de la imagen renderizada detrás de cada gota sobre el objetivo
-            for (int i = 0; i < 16; i++) {
-              vec4 d = uDroplets[i];
-              if (d.z > 0.001 && d.w > 0.01) {
-                vec2 delta = uv - d.xy;
-                delta.x *= uAspect;
-                float dist = length(delta);
-                if (dist < d.z) {
-                  float normDist = dist / d.z;
-                  float dome = sqrt(max(0.0, 1.0 - normDist * normDist));
-                  // Lente convexa de agua que refracta el fondo
-                  uv -= (delta / max(d.z, 0.0001)) * dome * d.z * 0.42 * d.w;
-                  tintAccum += vec3(0.04, 0.22, 0.16) * (1.0 - normDist) * 0.35 * d.w;
-
-                  // Destello especular superior izquierdo en la gota
-                  vec2 glintOffset = delta - vec2(-d.z * 0.32, d.z * 0.34);
-                  specAccum += smoothstep(d.z * 0.24, 0.0, length(glintOffset)) * 0.65 * d.w;
-                }
+          if (mode === 'HUB') {
+            for (const card of cards) {
+              const cardWorldPos = new THREE.Vector3();
+              card.getWorldPosition(cardWorldPos);
+              if (indexJoint.position.distanceTo(cardWorldPos) < 0.18) {
+                lastInteractionTime = now;
+                enterDestination(card);
+                return;
               }
             }
-
-            vec3 col = texture2D(tDiffuse, clamp(uv, vec2(0.001), vec2(0.999))).rgb;
-            col += tintAccum + vec3(specAccum);
-
-            // Grano fotoquímico de película de 35mm
-            float grain = (hash12(vUv * 950.0 + fract(uTime * 17.3) * 100.0) - 0.5) * 0.032;
-            col += vec3(grain);
-
-            // Viñeteo anamórfico sutil
-            vec2 centered = (vUv - 0.5) * 2.0;
-            float vig = 1.0 - dot(centered, centered) * 0.16;
-            col *= clamp(vig, 0.65, 1.0);
-
-            gl_FragColor = vec4(col, 1.0);
+          } else if (mode === 'DETAIL') {
+            for (const btn of detailButtons) {
+              if (!btn.visible) continue;
+              const btnWorldPos = new THREE.Vector3();
+              btn.getWorldPosition(btnWorldPos);
+              if (indexJoint.position.distanceTo(btnWorldPos) < 0.13) {
+                lastInteractionTime = now;
+                handleDetailButton(btn.userData.action);
+                return;
+              }
+            }
           }
-        `
-      };
+        } else {
+          item.tipCursor.visible = false;
+        }
+      }
+    }
 
-      let composer = null;
-      let opticsPass = null;
-      let hasComposer = false;
+    function setupDesktopPreviewControls() {
+      window.addEventListener('pointermove', (e) => {
+        if (!isDesktopPreview) return;
+        mouseNorm.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseNorm.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      });
 
+      window.addEventListener('pointerdown', (e) => {
+        if (!isDesktopPreview) return;
+        const pointer = new THREE.Vector2(
+          (e.clientX / window.innerWidth) * 2 - 1,
+          -(e.clientY / window.innerHeight) * 2 + 1
+        );
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(pointer, camera);
+        processRayHits(raycaster, performance.now());
+      });
+    }
+
+    function startDesktopPreview() {
+      isDesktopPreview = true;
+      previewGrid.visible = true;
+      holoRoot.position.set(0, 0, 0);
+      holoRoot.rotation.set(0, 0, 0);
+
+      cards.forEach(c => {
+        if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
+      });
+
+      document.getElementById('landing').classList.add('hidden-layer');
+      document.getElementById('xr-overlay').style.display = 'flex';
+      document.getElementById('recenter-btn').style.display = 'none';
+      document.getElementById('exit-preview-btn').style.display = 'inline-block';
+      document.getElementById('status-pill').textContent =
+        'Vista Previa 3D: Haz clic sobre Táchira, Aragua o Lara para probar';
+
+      renderer.setAnimationLoop(animateScene);
+    }
+
+    // =========================================================================
+    // 5. NAVEGACIÓN ENTRE HUB Y DESTINO (CON OPTIMIZACIÓN DE DECODIFICADOR)
+    // =========================================================================
+    function enterDestination(card) {
+      mode = 'DETAIL';
+      selectedCard = card;
+      completionBanner.visible = false;
+      playSciFiTone('open');
+
+      cards.forEach(c => {
+        if (c === card) {
+          c.userData.targetPos.set(0, 1.38, -1.15);
+          c.userData.targetScale = 2.05;
+          if (c.userData.hasVideo) {
+            c.userData.video.currentTime = 0;
+            c.userData.video.muted = false;
+            c.userData.video.play().catch(() => {});
+          }
+        } else {
+          // Pausa los otros 2 videos para dedicar 100% de potencia del Quest 3 al activo
+          c.userData.targetScale = 0.001;
+          c.userData.video.muted = true;
+          if (c.userData.hasVideo) c.userData.video.pause();
+        }
+      });
+
+      detailButtons.forEach(btn => { btn.visible = true; });
+      document.getElementById('status-pill').textContent =
+        `Explorando ${card.userData.destino.nombre} · Toca SELLAR DESTINO o VOLVER`;
+    }
+
+    function returnToHub() {
+      mode = 'HUB';
+      playSciFiTone('close');
+
+      cards.forEach(c => {
+        c.userData.targetPos.copy(c.userData.hubPos);
+        c.userData.targetScale = 1.0;
+        c.userData.video.muted = true;
+        if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
+      });
+
+      detailButtons.forEach(btn => { btn.visible = false; });
+      selectedCard = null;
+
+      const visitedCount = cards.filter(c => c.userData.visited).length;
+      if (visitedCount === cards.length) {
+        completionBanner.visible = true;
+        document.getElementById('status-pill').textContent =
+          '¡Felicidades! Has sellado los 3 destinos de Destinos Ven';
+      } else {
+        document.getElementById('status-pill').textContent =
+          `Destinos sellados: ${visitedCount}/${cards.length} · Toca otro destino para explorar`;
+      }
+    }
+
+    function handleDetailButton(action) {
+      if (action === 'BACK') {
+        returnToHub();
+      } else if (action === 'CHECKIN' && selectedCard) {
+        playSciFiTone('success');
+        if (!selectedCard.userData.visited) {
+          selectedCard.userData.visited = true;
+          selectedCard.userData.hudMesh.material.map.dispose();
+          selectedCard.userData.hudMesh.material.map =
+            buildHudTexture(selectedCard.userData.destino, true);
+          selectedCard.userData.hudMesh.material.needsUpdate = true;
+        }
+        returnToHub();
+      }
+    }
+
+    function alignHologramsToUser() {
+      const xrCam = renderer.xr.getCamera();
+      const camPos = new THREE.Vector3();
+      const camDir = new THREE.Vector3();
+      xrCam.getWorldPosition(camPos);
+      xrCam.getWorldDirection(camDir);
+
+      const yaw = Math.atan2(-camDir.x, -camDir.z);
+      holoRoot.position.set(camPos.x, 0, camPos.z);
+      holoRoot.rotation.y = yaw;
+    }
+
+    function playSciFiTone(type) {
       try {
-        if (
-          typeof THREE.EffectComposer !== 'undefined' &&
-          typeof THREE.RenderPass !== 'undefined' &&
-          typeof THREE.ShaderPass !== 'undefined' &&
-          typeof THREE.UnrealBloomPass !== 'undefined'
-        ) {
-          composer = new THREE.EffectComposer(renderer);
-          const renderPass = new THREE.RenderPass(scene, camera);
-          composer.addPass(renderPass);
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
 
-          // UnrealBloomPass calibrado estrictamente para los destellos GGX del sol (threshold alto)
-          const bloomPass = new THREE.UnrealBloomPass(
-            new THREE.Vector2(window.innerWidth, window.innerHeight),
-            0.38, // intensidad sutil
-            0.55, // radio
-            0.86  // umbral alto: solo destellos solares y cresta iluminada
-          );
-          composer.addPass(bloomPass);
-
-          opticsPass = new THREE.ShaderPass(CinemaOpticsShader);
-          composer.addPass(opticsPass);
-          hasComposer = true;
+        const now = audioCtx.currentTime;
+        if (type === 'open') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now);
+          osc.stop(now + 0.28);
+        } else if (type === 'close' || type === 'click') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(640, now);
+          osc.frequency.exponentialRampToValueAtTime(280, now + 0.18);
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        } else if (type === 'success') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.1);
+          osc.frequency.setValueAtTime(1046.5, now + 0.2);
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+          osc.start(now);
+          osc.stop(now + 0.42);
         }
-      } catch (err) {
-        hasComposer = false;
+      } catch (e) {}
+    }
+
+    async function startXR() {
+      if (!navigator.xr) {
+        alert('No se detectó un visor WebXR. Usa "Vista Previa en Pantalla" en tu PC o ábrelo en el navegador de Meta Quest 3.');
+        return;
       }
 
-      // Respaldo 2D de gotas solo si EffectComposer no está disponible
-      const fallbackCanvas = document.getElementById('lens-fallback-canvas');
-      const fbCtx = fallbackCanvas.getContext('2d');
+      const overlay = document.getElementById('xr-overlay');
+      const session = await navigator.xr.requestSession('immersive-ar', {
+        optionalFeatures: ['hand-tracking', 'local-floor', 'dom-overlay'],
+        domOverlay: { root: overlay }
+      });
 
-      function updateDropletsAndOptics(dt, elapsed) {
-        for (let i = activeDroplets.length - 1; i >= 0; i--) {
-          const d = activeDroplets[i];
-          d.v -= d.vy * dt;
-          d.life -= d.decay * dt;
-          if (d.life <= 0 || d.v < -0.05) {
-            activeDroplets.splice(i, 1);
-          }
-        }
+      renderer.xr.setReferenceSpaceType('local-floor');
+      await renderer.xr.setSession(session);
 
-        for (let i = 0; i < MAX_DROPLETS; i++) {
-          if (i < activeDroplets.length) {
-            const d = activeDroplets[i];
-            dropletVecArray[i].set(d.u, d.v, d.r, Math.min(1, d.life * 1.4));
-          } else {
-            dropletVecArray[i].set(-10, -10, 0, 0);
-          }
-        }
+      cards.forEach(c => {
+        if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
+      });
 
-        if (hasComposer && opticsPass) {
-          opticsPass.uniforms.uTime.value = elapsed;
-          opticsPass.uniforms.uAspect.value = window.innerWidth / window.innerHeight;
+      document.getElementById('landing').classList.add('hidden-layer');
+      overlay.style.display = 'flex';
+      document.getElementById('recenter-btn').style.display = 'inline-block';
+      document.getElementById('exit-preview-btn').style.display = 'none';
+
+      setTimeout(alignHologramsToUser, 300);
+
+      session.addEventListener('end', () => {
+        document.getElementById('landing').classList.remove('hidden-layer');
+        overlay.style.display = 'none';
+      });
+
+      renderer.setAnimationLoop(animateScene);
+    }
+
+    function animateScene(time) {
+      const t = time * 0.001;
+
+      if (isDesktopPreview) {
+        camera.position.x = THREE.MathUtils.lerp(camera.position.x, mouseNorm.x * 0.25, 0.08);
+        camera.position.y = THREE.MathUtils.lerp(camera.position.y, 1.38 + mouseNorm.y * 0.12, 0.08);
+        camera.lookAt(0, 1.35, -1.15);
+      } else {
+        checkDirectFingerTouch();
+      }
+
+      cards.forEach((c, idx) => {
+        const floatOffset = mode === 'HUB' ? Math.sin(t * 2 + idx) * 0.016 : 0;
+        const desiredPos = c.userData.targetPos.clone();
+        desiredPos.y += floatOffset;
+
+        c.position.lerp(desiredPos, 0.12);
+
+        const s = THREE.MathUtils.lerp(c.scale.x, c.userData.targetScale, 0.14);
+        c.scale.set(s, s, s);
+        c.visible = s > 0.02;
+
+        c.userData.orbitalRing.rotation.z = t * (idx % 2 === 0 ? 0.45 : -0.45);
+
+        if (mode === 'DETAIL' && c === selectedCard) {
+          c.quaternion.slerp(new THREE.Quaternion(), 0.14);
         } else {
-          fbCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-          activeDroplets.forEach((d) => {
-            const px = d.u * window.innerWidth;
-            const py = (1 - d.v) * window.innerHeight;
-            const pr = d.r * window.innerHeight;
-            fbCtx.save();
-            fbCtx.globalAlpha = Math.min(0.8, d.life);
-            fbCtx.strokeStyle = 'rgba(255,255,255,0.4)';
-            fbCtx.beginPath();
-            fbCtx.arc(px, py, pr, 0, Math.PI * 2);
-            fbCtx.stroke();
-            fbCtx.restore();
-          });
-        }
-      }
-
-      // =======================================================================
-      // 10. ATMÓSFERAS DOP (AMANECER 06:30 / SOL CARIBEÑO 11:00 / HORA DORADA 17:45)
-      // =======================================================================
-      const DOP_PRESETS = {
-        dawn: {
-          sunDir: new THREE.Vector3(-0.46, 0.15, -0.87).normalize(),
-          zenith: 0x133858,
-          horizon: 0xf6be7a,
-          sunColor: 0xfff0cc,
-          sunIntensity: 2.95,
-          hemiSky: 0xffe4c2,
-          hemiGround: 0x0b3a3a,
-          absorption: new THREE.Vector3(0.46, 0.14, 0.09),
-          emeraldSSS: 0x10d996,
-          fogColor: 0xe2cbb2,
-          exposure: 1.12
-        },
-        caribbean: {
-          sunDir: new THREE.Vector3(-0.34, 0.62, -0.71).normalize(),
-          zenith: 0x0369a1,
-          horizon: 0xbae6fd,
-          sunColor: 0xfffbeb,
-          sunIntensity: 3.35,
-          hemiSky: 0xe0f2fe,
-          hemiGround: 0x0f766e,
-          absorption: new THREE.Vector3(0.42, 0.10, 0.06),
-          emeraldSSS: 0x2dd4bf,
-          fogColor: 0xcbe8f2,
-          exposure: 1.08
-        },
-        sunset: {
-          sunDir: new THREE.Vector3(-0.58, 0.08, -0.81).normalize(),
-          zenith: 0x1e1b4b,
-          horizon: 0xf97316,
-          sunColor: 0xffedd5,
-          sunIntensity: 2.9,
-          hemiSky: 0xfdba74,
-          hemiGround: 0x1e1b4b,
-          absorption: new THREE.Vector3(0.50, 0.16, 0.11),
-          emeraldSSS: 0x10b981,
-          fogColor: 0xd99b72,
-          exposure: 1.16
-        }
-      };
-
-      function applyDOPAtmosphere(key) {
-        const p = DOP_PRESETS[key] || DOP_PRESETS.dawn;
-        skyUniforms.uSunDir.value.copy(p.sunDir);
-        skyUniforms.uZenithColor.value.setHex(p.zenith);
-        skyUniforms.uHorizonColor.value.setHex(p.horizon);
-        skyUniforms.uSunColor.value.setHex(p.sunColor);
-
-        sunLight.position.copy(p.sunDir).multiplyScalar(25);
-        sunLight.color.setHex(p.sunColor);
-        sunLight.intensity = p.sunIntensity;
-
-        hemiLight.color.setHex(p.hemiSky);
-        hemiLight.groundColor.setHex(p.hemiGround);
-
-        waveUniforms.uAbsorptionCoeff.value.copy(p.absorption);
-        waveUniforms.uEmeraldSSS.value.setHex(p.emeraldSSS);
-        waveUniforms.uFogColor.value.setHex(p.fogColor);
-
-        sceneFog.color.setHex(p.fogColor);
-        renderer.toneMappingExposure = p.exposure;
-
-        rebuildEnvironmentIBL();
-      }
-
-      applyDOPAtmosphere('dawn');
-
-      // =======================================================================
-      // 11. JUGABILIDAD DE 90 SEGUNDOS, CONTROLES Y META QUEST WEBXR
-      // =======================================================================
-      const SESSION_SECONDS = 90.0;
-      const state = {
-        playing: false,
-        ended: false,
-        timeLeft: SESSION_SECONDS,
-        score: 0,
-        mult: 1,
-        maxMult: 1,
-        pocketTime: 0,
-        barrelTime: 0,
-        waveHeight: 2.3,
-        camView: 'first',
-        surferX: 0.45,
-        targetX: 0.45,
-        surferY: 0.15,
-        roll: 0,
-        yaw: 0,
-        pitch: 0,
-        speed: 15.0,
-        scrollZ: 0,
-        crouching: false,
-        crouchAnim: 0,
-        handDragging: false,
-        handAnim: 0,
-        inBarrel: false,
-        wasInBarrel: false,
-        inPocket: false,
-        inFoam: false,
-        xrBaseHeadY: null
-      };
-
-      const welcomeScreen = document.getElementById('welcomeScreen');
-      const resultsScreen = document.getElementById('resultsScreen');
-      const telemetryPill = document.getElementById('telemetryPill');
-      const hudTimer = document.getElementById('hudTimer');
-      const hudScore = document.getElementById('hudScore');
-      const hudMult = document.getElementById('hudMult');
-      const hudBarrelTime = document.getElementById('hudBarrelTime');
-      const zoneBanner = document.getElementById('zoneBanner');
-      const barrelGlow = document.getElementById('barrelGlow');
-      const hudBottom = document.getElementById('hudBottom');
-
-      function formatTime(sec) {
-        const s = Math.max(0, Math.ceil(sec));
-        return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
-      }
-
-      function beginSurfSession() {
-        audioEngine.init();
-        state.playing = true;
-        state.ended = false;
-        state.timeLeft = SESSION_SECONDS;
-        state.score = 0;
-        state.mult = 1;
-        state.maxMult = 1;
-        state.pocketTime = 0;
-        state.barrelTime = 0;
-        state.surferX = 0.45;
-        state.targetX = 0.45;
-        state.crouching = false;
-        state.handDragging = false;
-        state.xrBaseHeadY = null;
-
-        welcomeScreen.classList.add('hidden');
-        resultsScreen.classList.add('hidden');
-        telemetryPill.classList.add('visible');
-        hudBottom.classList.add('visible');
-      }
-
-      function concludeSurfSession() {
-        state.playing = false;
-        state.ended = true;
-        state.crouching = false;
-        state.handDragging = false;
-        barrelGlow.classList.remove('active');
-        zoneBanner.classList.remove('visible');
-        hudBottom.classList.remove('visible');
-
-        audioEngine.playHarmonicCue(1.15);
-
-        const finalScore = Math.round(state.score);
-        let rank = 'Explorador del Litoral';
-        let summary = 'Has recorrido las aguas cristalinas de Cuyagua frente al Parque Nacional Henri Pittier.';
-        if (finalScore >= 4200 && state.barrelTime >= 14) {
-          rank = 'Leyenda de Cuyagua';
-          summary = 'Dominio absoluto del tubo esmeralda y estilo impecable frente a la selva nublada del Henri Pittier.';
-        } else if (finalScore >= 2400) {
-          rank = 'Maestro del Tubo';
-          summary = 'Lectura precisa del pocket y fluidez cinematográfica en la desembocadura del Río Cuyagua.';
-        } else if (finalScore >= 1100) {
-          rank = 'Surfista del Caribe';
-          summary = 'Gran equilibrio sobre la tabla con cortes limpios en la pared de la ola.';
-        }
-
-        document.getElementById('endRankLabel').textContent = rank;
-        document.getElementById('endSummaryLabel').textContent = summary;
-        document.getElementById('endScoreVal').textContent = finalScore.toLocaleString('es-VE');
-        document.getElementById('endBarrelVal').textContent = `${state.barrelTime.toFixed(1)}s`;
-        document.getElementById('endMultVal').textContent = `x${state.maxMult}`;
-
-        resultsScreen.classList.remove('hidden');
-      }
-
-      document.getElementById('startSurfBtn').addEventListener('click', beginSurfSession);
-      document.getElementById('replaySurfBtn').addEventListener('click', beginSurfSession);
-
-      // Teclado, Ratón y Táctil
-      const keyState = { left: false, right: false };
-
-      window.addEventListener('keydown', (e) => {
-        if (e.code === 'ArrowLeft' || e.code === 'KeyA') keyState.left = true;
-        if (e.code === 'ArrowRight' || e.code === 'KeyD') keyState.right = true;
-        if (e.code === 'Space' || e.code === 'ArrowDown' || e.code === 'KeyS') {
-          if (state.playing) {
-            e.preventDefault();
-            state.crouching = true;
-          }
-        }
-        if (e.code === 'KeyE') {
-          if (state.playing) state.handDragging = true;
+          c.quaternion.slerp(c.userData.hubQuat, 0.14);
         }
       });
 
-      window.addEventListener('keyup', (e) => {
-        if (e.code === 'ArrowLeft' || e.code === 'KeyA') keyState.left = false;
-        if (e.code === 'ArrowRight' || e.code === 'KeyD') keyState.right = false;
-        if (e.code === 'Space' || e.code === 'ArrowDown' || e.code === 'KeyS') {
-          state.crouching = false;
-        }
-        if (e.code === 'KeyE') {
-          state.handDragging = false;
-        }
-      });
-
-      let isDraggingStage = false;
-      stageEl.addEventListener('pointermove', (e) => {
-        if (!state.playing || renderer.xr.isPresenting) return;
-        const normX = (e.clientX / window.innerWidth) * 2 - 1;
-        state.targetX = THREE.MathUtils.clamp(0.42 + normX * 2.45, -0.38, 3.3);
-      });
-
-      stageEl.addEventListener('pointerdown', (e) => {
-        if (!state.playing) return;
-        audioEngine.init();
-        isDraggingStage = true;
-        const normX = (e.clientX / window.innerWidth) * 2 - 1;
-        state.targetX = THREE.MathUtils.clamp(0.42 + normX * 2.45, -0.38, 3.3);
-        if (e.button === 0) state.handDragging = true;
-        if (e.button === 2) state.crouching = true;
-      });
-
-      window.addEventListener('pointerup', () => {
-        if (!isDraggingStage) return;
-        isDraggingStage = false;
-        state.handDragging = false;
-        state.crouching = false;
-      });
-
-      stageEl.addEventListener('contextmenu', (e) => e.preventDefault());
-
-      const crouchTouchBtn = document.getElementById('crouchTouchBtn');
-      const handTouchBtn = document.getElementById('handTouchBtn');
-
-      crouchTouchBtn.addEventListener('pointerdown', (e) => {
-        e.stopPropagation();
-        state.crouching = true;
-        crouchTouchBtn.classList.add('pressed');
-      });
-      handTouchBtn.addEventListener('pointerdown', (e) => {
-        e.stopPropagation();
-        state.handDragging = true;
-        handTouchBtn.classList.add('pressed');
-      });
-      window.addEventListener('pointerup', () => {
-        crouchTouchBtn.classList.remove('pressed');
-        handTouchBtn.classList.remove('pressed');
-      });
-
-      // Panel DOP Colapsable
-      const dopToggleBtn = document.getElementById('dopToggleBtn');
-      const dopDrawer = document.getElementById('dopDrawer');
-      dopToggleBtn.addEventListener('click', () => {
-        const open = dopDrawer.classList.toggle('open');
-        dopToggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-
-      document.querySelectorAll('[data-preset]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('[data-preset]').forEach((b) => b.classList.remove('active'));
-          btn.classList.add('active');
-          applyDOPAtmosphere(btn.getAttribute('data-preset'));
-        });
-      });
-
-      const waveHeightSlider = document.getElementById('waveHeightSlider');
-      const waveHeightVal = document.getElementById('waveHeightVal');
-      waveHeightSlider.addEventListener('input', (e) => {
-        state.waveHeight = parseFloat(e.target.value);
-        waveUniforms.uWaveHeight.value = state.waveHeight;
-        waveHeightVal.textContent = `${state.waveHeight.toFixed(1)} m`;
-      });
-
-      document.querySelectorAll('[data-cam]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('[data-cam]').forEach((b) => b.classList.remove('active'));
-          btn.classList.add('active');
-          state.camView = btn.getAttribute('data-cam');
-          surferModel.root.visible = state.camView === 'drone';
-        });
-      });
-
-      const audioToggleBtn = document.getElementById('audioToggleBtn');
-      audioToggleBtn.addEventListener('click', () => {
-        const muted = audioEngine.toggleMute();
-        audioToggleBtn.innerHTML = muted ? '&#128263; Audio: OFF' : '&#128266; Audio: ON';
-      });
-
-      // Soporte WebXR (Meta Quest) con cambio automático a modo estéreo seguro
-      const xrRig = new THREE.Group();
-      scene.add(xrRig);
-
-      [renderer.xr.getController(0), renderer.xr.getController(1)].forEach((ctrl) => {
-        ctrl.addEventListener('selectstart', () => {
-          if (!state.playing) beginSurfSession();
-          state.handDragging = true;
-        });
-        ctrl.addEventListener('selectend', () => {
-          state.handDragging = false;
-        });
-        ctrl.addEventListener('squeezestart', () => {
-          state.crouching = true;
-        });
-        ctrl.addEventListener('squeezeend', () => {
-          state.crouching = false;
-        });
-        xrRig.add(ctrl);
-      });
-
-      document.getElementById('startVRBtn').addEventListener('click', async () => {
-        audioEngine.init();
-        if (!('xr' in navigator)) {
-          beginSurfSession();
-          return;
-        }
-        try {
-          const ok = await navigator.xr.isSessionSupported('immersive-vr');
-          if (!ok) {
-            beginSurfSession();
-            return;
-          }
-          const session = await navigator.xr.requestSession('immersive-vr', {
-            optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking']
-          });
-          renderer.xr.setSession(session);
-          beginSurfSession();
-        } catch (err) {
-          beginSurfSession();
-        }
-      });
-
-      function onWindowResize() {
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-        const pixelRatio = Math.min(window.devicePixelRatio, 2);
-
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        renderer.setSize(w, h);
-
-        const nextRtW = Math.max(512, Math.floor(w * pixelRatio * 0.75));
-        const nextRtH = Math.max(512, Math.floor(h * pixelRatio * 0.75));
-        refractionRT.setSize(nextRtW, nextRtH);
-        waveUniforms.uResolution.value.set(nextRtW, nextRtH);
-
-        if (composer) {
-          composer.setSize(w, h);
-        }
-
-        fallbackCanvas.width = w * pixelRatio;
-        fallbackCanvas.height = h * pixelRatio;
-        fbCtx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-      }
-
-      window.addEventListener('resize', onWindowResize);
-      onWindowResize();
-
-      // =======================================================================
-      // 12. BUCLE DE RENDERIZADO DE DOBLE PASADA Y SIMULACIÓN EN TIEMPO REAL
-      // =======================================================================
-      const clock = new THREE.Clock();
-
-      renderer.setAnimationLoop(() => {
-        const dt = Math.min(clock.getDelta(), 0.05);
-        const elapsed = clock.getElapsedTime();
-        const H = state.waveHeight;
-        const isXR = renderer.xr.isPresenting;
-
-        skyUniforms.uTime.value = elapsed;
-        waveUniforms.uTime.value = elapsed;
-        seabedUniforms.uTime.value = elapsed;
-        waveUniforms.uIsStereo.value = isXR ? 1.0 : 0.0;
-
-        // 1. Movimiento de bruma en cumbres del Henri Pittier y viento en palmeras
-        mountainMistClouds.forEach((sp, i) => {
-          sp.position.x = -88 + i * 24 + Math.sin(elapsed * 0.22 + i) * 4.2;
-        });
-
-        for (let i = 0; i < palmCount; i++) {
-          const p = palmData[i];
-          const sway = Math.sin(elapsed * 1.45 + p.phase) * 0.036;
-          dummyObj.position.set(p.x, -0.2, p.z);
-          dummyObj.rotation.set(sway, p.rotY, sway * 0.85);
-          dummyObj.scale.setScalar(p.scale);
-          dummyObj.updateMatrix();
-          palmTrunks.setMatrixAt(i, dummyObj.matrix);
-
-          const tip = new THREE.Vector3(0.92 * p.scale, 6.1 * p.scale, 0)
-            .applyEuler(new THREE.Euler(sway, p.rotY, sway * 0.85));
-          dummyObj.position.set(p.x + tip.x, -0.2 + tip.y, p.z + tip.z);
-          dummyObj.updateMatrix();
-          palmCrowns.setMatrixAt(i, dummyObj.matrix);
-        }
-        palmTrunks.instanceMatrix.needsUpdate = true;
-        palmCrowns.instanceMatrix.needsUpdate = true;
-
-        // 2. Física de carving y posición en la pared de la ola
-        if (state.playing) {
-          state.timeLeft -= dt;
-          if (state.timeLeft <= 0) {
-            state.timeLeft = 0;
-            concludeSurfSession();
-          }
-
-          if (keyState.left) state.targetX -= 2.65 * dt;
-          if (keyState.right) state.targetX += 2.65 * dt;
-          state.targetX = THREE.MathUtils.clamp(state.targetX, -0.38, 3.3);
-
-          // Detección física en Meta Quest VR (flexionar rodillas + inclinación lateral)
-          if (isXR) {
-            const xrCam = renderer.xr.getCamera();
-            if (state.xrBaseHeadY === null && xrCam.position.y > 0.6) {
-              state.xrBaseHeadY = xrCam.position.y;
-            }
-            if (state.xrBaseHeadY !== null) {
-              const drop = state.xrBaseHeadY - xrCam.position.y;
-              if (drop > 0.20) state.crouching = true;
-              else if (drop < 0.13) state.crouching = false;
-
-              state.targetX = THREE.MathUtils.clamp(0.42 + xrCam.position.x * 2.45, -0.38, 3.3);
-            }
-          }
-        } else if (!state.ended) {
-          // Navegación cinematográfica automática bajo la bóveda del tubo en pantalla de inicio
-          state.targetX = 0.28 + Math.sin(elapsed * 0.62) * 0.36;
-        }
-
-        const prevX = state.surferX;
-        state.surferX = THREE.MathUtils.lerp(state.surferX, state.targetX, dt * 5.8);
-        const latVel = (state.surferX - prevX) / Math.max(dt, 0.001);
-
-        const targetY = sampleWaveSurfaceY(state.surferX, H) + 0.025;
-        state.surferY = THREE.MathUtils.lerp(state.surferY, targetY, dt * 10);
-
-        const wallSlope = state.surferX < 1.35 * H ? 0.34 : 0.08;
-        state.roll = THREE.MathUtils.lerp(state.roll, -wallSlope - latVel * 0.17, dt * 8);
-        state.yaw = THREE.MathUtils.lerp(state.yaw, -latVel * 0.13, dt * 8);
-        state.pitch = THREE.MathUtils.lerp(state.pitch, Math.sin(elapsed * 6.5) * 0.024 + Math.abs(latVel) * 0.03, dt * 8);
-
-        surfboard.position.set(state.surferX, state.surferY, 0);
-        surfboard.rotation.set(state.pitch, state.yaw, state.roll);
-        waveUniforms.uSurferPos.value.set(state.surferX, state.surferY, 0);
-
-        // 3. Evaluación de Pocket, Tubo Hueco y Espuma Trasera
-        const barrelClosure = 0.88 + Math.sin(elapsed * 0.5) * 0.12;
-        const underBarrelRoof = state.surferX >= -0.40 * H && state.surferX <= 0.78 * H;
-        state.inPocket = state.surferX >= 0.05 * H && state.surferX <= 1.25 * H;
-        state.inFoam = state.surferX < -0.40 * H;
-        state.wasInBarrel = state.inBarrel;
-        state.inBarrel = underBarrelRoof && (state.crouching || !state.playing);
-
-        if (state.wasInBarrel && !state.inBarrel && state.playing) {
-          for (let d = 0; d < 6; d++) spawnLensDroplet(true);
-        }
-
-        const targetSpeed = (13.2 + H * 2.2) * (state.inBarrel ? 1.25 : state.inPocket ? 1.12 : 0.88);
-        state.speed = THREE.MathUtils.lerp(state.speed, targetSpeed, dt * 3);
-        state.scrollZ += state.speed * dt;
-        waveUniforms.uScrollZ.value = state.scrollZ;
-        seabedUniforms.uScrollZ.value = state.scrollZ;
-
-        updateHollowBarrelGeometry(state.scrollZ, H, barrelClosure);
-
-        barrelInnerLight.position.set(state.surferX - 0.9, state.surferY + 1.15, -0.5);
-        barrelInnerLight.intensity = state.inBarrel ? 3.6 : 1.6;
-
-        // 4. Animación de agacharse, mano en pared y surfista articulado
-        state.crouchAnim = THREE.MathUtils.lerp(state.crouchAnim, state.crouching ? 1 : 0, dt * 9);
-        state.handAnim = THREE.MathUtils.lerp(state.handAnim, state.handDragging ? 1 : 0, dt * 10);
-
-        fpHand.visible = state.camView === 'first' && state.handAnim > 0.05 && !isXR;
-        if (fpHand.visible) {
-          fpHand.position.set(
-            state.surferX - 0.12 - state.handAnim * 0.26,
-            state.surferY + 0.92 - state.crouchAnim * 0.42,
-            -0.42
-          );
-          fpHand.rotation.set(0.15, 0.25, 0.28 + Math.sin(elapsed * 14) * 0.05);
-        }
-
-        if (surferModel.root.visible) {
-          surferModel.pelvis.position.y = 0.86 - state.crouchAnim * 0.34;
-          surferModel.torso.rotation.x = 0.14 + state.crouchAnim * 0.42;
-          surferModel.torso.rotation.z = -state.roll * 0.5;
-          surferModel.leftArm.rotation.z = -0.35 - state.handAnim * 0.85;
-          surferModel.rightArm.rotation.z = 0.48 + state.crouchAnim * 0.35;
-        }
-
-        // 5. Rocío volumétrico (spray & mist) y gotas refractivas en lente
-        const carveIntensity = Math.min(1.5, Math.abs(latVel) * 0.45);
-        if (carveIntensity > 0.24) {
-          spawnVolumetricSpray(new THREE.Vector3(state.surferX + 0.14, state.surferY + 0.05, 0.85), 2, 2.2, 2.8);
-          if (Math.random() < 0.14) spawnLensDroplet(false);
-        }
-
-        if (state.handDragging && state.surferX < 1.3 * H) {
-          spawnVolumetricSpray(
-            new THREE.Vector3(state.surferX - 0.56, state.surferY + 0.52 - state.crouchAnim * 0.3, -0.35),
-            3,
-            1.4,
-            2.2
-          );
-          if (Math.random() < 0.26) spawnLensDroplet(true);
-        }
-
-        // Spit continuo en la boca del tubo y viento offshore en la cresta
-        if (Math.random() < 0.72) {
-          spawnVolumetricSpray(new THREE.Vector3(0.76 * H, 0.52 * H, -3.5), 2, 1.9, 1.5);
-        }
-
-        const sAttr = sprayGeo.attributes.position;
-        for (let i = 0; i < sprayCount; i++) {
-          const v = sprayVel[i];
-          if (v.life > 0) {
-            v.life -= dt;
-            v.vy -= 9.8 * dt;
-            sAttr.setXYZ(
-              i,
-              sAttr.getX(i) + v.vx * dt,
-              sAttr.getY(i) + v.vy * dt,
-              sAttr.getZ(i) + v.vz * dt
-            );
-            if (v.life <= 0) sAttr.setY(i, -30);
-          }
-        }
-        sAttr.needsUpdate = true;
-
-        // 6. Puntuación y Telemetría HUD
-        if (state.playing) {
-          if (state.inFoam) {
-            state.pocketTime = 0;
-            state.mult = 1;
-          } else if (state.inBarrel || state.inPocket) {
-            state.pocketTime += dt;
-            const prevM = state.mult;
-            state.mult = Math.min(5, 1 + Math.floor(state.pocketTime / 3.5));
-            if (state.mult > state.maxMult) state.maxMult = state.mult;
-            if (state.mult > prevM) audioEngine.playHarmonicCue(0.85 + state.mult * 0.08);
-          }
-
-          let rate = 18;
-          if (state.inBarrel) {
-            rate += 95;
-            state.barrelTime += dt;
-          } else if (state.inPocket) {
-            rate += 42;
-          }
-          if (state.handDragging && state.surferX < 1.3 * H) {
-            rate += 48;
-          }
-
-          state.score += rate * state.mult * dt;
-
-          hudTimer.textContent = formatTime(state.timeLeft);
-          hudScore.textContent = Math.round(state.score).toLocaleString('es-VE');
-          hudMult.textContent = `x${state.mult}`;
-          hudBarrelTime.textContent = `${state.barrelTime.toFixed(1)}s`;
-
-          barrelGlow.classList.toggle('active', state.inBarrel);
-          zoneBanner.classList.remove('pocket', 'foam');
-          if (state.inBarrel) {
-            zoneBanner.textContent = '¡EN EL TUBO DE CUYAGUA!';
-            zoneBanner.classList.add('visible');
-          } else if (state.inFoam) {
-            zoneBanner.textContent = 'ESPUMA TRASERA · SAL AL POCKET';
-            zoneBanner.classList.add('visible', 'foam');
-          } else if (state.inPocket) {
-            zoneBanner.textContent = `EN EL POCKET · MULTIPLICADOR x${state.mult}`;
-            zoneBanner.classList.add('visible', 'pocket');
-          } else {
-            zoneBanner.classList.remove('visible');
-          }
-        }
-
-        audioEngine.update(state.inBarrel, carveIntensity, state.handDragging, state.speed / 22);
-
-        // 7. Posición y balanceo de cámara
-        if (isXR) {
-          xrRig.position.set(state.surferX, state.surferY + 0.04, 0.15);
-        } else if (!state.playing && !state.ended) {
-          const orbit = Math.sin(elapsed * 0.25) * 0.35;
-          camera.position.set(state.surferX + 1.45 + Math.sin(orbit) * 1.1, state.surferY + 1.32, 2.55);
-          camera.lookAt(state.surferX - 0.25, state.surferY + 0.72, -4.5);
-        } else if (state.camView === 'first') {
-          const eyeY = 1.54 - state.crouchAnim * 0.64;
-          camera.position.set(state.surferX, state.surferY + eyeY, 0.18);
-          camera.lookAt(state.surferX * 0.65 - 0.15, state.surferY + eyeY * 0.80, -9.5);
-          camera.rotation.z = state.roll * 0.26;
-        } else {
-          camera.position.x = THREE.MathUtils.lerp(
-            camera.position.x,
-            state.surferX + 1.35 - state.crouchAnim * 0.65,
-            dt * 4.5
-          );
-          camera.position.y = THREE.MathUtils.lerp(
-            camera.position.y,
-            state.surferY + 1.75 - state.crouchAnim * 0.72,
-            dt * 4.5
-          );
-          camera.position.z = THREE.MathUtils.lerp(
-            camera.position.z,
-            2.45 - state.crouchAnim * 0.45,
-            dt * 4.5
-          );
-          camera.lookAt(state.surferX - 0.15, state.surferY + 0.78 - state.crouchAnim * 0.25, -2.5);
-        }
-
-        updateDropletsAndOptics(dt, elapsed);
-
-        // 8. RENDERIZADO DE DOBLE PASADA (PASADA 1: REFRACCIÓN FONDO MARINO | PASADA 2: ESCENA + COMPOSER)
-        if (!isXR) {
-          waveMesh.visible = false;
-          sprayPoints.visible = false;
-          renderer.setRenderTarget(refractionRT);
-          renderer.clear();
-          renderer.render(scene, camera);
-          renderer.setRenderTarget(null);
-          waveMesh.visible = true;
-          sprayPoints.visible = true;
-
-          if (hasComposer && composer) {
-            composer.render(dt);
-          } else {
-            renderer.render(scene, camera);
-          }
-        } else {
-          // Modo estéreo WebXR nativo 90fps sin artefactos de pantalla dividida
-          renderer.render(scene, camera);
-        }
-      });
-    };
+      renderer.render(scene, camera);
+    }
   </script>
 </body>
 </html>
