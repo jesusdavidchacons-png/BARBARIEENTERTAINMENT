@@ -14,7 +14,7 @@
       overflow: hidden;
     }
 
-    /* PANTALLA INICIAL (Usa visibility en lugar de display:none para que Chromium no pause los videos en WebXR) */
+    /* PANTALLA INICIAL (LOBBY) */
     #landing {
       position: fixed;
       inset: 0;
@@ -73,7 +73,7 @@
     }
 
     p.subtitle {
-      max-width: 540px;
+      max-width: 560px;
       color: #93b4c8;
       font-size: 13px;
       line-height: 1.45;
@@ -85,7 +85,7 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(220px, 1fr));
       gap: 14px;
-      max-width: 800px;
+      max-width: 820px;
       width: 100%;
       margin-bottom: 22px;
       z-index: 2;
@@ -151,6 +151,39 @@
       pointer-events: none;
     }
 
+    /* Input accesible para el gestor de archivos del Quest 3 (nunca display:none) */
+    .native-file-input {
+      position: fixed;
+      top: -9999px;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    /* Label estilizado como botón nativo para garantizar apertura en Quest Browser */
+    .btn-upload-label {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-upload-label:hover, .btn-upload-label:active {
+      background: rgba(0, 240, 255, 0.2);
+      border-color: #00f0ff;
+    }
+
     .file-status {
       font-size: 11px;
       font-family: monospace;
@@ -201,18 +234,10 @@
       border: 1px solid rgba(0, 240, 255, 0.4);
     }
 
-    .btn-upload {
-      width: 100%;
-      padding: 9px 12px;
-      font-size: 11px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-    }
-
-    .btn-upload:hover {
-      background: rgba(0, 240, 255, 0.18);
-      border-color: #00f0ff;
+    .btn-reset {
+      background: rgba(255, 190, 11, 0.16);
+      color: #ffbe0b;
+      border: 1px solid rgba(255, 190, 11, 0.5);
     }
 
     /* HUD FLOTANTE DENTRO DEL VISOR O VISTA PREVIA */
@@ -222,13 +247,13 @@
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(4, 14, 24, 0.88);
+      background: rgba(4, 14, 24, 0.9);
       border: 1px solid rgba(0, 240, 255, 0.4);
       backdrop-filter: blur(12px);
-      padding: 10px 20px;
+      padding: 10px 18px;
       border-radius: 999px;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
       z-index: 20;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
       white-space: nowrap;
@@ -237,10 +262,11 @@
     #status-pill {
       font-size: 13px;
       color: #d6f8ff;
+      margin-right: 4px;
     }
 
-    #recenter-btn, #exit-preview-btn {
-      padding: 8px 16px;
+    #recenter-btn, #reset-hud-btn, #exit-preview-btn {
+      padding: 8px 14px;
       font-size: 11px;
     }
   </style>
@@ -260,7 +286,7 @@
     <div class="badge">Portal Espacial · Meta Quest 3</div>
     <h1>DESTINOS VEN</h1>
     <p class="subtitle">
-      Selecciona los videos locales de cada estado desde la memoria del visor y entra al portal holográfico.
+      Toca cada botón para elegir el archivo de video desde la memoria interna del Meta Quest 3 y entra al portal holográfico.
     </p>
 
     <div class="upload-grid">
@@ -271,10 +297,10 @@
           <video id="video-tachira" muted loop playsinline preload="auto"></video>
           <div class="preview-placeholder" id="ph-tachira">SIN SEÑAL</div>
         </div>
-        <input type="file" id="input-tachira" accept="video/*" style="display: none;" />
-        <button class="btn-upload" onclick="document.getElementById('input-tachira').click()">
-          Seleccionar Video Táchira
-        </button>
+        <label class="btn-upload-label" for="input-tachira">
+          Cargar Video Táchira
+          <input type="file" id="input-tachira" class="native-file-input" />
+        </label>
         <div class="file-status" id="status-tachira">Listo para cargar</div>
       </div>
 
@@ -285,10 +311,10 @@
           <video id="video-aragua" muted loop playsinline preload="auto"></video>
           <div class="preview-placeholder" id="ph-aragua">SIN SEÑAL</div>
         </div>
-        <input type="file" id="input-aragua" accept="video/*" style="display: none;" />
-        <button class="btn-upload" onclick="document.getElementById('input-aragua').click()">
-          Seleccionar Video Aragua
-        </button>
+        <label class="btn-upload-label" for="input-aragua">
+          Cargar Video Aragua
+          <input type="file" id="input-aragua" class="native-file-input" />
+        </label>
         <div class="file-status" id="status-aragua">Listo para cargar</div>
       </div>
 
@@ -299,10 +325,10 @@
           <video id="video-lara" muted loop playsinline preload="auto"></video>
           <div class="preview-placeholder" id="ph-lara">SIN SEÑAL</div>
         </div>
-        <input type="file" id="input-lara" accept="video/*" style="display: none;" />
-        <button class="btn-upload" onclick="document.getElementById('input-lara').click()">
-          Seleccionar Video Lara
-        </button>
+        <label class="btn-upload-label" for="input-lara">
+          Cargar Video Lara
+          <input type="file" id="input-lara" class="native-file-input" />
+        </label>
         <div class="file-status" id="status-lara">Listo para cargar</div>
       </div>
     </div>
@@ -316,6 +342,7 @@
   <!-- BARRA FLOTANTE INFERIOR -->
   <div id="xr-overlay">
     <span id="status-pill">Toca con tu dedo o haz pellizco sobre un destino</span>
+    <button id="reset-hud-btn" class="btn-reset">Reiniciar Pasaporte</button>
     <button id="recenter-btn" class="btn-primary">Re-centrar</button>
     <button id="exit-preview-btn" class="btn-secondary" style="display: none;">Salir</button>
   </div>
@@ -365,6 +392,7 @@
     const detailButtons = [];
     const fingerTips = [];
     let completionBanner = null;
+    let reset3dBtn = null;
     let audioCtx = null;
 
     init();
@@ -397,12 +425,13 @@
       });
 
       createDetailControls();
-      createCompletionBanner();
+      createCompletionBannerAndReset();
       setupHands();
       setupDesktopPreviewControls();
 
       document.getElementById('enter-xr').addEventListener('click', startXR);
       document.getElementById('preview-3d').addEventListener('click', startDesktopPreview);
+      document.getElementById('reset-hud-btn').addEventListener('click', resetPassport);
 
       document.getElementById('recenter-btn').addEventListener('click', () => {
         playSciFiTone('click');
@@ -430,7 +459,7 @@
     }
 
     // =========================================================================
-    // 1. CARGA INSTANTÁNEA DESDE MEMORIA LOCAL (SIN BLOQUEOS DE DECODIFICACIÓN)
+    // 1. CARGA NATIVA DESDE MEMORIA INTERNA DEL META QUEST 3
     // =========================================================================
     function bindInstantLocalLoader(stateId, card) {
       const inputEl = document.getElementById(`input-${stateId}`);
@@ -440,7 +469,7 @@
       const video = card.userData.video;
 
       inputEl.addEventListener('change', (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files && event.target.files[0];
         if (!file) return;
 
         if (card.userData.blobUrl) {
@@ -450,7 +479,6 @@
         const blobUrl = URL.createObjectURL(file);
         card.userData.blobUrl = blobUrl;
 
-        // Registrar listeners ANTES de asignar src para no perder eventos rápidos
         video.onloadedmetadata = () => {
           placeholderEl.style.display = 'none';
           statusEl.textContent = `✓ ${file.name} (${video.videoWidth}x${video.videoHeight})`;
@@ -471,15 +499,18 @@
 
         video.onerror = () => {
           const code = video.error ? video.error.code : '?';
-          statusEl.textContent = `✕ Error códec (${code}): exporta MP4 H.264 8-bit`;
+          statusEl.textContent = `✕ Error códec (${code}): usa MP4 H.264`;
           statusEl.className = 'file-status err';
           cardBoxEl.classList.remove('ready');
         };
 
         video.muted = true;
         video.src = blobUrl;
-        // Llamar play() de inmediato fuerza al decodificador por hardware a arrancar al instante
+        video.load();
         video.play().catch(() => {});
+
+        // Permite volver a elegir el mismo archivo si fuera necesario
+        inputEl.value = '';
       });
     }
 
@@ -517,7 +548,7 @@
 
       ctx.fillStyle = '#7fa6bd';
       ctx.font = '14px monospace';
-      ctx.fillText('SELECCIONA EL VIDEO EN EL MENÚ', 320, 280);
+      ctx.fillText('CARGA EL VIDEO EN EL MENÚ INICIAL', 320, 280);
 
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
@@ -581,15 +612,15 @@
       return tex;
     }
 
-    function buildButtonTexture(label, accentColor) {
+    function buildButtonTexture(label, accentColor, bgColor = 'rgba(4, 16, 28, 0.92)') {
       const canvas = document.createElement('canvas');
-      canvas.width = 512;
+      canvas.width = 560;
       canvas.height = 128;
       const ctx = canvas.getContext('2d');
 
-      ctx.fillStyle = 'rgba(4, 16, 28, 0.92)';
+      ctx.fillStyle = bgColor;
       ctx.beginPath();
-      ctx.roundRect(8, 8, 496, 112, 56);
+      ctx.roundRect(8, 8, 544, 112, 56);
       ctx.fill();
 
       ctx.strokeStyle = accentColor;
@@ -597,10 +628,10 @@
       ctx.stroke();
 
       ctx.fillStyle = '#ffffff';
-      ctx.font = '800 30px system-ui, sans-serif';
+      ctx.font = '800 28px system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(label, 256, 66);
+      ctx.fillText(label, 280, 66);
 
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
@@ -608,7 +639,7 @@
     }
 
     // =========================================================================
-    // 3. CONSTRUCCIÓN DE PORTALES 3D
+    // 3. CONSTRUCCIÓN DE PORTALES 3D Y BANNER DE CIERRE + RESET 3D
     // =========================================================================
     function createHologramPortal(destino, index, videoEl) {
       const group = new THREE.Group();
@@ -683,26 +714,26 @@
 
     function createDetailControls() {
       const checkinMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.46, 0.115),
+        new THREE.PlaneGeometry(0.48, 0.115),
         new THREE.MeshBasicMaterial({
           map: buildButtonTexture('◈ SELLAR DESTINO', '#00ff9d'),
           transparent: true,
           side: THREE.DoubleSide
         })
       );
-      checkinMesh.position.set(-0.26, 0.84, -1.05);
+      checkinMesh.position.set(-0.27, 0.84, -1.05);
       checkinMesh.visible = false;
       checkinMesh.userData = { action: 'CHECKIN' };
 
       const backMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.46, 0.115),
+        new THREE.PlaneGeometry(0.48, 0.115),
         new THREE.MeshBasicMaterial({
           map: buildButtonTexture('✕ VOLVER AL MAPA', '#00f0ff'),
           transparent: true,
           side: THREE.DoubleSide
         })
       );
-      backMesh.position.set(0.26, 0.84, -1.05);
+      backMesh.position.set(0.27, 0.84, -1.05);
       backMesh.visible = false;
       backMesh.userData = { action: 'BACK' };
 
@@ -710,15 +741,16 @@
       detailButtons.push(checkinMesh, backMesh);
     }
 
-    function createCompletionBanner() {
+    function createCompletionBannerAndReset() {
+      // Banner superior al completar 3/3 sellos
       const canvas = document.createElement('canvas');
       canvas.width = 1024;
-      canvas.height = 180;
+      canvas.height = 170;
       const ctx = canvas.getContext('2d');
 
-      ctx.fillStyle = 'rgba(4, 22, 32, 0.92)';
+      ctx.fillStyle = 'rgba(4, 22, 32, 0.94)';
       ctx.beginPath();
-      ctx.roundRect(12, 12, 1000, 156, 32);
+      ctx.roundRect(12, 12, 1000, 146, 32);
       ctx.fill();
 
       ctx.strokeStyle = '#00ff9d';
@@ -728,26 +760,72 @@
       ctx.fillStyle = '#00ff9d';
       ctx.font = '900 34px system-ui, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('★ PASAPORTE DESTINOS VEN COMPLETADO ★', 512, 74);
+      ctx.fillText('★ PASAPORTE DESTINOS VEN COMPLETADO ★', 512, 72);
 
       ctx.fillStyle = '#ffffff';
-      ctx.font = '600 24px monospace';
-      ctx.fillText('3/3 DESTINOS EXPLORADOS · RECLAMA TU INSIGNIA EN EL STAND', 512, 124);
+      ctx.font = '600 23px monospace';
+      ctx.fillText('3/3 DESTINOS SELLADOS · RECLAMA TU INSIGNIA EN EL STAND', 512, 120);
 
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
 
       completionBanner = new THREE.Mesh(
-        new THREE.PlaneGeometry(1.15, 0.20),
+        new THREE.PlaneGeometry(1.15, 0.19),
         new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide })
       );
-      completionBanner.position.set(0, 1.78, -1.2);
+      completionBanner.position.set(0, 1.82, -1.18);
       completionBanner.visible = false;
       holoRoot.add(completionBanner);
+
+      // Botón holográfico inferior para reiniciar pasaporte al siguiente visitante
+      reset3dBtn = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.62, 0.13),
+        new THREE.MeshBasicMaterial({
+          map: buildButtonTexture('↻ REINICIAR PASAPORTE', '#ffbe0b', 'rgba(28, 20, 4, 0.94)'),
+          transparent: true,
+          side: THREE.DoubleSide
+        })
+      );
+      reset3dBtn.position.set(0, 0.94, -1.12);
+      reset3dBtn.visible = false;
+      holoRoot.add(reset3dBtn);
     }
 
     // =========================================================================
-    // 4. RASTREO DE MANOS Y CONTROLES DE ESCRITORIO
+    // 4. REINICIO COMPLETO DE PASAPORTE (CONSERVANDO LOS VIDEOS CARGADOS)
+    // =========================================================================
+    function resetPassport() {
+      playSciFiTone('close');
+      mode = 'HUB';
+      selectedCard = null;
+      completionBanner.visible = false;
+      reset3dBtn.visible = false;
+      detailButtons.forEach(btn => { btn.visible = false; });
+
+      cards.forEach(c => {
+        c.userData.visited = false;
+        c.userData.targetPos.copy(c.userData.hubPos);
+        c.userData.targetScale = 1.0;
+
+        // Restaurar HUD a estado inicial sin sellar
+        c.userData.hudMesh.material.map.dispose();
+        c.userData.hudMesh.material.map = buildHudTexture(c.userData.destino, false);
+        c.userData.hudMesh.material.needsUpdate = true;
+
+        // Rebobinar video y mantener bucle silencioso en el Hub
+        c.userData.video.muted = true;
+        if (c.userData.hasVideo) {
+          c.userData.video.currentTime = 0;
+          c.userData.video.play().catch(() => {});
+        }
+      });
+
+      document.getElementById('status-pill').textContent =
+        'Pasaporte reiniciado (0/3) · Toca un destino para comenzar';
+    }
+
+    // =========================================================================
+    // 5. RASTREO DE MANOS Y CONTROLES DE ESCRITORIO
     // =========================================================================
     function setupHands() {
       for (let i = 0; i < 2; i++) {
@@ -793,6 +871,16 @@
 
     function processRayHits(raycaster, now) {
       if (mode === 'HUB') {
+        // Verificar si tocó el botón 3D de reiniciar pasaporte
+        if (reset3dBtn.visible) {
+          const resetHits = raycaster.intersectObject(reset3dBtn);
+          if (resetHits.length > 0) {
+            lastInteractionTime = now;
+            resetPassport();
+            return;
+          }
+        }
+
         const targets = cards.map(c => c.userData.hitTarget);
         const hits = raycaster.intersectObjects(targets);
         if (hits.length > 0) {
@@ -819,6 +907,16 @@
           if (now - lastInteractionTime < 750) continue;
 
           if (mode === 'HUB') {
+            if (reset3dBtn.visible) {
+              const resetPos = new THREE.Vector3();
+              reset3dBtn.getWorldPosition(resetPos);
+              if (indexJoint.position.distanceTo(resetPos) < 0.16) {
+                lastInteractionTime = now;
+                resetPassport();
+                return;
+              }
+            }
+
             for (const card of cards) {
               const cardWorldPos = new THREE.Vector3();
               card.getWorldPosition(cardWorldPos);
@@ -833,7 +931,7 @@
               if (!btn.visible) continue;
               const btnWorldPos = new THREE.Vector3();
               btn.getWorldPosition(btnWorldPos);
-              if (indexJoint.position.distanceTo(btnWorldPos) < 0.13) {
+              if (indexJoint.position.distanceTo(btnWorldPos) < 0.14) {
                 lastInteractionTime = now;
                 handleDetailButton(btn.userData.action);
                 return;
@@ -880,18 +978,19 @@
       document.getElementById('recenter-btn').style.display = 'none';
       document.getElementById('exit-preview-btn').style.display = 'inline-block';
       document.getElementById('status-pill').textContent =
-        'Vista Previa 3D: Haz clic sobre Táchira, Aragua o Lara para probar';
+        'Vista Previa 3D: Haz clic sobre Táchira, Aragua o Lara';
 
       renderer.setAnimationLoop(animateScene);
     }
 
     // =========================================================================
-    // 5. NAVEGACIÓN ENTRE HUB Y DESTINO (CON OPTIMIZACIÓN DE DECODIFICADOR)
+    // 6. NAVEGACIÓN ENTRE HUB Y DESTINO
     // =========================================================================
     function enterDestination(card) {
       mode = 'DETAIL';
       selectedCard = card;
       completionBanner.visible = false;
+      reset3dBtn.visible = false;
       playSciFiTone('open');
 
       cards.forEach(c => {
@@ -904,7 +1003,6 @@
             c.userData.video.play().catch(() => {});
           }
         } else {
-          // Pausa los otros 2 videos para dedicar 100% de potencia del Quest 3 al activo
           c.userData.targetScale = 0.001;
           c.userData.video.muted = true;
           if (c.userData.hasVideo) c.userData.video.pause();
@@ -933,9 +1031,12 @@
       const visitedCount = cards.filter(c => c.userData.visited).length;
       if (visitedCount === cards.length) {
         completionBanner.visible = true;
+        reset3dBtn.visible = true;
         document.getElementById('status-pill').textContent =
-          '¡Felicidades! Has sellado los 3 destinos de Destinos Ven';
+          '¡Pasaporte completado (3/3)! Toca REINICIAR PASAPORTE para el siguiente turno';
       } else {
+        completionBanner.visible = false;
+        reset3dBtn.visible = false;
         document.getElementById('status-pill').textContent =
           `Destinos sellados: ${visitedCount}/${cards.length} · Toca otro destino para explorar`;
       }
