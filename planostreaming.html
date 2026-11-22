@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plan Maestro de Cámaras y Streaming — Semifinales 2026 · La Flor de Venezuela</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Cinzel:wght@700;800&family=JetBrains+Mono:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-obsidian: #030508;
+      --bg-panel: #070b14;
+      --bg-navy: #0a1936;
+      --gold: #f5b942;
+      --crimson: #e11d48;
+      --cyan: #38bdf8;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-obsidian);
+      background-image:
+        radial-gradient(ellipse 80% 35% at 50% 0%, rgba(245, 185, 66, 0.08), transparent 70%),
+        radial-gradient(ellipse 60% 30% at 85% 20%, rgba(56, 189, 248, 0.05), transparent 70%);
+      color: #f8fafc;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .font-fox {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.04em;
+    }
+
+    .font-cinema {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.12em;
+    }
+
+    .font-tnum {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.85); opacity: 0.85; }
+      100% { transform: scale(2.1); opacity: 0; }
+    }
+
+    .cam-pulse-ring {
+      transform-origin: center;
+      animation: pulseRing 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    @keyframes topBroadcastBar {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .broadcast-accent-line {
+      background: linear-gradient(90deg, #e11d48, #f5b942, #38bdf8, #f5b942);
+      background-size: 220% 220%;
+      animation: topBroadcastBar 5s ease infinite;
+    }
+
+    .glass-card {
+      background: linear-gradient(180deg, rgba(10, 20, 40, 0.92) 0%, rgba(6, 10, 20, 0.97) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.25); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(245, 185, 66, 0.35); border-radius: 9999px; }
+  </style>
+</head>
+<body class="min-h-full flex flex-col selection:bg-[#f5b942] selection:text-black">
+
+  <!-- Barra superior cromática estilo broadcast -->
+  <div class="broadcast-accent-line h-1 w-full"></div>
+
+  <!-- =========================================================================
+       1. CABECERA SUPERIOR BROADCAST
+       ========================================================================= -->
+  <header class="sticky top-0 z-40 bg-[#030508]/92 backdrop-blur-xl border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      <!-- Identidad de la jornada -->
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#e11d48] animate-ping shrink-0"></span>
+        <div class="min-w-0">
+          <span class="block text-[9px] font-bold uppercase tracking-[0.22em] text-[#f5b942] truncate">
+            Festival de la Voz Niño Simón 2026
+          </span>
+          <div class="font-fox text-base sm:text-lg font-black uppercase text-white leading-none truncate">
+            SEMIFINALES 2026 &middot; LA FLOR DE VENEZUELA
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegación rápida en escritorio -->
+      <nav class="hidden lg:flex items-center gap-1.5 text-xs">
+        <a href="#plano-auditorio" class="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 font-fox font-bold uppercase tracking-wider text-slate-200 transition">
+          Plano del Espacio
+        </a>
+        <a href="#seis-camaras" class="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 font-fox font-bold uppercase tracking-wider text-slate-200 transition">
+          6 Cámaras
+        </a>
+        <a href="#guion-en-vivo" class="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 font-fox font-bold uppercase tracking-wider text-slate-200 transition">
+          Guion en Vivo
+        </a>
+        <a href="#audio-red-checklist" class="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 font-fox font-bold uppercase tracking-wider text-slate-200 transition">
+          Audio &amp; Red
+        </a>
+      </nav>
+
+      <!-- Acceso rápido al Checklist Pre-Show -->
+      <a href="#checklist-equipo" class="px-3.5 py-2 rounded-xl bg-[#f5b942] hover:bg-[#fbbf24] text-black font-fox text-xs sm:text-sm font-black uppercase tracking-wider flex items-center gap-2 transition shrink-0 shadow-lg shadow-amber-400/15">
+        <i class="fa-solid fa-list-check"></i>
+        <span>Checklist</span>
+        <span id="headerChecklistCounter" class="px-1.5 py-0.5 rounded bg-black/15 font-tnum text-[11px]">0/8</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 pt-8 pb-20 space-y-14">
+
+    <!-- =======================================================================
+         2. HERO CINEMATOGRÁFICO + LECTURA ESPACIAL DEL RECINTO
+         ======================================================================= -->
+    <section class="space-y-6">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div class="space-y-2.5 max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#38bdf8]/10 border border-[#38bdf8]/30 text-[#38bdf8] font-fox text-xs font-extrabold uppercase tracking-widest">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>La Flor de Venezuela &middot; Barquisimeto, Estado Lara</span>
+          </div>
+
+          <h1 class="font-fox text-4xl sm:text-6xl font-black uppercase text-white leading-[0.95]">
+            PLAN DE REALIZACIÓN Y CÁMARAS &middot; <span class="text-[#f5b942]">SEMIFINALES</span>
+          </h1>
+
+          <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
+            Referencia visual para todo el equipo técnico: distribución exacta de las 6 cámaras en el anfiteatro de madera, cortes coordinados por participante y disparo de overlays 16:9.
+          </p>
+        </div>
+
+        <!-- Métricas clave de producción -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-2.5 shrink-0">
+          <div class="glass-card rounded-xl px-4 py-3">
+            <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Unidades</span>
+            <span class="font-tnum text-xl font-extrabold text-[#f5b942]">6 CÁMARAS</span>
+          </div>
+          <div class="glass-card rounded-xl px-4 py-3">
+            <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Realización</span>
+            <span class="font-tnum text-sm sm:text-base font-extrabold text-white block mt-0.5">YOLOBOX + 16:9</span>
+          </div>
+          <div class="glass-card rounded-xl px-4 py-3">
+            <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Escaleta Infantil</span>
+            <span class="font-tnum text-sm sm:text-base font-extrabold text-[#38bdf8] block mt-0.5">15 + CIERRE GRUPAL</span>
+          </div>
+          <div class="glass-card rounded-xl px-4 py-3">
+            <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Sonido</span>
+            <span class="font-tnum text-sm sm:text-base font-extrabold text-emerald-400 block mt-0.5">MÁSTER CONSOLA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lectura espacial del auditorio en 4 tarjetas rápidas -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div class="glass-card rounded-2xl p-4 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#f5b942]">01 &middot; Gradería de Madera</span>
+            <i class="fa-solid fa-layer-group text-amber-400/80 text-xs"></i>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Anfiteatro escalonado ideal para trípodes altos con línea limpia. Reserva siempre 2 puestos al frente de cada trípode.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#38bdf8]">02 &middot; Tarima + LED 2x2</span>
+            <i class="fa-solid fa-tv text-sky-400 text-xs"></i>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Pared curva blanca y pantalla central 2&times;2 frente a la extensión negra y la mesa del jurado (3 puestos).
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 space-y-1.5 border-[#e11d48]/35">
+          <div class="flex items-center justify-between">
+            <span class="font-fox text-xs font-extrabold uppercase tracking-widest text-[#fb7185]">03 &middot; Puerta Izquierda</span>
+            <i class="fa-solid fa-triangle-exclamation text-[#e11d48] text-xs"></i>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Acceso de artistas y staff. <strong class="text-white">Cero trípodes fijos aquí</strong>; úsalo solo para Action 6 y Ronin en movimiento.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-4 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-fox text-xs font-extrabold uppercase tracking-widest text-emerald-400">04 &middot; Flanco Derecho</span>
+            <i class="fa-solid fa-video text-emerald-400 text-xs"></i>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Lateral derecho libre para elevar el palo de 3 m (Pocket 4 Pro) y sacar planos cerrados y laterales sin chocar.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         3. PLANO VISUAL INTERACTIVO DEL AUDITORIO + INSPECTOR DE CÁMARA
+         ======================================================================= -->
+    <section id="plano-auditorio" class="space-y-4">
+      <div class="flex flex-wrap items-end justify-between gap-2 border-b border-white/10 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#f5b942] block">
+            Mapa Interactivo del Recinto
+          </span>
+          <h2 class="font-fox text-2xl sm:text-3xl font-black uppercase text-white leading-none">
+            Plano Visual del Auditorio &amp; 6 Cámaras
+          </h2>
+        </div>
+        <span class="text-xs text-slate-400">
+          Toca cualquier cámara (<strong class="text-white">CAM 1 a CAM 6</strong>) en el plano o en la cuadrícula para ver su ficha.
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+        <!-- PLANO SVG INTERACTIVO (7 COLS) -->
+        <div class="lg:col-span-7 glass-card rounded-2xl p-3 sm:p-4">
+          <div class="flex items-center justify-between text-[10px] font-tnum uppercase tracking-wider text-slate-400 mb-2 px-1">
+            <span>ORIENTACIÓN: ARRIBA ESCENARIO &rarr; ABAJO GRADAS</span>
+            <span class="text-[#f5b942]">CLIC EN PIN PARA INSPECCIONAR</span>
+          </div>
+
+          <svg id="venueSvgMap" viewBox="0 0 800 620" class="w-full h-auto rounded-xl bg-[#04070e] border border-white/10 select-none" role="img" aria-label="Plano de distribución de cámaras en La Flor de Venezuela">
+            <defs>
+              <pattern id="woodGrid" width="40" height="24" patternUnits="userSpaceOnUse">
+                <rect width="40" height="24" fill="#160f0a" />
+                <line x1="0" y1="24" x2="40" y2="24" stroke="#2c1d12" stroke-width="1.5" />
+                <line x1="20" y1="0" x2="20" y2="24" stroke="#21150d" stroke-width="0.7" />
+              </pattern>
+              <filter id="glowGold" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Pared curva de fondo -->
+            <path d="M 90 125 Q 400 72 710 125 L 710 155 Q 400 106 90 155 Z" fill="#182235" stroke="#334155" stroke-width="1.5" />
+            <text x="400" y="106" text-anchor="middle" fill="#94a3b8" font-family="Barlow Condensed, sans-serif" font-size="13" font-weight="800" letter-spacing="2">PARED CURVA BLANCA (CONTROL DE EXPOSICIÓN)</text>
+
+            <!-- Pantalla LED central 2x2 -->
+            <rect x="325" y="114" width="150" height="34" rx="4" fill="#09152e" stroke="#38bdf8" stroke-width="1.5" />
+            <line x1="400" y1="114" x2="400" y2="148" stroke="#38bdf8" stroke-opacity="0.35" stroke-width="1" />
+            <line x1="325" y1="131" x2="475" y2="131" stroke="#38bdf8" stroke-opacity="0.35" stroke-width="1" />
+            <text x="400" y="135" text-anchor="middle" fill="#e0f2fe" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700">PANTALLA LED 2x2</text>
+
+            <!-- Tarima de madera -->
+            <rect x="190" y="156" width="420" height="58" rx="6" fill="#2c1a0e" stroke="#f5b942" stroke-opacity="0.55" stroke-width="1.5" />
+            <text x="400" y="190" text-anchor="middle" fill="#fde68a" font-family="Barlow Condensed, sans-serif" font-size="18" font-weight="900" letter-spacing="3">TARIMA DE MADERA &middot; ESCENARIO</text>
+
+            <!-- Extensión modular negra -->
+            <rect x="215" y="214" width="370" height="32" rx="4" fill="#0d121d" stroke="#475569" stroke-width="1.2" />
+            <text x="400" y="234" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono, monospace" font-size="10" font-weight="600">PLATAFORMA MODULAR NEGRA</text>
+
+            <!-- Zona de precaución: Puerta izquierda (Bambalinas) -->
+            <rect x="42" y="152" width="126" height="96" rx="8" fill="#e11d48" fill-opacity="0.1" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="5 4" />
+            <text x="105" y="176" text-anchor="middle" fill="#fda4af" font-family="Barlow Condensed, sans-serif" font-size="13" font-weight="900" letter-spacing="1">PUERTA IZQUIERDA</text>
+            <text x="105" y="193" text-anchor="middle" fill="#fecdd3" font-family="Plus Jakarta Sans, sans-serif" font-size="9.5" font-weight="700">Bambalinas / Acceso</text>
+            <rect x="54" y="205" width="102" height="28" rx="4" fill="#881337" fill-opacity="0.65" />
+            <text x="105" y="222" text-anchor="middle" fill="#ffffff" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="700">NO TRÍPODES FIJOS</text>
+
+            <!-- Flanco derecho libre (Grúa / Sonido) -->
+            <rect x="632" y="156" width="126" height="90" rx="8" fill="#10b981" fill-opacity="0.07" stroke="#34d399" stroke-opacity="0.45" stroke-width="1.2" />
+            <text x="695" y="182" text-anchor="middle" fill="#6ee7b7" font-family="Barlow Condensed, sans-serif" font-size="13" font-weight="800" letter-spacing="1">FLANCO DERECHO</text>
+            <text x="695" y="199" text-anchor="middle" fill="#94a3b8" font-family="Plus Jakarta Sans, sans-serif" font-size="9">Sonido y Grúa 3m</text>
+            <text x="695" y="215" text-anchor="middle" fill="#a7f3d0" font-family="JetBrains Mono, monospace" font-size="8.5">ESPACIO LIBRE</text>
+
+            <!-- Mesa del jurado (3 puestos) -->
+            <rect x="285" y="264" width="230" height="36" rx="6" fill="#0a1936" stroke="#f5b942" stroke-width="1.5" />
+            <circle cx="325" cy="282" r="7" fill="#f5b942" fill-opacity="0.25" stroke="#f5b942" stroke-width="1.2" />
+            <circle cx="400" cy="282" r="7" fill="#f5b942" fill-opacity="0.25" stroke="#f5b942" stroke-width="1.2" />
+            <circle cx="475" cy="282" r="7" fill="#f5b942" fill-opacity="0.25" stroke="#f5b942" stroke-width="1.2" />
+            <text x="400" y="314" text-anchor="middle" fill="#f5b942" font-family="Barlow Condensed, sans-serif" font-size="12" font-weight="800" letter-spacing="1.5">MESA DEL JURADO (3 PUESTOS)</text>
+
+            <!-- Gradería escalonada de madera -->
+            <rect x="75" y="332" width="650" height="205" rx="10" fill="url(#woodGrid)" stroke="#78350f" stroke-width="1.5" />
+            <line x1="75" y1="373" x2="725" y2="373" stroke="#f5b942" stroke-opacity="0.16" stroke-width="1" />
+            <line x1="75" y1="414" x2="725" y2="414" stroke="#f5b942" stroke-opacity="0.16" stroke-width="1" />
+            <line x1="75" y1="455" x2="725" y2="455" stroke="#f5b942" stroke-opacity="0.16" stroke-width="1" />
+            <line x1="75" y1="496" x2="725" y2="496" stroke="#f5b942" stroke-opacity="0.16" stroke-width="1" />
+            <text x="100" y="352" fill="#d97706" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700">GRADAS BAJAS (DELEGACIONES)</text>
+            <text x="100" y="523" fill="#fbbf24" font-family="JetBrains Mono, monospace" font-size="9" font-weight="700">GRADAS MEDIAS / ALTAS (TRÍPODES)</text>
+
+            <!-- Mesa de realización / YoloBox -->
+            <rect x="220" y="556" width="360" height="44" rx="8" fill="#09152e" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="400" y="575" text-anchor="middle" fill="#ffffff" font-family="Barlow Condensed, sans-serif" font-size="14" font-weight="900" letter-spacing="1.5">CONTROL: YOLOBOX EXTREME + MACBOOK (16:9)</text>
+            <text x="400" y="590" text-anchor="middle" fill="#38bdf8" font-family="JetBrains Mono, monospace" font-size="9">ROUTER 5 GHz DEDICADO &middot; AUDIO MÁSTER</text>
+
+            <!-- Pines interactivos CAM 1..CAM 6 -->
+            <g id="svgCameraPins"></g>
+          </svg>
+        </div>
+
+        <!-- INSPECTOR DE FICHA TÉCNICA DE CÁMARA (5 COLS) -->
+        <div id="cameraInspectorCard" class="lg:col-span-5 glass-card rounded-2xl p-5 space-y-4">
+          <!-- Renderizado por JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         4. CUADRÍCULA DE LAS 6 CÁMARAS (VISTA RÁPIDA PARA TODO EL EQUIPO)
+         ======================================================================= -->
+    <section id="seis-camaras" class="space-y-4">
+      <div class="flex flex-wrap items-end justify-between gap-2 border-b border-white/10 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#38bdf8] block">
+            Asignación de Puestos
+          </span>
+          <h2 class="font-fox text-2xl sm:text-3xl font-black uppercase text-white leading-none">
+            Las 6 Cámaras en Detalle
+          </h2>
+        </div>
+        <span class="text-xs text-slate-400">
+          Cada tarjeta muestra ubicación, óptica, señal y regla clave en escena.
+        </span>
+      </div>
+
+      <div id="sixCamerasGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Renderizado por JS -->
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         5. GUION DE REALIZACIÓN EN DIRECTO POR PARTICIPANTE
+         ======================================================================= -->
+    <section id="guion-en-vivo" class="space-y-5">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-white/10 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#f5b942] block">
+            Coordinación de Cortes &amp; Overlays 16:9
+          </span>
+          <h2 class="font-fox text-2xl sm:text-3xl font-black uppercase text-white leading-none">
+            Guion de Realización en Directo
+          </h2>
+        </div>
+
+        <!-- Selector rápido de participantes muestra de la Semifinal Infantil -->
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="text-[10px] font-tnum uppercase text-slate-400 mr-1">Ejemplo Turno:</span>
+          <button type="button" data-sample-idx="0" onclick="selectSampleContestant(0)" class="sample-btn px-2.5 py-1.5 rounded-lg font-fox text-xs font-black uppercase tracking-wider bg-[#f5b942] text-black cursor-pointer transition">
+            #01 G. Andrade (Zulia)
+          </button>
+          <button type="button" data-sample-idx="1" onclick="selectSampleContestant(1)" class="sample-btn px-2.5 py-1.5 rounded-lg font-fox text-xs font-bold uppercase tracking-wider bg-white/[0.05] text-slate-300 border border-white/10 cursor-pointer transition">
+            #02 J. Luces (Sucre)
+          </button>
+          <button type="button" data-sample-idx="2" onclick="selectSampleContestant(2)" class="sample-btn px-2.5 py-1.5 rounded-lg font-fox text-xs font-bold uppercase tracking-wider bg-white/[0.05] text-slate-300 border border-white/10 cursor-pointer transition">
+            #07 F. Parra (Lara)
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de referencia del participante activo -->
+      <div id="activeContestantCueBanner" class="glass-card rounded-2xl p-4 border-[#f5b942]/35 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <!-- Renderizado por JS -->
+      </div>
+
+      <!-- 4 Fases del show -->
+      <div id="runOfShowPhasesGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <!-- Renderizado por JS -->
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         6. AUDIO, RED, LUZ Y CHECKLIST PRE-SHOW INTERACTIVO
+         ======================================================================= -->
+    <section id="audio-red-checklist" class="space-y-6">
+      <div class="border-b border-white/10 pb-3">
+        <span class="text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400 block">
+          Ingeniería de Señal &amp; Puesta a Punto
+        </span>
+        <h2 class="font-fox text-2xl sm:text-3xl font-black uppercase text-white leading-none">
+          Audio, Red y Control de Calidad en Sala
+        </h2>
+      </div>
+
+      <!-- 3 Bloques técnicos: Audio Máster, Red 5 GHz y Luz/Color -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- Audio Máster -->
+        <div class="glass-card rounded-2xl p-5 space-y-3 border-emerald-500/25">
+          <div class="flex items-center justify-between">
+            <span class="font-fox text-lg font-black uppercase text-emerald-400 flex items-center gap-2">
+              <i class="fa-solid fa-sliders"></i> Audio Máster Limpio
+            </span>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 font-tnum text-[10px] font-bold">XLR / LINE IN</span>
+          </div>
+          <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-emerald-400 mt-1 shrink-0"></i>
+              <span>Toma la mezcla directa de la consola del auditorio hacia la entrada de audio de la <strong class="text-white">YoloBox Extreme</strong>.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-ban text-[#e11d48] mt-1 shrink-0"></i>
+              <span>Deja en <strong class="text-white">MUTE</strong> los micrófonos de las 6 cámaras para evitar eco de sala y saturación por gritos en las gradas.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Red 5 GHz -->
+        <div class="glass-card rounded-2xl p-5 space-y-3 border-[#38bdf8]/25">
+          <div class="flex items-center justify-between">
+            <span class="font-fox text-lg font-black uppercase text-[#38bdf8] flex items-center gap-2">
+              <i class="fa-solid fa-wifi"></i> Red Dedicada 5 GHz
+            </span>
+            <span class="px-2 py-0.5 rounded bg-[#38bdf8]/15 text-[#38bdf8] font-tnum text-[10px] font-bold">RTMP + ALPHA</span>
+          </div>
+          <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-[#38bdf8] mt-1 shrink-0"></i>
+              <span>Usa un router 5 GHz exclusivo de producción para el enlace de la <strong class="text-white">Action 6 (PiP)</strong> y el envío RTMP a YouTube Live.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-[#38bdf8] mt-1 shrink-0"></i>
+              <span>Mantén el MacBook con <code class="font-tnum text-[#f5b942]">overlays-control.html</code> disparando los gráficos 16:9 y el QR de votación.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Luz y Color en La Flor de Venezuela -->
+        <div class="glass-card rounded-2xl p-5 space-y-3 border-[#f5b942]/25">
+          <div class="flex items-center justify-between">
+            <span class="font-fox text-lg font-black uppercase text-[#f5b942] flex items-center gap-2">
+              <i class="fa-solid fa-sun"></i> Luz y Pared Blanca
+            </span>
+            <span class="px-2 py-0.5 rounded bg-[#f5b942]/15 text-[#f5b942] font-tnum text-[10px] font-bold">KELVIN FIJO</span>
+          </div>
+          <ul class="space-y-2 text-xs text-slate-300 leading-relaxed">
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-[#f5b942] mt-1 shrink-0"></i>
+              <span>Fija el <strong class="text-white">Balance de Blancos en Kelvin manual</strong> en todas las Sony para compensar las ventanas laterales y luces de tarima.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-check text-[#f5b942] mt-1 shrink-0"></i>
+              <span>Expone para el rostro del intérprete en tarima y controla altas luces para no reventar la pared curva blanca.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Checklist Pre-Show interactivo -->
+      <div id="checklist-equipo" class="glass-card rounded-2xl p-5 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#f5b942] block">
+              Verificación Antes de Salir al Aire
+            </span>
+            <h3 class="font-fox text-xl sm:text-2xl font-black uppercase text-white leading-none">
+              Checklist Técnico del Equipo
+            </h3>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span id="checklistSummaryBadge" class="px-3 py-1 rounded-lg bg-white/[0.05] border border-white/10 font-tnum text-xs font-bold text-[#f5b942]">
+              0 / 8 Listos
+            </span>
+            <button type="button" onclick="resetChecklist()" class="px-3 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 font-fox text-xs font-bold uppercase tracking-wider text-slate-300 cursor-pointer transition">
+              <i class="fa-solid fa-rotate-left mr-1"></i> Reiniciar
+            </button>
+          </div>
+        </div>
+
+        <div id="checklistItemsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+          <!-- Renderizado por JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-white/10 bg-[#04070e] py-6 px-4 text-center">
+    <p class="font-fox text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+      Festival de la Voz Niño Simón 2026 &middot; Semifinales en La Flor de Venezuela &middot; Barquisimeto
+    </p>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // DATOS DE LAS 6 CÁMARAS EN LA FLOR DE VENEZUELA
+    // =========================================================================
+    const CAMERAS_PLAN = [
+      {
+        id: "CAM-1",
+        tag: "MÁSTER",
+        name: "Sony en Trípode — Plano General",
+        role: "Plano General y Conjunto",
+        color: "#f5b942",
+        x: 400,
+        y: 486,
+        spot: "Grada media-alta · Eje central detrás del jurado",
+        lens: "24–70mm / 35–150mm (en ~35mm)",
+        routing: "HDMI / SDI directo a YoloBox Extreme · IN 1",
+        doText: "Mantén encuadre estable de tarima completa, pantalla LED 2x2 y músicos; es tu plano seguro de corte.",
+        avoidText: "No cierres demasiado el zoom aquí; deja que CAM 2 haga los primeros planos."
+      },
+      {
+        id: "CAM-2",
+        tag: "CERRADO",
+        name: "Sony en Trípode — Emoción / 3/4",
+        role: "Plano Medio y Primer Plano",
+        color: "#38bdf8",
+        x: 590,
+        y: 514,
+        spot: "Grada media · Pasillo lateral derecho",
+        lens: "70–200mm f/2.8 (o 35–150mm en ~135mm)",
+        routing: "Transmisor inalámbrico a YoloBox Extreme · IN 2",
+        doText: "Sigue expresión facial, manos y entrega vocal del niño en ángulo de 3/4 desde el flanco derecho.",
+        avoidText: "Evita cruzar tu línea de visión con la puerta de bambalinas del lado izquierdo."
+      },
+      {
+        id: "CAM-3",
+        tag: "JURADO",
+        name: "Sony en Trípode — Jurado y Gradas",
+        role: "Contra-plano Reacciones",
+        color: "#a78bfa",
+        x: 585,
+        y: 368,
+        spot: "Grada baja-media derecha · Diagonal hacia la mesa del jurado",
+        lens: "18–35mm f/1.8",
+        routing: "Cable HDMI / SDI directo a YoloBox Extreme · IN 3",
+        doText: "Ten listos los planos de los 3 jurados anotando y las reacciones de las delegaciones en las gradas.",
+        avoidText: "No invadas el pasillo de circulación principal ni bloquees a la audiencia de la fila."
+      },
+      {
+        id: "CAM-4",
+        tag: "RONIN",
+        name: "Sony en DJI Ronin 4 Pro",
+        role: "Movimiento Cinematográfico",
+        color: "#fb7185",
+        x: 245,
+        y: 250,
+        spot: "Frente a la plataforma negra / borde de tarima (agachado)",
+        lens: "24mm o 35mm estabilizado",
+        routing: "Transmisor inalámbrico a YoloBox Extreme · IN 4",
+        doText: "Haz desplazamientos laterales lentos y contrapicados suaves en los remates y estribillos.",
+        avoidText: "Mantente agachado para no tapar al jurado ni colarte en el cuadro de CAM 1."
+      },
+      {
+        id: "CAM-5",
+        tag: "GRÚA 3M",
+        name: "Osmo Pocket 4 Pro + Palo 3 m",
+        role: "Picado Cenital / Pluma",
+        color: "#34d399",
+        x: 685,
+        y: 285,
+        spot: "Grada baja derecha · Flanco derecho libre",
+        lens: "Gran angular nativo de Pocket 4 Pro",
+        routing: "Enlace de video / monitor a switcher o control auxiliar",
+        doText: "Apoya la base del tubo de 3 m con firmeza y haz ascensos/descensos suaves sobre la tarima.",
+        avoidText: "No hagas movimientos bruscos de muñeca; prioriza trayectorias fluidas y cortas."
+      },
+      {
+        id: "CAM-6",
+        tag: "MÓVIL / PiP",
+        name: "Osmo Action 6 en Estabilizador",
+        role: "Bambalinas y PiP de Delegación",
+        color: "#f472b6",
+        x: 135,
+        y: 355,
+        spot: "Puerta izquierda (bambalinas) y pasillos de gradas de madera",
+        lens: "Angular lineal (sin distorsión extrema)",
+        routing: "Wi-Fi 5 GHz dedicado (NDI / RTMP) hacia PiP de YoloBox",
+        doText: "Acompaña al niño antes de entrar por la puerta izquierda y luego sube a enfocar a su familia para el PiP.",
+        avoidText: "No estorbes la entrada ni salida del intérprete; mantén distancia prudente en el umbral."
+      }
+    ];
+
+    // =========================================================================
+    // MUESTRA DE PARTICIPANTES (SEMIFINAL INFANTIL — LA FLOR DE VENEZUELA)
+    // =========================================================================
+    const SAMPLE_CONTESTANTS = [
+      {
+        orden: "#01",
+        nombre: "Gabriela Galilea Andrade Gutiérrez",
+        estado: "Zulia",
+        categoria: "Infantil",
+        tema: "Los 2 Gavilanes",
+        genero: "Merengue Larense",
+        autor: "Letra y Música de: Adelis Freitez"
+      },
+      {
+        orden: "#02",
+        nombre: "José Pablo Luces Maurera",
+        estado: "Sucre",
+        categoria: "Infantil",
+        tema: "Lara es una Sola",
+        genero: "Golpe Tocuyano",
+        autor: "Letra y Música de: Virgilio Arrieta"
+      },
+      {
+        orden: "#07",
+        nombre: "Fraivelis Nicole Parra Sánchez",
+        estado: "Lara",
+        categoria: "Infantil",
+        tema: "Adelante Juventud (Tema Inédito)",
+        genero: "Golpe Tocuyano",
+        autor: "Letra y Música de: Juan Ramón Barrios"
+      }
+    ];
+
+    // =========================================================================
+    // 4 FASES DEL GUION DE REALIZACIÓN EN VIVO
+    // =========================================================================
+    const SHOW_PHASES = [
+      {
+        step: "01",
+        time: "Pre-Entrada · 10s",
+        title: "Bambalinas y Pleca Nombre",
+        camPrimary: "CAM 6 (Action 6)",
+        camSecondary: "CAM 1 (Máster)",
+        overlayAction: "Insert 1: Pleca de Participante (IN)",
+        note: "Sigue al niño en la puerta izquierda antes de pisar tarima y lanza su nombre, estado y categoría Infantil."
+      },
+      {
+        step: "02",
+        time: "Arranque · 00:00–00:25",
+        title: "Establecer y Ficha Musical",
+        camPrimary: "CAM 1 → CAM 2 (Cerrado)",
+        camSecondary: "CAM 5 (Grúa 3m)",
+        overlayAction: "Alternar → Insert 2: Ficha Musical (IN)",
+        note: "Abre en plano general, pasa a rostro en CAM 2 y alterna a la ficha con tema, género y autor; retírala al asentarse."
+      },
+      {
+        step: "03",
+        time: "Clímax · Estribillo",
+        title: "Movimiento y PiP Delegación",
+        camPrimary: "CAM 4 (Ronin) / CAM 5",
+        camSecondary: "PiP CAM 6 en Gradas",
+        overlayAction: "Marco PiP Delegación (IN)",
+        note: "En el momento más emotivo de la canción, activa la ventana PiP con la familia del estado en las gradas."
+      },
+      {
+        step: "04",
+        time: "Cierre · Transición",
+        title: "Aplauso, Jurado y Voto QR",
+        camPrimary: "CAM 1 → CAM 3 (Jurado)",
+        camSecondary: "CAM 2 (Aplauso)",
+        overlayAction: "Top 5 Elecciones FOX / Torre + QR",
+        note: "Cierra la interpretación, muestra al jurado y, durante el cambio de turno, pon al aire el marcador con QR."
+      }
+    ];
+
+    // =========================================================================
+    // CHECKLIST TÉCNICO PRE-SHOW
+    // =========================================================================
+    const CHECKLIST_ITEMS = [
+      "Trípodes de CAM 1, CAM 2 y CAM 3 nivelados y con 2 puestos reservados al frente.",
+      "Puerta izquierda de bambalinas 100% libre de trípodes fijos.",
+      "Balance de blancos fijado en Kelvin manual igual en todas las cámaras Sony.",
+      "Exposición calibrada para pieles en tarima sin quemar la pared curva blanca.",
+      "Audio máster de consola entrando a YoloBox Extreme; micros de cámaras en MUTE.",
+      "Router 5 GHz encendido y probado con CAM 6 (PiP) y transmisión RTMP.",
+      "MacBook en overlays-control.html con etapa SEMIFINALES y URL del QR verificada.",
+      "Palo de 3 m (Pocket 4 Pro) y Ronin 4 Pro con baterías cargadas y estabilización lista."
+    ];
+
+    let selectedCamId = "CAM-1";
+    let activeSampleIndex = 0;
+    const STORAGE_KEY = "fnns_flor_venezuela_checklist_2026";
+    let checkedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+    function renderSvgPins() {
+      const container = document.getElementById("svgCameraPins");
+      container.innerHTML = CAMERAS_PLAN.map(cam => {
+        const isSelected = cam.id === selectedCamId;
+        const radius = isSelected ? 22 : 18;
+        return `
+          <g transform="translate(${cam.x}, ${cam.y})" onclick="selectCamera('${cam.id}')" class="cursor-pointer" style="pointer-events: auto;">
+            ${isSelected ? `<circle r="24" fill="none" stroke="${cam.color}" stroke-width="2.5" class="cam-pulse-ring" />` : ""}
+            <circle r="${radius}" fill="#050811" stroke="${cam.color}" stroke-width="${isSelected ? 3.5 : 2}" filter="${isSelected ? "url(#glowGold)" : "none"}" />
+            <text y="4" text-anchor="middle" fill="#ffffff" font-family="Barlow Condensed, sans-serif" font-size="13" font-weight="900">${cam.id.replace("CAM-", "C")}</text>
+            <rect x="-34" y="${radius + 5}" width="68" height="16" rx="3" fill="${isSelected ? cam.color : "#09152e"}" stroke="${cam.color}" stroke-width="1" />
+            <text y="${radius + 16}" text-anchor="middle" fill="${isSelected ? "#050811" : "#f8fafc"}" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="800">${cam.tag}</text>
+          </g>
+        `;
+      }).join("");
+    }
+
+    function renderCameraInspector() {
+      const cam = CAMERAS_PLAN.find(c => c.id === selectedCamId) || CAMERAS_PLAN[0];
+      const inspector = document.getElementById("cameraInspectorCard");
+      inspector.style.borderColor = `${cam.color}66`;
+
+      inspector.innerHTML = `
+        <div class="flex items-start justify-between gap-3 border-b border-white/10 pb-3.5">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded font-tnum text-xs font-extrabold" style="background: ${cam.color}22; color: ${cam.color}; border: 1px solid ${cam.color}55;">
+              <span>${cam.id}</span>
+              <span>&middot;</span>
+              <span>${cam.tag}</span>
+            </div>
+            <h3 class="font-fox text-2xl font-black uppercase text-white mt-1.5 leading-tight">${cam.name}</h3>
+            <span class="text-xs font-semibold text-slate-400">${cam.role}</span>
+          </div>
+
+          <div class="flex gap-1">
+            ${CAMERAS_PLAN.map(c => `
+              <button type="button" onclick="selectCamera('${c.id}')" class="w-7 h-7 rounded-lg font-tnum text-[11px] font-bold cursor-pointer transition ${c.id === cam.id ? "bg-[#f5b942] text-black" : "bg-white/[0.05] text-slate-400 hover:text-white"}">
+                ${c.id.replace("CAM-", "")}
+              </button>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div class="bg-black/45 border border-white/[0.07] rounded-xl p-3">
+            <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Ubicación en La Flor de Venezuela</span>
+            <p class="text-white font-semibold">${cam.spot}</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="bg-black/45 border border-white/[0.07] rounded-xl p-3">
+              <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Óptica / Lente</span>
+              <p class="font-tnum text-[#38bdf8] font-bold">${cam.lens}</p>
+            </div>
+            <div class="bg-black/45 border border-white/[0.07] rounded-xl p-3">
+              <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Señal / Enlace</span>
+              <p class="font-tnum text-[#f5b942] font-bold">${cam.routing}</p>
+            </div>
+          </div>
+
+          <div class="bg-emerald-500/[0.07] border border-emerald-500/25 rounded-xl p-3 space-y-1">
+            <span class="font-fox text-xs font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-check"></i> Qué Hacer
+            </span>
+            <p class="text-slate-200 leading-relaxed">${cam.doText}</p>
+          </div>
+
+          <div class="bg-[#e11d48]/[0.08] border border-[#e11d48]/30 rounded-xl p-3 space-y-1">
+            <span class="font-fox text-xs font-extrabold uppercase tracking-wider text-[#fb7185] flex items-center gap-1.5">
+              <i class="fa-solid fa-triangle-exclamation"></i> Qué Evitar
+            </span>
+            <p class="text-slate-200 leading-relaxed">${cam.avoidText}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSixCamerasGrid() {
+      const grid = document.getElementById("sixCamerasGrid");
+      grid.innerHTML = CAMERAS_PLAN.map(cam => {
+        const active = cam.id === selectedCamId;
+        return `
+          <div
+            onclick="selectCameraAndFocus('${cam.id}')"
+            class="glass-card rounded-2xl p-4 space-y-3 cursor-pointer transition hover:border-white/25 ${active ? "ring-2 ring-[#f5b942]" : ""}"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2.5 py-0.5 rounded font-tnum text-xs font-extrabold" style="background: ${cam.color}22; color: ${cam.color}; border: 1px solid ${cam.color}55;">
+                ${cam.id} &middot; ${cam.tag}
+              </span>
+              <span class="text-[11px] font-tnum text-slate-400">${cam.lens.split("(")[0].trim()}</span>
+            </div>
+
+            <div>
+              <h3 class="font-fox text-xl font-black uppercase text-white leading-tight">${cam.name}</h3>
+              <p class="text-xs text-slate-300 mt-0.5">${cam.spot}</p>
+            </div>
+
+            <div class="text-[11px] font-tnum text-[#f5b942] bg-black/45 px-2.5 py-1.5 rounded-lg border border-white/[0.06] truncate">
+              <i class="fa-solid fa-share-nodes mr-1.5 text-slate-400"></i>${cam.routing}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function selectCamera(camId) {
+      selectedCamId = camId;
+      renderSvgPins();
+      renderCameraInspector();
+      renderSixCamerasGrid();
+    }
+
+    function selectCameraAndFocus(camId) {
+      selectCamera(camId);
+      document.getElementById("plano-auditorio").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function selectSampleContestant(idx) {
+      activeSampleIndex = idx;
+      document.querySelectorAll(".sample-btn").forEach((btn, i) => {
+        if (i === idx) {
+          btn.className = "sample-btn px-2.5 py-1.5 rounded-lg font-fox text-xs font-black uppercase tracking-wider bg-[#f5b942] text-black cursor-pointer transition";
+        } else {
+          btn.className = "sample-btn px-2.5 py-1.5 rounded-lg font-fox text-xs font-bold uppercase tracking-wider bg-white/[0.05] text-slate-300 border border-white/10 cursor-pointer transition";
+        }
+      });
+      renderContestantCueBanner();
+    }
+
+    function renderContestantCueBanner() {
+      const p = SAMPLE_CONTESTANTS[activeSampleIndex] || SAMPLE_CONTESTANTS[0];
+      document.getElementById("activeContestantCueBanner").innerHTML = `
+        <div class="space-y-1">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded bg-[#f5b942] font-fox text-xs font-black uppercase text-black">
+              ORDEN ${p.orden} &middot; SEMIFINALES
+            </span>
+            <span class="px-2.5 py-0.5 rounded bg-[#e11d48] font-fox text-xs font-black uppercase text-white">
+              ${p.estado}
+            </span>
+            <span class="px-2.5 py-0.5 rounded bg-[#38bdf8] font-fox text-xs font-black uppercase text-slate-950">
+              CATEGORÍA ${p.categoria}
+            </span>
+          </div>
+          <h3 class="font-fox text-2xl sm:text-3xl font-black uppercase text-white leading-tight pt-0.5">
+            ${p.nombre}
+          </h3>
+        </div>
+
+        <div class="bg-black/50 border border-white/10 rounded-xl px-4 py-3 lg:text-right space-y-0.5">
+          <div class="font-fox text-lg sm:text-xl font-black uppercase text-[#f5b942] leading-tight">
+            «${p.tema}» &middot; <span class="text-[#38bdf8]">${p.genero}</span>
+          </div>
+          <div class="text-xs text-slate-300">${p.autor}</div>
+        </div>
+      `;
+    }
+
+    function renderRunOfShowPhases() {
+      const grid = document.getElementById("runOfShowPhasesGrid");
+      grid.innerHTML = SHOW_PHASES.map(ph => `
+        <div class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-tnum text-2xl font-extrabold text-[#f5b942]">${ph.step}</span>
+              <span class="px-2.5 py-0.5 rounded bg-white/[0.06] border border-white/10 font-tnum text-[11px] font-bold text-slate-300">
+                ${ph.time}
+              </span>
+            </div>
+
+            <h3 class="font-fox text-xl font-black uppercase text-white leading-tight">${ph.title}</h3>
+
+            <div class="space-y-1.5 text-xs">
+              <div class="flex items-center justify-between gap-2 bg-black/45 px-2.5 py-1.5 rounded-lg border border-white/[0.06]">
+                <span class="text-slate-400">Corte Principal</span>
+                <span class="font-tnum font-bold text-white">${ph.camPrimary}</span>
+              </div>
+              <div class="flex items-center justify-between gap-2 bg-black/45 px-2.5 py-1.5 rounded-lg border border-white/[0.06]">
+                <span class="text-slate-400">Apoyo / PiP</span>
+                <span class="font-tnum font-bold text-[#38bdf8]">${ph.camSecondary}</span>
+              </div>
+              <div class="bg-[#f5b942]/10 border border-[#f5b942]/30 px-2.5 py-1.5 rounded-lg">
+                <span class="block text-[9px] font-bold uppercase tracking-widest text-[#f5b942]">Overlay 16:9</span>
+                <span class="font-fox text-sm font-extrabold uppercase text-white">${ph.overlayAction}</span>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-300 leading-relaxed">${ph.note}</p>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderChecklist() {
+      const grid = document.getElementById("checklistItemsGrid");
+      grid.innerHTML = CHECKLIST_ITEMS.map((text, idx) => {
+        const done = checkedState.includes(idx);
+        return `
+          <button
+            type="button"
+            onclick="toggleCheckItem(${idx})"
+            class="w-full text-left p-3.5 rounded-xl border transition cursor-pointer flex items-start gap-3 ${done ? "bg-emerald-500/12 border-emerald-500/40 text-white" : "bg-black/45 hover:bg-white/[0.04] border-white/10 text-slate-300"}"
+          >
+            <span class="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold ${done ? "bg-emerald-400 text-black" : "border border-white/30 text-transparent"}">
+              <i class="fa-solid fa-check"></i>
+            </span>
+            <span class="text-xs leading-relaxed ${done ? "line-through text-emerald-200/90" : ""}">${text}</span>
+          </button>
+        `;
+      }).join("");
+
+      const total = CHECKLIST_ITEMS.length;
+      const doneCount = checkedState.length;
+      document.getElementById("headerChecklistCounter").innerText = `${doneCount}/${total}`;
+      document.getElementById("checklistSummaryBadge").innerText = `${doneCount} / ${total} Listos`;
+    }
+
+    function toggleCheckItem(idx) {
+      if (checkedState.includes(idx)) {
+        checkedState = checkedState.filter(i => i !== idx);
+      } else {
+        checkedState.push(idx);
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedState));
+      renderChecklist();
+    }
+
+    function resetChecklist() {
+      checkedState = [];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedState));
+      renderChecklist();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderSvgPins();
+      renderCameraInspector();
+      renderSixCamerasGrid();
+      renderContestantCueBanner();
+      renderRunOfShowPhases();
+      renderChecklist();
+    });
+  </script>
+</body>
+</html>
