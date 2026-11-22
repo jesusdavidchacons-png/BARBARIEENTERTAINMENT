@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Consola de Equipo, Cudy &amp; Intercom — Producción Multicámara</title>
+
+  <!-- Tailwind CSS para diseño responsivo y alto contraste en campo -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Iconos FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Cliente MQTT para sincronización en tiempo real de órdenes, evento y equipo -->
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <!-- Reproductor HLS (.m3u8) para flujos de baja latencia / señal local Cudy -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15/dist/hls.min.js"></script>
+  <!-- PeerJS para intercomunicador de voz P2P en navegador con soporte de AirPods/Bluetooth -->
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+
+  <!-- Tipografía técnica legible en movimiento -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-void: #030509;
+      --bg-card: #080d18;
+      --bg-card-elevated: #0d1526;
+      --gold: #f5b942;
+      --crimson: #e11d48;
+      --cyan: #38bdf8;
+      --emerald: #10b981;
+      --amber: #f97316;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-void);
+      background-image:
+        radial-gradient(ellipse 80% 35% at 50% 0%, rgba(245, 185, 66, 0.08), transparent 70%),
+        radial-gradient(ellipse 55% 25% at 90% 15%, rgba(56, 189, 248, 0.05), transparent 70%);
+      color: #f8fafc;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .font-fox {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.04em;
+    }
+
+    .font-tnum {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .panel-glass {
+      background: linear-gradient(180deg, rgba(11, 20, 38, 0.95) 0%, rgba(6, 10, 19, 0.98) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes cueFlash {
+      0% { transform: scale(0.985); box-shadow: 0 0 0 0 rgba(245, 185, 66, 0.55); }
+      50% { transform: scale(1.005); box-shadow: 0 0 28px rgba(245, 185, 66, 0.35); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 185, 66, 0); }
+    }
+
+    .cue-alert-anim {
+      animation: cueFlash 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes micPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.55); }
+      50% { box-shadow: 0 0 0 12px rgba(225, 29, 72, 0); }
+    }
+
+    .ptt-talking {
+      animation: micPulse 1.2s infinite;
+    }
+
+    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.25); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(245, 185, 66, 0.35); border-radius: 9999px; }
+  </style>
+</head>
+<body class="min-h-full flex flex-col selection:bg-[#f5b942] selection:text-black">
+
+  <!-- Barra cromática superior de referencia -->
+  <div class="h-1 w-full bg-gradient-to-r from-[#e11d48] via-[#f5b942] to-[#38bdf8]"></div>
+
+  <!-- =========================================================================
+       BARRA SUPERIOR DE NAVEGACIÓN Y SELECTOR RÁPIDO DE ROL / OPERADOR
+       ========================================================================= -->
+  <header class="sticky top-0 z-40 bg-[#030509]/95 backdrop-blur-xl border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2.5">
+
+      <!-- Título de evento y canal -->
+      <div class="flex items-center gap-3 min-w-0">
+        <span id="headerLiveDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping shrink-0"></span>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="font-tnum text-[10px] font-bold uppercase tracking-widest text-[#f5b942] truncate" id="headerChannelLabel">
+              SALA: CUDY-LIVE-2026
+            </span>
+            <span class="text-white/25">&bull;</span>
+            <span class="font-tnum text-[10px] font-bold uppercase text-emerald-400" id="headerSyncLabel">
+              SYNC LISTO
+            </span>
+          </div>
+          <h1 class="font-fox text-base sm:text-xl font-black uppercase text-white leading-none truncate" id="headerEventTitle">
+            Festival de la Voz Niño Simón 2026 &middot; Semifinales
+          </h1>
+        </div>
+      </div>
+
+      <!-- Selector rápido de Vista (Director vs Camarógrafo / Crew) y Operador -->
+      <div class="flex flex-wrap items-center gap-2">
+        <!-- Alternador de Modo Principal -->
+        <div class="inline-flex rounded-xl bg-black/70 border border-white/15 p-0.5">
+          <button
+            type="button"
+            id="btnModeDirector"
+            onclick="switchViewMode('director')"
+            class="px-3 py-1.5 rounded-lg font-fox text-xs sm:text-sm font-black uppercase tracking-wider bg-[#f5b942] text-black cursor-pointer transition flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-sliders"></i>
+            <span>Director</span>
+          </button>
+          <button
+            type="button"
+            id="btnModeCrew"
+            onclick="switchViewMode('crew')"
+            class="px-3 py-1.5 rounded-lg font-fox text-xs sm:text-sm font-black uppercase tracking-wider text-slate-300 hover:text-white cursor-pointer transition flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            <span>Vista Camarógrafo</span>
+          </button>
+        </div>
+
+        <!-- Selector rápido de Operador para probar cualquier teléfono al instante -->
+        <div class="flex items-center gap-1.5 bg-black/70 border border-white/15 rounded-xl px-2.5 py-1">
+          <i class="fa-solid fa-video text-[#38bdf8] text-xs"></i>
+          <label for="quickOperatorSelect" class="sr-only">Seleccionar operador</label>
+          <select
+            id="quickOperatorSelect"
+            onchange="selectActiveOperator(this.value)"
+            class="bg-transparent text-xs font-bold text-white focus:outline-none cursor-pointer max-w-[190px] sm:max-w-[240px]"
+          ></select>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Banner de notificación flotante para confirmaciones o alertas -->
+  <div id="toastBanner" class="hidden fixed bottom-4 right-4 z-50 max-w-sm panel-glass border-[#f5b942]/50 rounded-2xl px-4 py-3 shadow-2xl flex items-center gap-3">
+    <i class="fa-solid fa-circle-info text-[#f5b942] text-base shrink-0"></i>
+    <span id="toastMessage" class="text-xs font-semibold text-white"></span>
+  </div>
+
+  <!-- =========================================================================
+       CONTENEDOR PRINCIPAL
+       ========================================================================= -->
+  <main class="max-w-7xl w-full mx-auto px-3 sm:px-6 pt-5 pb-16 space-y-6">
+
+    <!-- =======================================================================
+         MODO 1: MESA DEL DIRECTOR (CONFIGURACIÓN RÁPIDA, EQUIPO Y ÓRDENES)
+         ======================================================================= -->
+    <section id="directorSection" class="space-y-6">
+
+      <!-- A) FORMULARIO PRÁCTICO DE CONFIGURACIÓN DEL STREAMING (REUTILIZABLE) -->
+      <div class="panel-glass rounded-2xl p-4 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3.5">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#f5b942] block">
+              Configuración Rápida Sin Código
+            </span>
+            <h2 class="font-fox text-2xl sm:text-3xl font-black uppercase text-white leading-none">
+              1. Datos del Evento y Señal Cudy / Baja Latencia
+            </h2>
+          </div>
+
+          <!-- Botones de carga rápida de ejemplo -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onclick="loadPreset('festival')"
+              class="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 font-fox text-xs font-extrabold uppercase tracking-wider text-[#f5b942] cursor-pointer transition flex items-center gap-1.5"
+            >
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>Ejemplo: Festival Semifinal</span>
+            </button>
+            <button
+              type="button"
+              onclick="loadPreset('cudy-local')"
+              class="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 font-fox text-xs font-extrabold uppercase tracking-wider text-[#38bdf8] cursor-pointer transition flex items-center gap-1.5"
+            >
+              <i class="fa-solid fa-wifi"></i>
+              <span>Ejemplo: Cudy HLS / LAN</span>
+            </button>
+            <button
+              type="button"
+              onclick="loadPreset('concierto')"
+              class="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 font-fox text-xs font-extrabold uppercase tracking-wider text-emerald-400 cursor-pointer transition flex items-center gap-1.5"
+            >
+              <i class="fa-solid fa-bolt"></i>
+              <span>Ejemplo: Evento General</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="streamConfigForm" onsubmit="saveAndLaunchEvent(event)" class="grid grid-cols-1 md:grid-cols-12 gap-3.5">
+          <!-- Nombre del evento -->
+          <div class="md:col-span-5">
+            <label for="cfgEventName" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              Nombre del Evento / Transmisión *
+            </label>
+            <input
+              type="text"
+              id="cfgEventName"
+              required
+              placeholder="Ej: Semifinales — La Flor de Venezuela"
+              class="w-full bg-black/65 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#f5b942]"
+            />
+          </div>
+
+          <!-- Canal / Sala de sincronización -->
+          <div class="md:col-span-3">
+            <label for="cfgRoomCode" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              Código de Sala / Canal *
+            </label>
+            <input
+              type="text"
+              id="cfgRoomCode"
+              required
+              placeholder="CUDY-LIVE-2026"
+              class="w-full bg-black/65 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-tnum font-bold text-[#f5b942] uppercase focus:outline-none focus:border-[#f5b942]"
+            />
+          </div>
+
+          <!-- Tipo de señal -->
+          <div class="md:col-span-4">
+            <label for="cfgSourceType" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              Tipo de Señal de Monitorización
+            </label>
+            <select
+              id="cfgSourceType"
+              onchange="updateSourcePlaceholder()"
+              class="w-full bg-black/65 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-bold text-white focus:outline-none focus:border-[#38bdf8]"
+            >
+              <option value="auto">Auto-detectar (.m3u8 HLS / WebRTC / YouTube)</option>
+              <option value="hls">Cudy / Proxy Baja Latencia HLS (.m3u8)</option>
+              <option value="webrtc">WebRTC / WHEP Ultra-Baja Latencia</option>
+              <option value="mjpeg">Cámara / Snapshot / MJPEG / Imagen</option>
+              <option value="youtube">YouTube Live (URL o ID de 11 caracteres)</option>
+            </select>
+          </div>
+
+          <!-- URL o ID de video / señal Cudy -->
+          <div class="md:col-span-8">
+            <label for="cfgSourceUrl" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              Enlace o ID de Señal Cudy / Baja Latencia *
+            </label>
+            <input
+              type="text"
+              id="cfgSourceUrl"
+              required
+              placeholder="Ej: http://192.168.8.1:8080/live/stream.m3u8 o enlace/ID de YouTube"
+              class="w-full bg-black/65 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm font-tnum text-white focus:outline-none focus:border-[#f5b942]"
+            />
+          </div>
+
+          <!-- Nota de red / Cudy -->
+          <div class="md:col-span-4">
+            <label for="cfgNetworkHint" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              Referencia de Red / Cudy (Visible al Equipo)
+            </label>
+            <input
+              type="text"
+              id="cfgNetworkHint"
+              placeholder="Ej: Cudy 5GHz · Latencia ~0.3s"
+              class="w-full bg-black/65 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-[#f5b942]"
+            />
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="md:col-span-12 pt-1 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <p class="text-[11px] text-slate-400">
+              <i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i>
+              Guarda localmente y publica al instante en el canal para todos los teléfonos conectados.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-2.5">
+              <button
+                type="button"
+                onclick="copyCrewInviteLink()"
+                class="px-4 py-3 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 font-fox text-sm font-extrabold uppercase tracking-wider text-[#38bdf8] cursor-pointer transition flex items-center justify-center gap-2"
+              >
+                <i class="fa-solid fa-link"></i>
+                <span>Copiar Enlace de Sala</span>
+              </button>
+
+              <button
+                type="submit"
+                class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-fox text-base font-black uppercase tracking-wider cursor-pointer transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20"
+              >
+                <i class="fa-solid fa-play"></i>
+                <span>Guardar y Poner a Funcionar</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- B) DISPARADOR DE ÓRDENES RÁPIDAS EN VIVO + ASIGNACIÓN DE EQUIPO -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+        <!-- ÓRDENES RÁPIDAS DEL DIRECTOR (7 COLS) -->
+        <div class="lg:col-span-7 panel-glass rounded-2xl p-4 sm:p-5 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#e11d48] block">
+                Dirección en Campo
+              </span>
+              <h2 class="font-fox text-2xl font-black uppercase text-white leading-none">
+                2. Órdenes Rápidas en Vivo
+              </h2>
+            </div>
+
+            <!-- Destinatario: Todos o un operador específico -->
+            <div class="flex items-center gap-2">
+              <label for="cueTargetSelect" class="text-[10px] font-tnum uppercase text-slate-400">Destino:</label>
+              <select
+                id="cueTargetSelect"
+                class="bg-black/70 border border-white/20 rounded-xl px-3 py-1.5 text-xs font-bold text-[#f5b942] focus:outline-none focus:border-[#f5b942]"
+              >
+                <option value="ALL">TODO EL EQUIPO</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 6 botones grandes de órdenes tácticas -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button
+              type="button"
+              onclick="sendQuickCue('En espera', 'Mantén posición y batería/enlace listos.', 'slate')"
+              class="p-3.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/15 text-left transition cursor-pointer flex items-center gap-3"
+            >
+              <span class="w-9 h-9 rounded-lg bg-slate-500/20 text-slate-300 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-pause"></i>
+              </span>
+              <div>
+                <span class="font-fox text-lg font-black uppercase text-white block leading-none">En espera</span>
+                <span class="text-[11px] text-slate-400">Standby / transición entre turnos</span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onclick="sendQuickCue('Preparar plano', 'Encuadra y enfoca al participante o punto marcado.', 'cyan')"
+              class="p-3.5 rounded-xl bg-[#38bdf8]/10 hover:bg-[#38bdf8]/20 border border-[#38bdf8]/40 text-left transition cursor-pointer flex items-center gap-3"
+            >
+              <span class="w-9 h-9 rounded-lg bg-[#38bdf8]/20 text-[#38bdf8] flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-crosshairs"></i>
+              </span>
+              <div>
+                <span class="font-fox text-lg font-black uppercase text-[#38bdf8] block leading-none">Preparar plano</span>
+                <span class="text-[11px] text-slate-300">Alinear composición y foco antes del corte</span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onclick="sendQuickCue('Al aire', '¡Estás al aire! Mantén movimiento suave y estable.', 'red')"
+              class="p-3.5 rounded-xl bg-[#e11d48]/15 hover:bg-[#e11d48]/25 border border-[#e11d48]/50 text-left transition cursor-pointer flex items-center gap-3"
+            >
+              <span class="w-9 h-9 rounded-lg bg-[#e11d48] text-white flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-tower-broadcast"></i>
+              </span>
+              <div>
+                <span class="font-fox text-lg font-black uppercase text-[#fda4af] block leading-none">Al aire</span>
+                <span class="text-[11px] text-slate-200">Señal activa en el programa principal</span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onclick="sendQuickCue('Mover a delegación / PiP', 'Desplázate hacia la delegación/familia para ventana PiP.', 'gold')"
+              class="p-3.5 rounded-xl bg-[#f5b942]/12 hover:bg-[#f5b942]/22 border border-[#f5b942]/45 text-left transition cursor-pointer flex items-center gap-3"
+            >
+              <span class="w-9 h-9 rounded-lg bg-[#f5b942]/25 text-[#f5b942] flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-people-group"></i>
+              </span>
+              <div>
+                <span class="font-fox text-lg font-black uppercase text-[#f5b942] block leading-none">Mover a delegación / PiP</span>
+                <span class="text-[11px] text-slate-200">Reacción de familiares / recuadro PiP</span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onclick="sendQuickCue('Cuidar encuadre', 'Revisa aire superior, simetría y que no haya obstrucciones.', 'amber')"
+              class="p-3.5 rounded-xl bg-orange-500/12 hover:bg-orange-500/22 border border-orange-400/40 text-left transition cursor-pointer flex items-center gap-3"
+            >
+              <span class="w-9 h-9 rounded-lg bg-orange-500/25 text-orange-300 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-crop-simple"></i>
+              </span>
+              <div>
+                <span class="font-fox text-lg font-black uppercase text-orange-300 block leading-none">Cuidar encuadre</span>
+                <span class="text-[11px] text-slate-200">Ajustar margen, horizonte o despejar paso</span>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              onclick="sendQuickCue('Corte', 'Corte limpio. Descansa movimiento o pasa al siguiente punto.', 'emerald')"
+              class="p-3.5 rounded-xl bg-emerald-500/12 hover:bg-emerald-500/22 border border-emerald-400/40 text-left transition cursor-pointer flex items-center gap-3"
+            >
+              <span class="w-9 h-9 rounded-lg bg-emerald-500/25 text-emerald-300 flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-scissors"></i>
+              </span>
+              <div>
+                <span class="font-fox text-lg font-black uppercase text-emerald-300 block leading-none">Corte</span>
+                <span class="text-[11px] text-slate-200">Salida de cámara o cierre de toma</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Orden personalizada libre -->
+          <div class="flex flex-col sm:flex-row gap-2 pt-1">
+            <input
+              type="text"
+              id="customCueInput"
+              placeholder="Escribir orden directa (ej: Sube grúa 3m suave, foco en el niño)..."
+              onkeydown="if(event.key==='Enter'){ event.preventDefault(); sendCustomCue(); }"
+              class="flex-1 bg-black/65 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#f5b942]"
+            />
+            <button
+              type="button"
+              onclick="sendCustomCue()"
+              class="px-4 py-2.5 rounded-xl bg-[#f5b942] hover:bg-[#fbbf24] text-black font-fox text-sm font-black uppercase tracking-wider cursor-pointer transition shrink-0"
+            >
+              <i class="fa-solid fa-paper-plane mr-1"></i> Enviar
+            </button>
+          </div>
+
+          <!-- Última orden enviada -->
+          <div id="directorLastCueBox" class="bg-black/50 border border-white/10 rounded-xl p-3 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <span class="text-[10px] font-tnum uppercase tracking-wider text-slate-400 block">Última orden activa</span>
+              <span id="directorLastCueText" class="font-fox text-base font-extrabold uppercase text-[#f5b942] truncate block">
+                En espera &middot; TODO EL EQUIPO
+              </span>
+            </div>
+            <button
+              type="button"
+              onclick="openSelectedOperatorPhoneView()"
+              class="px-3 py-1.5 rounded-lg bg-[#38bdf8]/15 hover:bg-[#38bdf8]/25 border border-[#38bdf8]/40 font-fox text-xs font-extrabold uppercase tracking-wider text-[#38bdf8] cursor-pointer shrink-0"
+            >
+              Ver en Teléfono
+            </button>
+          </div>
+        </div>
+
+        <!-- ASIGNACIÓN DE EQUIPO Y PUESTO (5 COLS) -->
+        <div class="lg:col-span-5 panel-glass rounded-2xl p-4 sm:p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-white/10 pb-3">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#38bdf8] block">
+                Crew &amp; Puestos
+              </span>
+              <h2 class="font-fox text-2xl font-black uppercase text-white leading-none">
+                3. Equipo y Cámaras
+              </h2>
+            </div>
+            <span class="font-tnum text-xs font-bold text-slate-400" id="crewCountLabel">6 Puestos</span>
+          </div>
+
+          <!-- Lista editable de miembros del equipo -->
+          <div id="crewRosterList" class="space-y-2 max-h-[380px] overflow-y-auto custom-scroll pr-1"></div>
+
+          <!-- Añadir nuevo miembro / puesto rápido -->
+          <div class="bg-black/45 border border-white/10 rounded-xl p-3 space-y-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Añadir Puesto / Operador</span>
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+              <input
+                type="text"
+                id="newCrewName"
+                placeholder="Nombre"
+                class="sm:col-span-5 bg-black/70 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#f5b942]"
+              />
+              <input
+                type="text"
+                id="newCrewCam"
+                placeholder="Cámara / Rol"
+                class="sm:col-span-4 bg-black/70 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#f5b942]"
+              />
+              <button
+                type="button"
+                onclick="addCrewMember()"
+                class="sm:col-span-3 py-1.5 px-2 rounded-lg bg-[#38bdf8] hover:bg-sky-300 text-slate-950 font-fox text-xs font-black uppercase tracking-wider cursor-pointer transition"
+              >
+                + Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         MODO 2: VISTA DE CAMARÓGRAFO / MIEMBRO DE EQUIPO (TELÉFONO EN CAMPO)
+         ======================================================================= -->
+    <section id="crewSection" class="hidden space-y-4">
+
+      <!-- Cabecera de Puesto Asignado al Operador -->
+      <div class="panel-glass rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 border-[#38bdf8]/35">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-xl bg-[#38bdf8]/15 border border-[#38bdf8]/40 text-[#38bdf8] flex items-center justify-center font-fox text-xl font-black shrink-0" id="crewAvatarBadge">
+            C1
+          </div>
+          <div>
+            <span class="text-[10px] font-tnum uppercase tracking-widest text-[#38bdf8] block">
+              Puesto Asignado en Campo
+            </span>
+            <h2 class="font-fox text-2xl sm:text-3xl font-black uppercase text-white leading-none" id="crewOperatorTitle">
+              CAM 1 · Plano General (Carlos)
+            </h2>
+            <span class="text-xs text-slate-400" id="crewOperatorSpot">Grada media-alta · Eje central</span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onclick="switchViewMode('director')"
+          class="px-3.5 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 font-fox text-xs font-extrabold uppercase tracking-wider text-[#f5b942] cursor-pointer transition"
+        >
+          <i class="fa-solid fa-sliders mr-1"></i> Volver a Director
+        </button>
+      </div>
+
+      <!-- Orden Activa del Director Destacada en Pantalla -->
+      <div id="crewCueCard" class="panel-glass rounded-2xl p-4 sm:p-6 border-2 border-[#f5b942]/60 space-y-2">
+        <div class="flex items-center justify-between gap-2">
+          <span class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded bg-[#f5b942]/15 border border-[#f5b942]/40 font-fox text-xs font-black uppercase tracking-widest text-[#f5b942]">
+            <i class="fa-solid fa-bullhorn"></i> Orden del Director
+          </span>
+          <span id="crewCueTime" class="font-tnum text-[11px] text-slate-400">Ahora mismo</span>
+        </div>
+
+        <div id="crewCueMainTitle" class="font-fox text-3xl sm:text-5xl font-black uppercase text-white leading-none pt-1">
+          EN ESPERA
+        </div>
+        <p id="crewCueDetail" class="text-xs sm:text-sm text-slate-300">
+          Mantén posición, encuadre y enlace listos.
+        </p>
+
+        <div class="pt-2 flex flex-wrap items-center justify-between gap-2">
+          <button
+            type="button"
+            onclick="acknowledgeDirectorCue()"
+            class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-fox text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer transition flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-check"></i>
+            <span>Confirmar Copiado al Director</span>
+          </button>
+
+          <button
+            type="button"
+            onclick="toggleSoundAlert()"
+            id="btnSoundAlertToggle"
+            class="px-3 py-2 rounded-xl bg-white/[0.06] border border-white/15 font-tnum text-[11px] font-bold text-emerald-300 cursor-pointer"
+          >
+            <i class="fa-solid fa-volume-high mr-1"></i> Tono Alerta: ON
+          </button>
+        </div>
+      </div>
+
+      <!-- Monitor de Señal en Vivo Sin Retraso (Cudy / HLS / WebRTC / YouTube) -->
+      <div class="panel-glass rounded-2xl overflow-hidden space-y-0">
+        <div class="px-4 py-2.5 bg-black/60 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#e11d48] animate-ping"></span>
+            <span class="font-fox text-sm font-black uppercase tracking-wider text-white">
+              Monitor en Directo (Señal Cudy / Baja Latencia)
+            </span>
+          </div>
+          <span id="crewNetworkBadge" class="font-tnum text-[10px] font-bold uppercase text-[#38bdf8]">
+            Cudy 5GHz · Latencia ~0.3s
+          </span>
+        </div>
+
+        <div class="relative w-full aspect-video bg-black flex items-center justify-center">
+          <video id="crewHlsVideo" autoplay playsinline controls muted class="hidden w-full h-full object-contain bg-black"></video>
+          <img id="crewMjpegImg" alt="Señal en vivo" class="hidden w-full h-full object-contain bg-black" />
+          <iframe id="crewYoutubeIframe" class="hidden w-full h-full border-0" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+
+          <div id="crewStreamPlaceholder" class="p-6 text-center space-y-2 max-w-md">
+            <i class="fa-solid fa-satellite-dish text-2xl text-[#f5b942]"></i>
+            <p class="font-fox text-lg font-bold uppercase text-white">Configura el enlace de señal en el Modo Director</p>
+            <p class="text-xs text-slate-400">Soporta flujos HLS (.m3u8) locales de Cudy, imágenes/MJPEG o enlaces de YouTube Live.</p>
+          </div>
+        </div>
+
+        <div class="px-4 py-2.5 bg-black/50 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] font-tnum text-slate-400">
+          <span class="truncate" id="crewSourceUrlText">—</span>
+          <button type="button" onclick="reloadCrewStream()" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/15 text-white font-bold cursor-pointer shrink-0">
+            <i class="fa-solid fa-rotate mr-1"></i> Reconectar
+          </button>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           MÓDULO DE INTERCOM DE EQUIPO + SOPORTE AIRPODS / BLUETOOTH
+           ===================================================================== -->
+      <div class="panel-glass rounded-2xl p-4 sm:p-5 space-y-4 border-emerald-500/30">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div>
+            <span class="text-[10px] font-tnum uppercase tracking-widest text-emerald-400 block">
+              Voz en Canal de Equipo &middot; WebRTC + Web Audio
+            </span>
+            <h3 class="font-fox text-2xl font-black uppercase text-white leading-none">
+              Intercom de Equipo y Auriculares (AirPods / Bluetooth)
+            </h3>
+          </div>
+
+          <span id="intercomConnBadge" class="px-2.5 py-1 rounded-lg bg-white/[0.06] border border-white/10 font-tnum text-[11px] font-bold text-slate-300">
+            INTERCOM LISTO
+          </span>
+        </div>
+
+        <!-- Controles principales: Conectar Canal + Pulsar para Hablar (PTT) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button
+            type="button"
+            id="btnConnectIntercom"
+            onclick="toggleIntercomChannel()"
+            class="py-3.5 px-4 rounded-xl bg-[#38bdf8] hover:bg-sky-300 text-slate-950 font-fox text-base font-black uppercase tracking-wider cursor-pointer transition flex items-center justify-center gap-2"
+          >
+            <i class="fa-solid fa-headphones"></i>
+            <span>Conectar Canal de Voz</span>
+          </button>
+
+          <button
+            type="button"
+            id="btnPushToTalk"
+            onmousedown="startTalkingPtt()"
+            onmouseup="stopTalkingPtt()"
+            onmouseleave="stopTalkingPtt()"
+            ontouchstart="event.preventDefault(); startTalkingPtt();"
+            ontouchend="stopTalkingPtt();"
+            class="py-3.5 px-4 rounded-xl bg-[#e11d48] hover:bg-rose-500 text-white font-fox text-base font-black uppercase tracking-wider cursor-pointer transition flex items-center justify-center gap-2 select-none"
+          >
+            <i class="fa-solid fa-microphone"></i>
+            <span id="pttButtonLabel">Mantén para Hablar (PTT)</span>
+          </button>
+        </div>
+
+        <!-- Selector de dispositivo de audio / micrófono (AirPods / manos libres) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-black/45 border border-white/10 rounded-xl p-3">
+          <div>
+            <label for="audioInputSelect" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              Micrófono (AirPods / Auricular)
+            </label>
+            <select
+              id="audioInputSelect"
+              onchange="refreshAudioDevices()"
+              class="w-full bg-black/75 border border-white/15 rounded-lg px-2.5 py-2 text-xs text-white focus:outline-none focus:border-emerald-400"
+            >
+              <option value="">Micrófono predeterminado del sistema</option>
+            </select>
+          </div>
+
+          <div class="flex flex-col justify-between">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+              Prueba de Tono y Audio en Auriculares
+            </span>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                onclick="playCueChime('cue')"
+                class="flex-1 py-2 px-3 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 font-fox text-xs font-extrabold uppercase tracking-wider text-[#f5b942] cursor-pointer transition"
+              >
+                <i class="fa-solid fa-bell mr-1"></i> Probar Tono Orden
+              </button>
+              <button
+                type="button"
+                onclick="refreshAudioDevices()"
+                class="py-2 px-3 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-xs text-slate-200 cursor-pointer"
+                title="Detectar dispositivos de audio"
+              >
+                <i class="fa-solid fa-rotate"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nota técnica clara sobre AirPods / Bluetooth (HFP) en navegadores móviles -->
+        <div class="bg-[#071326] border border-[#38bdf8]/30 rounded-xl p-3.5 text-xs text-slate-300 space-y-1.5">
+          <div class="font-fox text-sm font-black uppercase tracking-wider text-[#38bdf8] flex items-center gap-1.5">
+            <i class="fa-brands fa-bluetooth-b"></i>
+            <span>AirPods y Auriculares Bluetooth en Navegadores Móviles (Perfil HFP)</span>
+          </div>
+          <p class="leading-relaxed">
+            Cuando activas el micrófono de tus <strong>AirPods</strong> en iOS/Android o escritorio, el sistema cambia al perfil de llamadas bidireccional (<strong>HFP/SCO</strong>): la voz se escucha en el auricular y el micrófono capta tu habla, pero el ancho de banda Bluetooth baja y puede sonar con menor fidelidad musical que el modo estéreo normal.
+          </p>
+          <p class="leading-relaxed text-slate-400">
+            <strong>Consejo práctico en campo:</strong> deja el micrófono apagado (modo escucha) hasta pulsar <strong>Mantén para Hablar (PTT)</strong>; así evitas ruido ambiental constante en el canal y mantienes la escucha clara de las órdenes.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // CONFIGURACIÓN INICIAL Y PRESETS REUTILIZABLES PARA CUALQUIER EVENTO
+    // =========================================================================
+    const PRESETS = {
+      festival: {
+        eventName: "Festival de la Voz Niño Simón 2026 · Semifinales",
+        roomCode: "FNNS-SEMIFINAL-2026",
+        sourceType: "auto",
+        sourceUrl: "https://www.youtube.com/watch?v=sZTplvsYYHw",
+        networkHint: "Cudy 5GHz · Señal Máster Multicámara"
+      },
+      "cudy-local": {
+        eventName: "Ensayo General en Sala · Señal Local Cudy",
+        roomCode: "CUDY-LAN-01",
+        sourceType: "hls",
+        sourceUrl: "http://192.168.8.1:8080/live/stream.m3u8",
+        networkHint: "Red Local Cudy (192.168.8.x) · Latencia ~0.3s"
+      },
+      concierto: {
+        eventName: "Transmisión en Vivo · Producción Multicámara",
+        roomCode: "LIVE-CREW-01",
+        sourceType: "youtube",
+        sourceUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        networkHint: "Enlace Principal · Intercom Activo"
+      }
+    };
+
+    const DEFAULT_CREW = [
+      { id: "CAM-1", name: "Operador CAM 1", role: "CAM 1 · Plano General (Trípode)", spot: "Grada media-alta · Eje central" },
+      { id: "CAM-2", name: "Operador CAM 2", role: "CAM 2 · Cerrado / Rostro (Trípode)", spot: "Grada media · Pasillo derecho" },
+      { id: "CAM-3", name: "Operador CAM 3", role: "CAM 3 · Jurado y Gradas (Trípode)", spot: "Grada baja-media derecha" },
+      { id: "CAM-4", name: "Operador CAM 4", role: "CAM 4 · Ronin 4 Pro (Movimiento)", spot: "Borde de tarima (agachado)" },
+      { id: "CAM-5", name: "Operador CAM 5", role: "CAM 5 · Pocket 4 Pro + Palo 3m", spot: "Flanco derecho · Grúa" },
+      { id: "CAM-6", name: "Operador CAM 6", role: "CAM 6 · Action 6 (Bambalinas / PiP)", spot: "Puerta izquierda y gradas" }
+    ];
+
+    const STORAGE_CONFIG_KEY = "cudy_intercom_event_config_v1";
+    const STORAGE_CREW_KEY = "cudy_intercom_crew_roster_v1";
+    const STORAGE_CUE_KEY = "cudy_intercom_last_cue_v1";
+
+    let eventConfig = { ...PRESETS.festival };
+    let crewRoster = [...DEFAULT_CREW];
+    let activeOperatorId = "CAM-1";
+    let currentViewMode = "director";
+    let soundAlertEnabled = true;
+
+    let lastCue = {
+      id: "init",
+      title: "En espera",
+      detail: "Mantén posición y enlace listos.",
+      target: "ALL",
+      tone: "slate",
+      timestamp: new Date().toLocaleTimeString("es-VE", { hour: "2-digit", minute: "2-digit" })
+    };
+
+    let broadcastCh = null;
+    let mqttClient = null;
+    let hlsInstance = null;
+    let peerInstance = null;
+    let localMicStream = null;
+    let activePeerCalls = [];
+    let isIntercomConnected = false;
+    let isTalkingPtt = false;
+    let audioCtx = null;
+
+    function showToast(msg) {
+      const box = document.getElementById("toastBanner");
+      const text = document.getElementById("toastMessage");
+      if (!box || !text) return;
+      text.textContent = msg;
+      box.classList.remove("hidden");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => box.classList.add("hidden"), 3200);
+    }
+
+    function sanitizeRoom(code) {
+      return (code || "CUDY-LIVE-2026").toUpperCase().replace(/[^A-Z0-9_-]/g, "") || "CUDY-LIVE-2026";
+    }
+
+    function persistState() {
+      localStorage.setItem(STORAGE_CONFIG_KEY, JSON.stringify(eventConfig));
+      localStorage.setItem(STORAGE_CREW_KEY, JSON.stringify(crewRoster));
+      localStorage.setItem(STORAGE_CUE_KEY, JSON.stringify(lastCue));
+    }
+
+    function loadSavedState() {
+      try {
+        const cfg = JSON.parse(localStorage.getItem(STORAGE_CONFIG_KEY) || "null");
+        if (cfg && cfg.eventName) eventConfig = { ...eventConfig, ...cfg };
+      } catch (e) {}
+
+      try {
+        const roster = JSON.parse(localStorage.getItem(STORAGE_CREW_KEY) || "null");
+        if (Array.isArray(roster) && roster.length > 0) crewRoster = roster;
+      } catch (e) {}
+
+      try {
+        const cue = JSON.parse(localStorage.getItem(STORAGE_CUE_KEY) || "null");
+        if (cue && cue.title) lastCue = { ...lastCue, ...cue };
+      } catch (e) {}
+
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("sala")) {
+        eventConfig.roomCode = sanitizeRoom(params.get("sala"));
+      }
+      if (params.get("op")) {
+        activeOperatorId = params.get("op");
+      }
+      if (params.get("vista") === "crew") {
+        currentViewMode = "crew";
+      }
+    }
+
+    // =========================================================================
+    // SINCRONIZACIÓN EN TIEMPO REAL (BROADCASTCHANNEL + MQTT)
+    // =========================================================================
+    function setupRealtimeSync() {
+      const room = sanitizeRoom(eventConfig.roomCode);
+
+      if (broadcastCh) {
+        try { broadcastCh.close(); } catch (e) {}
+      }
+      broadcastCh = new BroadcastChannel("cudy_intercom_room_" + room);
+      broadcastCh.onmessage = (ev) => {
+        handleIncomingSyncPayload(ev.data);
+      };
+
+      if (mqttClient) {
+        try { mqttClient.end(true); } catch (e) {}
+      }
+
+      const topic = `cudy-intercom/v1/${room}/state`;
+      const syncEl = document.getElementById("headerSyncLabel");
+
+      try {
+        mqttClient = mqtt.connect("wss://broker.emqx.io:8084/mqtt", {
+          clientId: "crew_" + Math.random().toString(16).slice(2, 9),
+          clean: true,
+          reconnectPeriod: 2500
+        });
+
+        mqttClient.on("connect", () => {
+          if (syncEl) {
+            syncEl.textContent = "EN VIVO";
+            syncEl.className = "font-tnum text-[10px] font-bold uppercase text-emerald-400";
+          }
+          mqttClient.subscribe(topic);
+        });
+
+        mqttClient.on("offline", () => {
+          if (syncEl) {
+            syncEl.textContent = "LOCAL";
+            syncEl.className = "font-tnum text-[10px] font-bold uppercase text-amber-400";
+          }
+        });
+
+        mqttClient.on("message", (t, msg) => {
+          if (t !== topic) return;
+          try {
+            const payload = JSON.parse(msg.toString());
+            handleIncomingSyncPayload(payload);
+          } catch (e) {}
+        });
+      } catch (e) {
+        if (syncEl) syncEl.textContent = "LOCAL";
+      }
+    }
+
+    function handleIncomingSyncPayload(payload) {
+      if (!payload || typeof payload !== "object") return;
+      let changedStream = false;
+
+      if (payload.eventConfig) {
+        const prevUrl = eventConfig.sourceUrl;
+        const prevType = eventConfig.sourceType;
+        eventConfig = { ...eventConfig, ...payload.eventConfig };
+        if (prevUrl !== eventConfig.sourceUrl || prevType !== eventConfig.sourceType) {
+          changedStream = true;
+        }
+      }
+
+      if (Array.isArray(payload.crewRoster) && payload.crewRoster.length > 0) {
+        crewRoster = payload.crewRoster;
+      }
+
+      if (payload.cue && payload.cue.id && payload.cue.id !== lastCue.id) {
+        lastCue = payload.cue;
+        const appliesToMe = lastCue.target === "ALL" || lastCue.target === activeOperatorId;
+        if (currentViewMode === "crew" && appliesToMe) {
+          triggerCueFeedback(lastCue.tone);
+        }
+      }
+
+      persistState();
+      populateFormFromConfig();
+      renderHeaderAndSelectors();
+      renderCrewRoster();
+      renderCueViews();
+      if (changedStream && currentViewMode === "crew") {
+        mountCrewStreamPlayer();
+      }
+    }
+
+    function publishState(extraCue = null) {
+      const payload = {
+        eventConfig,
+        crewRoster,
+        cue: extraCue || null,
+        sentAt: Date.now()
+      };
+      persistState();
+      if (broadcastCh) {
+        try { broadcastCh.postMessage(payload); } catch (e) {}
+      }
+      if (mqttClient && mqttClient.connected) {
+        const topic = `cudy-intercom/v1/${sanitizeRoom(eventConfig.roomCode)}/state`;
+        try {
+          mqttClient.publish(topic, JSON.stringify(payload), { qos: 0, retain: true });
+        } catch (e) {}
+      }
+    }
+
+    // =========================================================================
+    // FORMULARIO Y PRESETS DEL DIRECTOR
+    // =========================================================================
+    function populateFormFromConfig() {
+      document.getElementById("cfgEventName").value = eventConfig.eventName || "";
+      document.getElementById("cfgRoomCode").value = eventConfig.roomCode || "";
+      document.getElementById("cfgSourceType").value = eventConfig.sourceType || "auto";
+      document.getElementById("cfgSourceUrl").value = eventConfig.sourceUrl || "";
+      document.getElementById("cfgNetworkHint").value = eventConfig.networkHint || "";
+      updateSourcePlaceholder();
+    }
+
+    function updateSourcePlaceholder() {
+      const type = document.getElementById("cfgSourceType").value;
+      const input = document.getElementById("cfgSourceUrl");
+      if (type === "hls") {
+        input.placeholder = "http://192.168.8.1:8080/live/stream.m3u8";
+      } else if (type === "webrtc") {
+        input.placeholder = "https://tu-servidor-whep/whep o enlace WebRTC";
+      } else if (type === "mjpeg") {
+        input.placeholder = "http://192.168.8.1:8081/video.mjpg o URL de captura";
+      } else if (type === "youtube") {
+        input.placeholder = "https://www.youtube.com/watch?v=... o ID de 11 caracteres";
+      } else {
+        input.placeholder = "Enlace .m3u8 (Cudy), YouTube Live o imagen en directo";
+      }
+    }
+
+    function loadPreset(presetKey) {
+      const preset = PRESETS[presetKey];
+      if (!preset) return;
+      eventConfig = { ...preset };
+      populateFormFromConfig();
+      renderHeaderAndSelectors();
+      showToast(`Cargado ejemplo: ${preset.eventName}`);
+    }
+
+    function saveAndLaunchEvent(e) {
+      e.preventDefault();
+      const prevRoom = sanitizeRoom(eventConfig.roomCode);
+      eventConfig = {
+        eventName: document.getElementById("cfgEventName").value.trim() || "Transmisión en Vivo",
+        roomCode: sanitizeRoom(document.getElementById("cfgRoomCode").value),
+        sourceType: document.getElementById("cfgSourceType").value,
+        sourceUrl: document.getElementById("cfgSourceUrl").value.trim(),
+        networkHint: document.getElementById("cfgNetworkHint").value.trim() || "Enlace en Directo"
+      };
+
+      renderHeaderAndSelectors();
+      publishState();
+
+      if (prevRoom !== eventConfig.roomCode) {
+        setupRealtimeSync();
+      }
+
+      showToast(`Evento "${eventConfig.eventName}" activo en sala ${eventConfig.roomCode}`);
+    }
+
+    function copyCrewInviteLink() {
+      const room = sanitizeRoom(eventConfig.roomCode);
+      const base = window.location.href.split("?")[0];
+      const url = `${base}?vista=crew&sala=${encodeURIComponent(room)}&op=${encodeURIComponent(activeOperatorId)}`;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+          showToast("Enlace de sala copiado para compartir con el equipo");
+        }).catch(() => {
+          prompt("Copia este enlace para el equipo:", url);
+        });
+      } else {
+        prompt("Copia este enlace para el equipo:", url);
+      }
+    }
+
+    // =========================================================================
+    // ÓRDENES RÁPIDAS DEL DIRECTOR Y RESPUESTA EN TELÉFONO DE CAMARÓGRAFO
+    // =========================================================================
+    function getTargetLabel(targetId) {
+      if (!targetId || targetId === "ALL") return "TODO EL EQUIPO";
+      const member = crewRoster.find(m => m.id === targetId);
+      return member ? `${member.id} · ${member.name}` : targetId;
+    }
+
+    function sendQuickCue(title, detail, tone = "gold") {
+      const target = document.getElementById("cueTargetSelect").value || "ALL";
+      lastCue = {
+        id: "cue_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        title,
+        detail,
+        target,
+        tone,
+        timestamp: new Date().toLocaleTimeString("es-VE", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+      };
+      renderCueViews();
+      publishState(lastCue);
+      showToast(`Orden "${title}" enviada a ${getTargetLabel(target)}`);
+    }
+
+    function sendCustomCue() {
+      const input = document.getElementById("customCueInput");
+      const text = (input.value || "").trim();
+      if (!text) return;
+      input.value = "";
+      sendQuickCue(text, "Orden directa de dirección en campo.", "gold");
+    }
+
+    function acknowledgeDirectorCue() {
+      const op = crewRoster.find(m => m.id === activeOperatorId);
+      const who = op ? `${op.id} (${op.name})` : activeOperatorId;
+      showToast(`Confirmado al director desde ${who}`);
+      publishState({
+        id: "ack_" + Date.now(),
+        title: `Copiado · ${who}`,
+        detail: `Confirmó la orden "${lastCue.title}" en campo.`,
+        target: "ALL",
+        tone: "emerald",
+        timestamp: new Date().toLocaleTimeString("es-VE", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+      });
+    }
+
+    function playCueChime(kind = "cue") {
+      if (!soundAlertEnabled && kind === "cue") return;
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!audioCtx) audioCtx = new AudioContextClass();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(kind === "ptt" ? 660 : 880, now);
+        osc.frequency.exponentialRampToValueAtTime(kind === "ptt" ? 880 : 1174.66, now + 0.14);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(0.14, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.28);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } catch (e) {}
+    }
+
+    function toggleSoundAlert() {
+      soundAlertEnabled = !soundAlertEnabled;
+      const btn = document.getElementById("btnSoundAlertToggle");
+      if (btn) {
+        btn.innerHTML = `<i class="fa-solid ${soundAlertEnabled ? "fa-volume-high" : "fa-volume-xmark"} mr-1"></i> Tono Alerta: ${soundAlertEnabled ? "ON" : "OFF"}`;
+        btn.className = soundAlertEnabled
+          ? "px-3 py-2 rounded-xl bg-white/[0.06] border border-white/15 font-tnum text-[11px] font-bold text-emerald-300 cursor-pointer"
+          : "px-3 py-2 rounded-xl bg-white/[0.04] border border-white/10 font-tnum text-[11px] font-bold text-slate-400 cursor-pointer";
+      }
+    }
+
+    function triggerCueFeedback(tone) {
+      playCueChime("cue");
+      if (navigator.vibrate) {
+        try {
+          navigator.vibrate(tone === "red" ? [140, 70, 140] : [110]);
+        } catch (e) {}
+      }
+      const card = document.getElementById("crewCueCard");
+      if (card) {
+        card.classList.remove("cue-alert-anim");
+        void card.offsetWidth;
+        card.classList.add("cue-alert-anim");
+      }
+    }
+
+    // =========================================================================
+    // EQUIPO, ROLES Y SELECTOR RÁPIDO DE OPERADOR
+    // =========================================================================
+    function renderHeaderAndSelectors() {
+      document.getElementById("headerEventTitle").textContent = eventConfig.eventName || "Transmisión en Vivo";
+      document.getElementById("headerChannelLabel").textContent = `SALA: ${sanitizeRoom(eventConfig.roomCode)}`;
+
+      const opSelect = document.getElementById("quickOperatorSelect");
+      const targetSelect = document.getElementById("cueTargetSelect");
+      const prevTarget = targetSelect.value || "ALL";
+
+      if (!crewRoster.some(m => m.id === activeOperatorId) && crewRoster.length > 0) {
+        activeOperatorId = crewRoster[0].id;
+      }
+
+      opSelect.innerHTML = crewRoster.map(m => `
+        <option value="${m.id}" ${m.id === activeOperatorId ? "selected" : ""}>
+          ${m.id} · ${m.name} (${m.role.split("·")[0].trim()})
+        </option>
+      `).join("");
+
+      targetSelect.innerHTML = `
+        <option value="ALL" ${prevTarget === "ALL" ? "selected" : ""}>TODO EL EQUIPO</option>
+        ${crewRoster.map(m => `
+          <option value="${m.id}" ${prevTarget === m.id ? "selected" : ""}>${m.id} · ${m.name}</option>
+        `).join("")}
+      `;
+
+      document.getElementById("crewCountLabel").textContent = `${crewRoster.length} Puestos`;
+      renderActiveOperatorSummary();
+    }
+
+    function renderCrewRoster() {
+      const container = document.getElementById("crewRosterList");
+      container.innerHTML = crewRoster.map((member, idx) => {
+        const isCurrent = member.id === activeOperatorId;
+        return `
+          <div class="bg-black/45 border ${isCurrent ? "border-[#38bdf8]/60" : "border-white/10"} rounded-xl p-2.5 space-y-2">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-tnum text-xs font-extrabold text-[#f5b942]">${member.id}</span>
+              <div class="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onclick="previewMemberPhone('${member.id}')"
+                  class="px-2.5 py-1 rounded-lg bg-[#38bdf8]/15 hover:bg-[#38bdf8]/25 border border-[#38bdf8]/35 font-fox text-[11px] font-extrabold uppercase tracking-wider text-[#38bdf8] cursor-pointer"
+                >
+                  Abrir Vista Teléfono
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+              <input
+                type="text"
+                value="${escapeHtmlAttr(member.name)}"
+                onchange="updateCrewMember(${idx}, 'name', this.value)"
+                placeholder="Nombre del operador"
+                class="bg-black/70 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-[#f5b942]"
+              />
+              <input
+                type="text"
+                value="${escapeHtmlAttr(member.role)}"
+                onchange="updateCrewMember(${idx}, 'role', this.value)"
+                placeholder="Cámara / Rol"
+                class="bg-black/70 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-sky-200 focus:outline-none focus:border-[#38bdf8]"
+              />
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function escapeHtmlAttr(str) {
+      return String(str || "").replace(/"/g, "&quot;");
+    }
+
+    function updateCrewMember(index, field, value) {
+      if (!crewRoster[index]) return;
+      crewRoster[index][field] = value.trim();
+      renderHeaderAndSelectors();
+      publishState();
+    }
+
+    function addCrewMember() {
+      const nameInput = document.getElementById("newCrewName");
+      const roleInput = document.getElementById("newCrewCam");
+      const name = (nameInput.value || "").trim();
+      const role = (roleInput.value || "").trim();
+      if (!name || !role) {
+        showToast("Escribe el nombre y la cámara o rol del miembro");
+        return;
+      }
+      const nextNum = crewRoster.length + 1;
+      crewRoster.push({
+        id: `CAM-${nextNum}`,
+        name,
+        role,
+        spot: "Asignación en campo"
+      });
+      nameInput.value = "";
+      roleInput.value = "";
+      renderHeaderAndSelectors();
+      renderCrewRoster();
+      publishState();
+      showToast(`Añadido ${name} (${role})`);
+    }
+
+    function selectActiveOperator(opId) {
+      activeOperatorId = opId;
+      renderHeaderAndSelectors();
+      renderCrewRoster();
+      renderCueViews();
+    }
+
+    function previewMemberPhone(opId) {
+      activeOperatorId = opId;
+      renderHeaderAndSelectors();
+      renderCrewRoster();
+      switchViewMode("crew");
+    }
+
+    function openSelectedOperatorPhoneView() {
+      switchViewMode("crew");
+    }
+
+    function renderActiveOperatorSummary() {
+      const op = crewRoster.find(m => m.id === activeOperatorId) || crewRoster[0] || {
+        id: "CAM-1",
+        name: "Operador",
+        role: "Cámara",
+        spot: ""
+      };
+      const shortBadge = op.id.replace("CAM-", "C");
+      const badgeEl = document.getElementById("crewAvatarBadge");
+      const titleEl = document.getElementById("crewOperatorTitle");
+      const spotEl = document.getElementById("crewOperatorSpot");
+
+      if (badgeEl) badgeEl.textContent = shortBadge;
+      if (titleEl) titleEl.textContent = `${op.role} · ${op.name}`;
+      if (spotEl) spotEl.textContent = op.spot || `Sala: ${sanitizeRoom(eventConfig.roomCode)}`;
+    }
+
+    function renderCueViews() {
+      const targetText = getTargetLabel(lastCue.target);
+      const lastCueBoxText = document.getElementById("directorLastCueText");
+      if (lastCueBoxText) {
+        lastCueBoxText.textContent = `${lastCue.title} · ${targetText}`;
+      }
+
+      const mainTitle = document.getElementById("crewCueMainTitle");
+      const detailEl = document.getElementById("crewCueDetail");
+      const timeEl = document.getElementById("crewCueTime");
+      const cueCard = document.getElementById("crewCueCard");
+
+      if (!mainTitle || !detailEl || !cueCard) return;
+
+      const appliesToMe = lastCue.target === "ALL" || lastCue.target === activeOperatorId;
+      mainTitle.textContent = lastCue.title;
+      timeEl.textContent = `${lastCue.timestamp || "Ahora"} · ${targetText}`;
+
+      if (appliesToMe) {
+        detailEl.textContent = lastCue.detail;
+        const borderMap = {
+          red: "border-[#e11d48]",
+          cyan: "border-[#38bdf8]",
+          gold: "border-[#f5b942]",
+          amber: "border-orange-400",
+          emerald: "border-emerald-400",
+          slate: "border-white/30"
+        };
+        const cls = borderMap[lastCue.tone] || "border-[#f5b942]";
+        cueCard.className = `panel-glass rounded-2xl p-4 sm:p-6 border-2 ${cls} space-y-2`;
+      } else {
+        detailEl.textContent = `Orden dirigida a ${targetText}. Mantente atento a tu puesto.`;
+        cueCard.className = "panel-glass rounded-2xl p-4 sm:p-6 border border-white/15 space-y-2 opacity-85";
+      }
+    }
+
+    // =========================================================================
+    // REPRODUCTOR DE BAJA LATENCIA / CUDY EN VISTA DE CAMARÓGRAFO
+    // =========================================================================
+    function extractYoutubeId(urlOrId) {
+      if (!urlOrId) return "";
+      const s = String(urlOrId).trim();
+      if (/^[a-zA-Z0-9_-]{11}$/.test(s)) return s;
+      const m = s.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?.*v=|embed\/|v\/|live\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+      return m ? m[1] : "";
+    }
+
+    function detectStreamKind(url, configuredType) {
+      if (configuredType && configuredType !== "auto") return configuredType;
+      const clean = (url || "").trim().toLowerCase();
+      if (clean.includes(".m3u8")) return "hls";
+      if (extractYoutubeId(url)) return "youtube";
+      if (/\.(jpg|jpeg|png|webp|mjpg|mjpeg)(\?|$)/.test(clean)) return "mjpeg";
+      if (clean.includes("/whep") || clean.startsWith("webrtc://")) return "webrtc";
+      return "hls";
+    }
+
+    function mountCrewStreamPlayer() {
+      const url = (eventConfig.sourceUrl || "").trim();
+      const videoEl = document.getElementById("crewHlsVideo");
+      const imgEl = document.getElementById("crewMjpegImg");
+      const ytEl = document.getElementById("crewYoutubeIframe");
+      const placeholderEl = document.getElementById("crewStreamPlaceholder");
+      const urlLabel = document.getElementById("crewSourceUrlText");
+      const netBadge = document.getElementById("crewNetworkBadge");
+
+      if (netBadge) {
+        netBadge.textContent = eventConfig.networkHint || "Señal en Directo";
+      }
+      if (urlLabel) {
+        urlLabel.textContent = url || "Sin señal configurada";
+      }
+
+      if (hlsInstance) {
+        try { hlsInstance.destroy(); } catch (e) {}
+        hlsInstance = null;
+      }
+
+      videoEl.classList.add("hidden");
+      videoEl.pause();
+      videoEl.removeAttribute("src");
+      imgEl.classList.add("hidden");
+      imgEl.removeAttribute("src");
+      ytEl.classList.add("hidden");
+      ytEl.src = "";
+
+      if (!url) {
+        placeholderEl.classList.remove("hidden");
+        return;
+      }
+
+      const kind = detectStreamKind(url, eventConfig.sourceType);
+
+      if (kind === "youtube") {
+        const ytId = extractYoutubeId(url);
+        if (ytId) {
+          placeholderEl.classList.add("hidden");
+          ytEl.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&rel=0&playsinline=1`;
+          ytEl.classList.remove("hidden");
+          return;
+        }
+      }
+
+      if (kind === "mjpeg") {
+        placeholderEl.classList.add("hidden");
+        imgEl.src = url + (url.includes("?") ? "&" : "?") + "t=" + Date.now();
+        imgEl.classList.remove("hidden");
+        return;
+      }
+
+      // HLS (.m3u8) / señal local Cudy
+      placeholderEl.classList.add("hidden");
+      videoEl.classList.remove("hidden");
+
+      if (window.Hls && window.Hls.isSupported() && url.includes(".m3u8")) {
+        hlsInstance = new window.Hls({
+          lowLatencyMode: true,
+          liveSyncDurationCount: 1,
+          maxLiveSyncPlaybackRate: 1.2
+        });
+        hlsInstance.loadSource(url);
+        hlsInstance.attachMedia(videoEl);
+        hlsInstance.on(window.Hls.Events.MANIFEST_PARSED, () => {
+          videoEl.play().catch(() => {});
+        });
+        hlsInstance.on(window.Hls.Events.ERROR, () => {
+          videoEl.classList.add("hidden");
+          placeholderEl.classList.remove("hidden");
+        });
+      } else {
+        videoEl.src = url;
+        videoEl.play().catch(() => {
+          videoEl.classList.add("hidden");
+          placeholderEl.classList.remove("hidden");
+        });
+      }
+    }
+
+    function reloadCrewStream() {
+      mountCrewStreamPlayer();
+      showToast("Reconectando señal de monitorización...");
+    }
+
+    // =========================================================================
+    // INTERCOM DE VOZ DE EQUIPO (WEBRTC / PEERJS + MICRÓFONO AIRPODS / BLUETOOTH)
+    // =========================================================================
+    async function refreshAudioDevices() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return;
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const inputs = devices.filter(d => d.kind === "audioinput");
+        const select = document.getElementById("audioInputSelect");
+        const currentVal = select.value;
+
+        select.innerHTML = `<option value="">Micrófono predeterminado del sistema</option>` + inputs.map((dev, i) => `
+          <option value="${escapeHtmlAttr(dev.deviceId)}" ${dev.deviceId === currentVal ? "selected" : ""}>
+            ${escapeHtmlAttr(dev.label || `Entrada de audio ${i + 1}`)}
+          </option>
+        `).join("");
+      } catch (e) {}
+    }
+
+    async function ensureLocalMicStream() {
+      if (localMicStream) return localMicStream;
+      const selectedDeviceId = document.getElementById("audioInputSelect")?.value || "";
+      const audioConstraints = selectedDeviceId
+        ? { deviceId: { exact: selectedDeviceId }, echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+        : { echoCancellation: true, noiseSuppression: true, autoGainControl: true };
+
+      localMicStream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraints, video: false });
+      // Arranca silenciado hasta mantener Push-to-Talk (PTT) para mantener limpio el canal
+      localMicStream.getAudioTracks().forEach(t => { t.enabled = false; });
+      await refreshAudioDevices();
+      return localMicStream;
+    }
+
+    function getPeerIdFor(roomCode, slotId) {
+      return `cudyic_${sanitizeRoom(roomCode).toLowerCase()}_${slotId.toLowerCase().replace(/[^a-z0-9]/g, "")}`;
+    }
+
+    async function toggleIntercomChannel() {
+      const badge = document.getElementById("intercomConnBadge");
+      const btn = document.getElementById("btnConnectIntercom");
+
+      if (isIntercomConnected) {
+        isIntercomConnected = false;
+        stopTalkingPtt();
+        activePeerCalls.forEach(c => { try { c.close(); } catch (e) {} });
+        activePeerCalls = [];
+        if (peerInstance) {
+          try { peerInstance.destroy(); } catch (e) {}
+          peerInstance = null;
+        }
+        badge.textContent = "DESCONECTADO";
+        badge.className = "px-2.5 py-1 rounded-lg bg-white/[0.06] border border-white/10 font-tnum text-[11px] font-bold text-slate-300";
+        btn.innerHTML = `<i class="fa-solid fa-headphones"></i><span>Conectar Canal de Voz</span>`;
+        showToast("Canal de intercom desconectado");
+        return;
+      }
+
+      badge.textContent = "CONECTANDO...";
+      badge.className = "px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-400/40 font-tnum text-[11px] font-bold text-amber-300";
+
+      try {
+        await ensureLocalMicStream();
+      } catch (err) {
+        badge.textContent = "SIN MICRO / PERMISO";
+        badge.className = "px-2.5 py-1 rounded-lg bg-red-500/20 border border-red-500/40 font-tnum text-[11px] font-bold text-red-300";
+        showToast("Permite el acceso al micrófono para usar el intercom");
+        return;
+      }
+
+      try {
+        const myPeerId = getPeerIdFor(eventConfig.roomCode, activeOperatorId);
+        peerInstance = new Peer(myPeerId, { debug: 0 });
+
+        peerInstance.on("open", () => {
+          isIntercomConnected = true;
+          badge.textContent = "CANAL ACTIVO";
+          badge.className = "px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/40 font-tnum text-[11px] font-bold text-emerald-300";
+          btn.innerHTML = `<i class="fa-solid fa-phone-slash"></i><span>Desconectar Canal</span>`;
+          playCueChime("ptt");
+          showToast("Intercom conectado · Usa PTT para hablar");
+
+          // Intentar enlazar con demás puestos del equipo en la misma sala
+          crewRoster.forEach(member => {
+            if (member.id === activeOperatorId) return;
+            const remoteId = getPeerIdFor(eventConfig.roomCode, member.id);
+            try {
+              const call = peerInstance.call(remoteId, localMicStream);
+              if (call) attachRemoteAudioStream(call);
+            } catch (e) {}
+          });
+        });
+
+        peerInstance.on("call", (incomingCall) => {
+          incomingCall.answer(localMicStream);
+          attachRemoteAudioStream(incomingCall);
+        });
+
+        peerInstance.on("error", () => {
+          isIntercomConnected = true;
+          badge.textContent = "AUDIO LISTO (PTT)";
+          badge.className = "px-2.5 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/40 font-tnum text-[11px] font-bold text-emerald-300";
+          btn.innerHTML = `<i class="fa-solid fa-phone-slash"></i><span>Desconectar Canal</span>`;
+        });
+      } catch (e) {
+        badge.textContent = "MODO LOCAL";
+      }
+    }
+
+    function attachRemoteAudioStream(call) {
+      activePeerCalls.push(call);
+      call.on("stream", (remoteStream) => {
+        const audio = document.createElement("audio");
+        audio.srcObject = remoteStream;
+        audio.autoplay = true;
+        audio.playsInline = true;
+        audio.play().catch(() => {});
+      });
+    }
+
+    async function startTalkingPtt() {
+      if (isTalkingPtt) return;
+      try {
+        await ensureLocalMicStream();
+      } catch (e) {
+        showToast("No se pudo activar el micrófono");
+        return;
+      }
+      isTalkingPtt = true;
+      localMicStream.getAudioTracks().forEach(t => { t.enabled = true; });
+      playCueChime("ptt");
+
+      const pttBtn = document.getElementById("btnPushToTalk");
+      const pttLabel = document.getElementById("pttButtonLabel");
+      if (pttBtn) pttBtn.classList.add("ptt-talking", "ring-2", "ring-white");
+      if (pttLabel) pttLabel.textContent = "HABLANDO EN CANAL...";
+    }
+
+    function stopTalkingPtt() {
+      if (!isTalkingPtt) return;
+      isTalkingPtt = false;
+      if (localMicStream) {
+        localMicStream.getAudioTracks().forEach(t => { t.enabled = false; });
+      }
+      const pttBtn = document.getElementById("btnPushToTalk");
+      const pttLabel = document.getElementById("pttButtonLabel");
+      if (pttBtn) pttBtn.classList.remove("ptt-talking", "ring-2", "ring-white");
+      if (pttLabel) pttLabel.textContent = "Mantén para Hablar (PTT)";
+    }
+
+    // =========================================================================
+    // CAMBIO DE VISTA (DIRECTOR VS CAMARÓGRAFO)
+    // =========================================================================
+    function switchViewMode(mode) {
+      currentViewMode = mode;
+      const dirSec = document.getElementById("directorSection");
+      const crewSec = document.getElementById("crewSection");
+      const btnDir = document.getElementById("btnModeDirector");
+      const btnCrew = document.getElementById("btnModeCrew");
+
+      if (mode === "crew") {
+        dirSec.classList.add("hidden");
+        crewSec.classList.remove("hidden");
+        btnCrew.className = "px-3 py-1.5 rounded-lg font-fox text-xs sm:text-sm font-black uppercase tracking-wider bg-[#38bdf8] text-slate-950 cursor-pointer transition flex items-center gap-1.5";
+        btnDir.className = "px-3 py-1.5 rounded-lg font-fox text-xs sm:text-sm font-black uppercase tracking-wider text-slate-300 hover:text-white cursor-pointer transition flex items-center gap-1.5";
+        renderActiveOperatorSummary();
+        renderCueViews();
+        mountCrewStreamPlayer();
+        refreshAudioDevices();
+      } else {
+        crewSec.classList.add("hidden");
+        dirSec.classList.remove("hidden");
+        btnDir.className = "px-3 py-1.5 rounded-lg font-fox text-xs sm:text-sm font-black uppercase tracking-wider bg-[#f5b942] text-black cursor-pointer transition flex items-center gap-1.5";
+        btnCrew.className = "px-3 py-1.5 rounded-lg font-fox text-xs sm:text-sm font-black uppercase tracking-wider text-slate-300 hover:text-white cursor-pointer transition flex items-center gap-1.5";
+        stopTalkingPtt();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadSavedState();
+      populateFormFromConfig();
+      renderHeaderAndSelectors();
+      renderCrewRoster();
+      renderCueViews();
+      setupRealtimeSync();
+      switchViewMode(currentViewMode);
+    });
+  </script>
+</body>
+</html>
