@@ -73,25 +73,29 @@
     }
 
     p.subtitle {
-      max-width: 560px;
+      max-width: 620px;
       color: #93b4c8;
       font-size: 13px;
       line-height: 1.45;
       margin: 0 0 20px;
     }
 
-    /* TARJETAS INDIVIDUALES CON PREVIEW EN VIVO */
+    /* TARJETAS INDIVIDUALES CON PREVIEW EN VIVO (4 DESTINOS) */
     .upload-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      grid-template-columns: repeat(4, minmax(190px, 1fr));
       gap: 14px;
-      max-width: 820px;
+      max-width: 1060px;
       width: 100%;
       margin-bottom: 22px;
       z-index: 2;
     }
 
-    @media (max-width: 740px) {
+    @media (max-width: 920px) {
+      .upload-grid { grid-template-columns: repeat(2, minmax(200px, 1fr)); max-width: 640px; }
+    }
+
+    @media (max-width: 540px) {
       .upload-grid { grid-template-columns: 1fr; max-width: 380px; }
     }
 
@@ -108,15 +112,37 @@
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
+    .upload-card.is-360-card {
+      border-color: rgba(168, 85, 247, 0.45);
+      background: linear-gradient(160deg, rgba(16, 14, 38, 0.92), rgba(7, 19, 32, 0.92));
+    }
+
     .upload-card.ready {
       border-color: rgba(0, 255, 157, 0.65);
       box-shadow: 0 0 22px rgba(0, 255, 157, 0.14);
     }
 
     .state-name {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.4px;
+    }
+
+    .mode-pill {
+      font-size: 10px;
+      font-family: monospace;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(0, 240, 255, 0.12);
+      color: #7dd3fc;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+    }
+
+    .mode-pill.pill-360 {
+      background: rgba(168, 85, 247, 0.2);
+      color: #e9d5ff;
+      border-color: rgba(192, 132, 252, 0.45);
     }
 
     .preview-box {
@@ -151,7 +177,6 @@
       pointer-events: none;
     }
 
-    /* Input accesible para el gestor de archivos del Quest 3 (nunca display:none) */
     .native-file-input {
       position: fixed;
       top: -9999px;
@@ -161,7 +186,6 @@
       opacity: 0;
     }
 
-    /* Label estilizado como botón nativo para garantizar apertura en Quest Browser */
     .btn-upload-label {
       display: block;
       width: 100%;
@@ -286,13 +310,14 @@
     <div class="badge">Portal Espacial · Meta Quest 3</div>
     <h1>DESTINOS VEN</h1>
     <p class="subtitle">
-      Toca cada botón para elegir el archivo de video desde la memoria interna del Meta Quest 3 y entra al portal holográfico.
+      Carga los videos desde la memoria del Meta Quest 3: Táchira, Aragua y Lara en 2D (con fondo oscurecido al 50% al reproducir) y Colonia Tovar en Vuelo 360°.
     </p>
 
     <div class="upload-grid">
       <!-- TÁCHIRA -->
       <div class="upload-card" id="card-box-tachira">
         <div class="state-name" style="color: #00ff9d;">TÁCHIRA</div>
+        <span class="mode-pill">2D · FONDO 50%</span>
         <div class="preview-box">
           <video id="video-tachira" muted loop playsinline preload="auto"></video>
           <div class="preview-placeholder" id="ph-tachira">SIN SEÑAL</div>
@@ -307,6 +332,7 @@
       <!-- ARAGUA -->
       <div class="upload-card" id="card-box-aragua">
         <div class="state-name" style="color: #00f0ff;">ARAGUA</div>
+        <span class="mode-pill">2D · FONDO 50%</span>
         <div class="preview-box">
           <video id="video-aragua" muted loop playsinline preload="auto"></video>
           <div class="preview-placeholder" id="ph-aragua">SIN SEÑAL</div>
@@ -321,6 +347,7 @@
       <!-- LARA -->
       <div class="upload-card" id="card-box-lara">
         <div class="state-name" style="color: #ffbe0b;">LARA</div>
+        <span class="mode-pill">2D · FONDO 50%</span>
         <div class="preview-box">
           <video id="video-lara" muted loop playsinline preload="auto"></video>
           <div class="preview-placeholder" id="ph-lara">SIN SEÑAL</div>
@@ -330,6 +357,21 @@
           <input type="file" id="input-lara" class="native-file-input" />
         </label>
         <div class="file-status" id="status-lara">Listo para cargar</div>
+      </div>
+
+      <!-- 4TO DESTINO: VUELO 360 COLONIA TOVAR -->
+      <div class="upload-card is-360-card" id="card-box-coloniatovar">
+        <div class="state-name" style="color: #e879f9;">COLONIA TOVAR</div>
+        <span class="mode-pill pill-360">VUELO 360°</span>
+        <div class="preview-box">
+          <video id="video-coloniatovar" muted loop playsinline preload="auto"></video>
+          <div class="preview-placeholder" id="ph-coloniatovar">SIN SEÑAL 360°</div>
+        </div>
+        <label class="btn-upload-label" for="input-coloniatovar">
+          Cargar Vuelo 360°
+          <input type="file" id="input-coloniatovar" class="native-file-input" />
+        </label>
+        <div class="file-status" id="status-coloniatovar">Listo para cargar</div>
       </div>
     </div>
 
@@ -358,16 +400,18 @@
         coords: "07°46'N  72°13'W",
         color: '#00ff9d',
         hex: 0x00ff9d,
-        anguloArco: -0.54
+        es360: false,
+        anguloArco: -0.78
       },
       {
         id: 'aragua',
         nombre: 'ARAGUA',
-        subtitulo: 'SELVA NUBLADA · COLONIA · COSTA',
+        subtitulo: 'SELVA NUBLADA · MARACAY · COSTA',
         coords: "10°14'N  67°35'W",
         color: '#00f0ff',
         hex: 0x00f0ff,
-        anguloArco: 0
+        es360: false,
+        anguloArco: -0.26
       },
       {
         id: 'lara',
@@ -376,17 +420,29 @@
         coords: "10°04'N  69°19'W",
         color: '#ffbe0b',
         hex: 0xffbe0b,
-        anguloArco: 0.54
+        es360: false,
+        anguloArco: 0.26
+      },
+      {
+        id: 'coloniatovar',
+        nombre: 'COLONIA TOVAR 360°',
+        subtitulo: 'VUELO 360° · MONTAÑA · ARQUITECTURA',
+        coords: "10°24'N  67°17'W",
+        color: '#e879f9',
+        hex: 0xe879f9,
+        es360: true,
+        anguloArco: 0.78
       }
     ];
 
     let camera, scene, renderer;
-    let holoRoot, previewGrid;
+    let holoRoot, previewGrid, dimDomeMesh, sphere360Mesh, sphere360Mat;
     let mode = 'HUB'; // 'HUB' | 'DETAIL'
     let isDesktopPreview = false;
     let selectedCard = null;
     let lastInteractionTime = 0;
     let mouseNorm = { x: 0, y: 0 };
+    let targetDimOpacity = 0;
 
     const cards = [];
     const detailButtons = [];
@@ -399,7 +455,7 @@
 
     function init() {
       scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.05, 30);
+      camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.05, 40);
       camera.position.set(0, 1.38, 0.25);
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -412,6 +468,36 @@
       previewGrid.position.y = 0;
       previewGrid.visible = false;
       scene.add(previewGrid);
+
+      // Cúpula envolvente para oscurecer el fondo al 50% al reproducir videos 2D
+      dimDomeMesh = new THREE.Mesh(
+        new THREE.SphereGeometry(8.5, 32, 24),
+        new THREE.MeshBasicMaterial({
+          color: 0x000000,
+          transparent: true,
+          opacity: 0,
+          side: THREE.BackSide,
+          depthWrite: false
+        })
+      );
+      dimDomeMesh.position.set(0, 1.38, 0);
+      dimDomeMesh.visible = false;
+      scene.add(dimDomeMesh);
+
+      // Esfera 360° para el Vuelo 360° por la Colonia Tovar
+      sphere360Mat = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        side: THREE.BackSide,
+        depthWrite: false
+      });
+      sphere360Mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(12, 64, 48),
+        sphere360Mat
+      );
+      sphere360Mesh.position.set(0, 1.38, 0);
+      sphere360Mesh.scale.x = -1; // Corrige orientación equirectangular en cara interna
+      sphere360Mesh.visible = false;
+      scene.add(sphere360Mesh);
 
       holoRoot = new THREE.Group();
       scene.add(holoRoot);
@@ -441,6 +527,11 @@
       document.getElementById('exit-preview-btn').addEventListener('click', () => {
         isDesktopPreview = false;
         previewGrid.visible = false;
+        targetDimOpacity = 0;
+        dimDomeMesh.material.opacity = 0;
+        dimDomeMesh.visible = false;
+        sphere360Mesh.visible = false;
+
         cards.forEach(c => {
           c.userData.video.muted = true;
           if (c.userData.hasVideo) c.userData.video.play().catch(() => {});
@@ -509,7 +600,6 @@
         video.load();
         video.play().catch(() => {});
 
-        // Permite volver a elegir el mismo archivo si fuera necesario
         inputEl.value = '';
       });
     }
@@ -523,10 +613,10 @@
       canvas.height = 400;
       const ctx = canvas.getContext('2d');
 
-      ctx.fillStyle = '#051320';
+      ctx.fillStyle = destino.es360 ? '#110824' : '#051320';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.12)';
+      ctx.strokeStyle = destino.es360 ? 'rgba(232, 121, 249, 0.16)' : 'rgba(0, 240, 255, 0.12)';
       ctx.lineWidth = 1;
       for (let x = 0; x < canvas.width; x += 32) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
@@ -544,9 +634,9 @@
       ctx.fillStyle = destino.color;
       ctx.font = 'bold 18px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(`PORTAL ${destino.nombre} EN ESPERA`, 320, 255);
+      ctx.fillText(destino.es360 ? 'VUELO 360° EN ESPERA' : `PORTAL ${destino.nombre} EN ESPERA`, 320, 255);
 
-      ctx.fillStyle = '#7fa6bd';
+      ctx.fillStyle = '#9db7c9';
       ctx.font = '14px monospace';
       ctx.fillText('CARGA EL VIDEO EN EL MENÚ INICIAL', 320, 280);
 
@@ -586,7 +676,11 @@
       ctx.fillRect(38, 36, canvas.width - 76, 46);
       ctx.fillStyle = destino.color;
       ctx.font = 'bold 20px monospace';
-      ctx.fillText(`DESTINOS VEN // ${destino.coords}`, 58, 66);
+      ctx.fillText(
+        destino.es360 ? `360° // ${destino.coords}` : `DESTINOS VEN // ${destino.coords}`,
+        58,
+        66
+      );
 
       ctx.textAlign = 'right';
       ctx.fillText(visited ? '✓ SELLADO' : '● TOCAR PARA ENTRAR', canvas.width - 58, 66);
@@ -600,7 +694,7 @@
       ctx.fillRect(28, canvas.height - 185, canvas.width - 56, 157);
 
       ctx.fillStyle = '#ffffff';
-      ctx.font = '900 66px system-ui, sans-serif';
+      ctx.font = destino.es360 ? '900 54px system-ui, sans-serif' : '900 66px system-ui, sans-serif';
       ctx.fillText(destino.nombre, 58, canvas.height - 86);
 
       ctx.fillStyle = destino.color;
@@ -668,7 +762,7 @@
         new THREE.MeshBasicMaterial({
           color: destino.hex,
           transparent: true,
-          opacity: 0.5,
+          opacity: destino.es360 ? 0.85 : 0.5,
           side: THREE.DoubleSide
         })
       );
@@ -682,7 +776,7 @@
 
       group.add(videoMesh, hudMesh, orbitalRing, beamMesh);
 
-      const radius = 1.25;
+      const radius = 1.32;
       const hubPos = new THREE.Vector3(
         Math.sin(destino.anguloArco) * radius,
         1.36,
@@ -742,7 +836,6 @@
     }
 
     function createCompletionBannerAndReset() {
-      // Banner superior al completar 3/3 sellos
       const canvas = document.createElement('canvas');
       canvas.width = 1024;
       canvas.height = 170;
@@ -764,7 +857,7 @@
 
       ctx.fillStyle = '#ffffff';
       ctx.font = '600 23px monospace';
-      ctx.fillText('3/3 DESTINOS SELLADOS · RECLAMA TU INSIGNIA EN EL STAND', 512, 120);
+      ctx.fillText('4/4 DESTINOS SELLADOS · RECLAMA TU INSIGNIA EN EL STAND', 512, 120);
 
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
@@ -777,7 +870,6 @@
       completionBanner.visible = false;
       holoRoot.add(completionBanner);
 
-      // Botón holográfico inferior para reiniciar pasaporte al siguiente visitante
       reset3dBtn = new THREE.Mesh(
         new THREE.PlaneGeometry(0.62, 0.13),
         new THREE.MeshBasicMaterial({
@@ -798,6 +890,9 @@
       playSciFiTone('close');
       mode = 'HUB';
       selectedCard = null;
+      targetDimOpacity = 0;
+      dimDomeMesh.visible = false;
+      sphere360Mesh.visible = false;
       completionBanner.visible = false;
       reset3dBtn.visible = false;
       detailButtons.forEach(btn => { btn.visible = false; });
@@ -807,12 +902,10 @@
         c.userData.targetPos.copy(c.userData.hubPos);
         c.userData.targetScale = 1.0;
 
-        // Restaurar HUD a estado inicial sin sellar
         c.userData.hudMesh.material.map.dispose();
         c.userData.hudMesh.material.map = buildHudTexture(c.userData.destino, false);
         c.userData.hudMesh.material.needsUpdate = true;
 
-        // Rebobinar video y mantener bucle silencioso en el Hub
         c.userData.video.muted = true;
         if (c.userData.hasVideo) {
           c.userData.video.currentTime = 0;
@@ -821,7 +914,7 @@
       });
 
       document.getElementById('status-pill').textContent =
-        'Pasaporte reiniciado (0/3) · Toca un destino para comenzar';
+        `Pasaporte reiniciado (0/${cards.length}) · Toca un destino para comenzar`;
     }
 
     // =========================================================================
@@ -871,7 +964,6 @@
 
     function processRayHits(raycaster, now) {
       if (mode === 'HUB') {
-        // Verificar si tocó el botón 3D de reiniciar pasaporte
         if (reset3dBtn.visible) {
           const resetHits = raycaster.intersectObject(reset3dBtn);
           if (resetHits.length > 0) {
@@ -978,14 +1070,33 @@
       document.getElementById('recenter-btn').style.display = 'none';
       document.getElementById('exit-preview-btn').style.display = 'inline-block';
       document.getElementById('status-pill').textContent =
-        'Vista Previa 3D: Haz clic sobre Táchira, Aragua o Lara';
+        'Vista Previa 3D: Haz clic sobre un destino o el Vuelo 360°';
 
       renderer.setAnimationLoop(animateScene);
     }
 
     // =========================================================================
-    // 6. NAVEGACIÓN ENTRE HUB Y DESTINO
+    // 6. NAVEGACIÓN ENTRE HUB Y DESTINO (2D CON FONDO 50% / VUELO 360°)
     // =========================================================================
+    function activarEscena360(card) {
+      if (card.userData.hasVideo) {
+        if (!card.userData.videoTexture) {
+          const tex = new THREE.VideoTexture(card.userData.video);
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.minFilter = THREE.LinearFilter;
+          tex.magFilter = THREE.LinearFilter;
+          card.userData.videoTexture = tex;
+        }
+        sphere360Mat.map = card.userData.videoTexture;
+        sphere360Mat.color.setHex(0xffffff);
+      } else {
+        sphere360Mat.map = null;
+        sphere360Mat.color.setHex(0x1b0d36);
+      }
+      sphere360Mat.needsUpdate = true;
+      sphere360Mesh.visible = true;
+    }
+
     function enterDestination(card) {
       mode = 'DETAIL';
       selectedCard = card;
@@ -993,10 +1104,29 @@
       reset3dBtn.visible = false;
       playSciFiTone('open');
 
+      const es360 = Boolean(card.userData.destino.es360);
+
+      if (es360) {
+        // Vuelo 360°: sin oscurecimiento 50% y con esfera 360° envolvente
+        targetDimOpacity = 0;
+        dimDomeMesh.visible = false;
+        activarEscena360(card);
+      } else {
+        // Video 2D (Táchira, Aragua, Lara): oscurece el fondo al 50%
+        sphere360Mesh.visible = false;
+        targetDimOpacity = 0.5;
+        dimDomeMesh.visible = true;
+      }
+
       cards.forEach(c => {
         if (c === card) {
-          c.userData.targetPos.set(0, 1.38, -1.15);
-          c.userData.targetScale = 2.05;
+          if (es360) {
+            // En 360° se oculta el panel central para no tapar el entorno esférico
+            c.userData.targetScale = 0.001;
+          } else {
+            c.userData.targetPos.set(0, 1.38, -1.15);
+            c.userData.targetScale = 2.05;
+          }
           if (c.userData.hasVideo) {
             c.userData.video.currentTime = 0;
             c.userData.video.muted = false;
@@ -1010,12 +1140,15 @@
       });
 
       detailButtons.forEach(btn => { btn.visible = true; });
-      document.getElementById('status-pill').textContent =
-        `Explorando ${card.userData.destino.nombre} · Toca SELLAR DESTINO o VOLVER`;
+      document.getElementById('status-pill').textContent = es360
+        ? `Vuelo 360° · ${card.userData.destino.nombre} · Mira alrededor o toca SELLAR`
+        : `${card.userData.destino.nombre} (Fondo 50%) · Toca SELLAR DESTINO o VOLVER`;
     }
 
     function returnToHub() {
       mode = 'HUB';
+      targetDimOpacity = 0;
+      sphere360Mesh.visible = false;
       playSciFiTone('close');
 
       cards.forEach(c => {
@@ -1033,7 +1166,7 @@
         completionBanner.visible = true;
         reset3dBtn.visible = true;
         document.getElementById('status-pill').textContent =
-          '¡Pasaporte completado (3/3)! Toca REINICIAR PASAPORTE para el siguiente turno';
+          `¡Pasaporte completado (${visitedCount}/${cards.length})! Toca REINICIAR PASAPORTE`;
       } else {
         completionBanner.visible = false;
         reset3dBtn.visible = false;
@@ -1068,6 +1201,8 @@
       const yaw = Math.atan2(-camDir.x, -camDir.z);
       holoRoot.position.set(camPos.x, 0, camPos.z);
       holoRoot.rotation.y = yaw;
+      dimDomeMesh.position.set(camPos.x, camPos.y || 1.38, camPos.z);
+      sphere360Mesh.position.set(camPos.x, camPos.y || 1.38, camPos.z);
     }
 
     function playSciFiTone(type) {
@@ -1151,6 +1286,16 @@
         camera.lookAt(0, 1.35, -1.15);
       } else {
         checkDirectFingerTouch();
+      }
+
+      // Transición suave de oscurecimiento al 50% para videos 2D
+      dimDomeMesh.material.opacity = THREE.MathUtils.lerp(
+        dimDomeMesh.material.opacity,
+        targetDimOpacity,
+        0.12
+      );
+      if (dimDomeMesh.material.opacity < 0.005 && targetDimOpacity === 0) {
+        dimDomeMesh.visible = false;
       }
 
       cards.forEach((c, idx) => {
