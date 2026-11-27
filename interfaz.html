@@ -310,14 +310,14 @@
     <div class="badge">Portal Espacial · Meta Quest 3</div>
     <h1>DESTINOS VEN</h1>
     <p class="subtitle">
-      Carga los videos desde la memoria del Meta Quest 3: Táchira, Aragua y Lara en 2D (con fondo oscurecido al 50% al reproducir) y Colonia Tovar en Vuelo 360°.
+      Carga los videos desde la memoria del Meta Quest 3: Táchira, Aragua y Lara en pantalla cine envolvente y Colonia Tovar en Vuelo 360°.
     </p>
 
     <div class="upload-grid">
       <!-- TÁCHIRA -->
       <div class="upload-card" id="card-box-tachira">
         <div class="state-name" style="color: #00ff9d;">TÁCHIRA</div>
-        <span class="mode-pill">2D · FONDO 50%</span>
+        <span class="mode-pill">CINE 2D ENVOLVENTE</span>
         <div class="preview-box">
           <video id="video-tachira" muted loop playsinline preload="auto"></video>
           <div class="preview-placeholder" id="ph-tachira">SIN SEÑAL</div>
@@ -332,7 +332,7 @@
       <!-- ARAGUA -->
       <div class="upload-card" id="card-box-aragua">
         <div class="state-name" style="color: #00f0ff;">ARAGUA</div>
-        <span class="mode-pill">2D · FONDO 50%</span>
+        <span class="mode-pill">CINE 2D ENVOLVENTE</span>
         <div class="preview-box">
           <video id="video-aragua" muted loop playsinline preload="auto"></video>
           <div class="preview-placeholder" id="ph-aragua">SIN SEÑAL</div>
@@ -347,7 +347,7 @@
       <!-- LARA -->
       <div class="upload-card" id="card-box-lara">
         <div class="state-name" style="color: #ffbe0b;">LARA</div>
-        <span class="mode-pill">2D · FONDO 50%</span>
+        <span class="mode-pill">CINE 2D ENVOLVENTE</span>
         <div class="preview-box">
           <video id="video-lara" muted loop playsinline preload="auto"></video>
           <div class="preview-placeholder" id="ph-lara">SIN SEÑAL</div>
@@ -436,7 +436,7 @@
     ];
 
     let camera, scene, renderer;
-    let holoRoot, previewGrid, dimDomeMesh, sphere360Mesh, sphere360Mat;
+    let holoRoot, previewGrid, dimDomeMesh, blackoutSphere360, sphere360Mesh, sphere360Mat;
     let mode = 'HUB'; // 'HUB' | 'DETAIL'
     let isDesktopPreview = false;
     let selectedCard = null;
@@ -455,7 +455,7 @@
 
     function init() {
       scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.05, 40);
+      camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.05, 60);
       camera.position.set(0, 1.38, 0.25);
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -469,11 +469,11 @@
       previewGrid.visible = false;
       scene.add(previewGrid);
 
-      // Cúpula envolvente para oscurecer el fondo al 50% al reproducir videos 2D
+      // Cúpula envolvente para sala de cine oscura al reproducir videos 2D (78% opacidad)
       dimDomeMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(8.5, 32, 24),
+        new THREE.SphereGeometry(9.0, 32, 24),
         new THREE.MeshBasicMaterial({
-          color: 0x000000,
+          color: 0x010308,
           transparent: true,
           opacity: 0,
           side: THREE.BackSide,
@@ -481,21 +481,43 @@
         })
       );
       dimDomeMesh.position.set(0, 1.38, 0);
+      dimDomeMesh.renderOrder = 1;
       dimDomeMesh.visible = false;
       scene.add(dimDomeMesh);
 
-      // Esfera 360° para el Vuelo 360° por la Colonia Tovar
+      // Sello negro sólido 100% opaco detrás de la esfera 360° para que NO se cuele el passthrough AR
+      blackoutSphere360 = new THREE.Mesh(
+        new THREE.SphereGeometry(22, 32, 24),
+        new THREE.MeshBasicMaterial({
+          color: 0x000000,
+          transparent: false,
+          opacity: 1,
+          side: THREE.BackSide,
+          depthWrite: false
+        })
+      );
+      blackoutSphere360.position.set(0, 1.38, 0);
+      blackoutSphere360.renderOrder = 2;
+      blackoutSphere360.visible = false;
+      scene.add(blackoutSphere360);
+
+      // Esfera 360° para el Vuelo 360° por la Colonia Tovar (totalmente opaca, sin falla de passthrough)
       sphere360Mat = new THREE.MeshBasicMaterial({
         color: 0xffffff,
+        transparent: false,
+        opacity: 1,
         side: THREE.BackSide,
-        depthWrite: false
+        depthWrite: false,
+        depthTest: false
       });
       sphere360Mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(12, 64, 48),
+        new THREE.SphereGeometry(20, 64, 48),
         sphere360Mat
       );
       sphere360Mesh.position.set(0, 1.38, 0);
-      sphere360Mesh.scale.x = -1; // Corrige orientación equirectangular en cara interna
+      sphere360Mesh.scale.x = -1;
+      sphere360Mesh.rotation.y = Math.PI * 0.5;
+      sphere360Mesh.renderOrder = 3;
       sphere360Mesh.visible = false;
       scene.add(sphere360Mesh);
 
@@ -530,6 +552,7 @@
         targetDimOpacity = 0;
         dimDomeMesh.material.opacity = 0;
         dimDomeMesh.visible = false;
+        blackoutSphere360.visible = false;
         sphere360Mesh.visible = false;
 
         cards.forEach(c => {
@@ -581,6 +604,7 @@
             tex.colorSpace = THREE.SRGBColorSpace;
             tex.minFilter = THREE.LinearFilter;
             tex.magFilter = THREE.LinearFilter;
+            tex.generateMipmaps = false;
             card.userData.videoTexture = tex;
             card.userData.videoMesh.material.map = tex;
             card.userData.videoMesh.material.needsUpdate = true;
@@ -610,7 +634,7 @@
     function buildPlaceholderTexture(destino) {
       const canvas = document.createElement('canvas');
       canvas.width = 640;
-      canvas.height = 400;
+      canvas.height = 360;
       const ctx = canvas.getContext('2d');
 
       ctx.fillStyle = destino.es360 ? '#110824' : '#051320';
@@ -628,17 +652,17 @@
       ctx.strokeStyle = destino.color;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(320, 175, 48, 0, Math.PI * 2);
+      ctx.arc(320, 155, 44, 0, Math.PI * 2);
       ctx.stroke();
 
       ctx.fillStyle = destino.color;
       ctx.font = 'bold 18px monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(destino.es360 ? 'VUELO 360° EN ESPERA' : `PORTAL ${destino.nombre} EN ESPERA`, 320, 255);
+      ctx.fillText(destino.es360 ? 'VUELO 360° EN ESPERA' : `PORTAL ${destino.nombre} EN ESPERA`, 320, 232);
 
       ctx.fillStyle = '#9db7c9';
       ctx.font = '14px monospace';
-      ctx.fillText('CARGA EL VIDEO EN EL MENÚ INICIAL', 320, 280);
+      ctx.fillText('CARGA EL VIDEO EN EL MENÚ INICIAL', 320, 258);
 
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
@@ -648,7 +672,7 @@
     function buildHudTexture(destino, visited = false) {
       const canvas = document.createElement('canvas');
       canvas.width = 1024;
-      canvas.height = 640;
+      canvas.height = 576;
       const ctx = canvas.getContext('2d');
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -686,20 +710,20 @@
       ctx.fillText(visited ? '✓ SELLADO' : '● TOCAR PARA ENTRAR', canvas.width - 58, 66);
       ctx.textAlign = 'left';
 
-      const grad = ctx.createLinearGradient(0, canvas.height - 185, 0, canvas.height - 28);
+      const grad = ctx.createLinearGradient(0, canvas.height - 175, 0, canvas.height - 28);
       grad.addColorStop(0, 'rgba(3, 10, 18, 0.0)');
       grad.addColorStop(0.35, 'rgba(3, 10, 18, 0.9)');
       grad.addColorStop(1, 'rgba(3, 10, 18, 0.98)');
       ctx.fillStyle = grad;
-      ctx.fillRect(28, canvas.height - 185, canvas.width - 56, 157);
+      ctx.fillRect(28, canvas.height - 175, canvas.width - 56, 147);
 
       ctx.fillStyle = '#ffffff';
-      ctx.font = destino.es360 ? '900 54px system-ui, sans-serif' : '900 66px system-ui, sans-serif';
-      ctx.fillText(destino.nombre, 58, canvas.height - 86);
+      ctx.font = destino.es360 ? '900 50px system-ui, sans-serif' : '900 62px system-ui, sans-serif';
+      ctx.fillText(destino.nombre, 58, canvas.height - 82);
 
       ctx.fillStyle = destino.color;
-      ctx.font = 'bold 22px monospace';
-      ctx.fillText(destino.subtitulo, 60, canvas.height - 50);
+      ctx.font = 'bold 21px monospace';
+      ctx.fillText(destino.subtitulo, 60, canvas.height - 46);
 
       const tex = new THREE.CanvasTexture(canvas);
       tex.colorSpace = THREE.SRGBColorSpace;
@@ -740,14 +764,30 @@
 
       const placeholderTex = buildPlaceholderTexture(destino);
 
+      // Pantalla 16:9 pura (0.64 x 0.36) sin deformación
       const videoMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.64, 0.40),
+        new THREE.PlaneGeometry(0.64, 0.36),
         new THREE.MeshBasicMaterial({ map: placeholderTex, side: THREE.DoubleSide })
       );
+      videoMesh.renderOrder = 10;
+
+      // Marco sutil de cine que aparece solo cuando se está reproduciendo el video 2D sin líneas verdes
+      const cinemaFrame = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.656, 0.376),
+        new THREE.MeshBasicMaterial({
+          color: 0x050911,
+          transparent: true,
+          opacity: 0.92,
+          side: THREE.DoubleSide
+        })
+      );
+      cinemaFrame.position.z = -0.004;
+      cinemaFrame.renderOrder = 9;
+      cinemaFrame.visible = false;
 
       const hudTex = buildHudTexture(destino, false);
       const hudMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.68, 0.43),
+        new THREE.PlaneGeometry(0.68, 0.39),
         new THREE.MeshBasicMaterial({
           map: hudTex,
           transparent: true,
@@ -756,9 +796,10 @@
         })
       );
       hudMesh.position.z = 0.014;
+      hudMesh.renderOrder = 11;
 
       const orbitalRing = new THREE.Mesh(
-        new THREE.RingGeometry(0.365, 0.378, 64, 1, 0, Math.PI * 1.35),
+        new THREE.RingGeometry(0.355, 0.368, 64, 1, 0, Math.PI * 1.35),
         new THREE.MeshBasicMaterial({
           color: destino.hex,
           transparent: true,
@@ -772,9 +813,9 @@
         new THREE.PlaneGeometry(0.42, 0.006),
         new THREE.MeshBasicMaterial({ color: destino.hex, transparent: true, opacity: 0.7 })
       );
-      beamMesh.position.y = -0.255;
+      beamMesh.position.y = -0.235;
 
-      group.add(videoMesh, hudMesh, orbitalRing, beamMesh);
+      group.add(cinemaFrame, videoMesh, hudMesh, orbitalRing, beamMesh);
 
       const radius = 1.32;
       const hubPos = new THREE.Vector3(
@@ -790,12 +831,14 @@
         index,
         video: videoEl,
         videoMesh,
+        cinemaFrame,
         videoTexture: null,
         blobUrl: null,
         hasVideo: false,
         hudMesh,
         hitTarget: hudMesh,
         orbitalRing,
+        beamMesh,
         hubPos: hubPos.clone(),
         hubQuat: group.quaternion.clone(),
         targetPos: hubPos.clone(),
@@ -806,28 +849,39 @@
       return group;
     }
 
+    function setCardDecorationsVisible(card, visible) {
+      card.userData.hudMesh.visible = visible;
+      card.userData.orbitalRing.visible = visible;
+      card.userData.beamMesh.visible = visible;
+      card.userData.cinemaFrame.visible = !visible;
+    }
+
     function createDetailControls() {
       const checkinMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.48, 0.115),
+        new THREE.PlaneGeometry(0.46, 0.105),
         new THREE.MeshBasicMaterial({
           map: buildButtonTexture('◈ SELLAR DESTINO', '#00ff9d'),
           transparent: true,
+          depthTest: false,
           side: THREE.DoubleSide
         })
       );
-      checkinMesh.position.set(-0.27, 0.84, -1.05);
+      checkinMesh.position.set(-0.26, 0.80, -1.12);
+      checkinMesh.renderOrder = 20;
       checkinMesh.visible = false;
       checkinMesh.userData = { action: 'CHECKIN' };
 
       const backMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.48, 0.115),
+        new THREE.PlaneGeometry(0.46, 0.105),
         new THREE.MeshBasicMaterial({
           map: buildButtonTexture('✕ VOLVER AL MAPA', '#00f0ff'),
           transparent: true,
+          depthTest: false,
           side: THREE.DoubleSide
         })
       );
-      backMesh.position.set(0.27, 0.84, -1.05);
+      backMesh.position.set(0.26, 0.80, -1.12);
+      backMesh.renderOrder = 20;
       backMesh.visible = false;
       backMesh.userData = { action: 'BACK' };
 
@@ -892,6 +946,7 @@
       selectedCard = null;
       targetDimOpacity = 0;
       dimDomeMesh.visible = false;
+      blackoutSphere360.visible = false;
       sphere360Mesh.visible = false;
       completionBanner.visible = false;
       reset3dBtn.visible = false;
@@ -901,6 +956,7 @@
         c.userData.visited = false;
         c.userData.targetPos.copy(c.userData.hubPos);
         c.userData.targetScale = 1.0;
+        setCardDecorationsVisible(c, true);
 
         c.userData.hudMesh.material.map.dispose();
         c.userData.hudMesh.material.map = buildHudTexture(c.userData.destino, false);
@@ -1076,7 +1132,7 @@
     }
 
     // =========================================================================
-    // 6. NAVEGACIÓN ENTRE HUB Y DESTINO (2D CON FONDO 50% / VUELO 360°)
+    // 6. NAVEGACIÓN ENTRE HUB Y DESTINO (CINE 2D ENVOLVENTE / VUELO 360° PURO)
     // =========================================================================
     function activarEscena360(card) {
       if (card.userData.hasVideo) {
@@ -1085,15 +1141,19 @@
           tex.colorSpace = THREE.SRGBColorSpace;
           tex.minFilter = THREE.LinearFilter;
           tex.magFilter = THREE.LinearFilter;
+          tex.generateMipmaps = false;
           card.userData.videoTexture = tex;
         }
         sphere360Mat.map = card.userData.videoTexture;
         sphere360Mat.color.setHex(0xffffff);
       } else {
         sphere360Mat.map = null;
-        sphere360Mat.color.setHex(0x1b0d36);
+        sphere360Mat.color.setHex(0x140a29);
       }
       sphere360Mat.needsUpdate = true;
+
+      // Sella completamente el entorno AR/passthrough para que el 360° no tenga fallas ni transparencias
+      blackoutSphere360.visible = true;
       sphere360Mesh.visible = true;
     }
 
@@ -1107,25 +1167,26 @@
       const es360 = Boolean(card.userData.destino.es360);
 
       if (es360) {
-        // Vuelo 360°: sin oscurecimiento 50% y con esfera 360° envolvente
         targetDimOpacity = 0;
         dimDomeMesh.visible = false;
         activarEscena360(card);
       } else {
-        // Video 2D (Táchira, Aragua, Lara): oscurece el fondo al 50%
+        // Sala de cine envolvente: oscurece el entorno al 78% y elimina bordes/textos verdes
+        blackoutSphere360.visible = false;
         sphere360Mesh.visible = false;
-        targetDimOpacity = 0.5;
+        targetDimOpacity = 0.78;
         dimDomeMesh.visible = true;
       }
 
       cards.forEach(c => {
         if (c === card) {
           if (es360) {
-            // En 360° se oculta el panel central para no tapar el entorno esférico
             c.userData.targetScale = 0.001;
           } else {
-            c.userData.targetPos.set(0, 1.38, -1.15);
-            c.userData.targetScale = 2.05;
+            // Pantalla de cine grande y limpia (sin líneas verdes ni texto "Tocar para entrar")
+            setCardDecorationsVisible(c, false);
+            c.userData.targetPos.set(0, 1.40, -1.16);
+            c.userData.targetScale = 2.65;
           }
           if (c.userData.hasVideo) {
             c.userData.video.currentTime = 0;
@@ -1141,17 +1202,19 @@
 
       detailButtons.forEach(btn => { btn.visible = true; });
       document.getElementById('status-pill').textContent = es360
-        ? `Vuelo 360° · ${card.userData.destino.nombre} · Mira alrededor o toca SELLAR`
-        : `${card.userData.destino.nombre} (Fondo 50%) · Toca SELLAR DESTINO o VOLVER`;
+        ? `Vuelo 360° · ${card.userData.destino.nombre} · Mira alrededor`
+        : `${card.userData.destino.nombre} · Sala Cine Envolvente`;
     }
 
     function returnToHub() {
       mode = 'HUB';
       targetDimOpacity = 0;
+      blackoutSphere360.visible = false;
       sphere360Mesh.visible = false;
       playSciFiTone('close');
 
       cards.forEach(c => {
+        setCardDecorationsVisible(c, true);
         c.userData.targetPos.copy(c.userData.hubPos);
         c.userData.targetScale = 1.0;
         c.userData.video.muted = true;
@@ -1202,6 +1265,7 @@
       holoRoot.position.set(camPos.x, 0, camPos.z);
       holoRoot.rotation.y = yaw;
       dimDomeMesh.position.set(camPos.x, camPos.y || 1.38, camPos.z);
+      blackoutSphere360.position.set(camPos.x, camPos.y || 1.38, camPos.z);
       sphere360Mesh.position.set(camPos.x, camPos.y || 1.38, camPos.z);
     }
 
@@ -1286,9 +1350,16 @@
         camera.lookAt(0, 1.35, -1.15);
       } else {
         checkDirectFingerTouch();
+        // Mantiene centradas las cúpulas alrededor de la cabeza del usuario en Quest 3
+        const xrCam = renderer.xr.getCamera();
+        const camPos = new THREE.Vector3();
+        xrCam.getWorldPosition(camPos);
+        dimDomeMesh.position.copy(camPos);
+        blackoutSphere360.position.copy(camPos);
+        sphere360Mesh.position.copy(camPos);
       }
 
-      // Transición suave de oscurecimiento al 50% para videos 2D
+      // Transición suave de oscurecimiento envolvente para sala de cine 2D
       dimDomeMesh.material.opacity = THREE.MathUtils.lerp(
         dimDomeMesh.material.opacity,
         targetDimOpacity,
