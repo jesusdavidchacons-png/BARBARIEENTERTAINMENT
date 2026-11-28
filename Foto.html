@@ -1,2364 +1,1484 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Ruta Venezuela | Trivia &amp; Photo Booth Marca País</title>
-  <link rel="icon" type="image/png" href="marcapais.png" />
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Fredoka:wght@500;600;700&family=Montserrat:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+<title>Venezuela Abierta al Futuro • Photo Experience</title>
 
-  <!-- Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-  <!-- html2canvas para descargar el Pasaporte/Ticket como imagen PNG -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <!-- QRCodeJS para Modo Activación en Eventos -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            display: ['Fredoka', 'sans-serif'],
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            poster: ['Cinzel', 'Georgia', 'serif'],
-            montserrat: ['Montserrat', 'sans-serif'],
-          },
-          colors: {
-            ve: {
-              yellow: '#FFCC00',
-              gold: '#F59E0B',
-              blue: '#0033A0',
-              navy: '#061B49',
-              red: '#CF142B',
-              emerald: '#10B981',
-            }
-          },
-          animation: {
-            'float': 'float 3.2s ease-in-out infinite',
-            'pop': 'pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
-            'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-            'shake': 'shake 0.45s cubic-bezier(.36,.07,.19,.97) both',
-            'pulse-glow': 'pulseGlow 2s infinite',
-            'stamp-slam': 'stampSlam 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards',
-            'wiggle': 'wiggle 0.4s ease-in-out infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
-              '50%': { transform: 'translateY(-8px) rotate(1deg)' },
-            },
-            pop: {
-              '0%': { transform: 'scale(0.84)', opacity: '0' },
-              '100%': { transform: 'scale(1)', opacity: '1' },
-            },
-            slideUp: {
-              '0%': { transform: 'translateY(18px)', opacity: '0' },
-              '100%': { transform: 'translateY(0)', opacity: '1' },
-            },
-            shake: {
-              '10%, 90%': { transform: 'translate3d(-2px, 0, 0)' },
-              '20%, 80%': { transform: 'translate3d(4px, 0, 0)' },
-              '30%, 50%, 70%': { transform: 'translate3d(-6px, 0, 0)' },
-              '40%, 60%': { transform: 'translate3d(6px, 0, 0)' },
-            },
-            pulseGlow: {
-              '0%, 100%': { boxShadow: '0 5px 0 0 #d97706, 0 0 0 0 rgba(255, 204, 0, 0.55)' },
-              '50%': { boxShadow: '0 5px 0 0 #d97706, 0 0 0 12px rgba(255, 204, 0, 0)' },
-            },
-            stampSlam: {
-              '0%': { transform: 'scale(2.4) rotate(-18deg)', opacity: '0' },
-              '70%': { transform: 'scale(0.92) rotate(4deg)', opacity: '1' },
-              '100%': { transform: 'scale(1) rotate(0deg)', opacity: '1' },
-            },
-            wiggle: {
-              '0%, 100%': { transform: 'rotate(-4deg)' },
-              '50%': { transform: 'rotate(4deg)' },
-            }
-          }
-        }
-      }
-    };
-  </script>
+<style>
 
-  <style>
-    body {
-      background: radial-gradient(circle at top left, #0a2563 0%, #051336 55%, #030b21 100%);
-      min-height: 100dvh;
-      overflow-x: hidden;
-      -webkit-tap-highlight-color: transparent;
-    }
+:root {
 
-    .app-shell {
-      background: #F8FAFC;
-      box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.12);
-    }
+--bg: #090b0e;
 
-    .tricolor-bar {
-      background: linear-gradient(90deg, #FFCC00 0%, #FFCC00 33.3%, #0033A0 33.3%, #0033A0 66.6%, #CF142B 66.6%, #CF142B 100%);
-    }
+--surface: #131720;
 
-    /* Convierte marcapais.png al azul institucional Venezuela (#0033A0) */
-    .logo-azul {
-      filter: brightness(0) saturate(100%) invert(14%) sepia(93%) saturate(4280%) hue-rotate(219deg) brightness(86%) contrast(106%);
-    }
+--accent: #f59e0b;
 
-    .btn-shine {
-      position: relative;
-      overflow: hidden;
-    }
-    .btn-shine::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
-      transform: skewX(-20deg);
-      animation: shineSweep 3.2s infinite;
-    }
-    @keyframes shineSweep {
-      0%, 65% { left: -100%; }
-      100% { left: 160%; }
-    }
+--accent-hover: #fbbf24;
 
-    .btn-3d {
-      transition: all 0.15s ease;
-    }
-    .btn-3d:active:not(:disabled) {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2) !important;
-    }
+--text: #f8fafc;
 
-    .option-card {
-      opacity: 0;
-      animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, border-color 0.2s ease, opacity 0.25s ease;
-    }
-    .option-card:hover:not(:disabled) {
-      transform: translateY(-2px);
-    }
-    .option-card:active:not(:disabled) {
-      transform: scale(0.97);
-    }
+--muted: #94a3b8;
 
-    .floating-pts {
-      position: absolute;
-      pointer-events: none;
-      font-family: 'Fredoka', sans-serif;
-      font-weight: 700;
-      color: #059669;
-      text-shadow: 0 2px 8px rgba(255,255,255,0.9);
-      animation: floatUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      z-index: 40;
-    }
-    @keyframes floatUpFade {
-      0% { transform: translateY(0) scale(0.7); opacity: 0; }
-      25% { transform: translateY(-12px) scale(1.15); opacity: 1; }
-      100% { transform: translateY(-55px) scale(1); opacity: 0; }
-    }
+--border: rgba(255, 255, 255, 0.08);
 
-    /* Estilos específicos del Photo Booth */
-    .booth-frame {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      background: #090b0e;
-      border-radius: 22px;
-      overflow: hidden;
-      border: 2px solid rgba(6, 27, 73, 0.15);
-      transition: aspect-ratio 0.25s ease;
-    }
-    .booth-frame.group-ratio {
-      aspect-ratio: 4 / 3;
-    }
-    .booth-frame video,
-    .booth-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .booth-frame video.mirror {
-      transform: scaleX(-1);
-    }
-    .cam-chip {
-      background: rgba(9, 11, 14, 0.84);
-      backdrop-filter: blur(8px);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      max-width: 195px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .cam-chip.active {
-      background: #f59e0b;
-      color: #000;
-      border-color: #f59e0b;
-    }
+}
 
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  </style>
+{ box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', system-ui, -apple-system, sans-serif; }
+body {
+
+background: var(--bg);
+
+color: var(--text);
+
+min-height: 100dvh;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+padding: 16px;
+
+}
+
+.card {
+
+width: 100%;
+
+max-width: 480px;
+
+background: var(--surface);
+
+border-radius: 28px;
+
+padding: 22px;
+
+border: 1px solid var(--border);
+
+box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+
+text-align: center;
+
+}
+
+.badge {
+
+display: inline-block;
+
+font-size: 0.7rem;
+
+letter-spacing: 2.5px;
+
+text-transform: uppercase;
+
+color: var(--accent);
+
+font-weight: 700;
+
+margin-bottom: 6px;
+
+}
+
+h1 {
+
+font-size: 1.28rem;
+
+font-weight: 700;
+
+margin-bottom: 14px;
+
+line-height: 1.3;
+
+}
+
+.selectors {
+
+display: flex;
+
+flex-direction: column;
+
+gap: 9px;
+
+margin-bottom: 14px;
+
+}
+
+.pill-group {
+
+display: grid;
+
+grid-template-columns: 1fr 1fr;
+
+gap: 6px;
+
+background: rgba(0, 0, 0, 0.35);
+
+padding: 4px;
+
+border-radius: 14px;
+
+border: 1px solid var(--border);
+
+}
+
+.pill {
+
+padding: 10px 8px;
+
+border-radius: 10px;
+
+border: none;
+
+background: transparent;
+
+color: var(--muted);
+
+font-size: 0.82rem;
+
+font-weight: 600;
+
+cursor: pointer;
+
+transition: all 0.15s ease;
+
+}
+
+.pill.active {
+
+background: var(--accent);
+
+color: #000;
+
+}
+
+.frame {
+
+position: relative;
+
+width: 100%;
+
+aspect-ratio: 3 / 4;
+
+background: #000;
+
+border-radius: 20px;
+
+overflow: hidden;
+
+margin-bottom: 16px;
+
+border: 1px solid var(--border);
+
+transition: aspect-ratio 0.25s ease;
+
+}
+
+.frame.group-ratio { aspect-ratio: 4 / 3; }
+
+video, img {
+
+width: 100%;
+
+height: 100%;
+
+object-fit: cover;
+
+display: block;
+
+}
+
+video.mirror { transform: scaleX(-1); }
+
+.cam-switcher-bar {
+
+position: absolute;
+
+top: 12px;
+
+left: 12px;
+
+right: 12px;
+
+z-index: 10;
+
+display: flex;
+
+flex-wrap: wrap;
+
+justify-content: center;
+
+gap: 6px;
+
+}
+
+.cam-chip {
+
+background: rgba(9, 11, 14, 0.82);
+
+backdrop-filter: blur(8px);
+
+color: #fff;
+
+border: 1px solid rgba(255, 255, 255, 0.25);
+
+border-radius: 999px;
+
+padding: 7px 13px;
+
+font-size: 0.74rem;
+
+font-weight: 600;
+
+cursor: pointer;
+
+transition: all 0.15s ease;
+
+max-width: 210px;
+
+white-space: nowrap;
+
+overflow: hidden;
+
+text-overflow: ellipsis;
+
+}
+
+.cam-chip.active {
+
+background: var(--accent);
+
+color: #000;
+
+border-color: var(--accent);
+
+}
+
+.placeholder {
+
+position: absolute;
+
+inset: 0;
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+padding: 24px;
+
+color: var(--muted);
+
+font-size: 0.9rem;
+
+gap: 10px;
+
+}
+
+.placeholder svg {
+
+width: 44px;
+
+height: 44px;
+
+stroke: var(--accent);
+
+opacity: 0.85;
+
+}
+
+.hidden { display: none !important; }
+
+.countdown {
+
+position: absolute;
+
+inset: 0;
+
+z-index: 15;
+
+background: rgba(0, 0, 0, 0.45);
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+font-size: 5.5rem;
+
+font-weight: 800;
+
+color: #fff;
+
+}
+
+.loader {
+
+position: absolute;
+
+inset: 0;
+
+z-index: 20;
+
+background: rgba(9, 11, 14, 0.88);
+
+backdrop-filter: blur(8px);
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 14px;
+
+padding: 20px;
+
+}
+
+.spinner {
+
+width: 44px;
+
+height: 44px;
+
+border: 4px solid rgba(255, 255, 255, 0.12);
+
+border-top-color: var(--accent);
+
+border-radius: 50%;
+
+animation: spin 0.85s linear infinite;
+
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.actions {
+
+display: flex;
+
+flex-direction: column;
+
+gap: 10px;
+
+}
+
+.dual-btn-row {
+
+display: grid;
+
+grid-template-columns: 1fr 1fr;
+
+gap: 8px;
+
+}
+
+.btn-main {
+
+width: 100%;
+
+padding: 15px 12px;
+
+border: none;
+
+border-radius: 14px;
+
+font-size: 0.92rem;
+
+font-weight: 700;
+
+cursor: pointer;
+
+transition: transform 0.12s ease, background 0.15s ease;
+
+background: var(--accent);
+
+color: #000;
+
+}
+
+.btn-main:active { transform: scale(0.98); }
+
+.btn-main:hover { background: var(--accent-hover); }
+
+.btn-usb {
+
+background: #10b981;
+
+color: #000;
+
+}
+
+.btn-usb:hover {
+
+background: #34d399;
+
+}
+
+.btn-secondary {
+
+width: 100%;
+
+padding: 13px;
+
+border: none;
+
+border-radius: 14px;
+
+font-size: 0.92rem;
+
+font-weight: 600;
+
+cursor: pointer;
+
+background: rgba(255, 255, 255, 0.08);
+
+color: var(--text);
+
+}
+
+.hint-text {
+
+font-size: 0.76rem;
+
+color: var(--muted);
+
+margin-top: 2px;
+
+}
+
+.error-msg {
+
+color: #f87171;
+
+font-size: 0.85rem;
+
+margin-top: 10px;
+
+line-height: 1.4;
+
+word-break: break-word;
+
+}
+
+</style>
+
 </head>
-<body class="font-sans text-slate-800 flex items-center justify-center sm:p-4">
-
-  <!-- Contenedor Estilo App Móvil -->
-  <main id="app" class="app-shell w-full sm:max-w-[440px] min-h-[100dvh] sm:min-h-[840px] sm:max-h-[900px] sm:rounded-[2.5rem] flex flex-col relative overflow-hidden">
-
-    <!-- Barra Tricolor Superior -->
-    <div class="tricolor-bar h-1.5 w-full shrink-0"></div>
-
-    <!-- Header Persistente -->
-    <header id="app-header" class="px-4 pt-3 pb-2.5 bg-white/95 backdrop-blur-md border-b border-slate-100 flex items-center justify-between shrink-0 z-20">
-      <button onclick="goHome()" class="flex items-center gap-2 text-left group focus:outline-none">
-        <div class="h-9 px-2 rounded-xl bg-blue-50/80 border border-blue-100 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-          <img
-            src="marcapais.png"
-            alt="Marca País Venezuela"
-            class="h-6 w-auto object-contain logo-azul"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-          />
-          <div style="display:none;" class="w-6 h-6 rounded-lg bg-ve-blue items-center justify-center text-white font-display font-bold text-xs">
-            VE
-          </div>
-        </div>
-        <div>
-          <span class="block font-display font-bold text-ve-navy text-xs sm:text-sm leading-tight">Ruta Venezuela</span>
-          <span class="block text-[9px] font-bold uppercase tracking-wider text-ve-blue">Marca País</span>
-        </div>
-      </button>
-
-      <div class="flex items-center gap-1.5">
-        <!-- Contador de Puntos -->
-        <div id="score-pill" class="bg-amber-50 border border-amber-200/80 px-2.5 py-1 rounded-full flex items-center gap-1 shadow-xs transition-transform">
-          <i data-lucide="sparkles" class="w-3 h-3 text-amber-500 fill-amber-400"></i>
-          <span id="header-score" class="font-display font-bold text-xs text-amber-900">0 pts</span>
-        </div>
-
-        <!-- Pasaporte -->
-        <button onclick="openPassport()" title="Mi Pasaporte" class="relative w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-ve-navy flex items-center justify-center transition-transform active:scale-90">
-          <i data-lucide="award" class="w-4 h-4"></i>
-          <span id="badge-count" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-ve-red text-white text-[9px] font-bold flex items-center justify-center">0</span>
-        </button>
-
-        <!-- Modo Evento / QR -->
-        <button onclick="openEventModal()" title="Modo Evento / QR" class="w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 text-ve-blue flex items-center justify-center transition-transform active:scale-90">
-          <i data-lucide="qr-code" class="w-4 h-4"></i>
-        </button>
-
-        <!-- Control de Audio -->
-        <button onclick="toggleSound()" id="sound-btn" title="Sonido" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-transform active:scale-90">
-          <i data-lucide="volume-2" class="w-4 h-4"></i>
-        </button>
-      </div>
-    </header>
-
-    <!-- Área Dinámica de Pantallas -->
-    <div id="screen-container" class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col">
-
-      <!-- ========================================================= -->
-      <!-- PANTALLA 1: INICIO / SPLASH INTERACTIVO                   -->
-      <!-- ========================================================= -->
-      <section id="screen-home" class="flex-1 flex flex-col justify-between p-6 bg-gradient-to-b from-white via-slate-50 to-blue-50/40">
-        <div class="mt-1 text-center">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-ve-blue text-xs font-bold mb-3 animate-pop">
-            <span class="w-2 h-2 rounded-full bg-ve-emerald animate-ping"></span>
-            Edición Especial · Sorteo Nacional 2026
-          </div>
-
-          <!-- Logo Oficial Marca País en Azul -->
-          <div class="relative mx-auto w-56 h-32 mb-3.5 flex items-center justify-center animate-float">
-            <div class="absolute inset-3 bg-gradient-to-tr from-ve-blue/25 via-blue-400/20 to-ve-yellow/20 rounded-3xl blur-xl"></div>
-            <div class="relative w-full h-full bg-white rounded-3xl shadow-xl shadow-blue-950/10 border border-blue-100/80 px-6 py-4 flex items-center justify-center">
-              <img
-                src="marcapais.png"
-                alt="Logo Oficial Marca País Venezuela"
-                class="max-h-full max-w-full object-contain logo-azul drop-shadow-xs"
-                onerror="this.style.display='none'; document.getElementById('logo-fallback-hero').style.display='flex';"
-              />
-              <div id="logo-fallback-hero" style="display:none;" class="flex-col items-center justify-center">
-                <span class="font-display font-bold text-2xl text-ve-blue tracking-tight">VENEZUELA</span>
-                <span class="text-[11px] font-extrabold uppercase tracking-[0.25em] text-ve-navy">Marca País</span>
-              </div>
-            </div>
-          </div>
-
-          <h1 class="font-display font-bold text-3xl text-ve-navy leading-tight mb-2">
-            Descubre lo mejor de <span class="text-transparent bg-clip-text bg-gradient-to-r from-ve-blue via-blue-600 to-ve-red">Venezuela</span>
-          </h1>
-          <p class="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-xs mx-auto">
-            Supera las trivias regionales y al final crea tu <strong class="text-ve-navy">Póster IA en Photo Booth</strong> para tu Pasaporte del <strong class="text-ve-blue">Automóvil 0 km</strong>.
-          </p>
-        </div>
-
-        <!-- Tarjeta Resumen Gran Premio Automóvil 0km -->
-        <div class="my-3.5 bg-gradient-to-br from-ve-navy via-[#0a286b] to-ve-blue rounded-3xl p-4 text-white shadow-lg relative overflow-hidden">
-          <div class="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-ve-yellow/15 blur-xl"></div>
-          <div class="flex items-center gap-3.5 relative z-10">
-            <div class="w-12 h-12 rounded-2xl bg-ve-yellow text-ve-navy flex items-center justify-center shrink-0 shadow-md animate-wiggle">
-              <i data-lucide="car" class="w-6 h-6"></i>
-            </div>
-            <div>
-              <span class="text-[10px] font-extrabold uppercase tracking-widest text-ve-yellow">Gran Premio Final</span>
-              <h3 class="font-display font-bold text-base leading-snug">¡Gánate un Automóvil 0 km!</h3>
-              <p class="text-[11px] text-blue-100/85 mt-0.5">Completa 1 región, genera tu póster con IA y reclama tu boleto.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Botones Principales -->
-        <div class="space-y-2.5 pb-1">
-          <button onclick="showScreen('regions')" class="btn-3d btn-shine w-full py-4 px-6 rounded-2xl bg-ve-yellow hover:bg-amber-400 text-ve-navy font-display font-bold text-lg shadow-[0_5px_0_0_#d97706] flex items-center justify-center gap-2 animate-pulse-glow">
-            <span>¡Comenzar Trivias!</span>
-            <i data-lucide="arrow-right" class="w-5 h-5"></i>
-          </button>
-
-          <button id="home-claim-btn" onclick="openPhotoBoothStep()" class="hidden w-full py-3 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all">
-            <i data-lucide="camera" class="w-4 h-4"></i>
-            <span>Ir al Photo Booth IA Final</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- PANTALLA 2: SELECTOR DE REGIONES DE VENEZUELA             -->
-      <!-- ========================================================= -->
-      <section id="screen-regions" class="hidden flex-1 flex flex-col p-5">
-        <div class="mb-4">
-          <div class="flex items-center justify-between">
-            <h2 class="font-display font-bold text-2xl text-ve-navy">Elige una Región</h2>
-            <span id="regions-progress-pill" class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-100 text-ve-blue">0 / 6 Sellos</span>
-          </div>
-          <p class="text-xs text-slate-500 mt-1">Completa al menos 1 región para desbloquear el Photo Booth IA final.</p>
-        </div>
-
-        <!-- Grid de 6 Regiones -->
-        <div id="regions-grid" class="grid grid-cols-2 gap-3 pb-4"></div>
-
-        <!-- Banner Desbloqueo Photo Booth IA -->
-        <div id="unlock-banner" class="mt-auto pt-2">
-          <div id="locked-prize-card" class="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-500 flex items-center justify-center shrink-0">
-              <i data-lucide="lock" class="w-5 h-5"></i>
-            </div>
-            <div class="text-xs">
-              <p class="font-bold text-slate-700">Photo Booth IA Final bloqueado</p>
-              <p class="text-slate-500">Completa 1 trivia regional para habilitar tu póster y boleto.</p>
-            </div>
-          </div>
-
-          <button id="unlocked-prize-btn" onclick="openPhotoBoothStep()" class="hidden btn-3d btn-shine w-full p-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-[0_4px_0_0_#065f46] flex items-center justify-between">
-            <div class="flex items-center gap-3 text-left">
-              <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                <i data-lucide="camera" class="w-5 h-5 text-ve-yellow"></i>
-              </div>
-              <div>
-                <span class="block text-[10px] font-extrabold uppercase tracking-wider text-emerald-100">¡Desbloqueado!</span>
-                <span class="font-display font-bold text-base">Ir al Photo Booth IA Final</span>
-              </div>
-            </div>
-            <i data-lucide="chevron-right" class="w-5 h-5"></i>
-          </button>
-        </div>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- PANTALLA 3: TRIVIA ACTIVA CON BARRA DE TIEMPO + 50:50     -->
-      <!-- ========================================================= -->
-      <section id="screen-quiz" class="hidden flex-1 flex flex-col p-5">
-        <div class="flex items-center justify-between gap-2 mb-2.5">
-          <button onclick="quitQuiz()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 shrink-0">
-            <i data-lucide="x" class="w-4 h-4"></i>
-          </button>
-
-          <div class="flex-1">
-            <div class="flex justify-between text-[11px] font-bold text-slate-500 mb-1">
-              <span id="quiz-region-label">Región</span>
-              <span id="quiz-step-label">Pregunta 1 de 3</span>
-            </div>
-            <div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
-              <div id="quiz-progress-bar" class="h-full bg-ve-blue rounded-full transition-all duration-300" style="width: 33%"></div>
-            </div>
-          </div>
-
-          <!-- Badge de Racha (Combo) -->
-          <div id="streak-badge" class="hidden px-2 py-1 rounded-xl bg-orange-100 text-orange-700 font-display font-bold text-xs items-center gap-1 shrink-0 animate-pop">
-            <span>🔥</span>
-            <span id="streak-text">x2</span>
-          </div>
-
-          <!-- Reloj Numérico -->
-          <div id="timer-badge" class="px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-800 font-display font-bold text-xs flex items-center gap-1 shrink-0">
-            <i data-lucide="timer" class="w-3.5 h-3.5"></i>
-            <span id="timer-text">15s</span>
-          </div>
-        </div>
-
-        <!-- BARRA VISUAL DE DESCUENTO DE TIEMPO -->
-        <div class="mb-3">
-          <div class="h-2.5 w-full bg-slate-200/90 rounded-full overflow-hidden p-0.5 shadow-inner">
-            <div
-              id="timer-drain-bar"
-              class="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 transition-[width,background-color] duration-100 linear"
-              style="width: 100%;"
-            ></div>
-          </div>
-        </div>
-
-        <!-- Tarjeta de Pregunta + Comodín 50:50 (1 uso por región) -->
-        <div id="question-card" class="bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-100 mb-3.5 relative overflow-hidden animate-pop">
-          <div class="flex items-center justify-between gap-2 mb-2.5">
-            <div id="question-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-blue-50 text-ve-blue">
-              <i data-lucide="sparkles" class="w-3 h-3"></i>
-              <span>Cultura y Turismo</span>
-            </div>
-
-            <button
-              id="lifeline-5050-btn"
-              onclick="useFiftyFifty()"
-              title="Elimina 1 opción incorrecta (1 uso por región)"
-              class="px-3 py-1 rounded-xl bg-gradient-to-r from-ve-blue to-blue-700 hover:from-blue-700 hover:to-ve-navy text-white font-display font-bold text-xs flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-40 disabled:pointer-events-none"
-            >
-              <i data-lucide="split" class="w-3.5 h-3.5 text-ve-yellow"></i>
-              <span>50:50</span>
-              <span id="lifeline-5050-count" class="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]">1</span>
-            </button>
-          </div>
-
-          <h3 id="question-text" class="font-display font-bold text-lg sm:text-xl text-ve-navy leading-snug">
-            ¿Pregunta aquí?
-          </h3>
-        </div>
-
-        <!-- Opciones de Respuesta -->
-        <div id="options-container" class="space-y-2.5 flex-1"></div>
-
-        <!-- Dato Curioso Marca País -->
-        <div id="feedback-drawer" class="hidden mt-3 p-3.5 rounded-2xl border animate-pop">
-          <div class="flex items-start gap-2.5">
-            <div id="feedback-icon" class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5"></div>
-            <div class="flex-1">
-              <p id="feedback-title" class="font-display font-bold text-sm"></p>
-              <p id="feedback-fact" class="text-xs mt-1 leading-relaxed opacity-90"></p>
-            </div>
-          </div>
-          <button onclick="nextQuestion()" id="next-question-btn" class="mt-3 w-full py-2.5 rounded-xl font-display font-bold text-sm text-white bg-ve-navy hover:bg-ve-blue transition-colors flex items-center justify-center gap-1.5">
-            <span>Continuar</span>
-            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-          </button>
-        </div>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- PANTALLA 4: RESULTADO DE LA REGIÓN                        -->
-      <!-- ========================================================= -->
-      <section id="screen-result" class="hidden flex-1 flex flex-col justify-between p-6 text-center">
-        <div class="my-auto">
-          <div id="result-stamp" class="mx-auto w-24 h-24 rounded-3xl flex items-center justify-center text-5xl shadow-lg mb-4 animate-stamp-slam">
-            🏔️
-          </div>
-
-          <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-xs mb-2">
-            ¡Sello Regional Desbloqueado!
-          </span>
-          <h2 id="result-title" class="font-display font-bold text-2xl text-ve-navy mb-1">¡Excelente recorrido!</h2>
-          <p id="result-subtitle" class="text-xs text-slate-500 max-w-xs mx-auto mb-5">
-            Pasa al Photo Booth IA final para crear tu póster en Venezuela e insertarlo en tu Pasaporte del Automóvil 0 km.
-          </p>
-
-          <div class="grid grid-cols-3 gap-2.5 bg-white p-3.5 rounded-2xl border border-slate-100 shadow-xs mb-5">
-            <div>
-              <span class="block text-[10px] font-bold uppercase text-slate-400">Aciertos</span>
-              <span id="res-correct" class="font-display font-bold text-lg text-emerald-600">3/3</span>
-            </div>
-            <div class="border-x border-slate-100">
-              <span class="block text-[10px] font-bold uppercase text-slate-400">Puntos</span>
-              <span id="res-points" class="font-display font-bold text-lg text-ve-blue">+350</span>
-            </div>
-            <div>
-              <span class="block text-[10px] font-bold uppercase text-slate-400">Total</span>
-              <span id="res-total" class="font-display font-bold text-lg text-amber-600">350</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-2.5">
-          <button onclick="openPhotoBoothStep()" class="btn-3d btn-shine w-full py-4 px-5 rounded-2xl bg-ve-yellow hover:bg-amber-400 text-ve-navy font-display font-bold text-base shadow-[0_4px_0_0_#d97706] flex items-center justify-center gap-2">
-            <i data-lucide="camera" class="w-5 h-5"></i>
-            <span>Ir al Photo Booth IA Final</span>
-          </button>
-
-          <button onclick="showScreen('regions')" class="w-full py-3 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition-colors">
-            Explorar otra región (+ sellos)
-          </button>
-        </div>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- PANTALLA 5: PHOTO BOOTH IA AL FINAL (VENEZUELA ABIERTA)   -->
-      <!-- ========================================================= -->
-      <section id="screen-photobooth" class="hidden flex-1 flex flex-col p-4 bg-[#090b0e] text-[#f8fafc] font-montserrat">
-        <div class="flex items-center justify-between mb-2">
-          <button onclick="stopBoothStream(); showScreen('regions')" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-          </button>
-          <span class="text-[10px] tracking-[2.2px] uppercase text-amber-400 font-bold">Venezuela • Abierta al Futuro</span>
-          <div class="w-8"></div>
-        </div>
-
-        <h2 id="booth-heading" class="text-center font-bold text-base sm:text-lg mb-3 leading-snug text-white">
-          Elige tu encuadre y destino
-        </h2>
-
-        <!-- Selectores de Encuadre y Destino -->
-        <div id="booth-selectors" class="flex flex-col gap-2 mb-3">
-          <div class="grid grid-cols-2 gap-1.5 bg-black/40 p-1 rounded-xl border border-white/10">
-            <button type="button" class="pill-mode py-2 px-2 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all" id="mode-selfie" onclick="setBoothMode('selfie')">
-              Selfie (Individual)
-            </button>
-            <button type="button" class="pill-mode py-2 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all" id="mode-group" onclick="setBoothMode('group')">
-              Foto Grupal
-            </button>
-          </div>
-
-          <div class="grid grid-cols-2 gap-1.5 bg-black/40 p-1 rounded-xl border border-white/10">
-            <button type="button" class="py-2 px-2 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all" id="dest-medanos" onclick="setBoothDestination('medanos')">
-              Médanos de Coro
-            </button>
-            <button type="button" class="py-2 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all" id="dest-salto" onclick="setBoothDestination('salto')">
-              Salto Ángel
-            </button>
-          </div>
-        </div>
-
-        <!-- Visor Principal del Photo Booth -->
-        <div id="booth-frame" class="booth-frame mb-3.5">
-          <!-- Barra dinámica de cámaras detectadas -->
-          <div id="cam-switcher-bar" class="hidden absolute top-3 left-3 right-3 z-10 flex flex-wrap justify-center gap-1.5"></div>
-
-          <div id="booth-placeholder" class="absolute inset-0 flex flex-col items-center justify-center p-6 text-slate-400 text-center gap-2.5">
-            <i data-lucide="camera" class="w-11 h-11 text-amber-400/90"></i>
-            <span class="text-xs sm:text-sm">Elige la cámara que deseas activar</span>
-          </div>
-
-          <video id="booth-video" autoplay playsinline muted class="hidden"></video>
-          <img id="booth-result-img" class="hidden" alt="Póster Generado" />
-          <div id="booth-countdown" class="hidden absolute inset-0 z-15 bg-black/50 flex items-center justify-center font-extrabold text-7xl text-white">3</div>
-
-          <!-- OVERLAY DE CARGA CON VIDEO 9:16 publi.mp4 MIENTRAS GENERA LA IA -->
-          <div id="booth-ai-loader" class="hidden absolute inset-0 z-20 bg-[#090b0e]/95 backdrop-blur-md flex flex-col items-center justify-center p-3">
-            <div class="relative w-full max-w-[250px] aspect-[9/16] rounded-2xl overflow-hidden border-2 border-amber-400/70 shadow-2xl bg-black flex items-center justify-center">
-              <video
-                id="publi-video"
-                src="publi.mp4"
-                playsinline
-                loop
-                autoplay
-                class="w-full h-full object-cover"
-              ></video>
-
-              <!-- Etiqueta superior discreta -->
-              <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2 z-10">
-                <span class="px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-xs text-[10px] font-bold text-amber-300 flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-                  <span id="booth-loader-label">Creando póster IA...</span>
-                </span>
-
-                <button
-                  type="button"
-                  onclick="togglePubliMute()"
-                  title="Activar/Silenciar audio del video"
-                  class="w-7 h-7 rounded-full bg-black/70 text-white flex items-center justify-center border border-white/20"
-                >
-                  <i id="publi-sound-icon" data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-                </button>
-              </div>
-            </div>
-            <p class="text-[11px] text-slate-300 mt-2 text-center">
-              Disfruta el video mientras nuestra IA integra tu escena en Venezuela...
-            </p>
-          </div>
-        </div>
-
-        <!-- Paso 1 Booth: Cámara Interna o Cámara USB (Action) -->
-        <div id="booth-ui-start" class="flex flex-col gap-2">
-          <div class="grid grid-cols-2 gap-2">
-            <button type="button" onclick="startBoothWithMode('internal')" class="py-3.5 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs sm:text-sm transition-all active:scale-98">
-              Cámara Interna
-            </button>
-            <button type="button" onclick="startBoothWithMode('usb')" class="py-3.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs sm:text-sm transition-all active:scale-98">
-              Cámara USB (Action)
-            </button>
-          </div>
-        </div>
-
-        <!-- Paso 2 Booth: Tomar Foto -->
-        <div id="booth-ui-camera" class="hidden flex flex-col gap-2">
-          <button type="button" onclick="startBoothCountdown()" class="w-full py-3.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm transition-all active:scale-98">
-            Tomar Foto
-          </button>
-        </div>
-
-        <!-- Paso 3 Booth: Generar Póster con IA o Repetir -->
-        <div id="booth-ui-preview" class="hidden flex flex-col gap-2">
-          <button type="button" id="booth-generate-btn" onclick="processBoothImage()" class="w-full py-3.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm transition-all active:scale-98">
-            Crear Póster en Médanos de Coro
-          </button>
-          <button type="button" onclick="retakeBoothPhoto()" class="w-full py-3 px-4 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs sm:text-sm transition-all">
-            Repetir Foto
-          </button>
-        </div>
-
-        <!-- Paso 4 Booth: Guardar Póster + Insertar al Pasaporte para Ticket -->
-        <div id="booth-ui-done" class="hidden flex flex-col gap-2">
-          <button type="button" onclick="savePosterToGallery()" class="w-full py-3.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-98">
-            <i data-lucide="download" class="w-4 h-4"></i>
-            <span>Guardar Póster en Galería</span>
-          </button>
-
-          <button type="button" onclick="insertPosterIntoPassport()" class="btn-3d btn-shine w-full py-3.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_3px_0_0_#047857]">
-            <i data-lucide="ticket" class="w-4 h-4"></i>
-            <span>Insertar al Pasaporte y Obtener Ticket (0 km)</span>
-          </button>
-
-          <p class="text-[11px] text-slate-400 text-center">
-            En iPhone/Android mantén presionado o toca "Guardar imagen" para enviarlo a Fotos.
-          </p>
-
-          <button type="button" onclick="resetBoothExperience()" class="w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/15 text-slate-200 font-semibold text-xs transition-all">
-            Crear Otro Póster
-          </button>
-        </div>
-
-        <p id="booth-error-box" class="hidden text-red-400 text-xs mt-2 text-center leading-snug break-words"></p>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- PANTALLA 6: FORMULARIO FINAL PARA TICKET AUTOMÓVIL 0 KM   -->
-      <!-- ========================================================= -->
-      <section id="screen-register" class="hidden flex-1 flex flex-col p-5">
-        <div class="flex items-center gap-2 mb-3">
-          <button onclick="showScreen('photobooth')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-          </button>
-          <div>
-            <h2 class="font-display font-bold text-xl text-ve-navy leading-tight">Ticket · Sorteo Automóvil 0 km</h2>
-            <p class="text-xs text-slate-500">Tu póster ya está listo para ir en tu Pasaporte Oficial</p>
-          </div>
-        </div>
-
-        <!-- Miniatura del Póster insertado + Puntaje -->
-        <div class="bg-gradient-to-r from-ve-navy to-ve-blue text-white p-3 rounded-2xl mb-3 flex items-center gap-3">
-          <div class="w-14 h-16 rounded-xl bg-black/30 border border-ve-yellow/70 overflow-hidden shrink-0 flex items-center justify-center">
-            <img id="reg-poster-thumb" alt="Póster seleccionado" class="hidden w-full h-full object-cover" />
-            <i id="reg-poster-icon" data-lucide="car" class="w-6 h-6 text-ve-yellow"></i>
-          </div>
-          <div class="flex-1 min-w-0">
-            <span class="block text-[9px] uppercase tracking-wider text-blue-200 font-bold">Pasaporte Marca País</span>
-            <p id="form-score-summary" class="font-display font-bold text-base text-ve-yellow truncate">0 pts · 0 Sellos</p>
-            <p class="text-[10px] text-blue-100/90">Sorteo Final: Automóvil 0 km</p>
-          </div>
-        </div>
-
-        <form id="prize-form" onsubmit="submitRegistration(event)" class="space-y-2.5 flex-1 flex flex-col">
-          <div>
-            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Nombre y Apellido *</label>
-            <input type="text" id="inp-name" required placeholder="Ej. Camila Rodríguez"
-              class="w-full px-3 py-2 rounded-xl bg-white border border-slate-200 text-sm focus:outline-none focus:border-ve-blue focus:ring-2 focus:ring-blue-100" />
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Cédula / Pasaporte *</label>
-              <input type="text" id="inp-id" required placeholder="V-20.123.456"
-                class="w-full px-3 py-2 rounded-xl bg-white border border-slate-200 text-sm focus:outline-none focus:border-ve-blue focus:ring-2 focus:ring-blue-100" />
-            </div>
-            <div>
-              <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Teléfono / WhatsApp *</label>
-              <input type="tel" id="inp-phone" required placeholder="0414-0000000"
-                class="w-full px-3 py-2 rounded-xl bg-white border border-slate-200 text-sm focus:outline-none focus:border-ve-blue focus:ring-2 focus:ring-blue-100" />
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Correo Electrónico *</label>
-            <input type="email" id="inp-email" required placeholder="tucorreo@ejemplo.com"
-              class="w-full px-3 py-2 rounded-xl bg-white border border-slate-200 text-sm focus:outline-none focus:border-ve-blue focus:ring-2 focus:ring-blue-100" />
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Estado *</label>
-              <select id="inp-state" required
-                class="w-full px-2.5 py-2 rounded-xl bg-white border border-slate-200 text-sm focus:outline-none focus:border-ve-blue">
-                <option value="">Seleccionar...</option>
-                <option>Distrito Capital</option>
-                <option>Amazonas</option>
-                <option>Anzoátegui</option>
-                <option>Apure</option>
-                <option>Aragua</option>
-                <option>Barinas</option>
-                <option>Bolívar</option>
-                <option>Carabobo</option>
-                <option>Cojedes</option>
-                <option>Delta Amacuro</option>
-                <option>Falcón</option>
-                <option>Guárico</option>
-                <option>La Guaira</option>
-                <option>Lara</option>
-                <option>Mérida</option>
-                <option>Miranda</option>
-                <option>Monagas</option>
-                <option>Nueva Esparta</option>
-                <option>Portuguesa</option>
-                <option>Sucre</option>
-                <option>Táchira</option>
-                <option>Trujillo</option>
-                <option>Yaracuy</option>
-                <option>Zulia</option>
-                <option>En el exterior</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Instagram *</label>
-              <input type="text" id="inp-ig" required placeholder="@tuusuario"
-                class="w-full px-3 py-2 rounded-xl bg-white border border-slate-200 text-sm focus:outline-none focus:border-ve-blue focus:ring-2 focus:ring-blue-100" />
-            </div>
-          </div>
-
-          <label class="flex items-start gap-2 pt-0.5 cursor-pointer">
-            <input type="checkbox" required class="mt-0.5 rounded text-ve-blue focus:ring-ve-blue" />
-            <span class="text-[10px] text-slate-500 leading-tight">
-              Acepto las bases del sorteo del Automóvil 0 km Marca País Venezuela y autorizo el contacto en caso de resultar ganador.
-            </span>
-          </label>
-
-          <div class="mt-auto pt-1.5">
-            <button id="submit-prize-btn" type="submit" class="btn-3d btn-shine w-full py-3.5 rounded-2xl bg-ve-yellow hover:bg-amber-400 text-ve-navy font-display font-bold text-base shadow-[0_4px_0_0_#d97706] flex items-center justify-center gap-2">
-              <i data-lucide="ticket" class="w-5 h-5"></i>
-              <span>Obtener mi Ticket Oficial (0 km)</span>
-            </button>
-          </div>
-        </form>
-      </section>
-
-      <!-- ========================================================= -->
-      <!-- PANTALLA 7: PASAPORTE / TICKET DESCARGABLE (AUTOMÓVIL 0KM) -->
-      <!-- ========================================================= -->
-      <section id="screen-ticket" class="hidden flex-1 flex flex-col justify-between p-4 sm:p-5">
-        <!-- Tarjeta Exportable con html2canvas -->
-        <div id="passport-export-card" class="relative bg-gradient-to-br from-ve-navy via-[#0b2a73] to-ve-blue rounded-3xl text-white shadow-xl overflow-hidden border border-blue-400/25">
-          <div class="tricolor-bar h-2 w-full"></div>
-
-          <div class="p-4">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2">
-                <div class="bg-white rounded-xl px-2.5 py-1 flex items-center justify-center shadow-xs">
-                  <img
-                    src="marcapais.png"
-                    alt="Marca País"
-                    class="h-6 w-auto object-contain logo-azul"
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
-                  />
-                  <span style="display:none;" class="font-display font-bold text-xs text-ve-blue">MARCA PAÍS</span>
-                </div>
-                <div>
-                  <span class="block text-[9px] font-extrabold uppercase tracking-widest text-ve-yellow">Ticket Pasaporte</span>
-                  <span class="font-display font-bold text-sm leading-none">Sorteo Automóvil 0 km</span>
-                </div>
-              </div>
-              <span id="ticket-stamps-badge" class="px-2.5 py-1 rounded-full bg-ve-yellow text-ve-navy text-[10px] font-extrabold">
-                1 Sello
-              </span>
-            </div>
-
-            <!-- Póster IA Insertado + Datos del Participante -->
-            <div class="flex items-center gap-3 bg-white/10 rounded-2xl p-3 border border-white/10">
-              <div class="w-20 h-24 rounded-xl bg-blue-950/60 border-2 border-ve-yellow/80 overflow-hidden shrink-0 flex items-center justify-center shadow-md">
-                <img id="ticket-user-photo" alt="Póster Pasaporte" class="hidden w-full h-full object-cover" />
-                <div id="ticket-photo-fallback" class="text-center text-blue-200 p-1">
-                  <i data-lucide="car" class="w-7 h-7 mx-auto mb-0.5 text-ve-yellow"></i>
-                  <span class="block text-[8px] font-bold uppercase">Viajero VE</span>
-                </div>
-              </div>
-
-              <div class="flex-1 min-w-0 text-left space-y-1.5">
-                <div>
-                  <span class="block text-[9px] uppercase tracking-wider text-blue-200">Participante</span>
-                  <p id="ticket-name" class="font-display font-bold text-base truncate leading-tight">Nombre Participante</p>
-                </div>
-                <div class="grid grid-cols-2 gap-1.5 pt-1 border-t border-white/10">
-                  <div>
-                    <span class="block text-[9px] uppercase text-blue-200">Documento</span>
-                    <p id="ticket-id" class="font-semibold text-[11px] truncate">V-00.000.000</p>
-                  </div>
-                  <div>
-                    <span class="block text-[9px] uppercase text-blue-200">Puntaje</span>
-                    <p id="ticket-score" class="font-bold text-[11px] text-ve-yellow">0 pts</p>
-                  </div>
-                </div>
-                <div>
-                  <span class="block text-[9px] uppercase text-blue-200">Sellos Obtenidos</span>
-                  <div id="ticket-stamps-icons" class="flex items-center gap-1 text-sm mt-0.5"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="border-t border-dashed border-white/25 py-2.5 px-4 flex items-center justify-between bg-black/20">
-            <div>
-              <span class="block text-[8px] uppercase tracking-widest text-blue-200">Ticket Oficial Automóvil 0 km</span>
-              <span id="ticket-code" class="font-display font-bold text-base tracking-wider text-ve-yellow">#VE-2026-8842</span>
-            </div>
-            <span class="text-[10px] font-bold text-blue-100">@marcapaisvenezuela</span>
-          </div>
-        </div>
-
-        <!-- Instrucción para Participar en Historias -->
-        <div class="my-2 p-3 rounded-2xl bg-amber-50 border border-amber-200/90 flex items-start gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
-            <i data-lucide="instagram" class="w-4 h-4"></i>
-          </div>
-          <div class="text-[11px] text-slate-700 leading-snug">
-            <p class="font-bold text-ve-navy">¡Valida tu participación por el Automóvil 0 km!</p>
-            <p class="mt-0.5">
-              Descarga tu ticket-pasaporte y súbelo a tus <strong>Historias</strong> etiquetando a <strong class="text-ve-blue">@marcapaisvenezuela</strong> con <strong>#RutaVenezuela</strong>.
-            </p>
-          </div>
-        </div>
-
-        <!-- Acciones Finales -->
-        <div class="space-y-2">
-          <button id="download-ticket-btn" onclick="downloadTicketPassportImage()" class="btn-3d btn-shine w-full py-3.5 px-4 rounded-2xl bg-ve-yellow hover:bg-amber-400 text-ve-navy font-display font-bold text-base shadow-[0_4px_0_0_#d97706] flex items-center justify-center gap-2">
-            <i data-lucide="download" class="w-5 h-5"></i>
-            <span>Descargar Ticket Pasaporte</span>
-          </button>
-
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="copyTicketCode()" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
-              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-              <span id="copy-label">Copiar Ticket</span>
-            </button>
-            <button onclick="showScreen('photobooth')" class="py-2.5 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-ve-blue font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
-              <i data-lucide="camera" class="w-3.5 h-3.5"></i>
-              <span>Otro Póster IA</span>
-            </button>
-          </div>
-
-          <button onclick="resetFullSession()" class="w-full py-2 rounded-xl text-[11px] font-bold text-slate-400 hover:text-ve-red flex items-center justify-center gap-1 transition-colors">
-            <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
-            <span>Siguiente Jugador (Reiniciar partida)</span>
-          </button>
-        </div>
-      </section>
-
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- MODAL PASAPORTE DIGITAL DE SELLOS                         -->
-    <!-- ========================================================= -->
-    <div id="passport-modal" class="hidden absolute inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-end sm:items-center justify-center p-4">
-      <div class="bg-white w-full rounded-3xl p-5 shadow-2xl animate-pop">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <div class="w-9 h-9 rounded-xl bg-blue-50 text-ve-blue flex items-center justify-center">
-              <i data-lucide="book-open" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h3 class="font-display font-bold text-lg text-ve-navy leading-none">Pasaporte Venezuela</h3>
-              <span class="text-[11px] text-slate-500">Colecciona los 6 sellos regionales</span>
-            </div>
-          </div>
-          <button onclick="closePassport()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-            <i data-lucide="x" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <div id="passport-grid" class="grid grid-cols-3 gap-2.5 my-4"></div>
-
-        <button onclick="closePassport()" class="w-full py-3 rounded-xl bg-ve-navy text-white font-display font-bold text-sm">
-          ¡Entendido!
-        </button>
-      </div>
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- MODAL MODO ACTIVACIÓN EN EVENTOS (QR + REINICIO TÓTEM)    -->
-    <!-- ========================================================= -->
-    <div id="event-modal" class="hidden absolute inset-0 bg-slate-900/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-      <div class="bg-white w-full max-w-[360px] rounded-3xl p-5 shadow-2xl text-center animate-pop">
-        <div class="flex items-center justify-between mb-2">
-          <span class="px-2.5 py-1 rounded-full bg-blue-50 text-ve-blue font-bold text-[10px] uppercase tracking-wider">
-            Modo Activación Stand
-          </span>
-          <button onclick="closeEventModal()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
-            <i data-lucide="x" class="w-4 h-4"></i>
-          </button>
-        </div>
-
-        <h3 class="font-display font-bold text-xl text-ve-navy">¡Escanea y Juega en tu Teléfono!</h3>
-        <p class="text-xs text-slate-500 mt-1 mb-4">
-          Escanea este código QR para jugar las trivias y crear tu Póster IA por el <strong>Automóvil 0 km</strong>.
-        </p>
-
-        <div class="mx-auto w-48 h-48 bg-white p-3 rounded-2xl border-2 border-ve-blue/20 shadow-inner flex items-center justify-center mb-4">
-          <div id="event-qrcode"></div>
-        </div>
-
-        <div class="space-y-2">
-          <button onclick="resetFullSession(); closeEventModal();" class="btn-3d w-full py-3.5 px-4 rounded-2xl bg-ve-red hover:bg-red-700 text-white font-display font-bold text-sm shadow-[0_4px_0_0_#991b1b] flex items-center justify-center gap-2">
-            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-            <span>Reiniciar para Siguiente Jugador</span>
-          </button>
-          <button onclick="closeEventModal()" class="w-full py-2.5 rounded-xl text-xs font-bold text-slate-500 hover:text-ve-navy">
-            Cerrar
-          </button>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <canvas id="canvas" class="hidden"></canvas>
-
-  <script>
-    // =========================================================================
-    // CONFIGURACIÓN PHOTO BOOTH IA (VENEZUELA ABIERTA AL FUTURO)
-    // =========================================================================
-    const WORKER_URL = "https://barbarieentertainment.jesusdavid-chacons.workers.dev";
-    const LOGO_PATH = "./marcapais.png";
-    const FAST_MODEL_CONFIG = {
-      model: "gemini-2.5-flash-image",
-      resolution: "2K"
-    };
-
-    // =========================================================================
-    // BASE DE DATOS DE REGIONES Y PREGUNTAS (MARCA PAÍS VENEZUELA)
-    // =========================================================================
-    const REGIONS_DATA = [
-      {
-        id: 'andes',
-        name: 'Los Andes',
-        states: 'Mérida · Táchira · Trujillo',
-        icon: '🏔️',
-        color: 'from-sky-500 to-indigo-600',
-        questions: [
-          {
-            category: 'Récord Mundial',
-            q: '¿Cuál es una de las características más famosas del Teleférico Mukumbarí en Mérida?',
-            options: [
-              'Es el teleférico más alto y largo del mundo',
-              'Cruza directamente sobre el Lago de Maracaibo',
-              'Es el primer tren subterráneo de Sudamérica'
-            ],
-            answer: 0,
-            fact: 'El Sistema Teleférico Mukumbarí asciende hasta los 4.765 m s. n. m. en el Pico Espejo, siendo el más alto y largo del planeta.'
-          },
-          {
-            category: 'Gastronomía Andina',
-            q: '¿Qué bebida tradicional caliente se prepara en los páramos andinos con papelón, especias y miche?',
-            options: ['Chicha criolla', 'Calentaíto', 'Papelón con limón'],
-            answer: 1,
-            fact: 'El calentaíto andino combina hierbas aromáticas, especias dulces, panela de papelón y aguardiente tradicional de los Andes.'
-          },
-          {
-            category: 'Naturaleza Única',
-            q: '¿Qué planta emblemática cubre los valles altos de los páramos de Mérida, Táchira y Trujillo?',
-            options: ['El Frailejón', 'La Palma Real', 'El Bucare Ceibo'],
-            answer: 0,
-            fact: 'Los frailejones (Espeletia) absorben agua de la neblina y regulan las cuencas hídricas de alta montaña.'
-          }
-        ]
-      },
-      {
-        id: 'oriente',
-        name: 'Oriente e Insular',
-        states: 'Nva. Esparta · Sucre · Anzoátegui · Monagas',
-        icon: '🏝️',
-        color: 'from-cyan-500 to-teal-600',
-        questions: [
-          {
-            category: 'Patrimonio Natural',
-            q: '¿Qué monumento natural en Monagas es famoso por ser hogar del ave nocturna Guácharo?',
-            options: ['Cueva del Guácharo', 'Médanos de Coro', 'Roraima Tepuy'],
-            answer: 0,
-            fact: 'Fue el primer Monumento Natural decretado en Venezuela en 1949 y explorado científicamente por Alexander von Humboldt.'
-          },
-          {
-            category: 'Productos Marca País',
-            q: '¿Qué ají dulce venezolano cuenta con Denominación de Origen Controlada en la Isla de Margarita?',
-            options: ['Ají Margariteño', 'Ají Rocoto', 'Ají Jalapeño'],
-            answer: 0,
-            fact: 'El Ají Margariteño es pilar de la gastronomía oriental por su aroma intenso y dulzor sin picor excesivo.'
-          },
-          {
-            category: 'Paraíso Caribeño',
-            q: '¿Qué parque nacional marino combina cayos, manglares y playas entre Anzoátegui y Sucre?',
-            options: ['Parque Nacional Mochima', 'Parque Nacional Canaima', 'Parque Nacional Henri Pittier'],
-            answer: 0,
-            fact: 'Mochima es reconocido mundialmente por sus aguas cristalinas, bahías tranquilas y avistamiento de delfines.'
-          }
-        ]
-      },
-      {
-        id: 'guayana',
-        name: 'Guayana y Amazonas',
-        states: 'Bolívar · Amazonas · Delta Amacuro',
-        icon: '🌊',
-        color: 'from-emerald-500 to-green-700',
-        questions: [
-          {
-            category: 'Maravilla Natural',
-            q: '¿Cuál es la altura aproximada del Salto Ángel (Kerepakupai Vená), la cascada más alta del mundo?',
-            options: ['979 metros', '450 metros', '1.420 metros'],
-            answer: 0,
-            fact: 'Ubicado en el Parque Nacional Canaima, el Salto Ángel cae desde la cima del Auyantepuy con 979 metros de altura.'
-          },
-          {
-            category: 'Geología Ancestral',
-            q: '¿Cómo se llaman las mesetas de cumbres planas y paredes verticales típicas de la Gran Sabana?',
-            options: ['Tepuyes', 'Médanos', 'Morros'],
-            answer: 0,
-            fact: 'Los tepuyes pertenecen al Escudo Guayanés, una de las formaciones geológicas más antiguas de la Tierra.'
-          },
-          {
-            category: 'Arterias Fluviales',
-            q: '¿Cuál es el río más largo y caudaloso de Venezuela, vital para toda la región de Guayana?',
-            options: ['Río Orinoco', 'Río Chama', 'Río Tuy'],
-            answer: 0,
-            fact: 'Con más de 2.140 km, el Orinoco es el tercer río más caudaloso del mundo y desemboca en un inmenso delta en el Atlántico.'
-          }
-        ]
-      },
-      {
-        id: 'occidente',
-        name: 'Occidente y Zulia',
-        states: 'Zulia · Falcón · Lara · Yaracuy',
-        icon: '⚡',
-        color: 'from-amber-500 to-orange-600',
-        questions: [
-          {
-            category: 'Fenómeno Récord',
-            q: '¿Qué fenómeno meteorológico del sur del Lago de Maracaibo posee un Récord Guinness por su frecuencia de rayos?',
-            options: ['Relámpago del Catatumbo', 'Aurora Boreal', 'Tormenta de Santa Rosa'],
-            answer: 0,
-            fact: 'El Relámpago del Catatumbo produce cientos de descargas eléctricas por hora durante gran parte del año.'
-          },
-          {
-            category: 'Paisaje Costero',
-            q: '¿Qué parque nacional en el estado Falcón destaca por sus dunas de arena dorada junto al mar?',
-            options: ['Médanos de Coro', 'Sierra Nevada', 'El Ávila (Waraira Repano)'],
-            answer: 0,
-            fact: 'Los Médanos de Coro forman un paisaje desértico costero único en el Caribe venezolano.'
-          },
-          {
-            category: 'Capital Musical',
-            q: '¿Qué ciudad del estado Lara es conocida como la Capital Musical de Venezuela y tierra del cuatro y el golpe tocuyano?',
-            options: ['Barquisimeto', 'Punto Fijo', 'Cabimas'],
-            answer: 0,
-            fact: 'Barquisimeto es cuna de grandes luthiers, orquestas y crepusculares atardeceres.'
-          }
-        ]
-      },
-      {
-        id: 'llanos',
-        name: 'Los Llanos',
-        states: 'Apure · Barinas · Guárico · Portuguesa · Cojedes',
-        icon: '🐎',
-        color: 'from-yellow-500 to-amber-600',
-        questions: [
-          {
-            category: 'Identidad Cultural',
-            q: '¿Cuál es el baile y género musical tradicional por excelencia de los llanos venezolanos?',
-            options: ['El Joropo', 'La Gaita de Furro', 'El Calipso'],
-            answer: 0,
-            fact: 'Al son de arpa, cuatro y maracas, el joropo es Patrimonio Cultural de la Nación y símbolo de nuestra identidad.'
-          },
-          {
-            category: 'Biodiversidad',
-            q: '¿Cuál es el roedor más grande del mundo que habita en los hatos y esteros de los llanos venezolanos?',
-            options: ['El Chigüire', 'La Lapa', 'El Cunaguaro'],
-            answer: 0,
-            fact: 'El chigüire convive en manadas junto a garzas, corocoras rojas y caimanes del Orinoco en los llanos inundables.'
-          },
-          {
-            category: 'Cuna de Aventura',
-            q: '¿Qué estado llanero es famoso internacionalmente por el rafting en los ríos Acequias y Sinigüis?',
-            options: ['Barinas', 'Guárico', 'Cojedes'],
-            answer: 0,
-            fact: 'El piedemonte andino-llanero de Barinas ofrece ríos de aguas rápidas ideales para el ecoturismo de aventura.'
-          }
-        ]
-      },
-      {
-        id: 'central',
-        name: 'Central y Capital',
-        states: 'Caracas · Miranda · Aragua · Carabobo · La Guaira',
-        icon: '🏛️',
-        color: 'from-blue-600 to-ve-navy',
-        questions: [
-          {
-            category: 'Cacao de Excelencia',
-            q: '¿Qué localidad costera de Aragua es mundialmente famosa por producir uno de los mejores cacaos finos de aroma?',
-            options: ['Chuao', 'Colonia Tovar', 'El Hatillo'],
-            answer: 0,
-            fact: 'El Cacao de Chuao cuenta con Denominación de Origen Controlada y es codiciado por los maestros chocolateros del mundo.'
-          },
-          {
-            category: 'Pulmón Vegetal',
-            q: '¿Cómo se llama el cerro y parque nacional que separa a Caracas del Mar Caribe?',
-            options: ['Waraira Repano (El Ávila)', 'Pico Bolívar', 'Cerro Autana'],
-            answer: 0,
-            fact: 'El Waraira Repano es el ícono natural de la capital y ofrece vistas panorámicas de la ciudad y el litoral central.'
-          },
-          {
-            category: 'Historia Patria',
-            q: '¿En qué campo del estado Carabobo se selló la Independencia de Venezuela el 24 de junio de 1821?',
-            options: ['Campo de Carabobo', 'Campo de Boyacá', 'Sabana de Mucuchíes'],
-            answer: 0,
-            fact: 'El Monumento de Carabobo conmemora la gesta histórica liderada por el Libertador Simón Bolívar.'
-          }
-        ]
-      }
-    ];
-
-    // =========================================================================
-    // ESTADO GLOBAL
-    // =========================================================================
-    const QUESTION_TIME_LIMIT = 15;
-
-    const state = {
-      score: 0,
-      streak: 0,
-      completedRegions: [],
-      currentRegion: null,
-      currentQuestionIndex: 0,
-      sessionCorrect: 0,
-      sessionPoints: 0,
-      fiftyFiftyUsedInRegion: false,
-      timeLeft: QUESTION_TIME_LIMIT,
-      timerInterval: null,
-      answered: false,
-      soundEnabled: true,
-      selectedMode: 'selfie',
-      selectedDestination: 'medanos',
-      isMirrored: false,
-      capturedDataUrl: null,
-      generatedPosterDataUrl: null,
-      registration: null
-    };
-
-    let currentBoothStream = null;
-    let qrGenerated = false;
-
-    // =========================================================================
-    // MOTOR DE SONIDOS SINTÉTICOS (WEB AUDIO API)
-    // =========================================================================
-    const AudioEngine = {
-      ctx: null,
-      init() {
-        if (!this.ctx) {
-          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-      },
-      playTone(freq, type, duration, delay = 0, vol = 0.12) {
-        if (!state.soundEnabled) return;
-        try {
-          this.init();
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = type;
-          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + delay);
-          gain.gain.setValueAtTime(vol, this.ctx.currentTime + delay);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + delay + duration);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(this.ctx.currentTime + delay);
-          osc.stop(this.ctx.currentTime + delay + duration);
-        } catch (e) {}
-      },
-      click() { this.playTone(520, 'sine', 0.08, 0, 0.08); },
-      tick() { this.playTone(880, 'sine', 0.04, 0, 0.04); },
-      powerup() {
-        this.playTone(440, 'sine', 0.1, 0, 0.12);
-        this.playTone(660, 'sine', 0.15, 0.08, 0.12);
-      },
-      correct() {
-        this.playTone(523.25, 'triangle', 0.15, 0, 0.14);
-        this.playTone(659.25, 'triangle', 0.15, 0.09, 0.14);
-        this.playTone(783.99, 'triangle', 0.25, 0.18, 0.14);
-      },
-      wrong() {
-        this.playTone(240, 'sawtooth', 0.18, 0, 0.09);
-        this.playTone(190, 'sawtooth', 0.25, 0.14, 0.09);
-      },
-      fanfare() {
-        [523.25, 659.25, 783.99, 1046.5].forEach((n, i) => {
-          this.playTone(n, 'triangle', 0.28, i * 0.1, 0.15);
-        });
-      }
-    };
-
-    function toggleSound() {
-      state.soundEnabled = !state.soundEnabled;
-      const btn = document.getElementById('sound-btn');
-      btn.innerHTML = `<i data-lucide="${state.soundEnabled ? 'volume-2' : 'volume-x'}" class="w-4 h-4"></i>`;
-      lucide.createIcons();
-      if (state.soundEnabled) AudioEngine.click();
-    }
-
-    // =========================================================================
-    // NAVEGACIÓN ENTRE PANTALLAS
-    // =========================================================================
-    function showScreen(name) {
-      AudioEngine.click();
-      clearInterval(state.timerInterval);
-      if (name !== 'photobooth') stopBoothStream();
-
-      ['home', 'regions', 'quiz', 'result', 'photobooth', 'register', 'ticket'].forEach(id => {
-        document.getElementById(`screen-${id}`).classList.add('hidden');
-      });
-
-      const target = document.getElementById(`screen-${name}`);
-      target.classList.remove('hidden');
-      target.classList.add('animate-pop');
-
-      if (name === 'regions') renderRegions();
-      if (name === 'home') updateHomeButtons();
-      lucide.createIcons();
-    }
-
-    function goHome() {
-      showScreen('home');
-    }
-
-    function updateHeaderUI(animateScore = false) {
-      document.getElementById('header-score').textContent = `${state.score} pts`;
-      document.getElementById('badge-count').textContent = state.completedRegions.length;
-
-      if (animateScore) {
-        const pill = document.getElementById('score-pill');
-        pill.classList.add('scale-110', 'bg-amber-100');
-        setTimeout(() => pill.classList.remove('scale-110', 'bg-amber-100'), 280);
-      }
-    }
-
-    function updateHomeButtons() {
-      const claimBtn = document.getElementById('home-claim-btn');
-      if (state.completedRegions.length > 0) {
-        claimBtn.classList.remove('hidden');
-        claimBtn.querySelector('span').textContent = state.registration
-          ? 'Ver mi Ticket Pasaporte (Automóvil 0 km)'
-          : 'Ir al Photo Booth IA Final';
-      } else {
-        claimBtn.classList.add('hidden');
-      }
-    }
-
-    // =========================================================================
-    // RENDERIZADO DE REGIONES
-    // =========================================================================
-    function renderRegions() {
-      const grid = document.getElementById('regions-grid');
-      grid.innerHTML = '';
-
-      REGIONS_DATA.forEach((region, index) => {
-        const isDone = state.completedRegions.includes(region.id);
-        const card = document.createElement('button');
-        card.onclick = () => startRegionQuiz(region.id);
-        card.style.animationDelay = `${index * 55}ms`;
-        card.className = `option-card text-left p-3.5 rounded-3xl border relative overflow-hidden flex flex-col justify-between min-h-[132px] ${
-          isDone
-            ? 'bg-emerald-50/70 border-emerald-300 shadow-xs'
-            : 'bg-white border-slate-100 shadow-sm hover:border-blue-200'
-        }`;
-
-        card.innerHTML = `
-          <div class="flex items-start justify-between w-full">
-            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br ${region.color} flex items-center justify-center text-2xl shadow-sm">
-              ${region.icon}
-            </div>
-            ${isDone
-              ? `<span class="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center gap-1">
-                   <i data-lucide="check" class="w-3 h-3"></i> Sello
-                 </span>`
-              : `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold">3 preg.</span>`
-            }
-          </div>
-          <div class="mt-3">
-            <h3 class="font-display font-bold text-sm text-ve-navy leading-tight">${region.name}</h3>
-            <p class="text-[10px] text-slate-400 font-medium line-clamp-1 mt-0.5">${region.states}</p>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-
-      document.getElementById('regions-progress-pill').textContent = `${state.completedRegions.length} / ${REGIONS_DATA.length} Sellos`;
-
-      const lockedCard = document.getElementById('locked-prize-card');
-      const unlockedBtn = document.getElementById('unlocked-prize-btn');
-      if (state.completedRegions.length > 0) {
-        lockedCard.classList.add('hidden');
-        unlockedBtn.classList.remove('hidden');
-      } else {
-        lockedCard.classList.remove('hidden');
-        unlockedBtn.classList.add('hidden');
-      }
-
-      lucide.createIcons();
-    }
-
-    // =========================================================================
-    // LÓGICA DE TRIVIA, COMODÍN 50:50 (1 POR REGIÓN) Y BARRA DE TIEMPO
-    // =========================================================================
-    function startRegionQuiz(regionId) {
-      const region = REGIONS_DATA.find(r => r.id === regionId);
-      if (!region) return;
-
-      state.currentRegion = region;
-      state.currentQuestionIndex = 0;
-      state.sessionCorrect = 0;
-      state.sessionPoints = 0;
-      state.fiftyFiftyUsedInRegion = false;
-
-      showScreen('quiz');
-      loadQuestion();
-    }
-
-    function quitQuiz() {
-      clearInterval(state.timerInterval);
-      showScreen('regions');
-    }
-
-    function updateFiftyFiftyButton() {
-      const btn = document.getElementById('lifeline-5050-btn');
-      const count = document.getElementById('lifeline-5050-count');
-      if (state.fiftyFiftyUsedInRegion) {
-        btn.disabled = true;
-        count.textContent = '0';
-      } else {
-        btn.disabled = state.answered;
-        count.textContent = '1';
-      }
-    }
-
-    function useFiftyFifty() {
-      if (state.fiftyFiftyUsedInRegion || state.answered) return;
-
-      const qObj = state.currentRegion.questions[state.currentQuestionIndex];
-      const wrongIndices = qObj.options
-        .map((_, idx) => idx)
-        .filter(idx => idx !== qObj.answer);
-
-      if (wrongIndices.length === 0) return;
-
-      const removeIdx = wrongIndices[Math.floor(Math.random() * wrongIndices.length)];
-      const btnToHide = document.getElementById(`opt-btn-${removeIdx}`);
-      if (btnToHide) {
-        btnToHide.disabled = true;
-        btnToHide.classList.add('opacity-25', 'line-through', 'pointer-events-none', 'bg-slate-100');
-      }
-
-      state.fiftyFiftyUsedInRegion = true;
-      updateFiftyFiftyButton();
-      AudioEngine.powerup();
-    }
-
-    function loadQuestion() {
-      state.answered = false;
-      const region = state.currentRegion;
-      const qObj = region.questions[state.currentQuestionIndex];
-      const totalQ = region.questions.length;
-
-      document.getElementById('quiz-region-label').textContent = `${region.icon} ${region.name}`;
-      document.getElementById('quiz-step-label').textContent = `Pregunta ${state.currentQuestionIndex + 1} de ${totalQ}`;
-      document.getElementById('quiz-progress-bar').style.width = `${((state.currentQuestionIndex + 1) / totalQ) * 100}%`;
-
-      updateStreakUI();
-      updateFiftyFiftyButton();
-
-      const qCard = document.getElementById('question-card');
-      qCard.classList.remove('animate-pop');
-      void qCard.offsetWidth;
-      qCard.classList.add('animate-pop');
-
-      document.getElementById('question-badge').innerHTML = `
-        <i data-lucide="sparkles" class="w-3 h-3"></i>
-        <span>${qObj.category}</span>
-      `;
-      document.getElementById('question-text').textContent = qObj.q;
-
-      const drawer = document.getElementById('feedback-drawer');
-      drawer.classList.add('hidden');
-
-      const optionsContainer = document.getElementById('options-container');
-      optionsContainer.innerHTML = '';
-      const letters = ['A', 'B', 'C'];
-
-      qObj.options.forEach((optText, idx) => {
-        const btn = document.createElement('button');
-        btn.onclick = (e) => selectAnswer(idx, e.currentTarget);
-        btn.id = `opt-btn-${idx}`;
-        btn.style.animationDelay = `${idx * 75}ms`;
-        btn.className = 'option-card w-full p-3.5 rounded-2xl bg-white border-2 border-slate-100 hover:border-ve-blue/40 text-left flex items-center gap-3 shadow-xs';
-        btn.innerHTML = `
-          <span class="w-8 h-8 rounded-xl bg-slate-100 text-ve-navy font-display font-bold text-sm flex items-center justify-center shrink-0 transition-colors">
-            ${letters[idx]}
-          </span>
-          <span class="font-semibold text-sm text-slate-700 leading-snug">${optText}</span>
-        `;
-        optionsContainer.appendChild(btn);
-      });
-
-      startSmoothTimer();
-      lucide.createIcons();
-    }
-
-    function updateStreakUI() {
-      const badge = document.getElementById('streak-badge');
-      if (state.streak >= 2) {
-        badge.classList.remove('hidden');
-        badge.classList.add('flex');
-        document.getElementById('streak-text').textContent = `x${state.streak}`;
-      } else {
-        badge.classList.add('hidden');
-        badge.classList.remove('flex');
-      }
-    }
-
-    function startSmoothTimer() {
-      clearInterval(state.timerInterval);
-      state.timeLeft = QUESTION_TIME_LIMIT;
-      let lastWholeSecond = QUESTION_TIME_LIMIT;
-
-      updateTimerBarUI();
-
-      state.timerInterval = setInterval(() => {
-        state.timeLeft = Math.max(0, state.timeLeft - 0.1);
-        const currentWhole = Math.ceil(state.timeLeft);
-
-        if (currentWhole !== lastWholeSecond) {
-          lastWholeSecond = currentWhole;
-          if (currentWhole <= 4 && currentWhole > 0) {
-            AudioEngine.tick();
-          }
-        }
-
-        updateTimerBarUI();
-
-        if (state.timeLeft <= 0) {
-          clearInterval(state.timerInterval);
-          handleTimeout();
-        }
-      }, 100);
-    }
-
-    function updateTimerBarUI() {
-      const badge = document.getElementById('timer-badge');
-      const text = document.getElementById('timer-text');
-      const drainBar = document.getElementById('timer-drain-bar');
-
-      const secondsDisplay = Math.ceil(state.timeLeft);
-      const pct = (state.timeLeft / QUESTION_TIME_LIMIT) * 100;
-
-      text.textContent = `${secondsDisplay}s`;
-      drainBar.style.width = `${pct}%`;
-
-      if (pct > 50) {
-        badge.className = 'px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-800 font-display font-bold text-xs flex items-center gap-1 shrink-0';
-        drainBar.className = 'h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 transition-[width] duration-100 linear';
-      } else if (pct > 25) {
-        badge.className = 'px-2.5 py-1 rounded-xl bg-amber-100 text-amber-800 font-display font-bold text-xs flex items-center gap-1 shrink-0';
-        drainBar.className = 'h-full rounded-full bg-gradient-to-r from-amber-400 to-ve-yellow transition-[width] duration-100 linear';
-      } else {
-        badge.className = 'px-2.5 py-1 rounded-xl bg-red-100 text-red-700 font-display font-bold text-xs flex items-center gap-1 shrink-0 animate-wiggle';
-        drainBar.className = 'h-full rounded-full bg-gradient-to-r from-red-500 to-ve-red transition-[width] duration-100 linear';
-      }
-    }
-
-    function spawnFloatingPoints(targetEl, pointsText) {
-      if (!targetEl) return;
-      const rect = targetEl.getBoundingClientRect();
-      const shellRect = document.getElementById('app').getBoundingClientRect();
-
-      const tag = document.createElement('div');
-      tag.className = 'floating-pts text-lg';
-      tag.textContent = pointsText;
-      tag.style.left = `${rect.left - shellRect.left + rect.width * 0.65}px`;
-      tag.style.top = `${rect.top - shellRect.top}px`;
-
-      document.getElementById('app').appendChild(tag);
-      setTimeout(() => tag.remove(), 1050);
-    }
-
-    function selectAnswer(selectedIndex, btnElement) {
-      if (state.answered) return;
-      state.answered = true;
-      clearInterval(state.timerInterval);
-      document.getElementById('lifeline-5050-btn').disabled = true;
-
-      const qObj = state.currentRegion.questions[state.currentQuestionIndex];
-      const isCorrect = selectedIndex === qObj.answer;
-
-      document.querySelectorAll('#options-container button').forEach((btn, idx) => {
-        btn.disabled = true;
-        btn.style.opacity = '1';
-        const badge = btn.querySelector('span:first-child');
-
-        if (idx === qObj.answer) {
-          btn.className = 'w-full p-3.5 rounded-2xl bg-emerald-50 border-2 border-emerald-500 text-left flex items-center gap-3 scale-[1.01] transition-transform';
-          badge.className = 'w-8 h-8 rounded-xl bg-emerald-500 text-white font-display font-bold text-sm flex items-center justify-center shrink-0';
-        } else if (idx === selectedIndex && !isCorrect) {
-          btn.className = 'w-full p-3.5 rounded-2xl bg-red-50 border-2 border-red-400 text-left flex items-center gap-3 animate-shake';
-          badge.className = 'w-8 h-8 rounded-xl bg-red-500 text-white font-display font-bold text-sm flex items-center justify-center shrink-0';
-        } else {
-          btn.style.opacity = '0.45';
-        }
-      });
-
-      if (isCorrect) {
-        AudioEngine.correct();
-        state.streak++;
-        updateStreakUI();
-
-        const speedBonus = Math.round(state.timeLeft * 6);
-        const streakBonus = state.streak >= 2 ? (state.streak - 1) * 25 : 0;
-        const earned = 100 + speedBonus + streakBonus;
-
-        state.sessionCorrect++;
-        state.sessionPoints += earned;
-        state.score += earned;
-        updateHeaderUI(true);
-        spawnFloatingPoints(btnElement, `+${earned} pts`);
-
-        const label = state.streak >= 2
-          ? `¡Racha x${state.streak}! +${earned} pts`
-          : `¡Correcto! +${earned} pts`;
-        showFeedback(true, label, qObj.fact);
-      } else {
-        state.streak = 0;
-        updateStreakUI();
-        AudioEngine.wrong();
-        showFeedback(false, '¡Casi! Conoce el dato Marca País:', qObj.fact);
-      }
-    }
-
-    function handleTimeout() {
-      if (state.answered) return;
-      state.answered = true;
-      state.streak = 0;
-      updateStreakUI();
-      document.getElementById('lifeline-5050-btn').disabled = true;
-      AudioEngine.wrong();
-
-      const qObj = state.currentRegion.questions[state.currentQuestionIndex];
-      document.querySelectorAll('#options-container button').forEach((btn, idx) => {
-        btn.disabled = true;
-        btn.style.opacity = '1';
-        if (idx === qObj.answer) {
-          btn.className = 'w-full p-3.5 rounded-2xl bg-emerald-50 border-2 border-emerald-500 text-left flex items-center gap-3';
-        } else {
-          btn.style.opacity = '0.45';
-        }
-      });
-
-      showFeedback(false, '¡Se acabó el tiempo!', qObj.fact);
-    }
-
-    function showFeedback(isPositive, title, fact) {
-      const drawer = document.getElementById('feedback-drawer');
-      const iconBox = document.getElementById('feedback-icon');
-      const titleEl = document.getElementById('feedback-title');
-      const factEl = document.getElementById('feedback-fact');
-      const nextBtn = document.getElementById('next-question-btn');
-
-      drawer.className = `mt-3 p-3.5 rounded-2xl border animate-pop ${
-        isPositive
-          ? 'bg-emerald-50/95 border-emerald-200 text-emerald-950'
-          : 'bg-blue-50/95 border-blue-200 text-slate-800'
-      }`;
-
-      iconBox.className = `w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-white ${
-        isPositive ? 'bg-emerald-500' : 'bg-ve-blue'
-      }`;
-      iconBox.innerHTML = `<i data-lucide="${isPositive ? 'check' : 'lightbulb'}" class="w-4 h-4"></i>`;
-
-      titleEl.textContent = title;
-      factEl.textContent = fact;
-
-      const isLast = state.currentQuestionIndex >= state.currentRegion.questions.length - 1;
-      nextBtn.querySelector('span').textContent = isLast ? 'Reclamar Sello Regional' : 'Siguiente Pregunta';
-
-      drawer.classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function nextQuestion() {
-      if (state.currentQuestionIndex < state.currentRegion.questions.length - 1) {
-        state.currentQuestionIndex++;
-        loadQuestion();
-      } else {
-        finishRegion();
-      }
-    }
-
-    function finishRegion() {
-      const region = state.currentRegion;
-      if (!state.completedRegions.includes(region.id)) {
-        state.completedRegions.push(region.id);
-        state.score += 150;
-        state.sessionPoints += 150;
-      }
-
-      updateHeaderUI(true);
-      AudioEngine.fanfare();
-      launchDualConfetti();
-
-      const stampEl = document.getElementById('result-stamp');
-      stampEl.className = `mx-auto w-24 h-24 rounded-3xl bg-gradient-to-br ${region.color} flex items-center justify-center text-5xl shadow-lg mb-4 animate-stamp-slam`;
-      stampEl.textContent = region.icon;
-
-      document.getElementById('result-title').textContent = `¡Sello ${region.name}!`;
-      document.getElementById('res-correct').textContent = `${state.sessionCorrect}/${region.questions.length}`;
-      document.getElementById('res-points').textContent = `+${state.sessionPoints}`;
-      document.getElementById('res-total').textContent = state.score;
-
-      showScreen('result');
-    }
-
-    // =========================================================================
-    // PHOTO BOOTH IA AL FINAL + VIDEO publi.mp4 (9:16) DURANTE CARGA
-    // =========================================================================
-    const boothVideo = document.getElementById('booth-video');
-    const boothCanvas = document.getElementById('canvas');
-    const boothResultImg = document.getElementById('booth-result-img');
-    const boothPlaceholder = document.getElementById('booth-placeholder');
-    const boothCountdownEl = document.getElementById('booth-countdown');
-    const boothAiLoader = document.getElementById('booth-ai-loader');
-    const boothLoaderLabel = document.getElementById('booth-loader-label');
-    const publiVideo = document.getElementById('publi-video');
-    const boothErrorBox = document.getElementById('booth-error-box');
-    const boothHeading = document.getElementById('booth-heading');
-    const boothFrame = document.getElementById('booth-frame');
-    const boothGenerateBtn = document.getElementById('booth-generate-btn');
-    const boothSelectors = document.getElementById('booth-selectors');
-    const camSwitcherBar = document.getElementById('cam-switcher-bar');
-
-    function openPhotoBoothStep() {
-      showScreen('photobooth');
-      if (state.generatedPosterDataUrl) {
-        setBoothStep('booth-ui-done');
-      } else if (state.capturedDataUrl) {
-        setBoothStep('booth-ui-preview');
-      } else {
-        setBoothStep('booth-ui-start');
-      }
-    }
-
-    function setBoothMode(mode) {
-      state.selectedMode = mode;
-      const selfieBtn = document.getElementById('mode-selfie');
-      const groupBtn = document.getElementById('mode-group');
-
-      if (mode === 'selfie') {
-        selfieBtn.className = 'py-2 px-2 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all';
-        groupBtn.className = 'py-2 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all';
-      } else {
-        groupBtn.className = 'py-2 px-2 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all';
-        selfieBtn.className = 'py-2 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all';
-      }
-      boothFrame.classList.toggle('group-ratio', mode === 'group');
-    }
-
-    function setBoothDestination(dest) {
-      state.selectedDestination = dest;
-      const medanosBtn = document.getElementById('dest-medanos');
-      const saltoBtn = document.getElementById('dest-salto');
-
-      if (dest === 'medanos') {
-        medanosBtn.className = 'py-2 px-2 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all';
-        saltoBtn.className = 'py-2 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all';
-      } else {
-        saltoBtn.className = 'py-2 px-2 rounded-lg text-xs font-semibold bg-amber-500 text-black transition-all';
-        medanosBtn.className = 'py-2 px-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all';
-      }
-
-      const destName = dest === 'salto' ? 'Salto Ángel' : 'Médanos de Coro';
-      boothGenerateBtn.textContent = `Crear Póster en ${destName}`;
-    }
-
-    function setBoothStep(step) {
-      ['booth-ui-start', 'booth-ui-camera', 'booth-ui-preview', 'booth-ui-done'].forEach(id => {
-        document.getElementById(id).classList.add('hidden');
-      });
-      document.getElementById(step).classList.remove('hidden');
-      boothSelectors.classList.toggle('hidden', step === 'booth-ui-done');
-      camSwitcherBar.classList.toggle('hidden', step !== 'booth-ui-camera');
-      boothErrorBox.classList.add('hidden');
-      lucide.createIcons();
-    }
-
-    function showBoothError(msg) {
-      boothErrorBox.textContent = msg;
-      boothErrorBox.classList.remove('hidden');
-    }
-
-    function stopBoothStream() {
-      if (currentBoothStream) {
-        currentBoothStream.getTracks().forEach(track => track.stop());
-        currentBoothStream = null;
-      }
-    }
-
-    function formatBoothCamLabel(device, index) {
-      const raw = (device.label || '').trim();
-      if (!raw) return `Cámara ${index + 1}`;
-      const lower = raw.toLowerCase();
-      if (lower.includes('osmo') || lower.includes('dji')) return 'DJI Osmo Action';
-      if (lower.includes('usb') || lower.includes('uvc') || lower.includes('external')) return 'Cámara USB';
-      if (lower.includes('front') || lower.includes('user')) return 'Cámara Frontal';
-      if (lower.includes('back') || lower.includes('environment')) return 'Cámara Trasera';
-      return raw.replace(/\s*\([0-9a-f]{4}:[0-9a-f]{4}\)\s*/i, '');
-    }
-
-    function isBoothUsbOrExternal(device) {
-      const l = (device.label || '').toLowerCase();
-      return l.includes('usb') || l.includes('osmo') || l.includes('dji') ||
-             l.includes('uvc') || l.includes('webcam') || l.includes('external') ||
-             l.includes('camera 1') || l.includes('back') || l.includes('environment');
-    }
-
-    async function renderBoothCameraChips(activeDeviceId) {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoInputs = devices.filter(d => d.kind === 'videoinput');
-
-      camSwitcherBar.innerHTML = '';
-      if (videoInputs.length <= 1) return;
-
-      videoInputs.forEach((dev, idx) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'cam-chip' + (dev.deviceId === activeDeviceId ? ' active' : '');
-        btn.textContent = formatBoothCamLabel(dev, idx);
-        btn.onclick = () => openSpecificBoothCamera(dev.deviceId, !isBoothUsbOrExternal(dev));
-        camSwitcherBar.appendChild(btn);
-      });
-    }
-
-    async function openSpecificBoothCamera(deviceId, mirrorFlag = false) {
-      stopBoothStream();
-
-      const constraintsList = [
-        {
-          video: {
-            deviceId: { exact: deviceId },
-            width: { ideal: 1920 },
-            height: { ideal: 1080 },
-            frameRate: { ideal: 30, max: 30 }
-          },
-          audio: false
-        },
-        {
-          video: { deviceId: { exact: deviceId } },
-          audio: false
-        }
-      ];
-
-      let stream = null;
-      for (const c of constraintsList) {
-        try {
-          stream = await navigator.mediaDevices.getUserMedia(c);
-          break;
-        } catch (err) {}
-      }
-
-      if (!stream) {
-        throw new Error('No se pudo iniciar la transmisión de la cámara seleccionada.');
-      }
-
-      currentBoothStream = stream;
-      state.isMirrored = mirrorFlag;
-      boothVideo.srcObject = currentBoothStream;
-      boothVideo.classList.toggle('mirror', state.isMirrored);
-      await boothVideo.play().catch(() => {});
-
-      const activeTrack = currentBoothStream.getVideoTracks()[0];
-      const activeId = activeTrack?.getSettings?.()?.deviceId || deviceId;
-      await renderBoothCameraChips(activeId);
-
-      boothPlaceholder.classList.add('hidden');
-      boothResultImg.classList.add('hidden');
-      boothVideo.classList.remove('hidden');
-      setBoothStep('booth-ui-camera');
-    }
-
-    async function startBoothWithMode(mode) {
-      try {
-        stopBoothStream();
-
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          showBoothError('El navegador bloqueó la cámara. Abre esta web con HTTPS.');
-          return;
-        }
-
-        const initialStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        const videoInputs = devices.filter(d => d.kind === 'videoinput');
-
-        if (videoInputs.length === 0) {
-          initialStream.getTracks().forEach(t => t.stop());
-          showBoothError('No se detectó ninguna cámara conectada.');
-          return;
-        }
-
-        const chosenDevice = mode === 'usb'
-          ? (videoInputs.find(isBoothUsbOrExternal) || videoInputs[videoInputs.length - 1])
-          : (videoInputs.find(d => !isBoothUsbOrExternal(d)) || videoInputs[0]);
-
-        const initialTrackId = initialStream.getVideoTracks()[0]?.getSettings?.()?.deviceId;
-
-        if (chosenDevice.deviceId === initialTrackId && mode === 'internal') {
-          currentBoothStream = initialStream;
-          state.isMirrored = true;
-          boothVideo.srcObject = currentBoothStream;
-          boothVideo.classList.add('mirror');
-          await boothVideo.play().catch(() => {});
-          await renderBoothCameraChips(initialTrackId);
-
-          boothPlaceholder.classList.add('hidden');
-          boothResultImg.classList.add('hidden');
-          boothVideo.classList.remove('hidden');
-          setBoothStep('booth-ui-camera');
-        } else {
-          initialStream.getTracks().forEach(t => t.stop());
-          await openSpecificBoothCamera(chosenDevice.deviceId, mode === 'internal');
-        }
-      } catch (e) {
-        if (e.name === 'NotAllowedError') {
-          showBoothError('Permiso denegado. Habilita la cámara en los ajustes del navegador.');
-        } else if (e.name === 'NotReadableError') {
-          showBoothError('Cámara ocupada por otra app. Ciérrala e inténtalo de nuevo.');
-        } else {
-          showBoothError(`Error (${e.name || 'Cámara'}): ${e.message}`);
-        }
-      }
-    }
-
-    function startBoothCountdown() {
-      let sec = 3;
-      boothCountdownEl.textContent = sec;
-      boothCountdownEl.classList.remove('hidden');
-
-      const timer = setInterval(() => {
-        sec--;
-        if (sec > 0) {
-          boothCountdownEl.textContent = sec;
-        } else {
-          clearInterval(timer);
-          boothCountdownEl.classList.add('hidden');
-          captureBoothFrame();
-        }
-      }, 1000);
-    }
-
-    function captureBoothFrame() {
-      const targetRatio = state.selectedMode === 'group' ? 4 / 3 : 3 / 4;
-      const vw = boothVideo.videoWidth || 1280;
-      const vh = boothVideo.videoHeight || 720;
-      const videoRatio = vw / vh;
-
-      let sx = 0, sy = 0, sw = vw, sh = vh;
-      if (videoRatio > targetRatio) {
-        sw = vh * targetRatio;
-        sx = (vw - sw) / 2;
-      } else {
-        sh = vw / targetRatio;
-        sy = (vh - sh) / 2;
-      }
-
-      const maxDim = 1024;
-      if (sw >= sh) {
-        boothCanvas.width = Math.min(maxDim, sw);
-        boothCanvas.height = boothCanvas.width / targetRatio;
-      } else {
-        boothCanvas.height = Math.min(maxDim, sh);
-        boothCanvas.width = boothCanvas.height * targetRatio;
-      }
-
-      const ctx = boothCanvas.getContext('2d');
-      ctx.save();
-      if (state.isMirrored) {
-        ctx.translate(boothCanvas.width, 0);
-        ctx.scale(-1, 1);
-      }
-      ctx.drawImage(boothVideo, sx, sy, sw, sh, 0, 0, boothCanvas.width, boothCanvas.height);
-      ctx.restore();
-
-      state.capturedDataUrl = boothCanvas.toDataURL('image/jpeg', 0.85);
-      boothResultImg.src = state.capturedDataUrl;
-
-      boothVideo.classList.add('hidden');
-      boothResultImg.classList.remove('hidden');
-      setBoothStep('booth-ui-preview');
-    }
-
-    function retakeBoothPhoto() {
-      state.generatedPosterDataUrl = null;
-      boothResultImg.classList.add('hidden');
-      boothVideo.classList.remove('hidden');
-      setBoothStep('booth-ui-camera');
-    }
-
-    function loadBoothImage(src) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => resolve(img);
-        img.onerror = (e) => reject(e);
-        img.src = src;
-      });
-    }
-
-    function drawSpacedPosterText(ctx, text, x, y, spacing) {
-      const chars = text.split('');
-      const totalWidth = chars.reduce((acc, ch) => acc + ctx.measureText(ch).width, 0) + spacing * (chars.length - 1);
-      let currentX = x - totalWidth / 2;
-      for (const ch of chars) {
-        ctx.fillText(ch, currentX + ctx.measureText(ch).width / 2, y);
-        currentX += ctx.measureText(ch).width + spacing;
-      }
-    }
-
-    async function composeMoviePoster(baseImageDataUrl, destination) {
-      await document.fonts.ready;
-
-      const baseImg = await loadBoothImage(baseImageDataUrl);
-      const posterCanvas = document.createElement('canvas');
-      posterCanvas.width = baseImg.width;
-      posterCanvas.height = baseImg.height;
-      const ctx = posterCanvas.getContext('2d');
-
-      ctx.drawImage(baseImg, 0, 0);
-
-      const w = posterCanvas.width;
-      const h = posterCanvas.height;
-
-      const bottomGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
-      bottomGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      bottomGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.62)');
-      bottomGrad.addColorStop(1, 'rgba(0, 0, 0, 0.94)');
-      ctx.fillStyle = bottomGrad;
-      ctx.fillRect(0, h * 0.58, w, h * 0.42);
-
-      const titleText = destination === 'salto' ? 'SALTO ÁNGEL' : 'MÉDANOS DE CORO';
-      const taglineText = destination === 'salto'
-        ? 'PARQUE NACIONAL CANAIMA • VENEZUELA'
-        : 'ESTADO FALCÓN • VENEZUELA';
-
-      ctx.textAlign = 'center';
-      const titleSize = Math.round(w * 0.066);
-      ctx.font = `800 ${titleSize}px 'Cinzel', Georgia, serif`;
-      const titleGrad = ctx.createLinearGradient(0, h - h * 0.18, 0, h - h * 0.12);
-      titleGrad.addColorStop(0, '#ffffff');
-      titleGrad.addColorStop(0.7, '#f1f5f9');
-      titleGrad.addColorStop(1, '#fbbf24');
-      ctx.fillStyle = titleGrad;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
-      ctx.shadowBlur = 18;
-      drawSpacedPosterText(ctx, titleText, w / 2, h - h * 0.136, Math.round(w * 0.005));
-      ctx.shadowBlur = 0;
-
-      ctx.fillStyle = 'rgba(245, 158, 11, 0.95)';
-      const subSize = Math.round(w * 0.018);
-      ctx.font = `700 ${subSize}px 'Montserrat', sans-serif`;
-      drawSpacedPosterText(ctx, taglineText, w / 2, h - h * 0.105, Math.round(w * 0.004));
-
-      try {
-        const logoImg = await loadBoothImage(LOGO_PATH);
-        const maxLogoW = w * 0.34;
-        const maxLogoH = h * 0.075;
-        const ratio = Math.min(maxLogoW / logoImg.width, maxLogoH / logoImg.height);
-        const drawW = logoImg.width * ratio;
-        const drawH = logoImg.height * ratio;
-        const drawX = (w - drawW) / 2;
-        const drawY = h - drawH - (h * 0.022);
-
-        ctx.drawImage(logoImg, drawX, drawY, drawW, drawH);
-      } catch (e) {}
-
-      return posterCanvas.toDataURL('image/jpeg', 0.92);
-    }
-
-    function startPubliVideoOverlay(labelText) {
-      boothLoaderLabel.textContent = labelText;
-      boothAiLoader.classList.remove('hidden');
-      try {
-        publiVideo.currentTime = 0;
-        publiVideo.muted = !state.soundEnabled;
-        updatePubliSoundIcon();
-        publiVideo.play().catch(() => {});
-      } catch (e) {}
-    }
-
-    function stopPubliVideoOverlay() {
-      try {
-        publiVideo.pause();
-      } catch (e) {}
-      boothAiLoader.classList.add('hidden');
-    }
-
-    function togglePubliMute() {
-      publiVideo.muted = !publiVideo.muted;
-      updatePubliSoundIcon();
-    }
-
-    function updatePubliSoundIcon() {
-      const icon = document.getElementById('publi-sound-icon');
-      if (icon) {
-        icon.setAttribute('data-lucide', publiVideo.muted ? 'volume-x' : 'volume-2');
-        lucide.createIcons();
-      }
-    }
-
-    async function processBoothImage() {
-      const destName = state.selectedDestination === 'salto' ? 'el Salto Ángel' : 'Los Médanos de Coro';
-      startPubliVideoOverlay(`Integrando ${destName}...`);
-      boothErrorBox.classList.add('hidden');
-
-      try {
-        const res = await fetch(WORKER_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            image: state.capturedDataUrl,
-            mode: state.selectedMode,
-            destination: state.selectedDestination,
-            model: FAST_MODEL_CONFIG.model,
-            resolution: FAST_MODEL_CONFIG.resolution
-          })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok || !data.image) {
-          throw new Error(data.error || 'Error al generar la foto con IA');
-        }
-
-        state.generatedPosterDataUrl = await composeMoviePoster(data.image, state.selectedDestination);
-        boothResultImg.src = state.generatedPosterDataUrl;
-        boothHeading.textContent = `¡Tu Póster en ${destName}!`;
-        AudioEngine.fanfare();
-        launchDualConfetti();
-        setBoothStep('booth-ui-done');
-      } catch (err) {
-        showBoothError('Error: ' + err.message);
-      } finally {
-        stopPubliVideoOverlay();
-      }
-    }
-
-    async function savePosterToGallery() {
-      if (!state.generatedPosterDataUrl) return;
-      const filename = `poster-venezuela-${state.selectedDestination}-${state.selectedMode}.jpg`;
-
-      try {
-        const response = await fetch(state.generatedPosterDataUrl);
-        const blob = await response.blob();
-        const file = new File([blob], filename, { type: 'image/jpeg' });
-
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: 'Venezuela Abierta al Futuro'
-          });
-          return;
-        }
-      } catch (err) {
-        if (err.name === 'AbortError') return;
-      }
-
-      const a = document.createElement('a');
-      a.href = state.generatedPosterDataUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-
-    function insertPosterIntoPassport() {
-      stopBoothStream();
-      const thumb = document.getElementById('reg-poster-thumb');
-      const icon = document.getElementById('reg-poster-icon');
-
-      if (state.generatedPosterDataUrl) {
-        thumb.src = state.generatedPosterDataUrl;
-        thumb.classList.remove('hidden');
-        icon.classList.add('hidden');
-      }
-
-      if (state.registration) {
-        renderFinalTicketCard();
-        showScreen('ticket');
-        return;
-      }
-
-      document.getElementById('form-score-summary').textContent =
-        `${state.score} pts · ${state.completedRegions.length} ${state.completedRegions.length === 1 ? 'Sello' : 'Sellos'}`;
-      showScreen('register');
-    }
-
-    function resetBoothExperience() {
-      state.capturedDataUrl = null;
-      state.generatedPosterDataUrl = null;
-      boothHeading.textContent = 'Elige tu encuadre y destino';
-      boothResultImg.classList.add('hidden');
-      boothPlaceholder.classList.remove('hidden');
-      setBoothStep('booth-ui-start');
-    }
-
-    // =========================================================================
-    // REGISTRO Y TICKET OFICIAL DEL AUTOMÓVIL 0 KM
-    // =========================================================================
-    async function submitRegistration(e) {
-      e.preventDefault();
-      const submitBtn = document.getElementById('submit-prize-btn');
-      const originalBtnHTML = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span>Generando Ticket Oficial...</span>';
-
-      const name = document.getElementById('inp-name').value.trim();
-      const docId = document.getElementById('inp-id').value.trim().toUpperCase();
-      const phone = document.getElementById('inp-phone').value.trim();
-      const email = document.getElementById('inp-email').value.trim();
-      const userState = document.getElementById('inp-state').value;
-      const ig = document.getElementById('inp-ig').value.trim();
-
-      const randomCode = Math.floor(1000 + Math.random() * 9000);
-      const ticketCode = `#VE-2026-${randomCode}`;
-
-      state.registration = { name, docId, phone, email, userState, ig, ticketCode };
-
-      try {
-        await fetch('https://formspree.io/f/xzezlwbg', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            campana: 'Trivia & Photo Booth Marca País - Automóvil 0km',
-            ticket: ticketCode,
-            nombre: name,
-            documento: docId,
-            telefono: phone,
-            correo: email,
-            estado: userState,
-            instagram: ig || 'N/A',
-            destino_poster: state.selectedDestination,
-            puntaje: state.score,
-            regiones_completadas: state.completedRegions.join(', ')
-          })
-        });
-      } catch (err) {}
-
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalBtnHTML;
-
-      renderFinalTicketCard();
-      AudioEngine.fanfare();
-      launchDualConfetti();
-      showScreen('ticket');
-    }
-
-    function renderFinalTicketCard() {
-      if (!state.registration) return;
-      const { name, docId, ticketCode } = state.registration;
-
-      document.getElementById('ticket-name').textContent = name;
-      document.getElementById('ticket-id').textContent = docId;
-      document.getElementById('ticket-score').textContent = `${state.score} pts`;
-      document.getElementById('ticket-code').textContent = ticketCode;
-      document.getElementById('ticket-stamps-badge').textContent =
-        `${state.completedRegions.length} ${state.completedRegions.length === 1 ? 'Sello' : 'Sellos'}`;
-
-      const photoImg = document.getElementById('ticket-user-photo');
-      const fallback = document.getElementById('ticket-photo-fallback');
-      const activePoster = state.generatedPosterDataUrl || state.capturedDataUrl;
-
-      if (activePoster) {
-        photoImg.src = activePoster;
-        photoImg.classList.remove('hidden');
-        fallback.classList.add('hidden');
-      } else {
-        photoImg.classList.add('hidden');
-        fallback.classList.remove('hidden');
-      }
-
-      const stampsContainer = document.getElementById('ticket-stamps-icons');
-      stampsContainer.innerHTML = '';
-      REGIONS_DATA.forEach(r => {
-        if (state.completedRegions.includes(r.id)) {
-          const span = document.createElement('span');
-          span.textContent = r.icon;
-          span.title = r.name;
-          stampsContainer.appendChild(span);
-        }
-      });
-    }
-
-    async function downloadTicketPassportImage() {
-      const btn = document.getElementById('download-ticket-btn');
-      const originalHTML = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = '<span>Preparando ticket...</span>';
-
-      try {
-        const card = document.getElementById('passport-export-card');
-        const canvas = await html2canvas(card, {
-          scale: 3,
-          useCORS: true,
-          backgroundColor: null
-        });
-
-        const link = document.createElement('a');
-        const cleanCode = (state.registration?.ticketCode || 'VE-2026').replace('#', '');
-        link.download = `Ticket-Pasaporte-MarcaPais-${cleanCode}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        AudioEngine.correct();
-      } catch (err) {
-        alert('Haz una captura de pantalla de tu Ticket Pasaporte para compartirla en tus Historias.');
-      }
-
-      btn.disabled = false;
-      btn.innerHTML = originalHTML;
-      lucide.createIcons();
-    }
-
-    function copyTicketCode() {
-      if (!state.registration) return;
-      navigator.clipboard?.writeText(state.registration.ticketCode);
-      const label = document.getElementById('copy-label');
-      label.textContent = '¡Copiado!';
-      AudioEngine.click();
-      setTimeout(() => { label.textContent = 'Copiar Ticket'; }, 2000);
-    }
-
-    // =========================================================================
-    // MODAL PASAPORTE DIGITAL Y MODO ACTIVACIÓN EVENTOS (QR + REINICIO)
-    // =========================================================================
-    function openPassport() {
-      AudioEngine.click();
-      const grid = document.getElementById('passport-grid');
-      grid.innerHTML = '';
-
-      REGIONS_DATA.forEach((region, idx) => {
-        const unlocked = state.completedRegions.includes(region.id);
-        const item = document.createElement('div');
-        item.style.animationDelay = `${idx * 50}ms`;
-        item.className = `option-card p-3 rounded-2xl border text-center flex flex-col items-center justify-center ${
-          unlocked
-            ? 'bg-gradient-to-b from-amber-50 to-white border-amber-300 shadow-xs'
-            : 'bg-slate-50 border-slate-200/80 opacity-55 grayscale'
-        }`;
-        item.innerHTML = `
-          <div class="text-3xl mb-1">${region.icon}</div>
-          <span class="font-display font-bold text-[11px] text-ve-navy leading-tight">${region.name}</span>
-          <span class="text-[9px] font-bold mt-0.5 ${unlocked ? 'text-emerald-600' : 'text-slate-400'}">
-            ${unlocked ? 'SELLADO ✓' : 'PENDIENTE'}
-          </span>
-        `;
-        grid.appendChild(item);
-      });
-
-      document.getElementById('passport-modal').classList.remove('hidden');
-    }
-
-    function closePassport() {
-      document.getElementById('passport-modal').classList.add('hidden');
-    }
-
-    function openEventModal() {
-      AudioEngine.click();
-      const qrBox = document.getElementById('event-qrcode');
-      if (!qrGenerated && typeof QRCode === 'function') {
-        qrBox.innerHTML = '';
-        new QRCode(qrBox, {
-          text: window.location.href,
-          width: 164,
-          height: 164,
-          colorDark: '#061B49',
-          colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.H
-        });
-        qrGenerated = true;
-      }
-      document.getElementById('event-modal').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function closeEventModal() {
-      document.getElementById('event-modal').classList.add('hidden');
-    }
-
-    function resetFullSession() {
-      clearInterval(state.timerInterval);
-      stopBoothStream();
-      stopPubliVideoOverlay();
-
-      state.score = 0;
-      state.streak = 0;
-      state.completedRegions = [];
-      state.currentRegion = null;
-      state.currentQuestionIndex = 0;
-      state.sessionCorrect = 0;
-      state.sessionPoints = 0;
-      state.fiftyFiftyUsedInRegion = false;
-      state.answered = false;
-      state.capturedDataUrl = null;
-      state.generatedPosterDataUrl = null;
-      state.registration = null;
-
-      document.getElementById('prize-form')?.reset();
-      boothResultImg.classList.add('hidden');
-      boothVideo.classList.add('hidden');
-      boothPlaceholder.classList.remove('hidden');
-      boothHeading.textContent = 'Elige tu encuadre y destino';
-      setBoothStep('booth-ui-start');
-
-      updateHeaderUI();
-      showScreen('home');
-    }
-
-    // =========================================================================
-    // CONFETI TRICOLOR DESDE AMBOS CAÑONES LATERALES
-    // =========================================================================
-    function launchDualConfetti() {
-      if (typeof confetti !== 'function') return;
-      const colors = ['#FFCC00', '#0033A0', '#CF142B', '#FFFFFF'];
-      confetti({ particleCount: 45, angle: 60, spread: 55, origin: { x: 0.1, y: 0.65 }, colors });
-      confetti({ particleCount: 45, angle: 120, spread: 55, origin: { x: 0.9, y: 0.65 }, colors });
-    }
-
-    lucide.createIcons();
-  </script>
+
+<body>
+
+
+
+<div class="card">
+
+<div class="badge">Venezuela • Abierta al Futuro</div>
+
+<h1 id="heading">Elige tu encuadre y destino</h1>
+
+
+
+<div id="selectors" class="selectors">
+
+<div class="pill-group">
+
+<button type="button" class="pill active" id="mode-selfie" onclick="setMode('selfie')">Selfie (Individual)</button>
+
+<button type="button" class="pill" id="mode-group" onclick="setMode('group')">Foto Grupal</button>
+
+</div>
+
+
+
+<div class="pill-group">
+
+<button type="button" class="pill active" id="dest-medanos" onclick="setDestination('medanos')">Médanos de Coro</button>
+
+<button type="button" class="pill" id="dest-salto" onclick="setDestination('salto')">Salto Ángel</button>
+
+</div>
+
+</div>
+
+
+
+<div id="frame" class="frame">
+
+<!-- Barra dinámica con todas las cámaras detectadas (Interna, DJI Osmo Action / USB, etc.) -->
+
+<div id="cam-switcher-bar" class="cam-switcher-bar hidden"></div>
+
+
+
+<div id="placeholder" class="placeholder">
+
+<svg fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+
+<path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+
+<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
+
+</svg>
+
+<span>Elige la cámara que deseas activar</span>
+
+</div>
+
+
+
+<video id="video" autoplay playsinline muted class="hidden"></video>
+
+<img id="result-img" class="hidden" alt="Resultado">
+
+<div id="countdown" class="countdown hidden">3</div>
+
+
+
+<div id="loader" class="loader hidden">
+
+<div class="spinner"></div>
+
+<p id="loader-text">Integrando tu foto...</p>
+
+</div>
+
+</div>
+
+
+
+<!-- Paso 1: Botones para elegir Cámara Interna o Cámara USB (Action) -->
+
+<div id="ui-start" class="actions">
+
+<div class="dual-btn-row">
+
+<button type="button" class="btn-main" onclick="startWithMode('internal')">Cámara Interna</button>
+
+<button type="button" class="btn-main btn-usb" onclick="startWithMode('usb')">Cámara USB (Action)</button>
+
+</div>
+
+</div>
+
+
+
+<!-- Paso 2 -->
+
+<div id="ui-camera" class="actions hidden">
+
+<button type="button" class="btn-main" onclick="startCountdown()">Tomar Foto</button>
+
+</div>
+
+
+
+<!-- Paso 3 -->
+
+<div id="ui-preview" class="actions hidden">
+
+<button type="button" id="generate-btn" class="btn-main" onclick="processImage()">Crear Póster en Médanos de Coro</button>
+
+<button type="button" class="btn-secondary" onclick="retakePhoto()">Repetir Foto</button>
+
+</div>
+
+
+
+<!-- Paso 4 -->
+
+<div id="ui-done" class="actions hidden">
+
+<button type="button" class="btn-main" onclick="saveToGallery()">Guardar Póster en Galería</button>
+
+<p class="hint-text">En iPhone/Android toca "Guardar imagen" para enviarlo directo a Fotos</p>
+
+<button type="button" class="btn-secondary" onclick="resetExperience()">Crear Otro Póster</button>
+
+</div>
+
+
+
+<p id="error-box" class="error-msg hidden"></p>
+
+</div>
+
+
+
+<canvas id="canvas" class="hidden"></canvas>
+
+
+
+<script>
+
+const WORKER_URL = "https://barbarieentertainment.jesusdavid-chacons.workers.dev";
+
+const LOGO_PATH = "./marcapais.png";
+
+
+
+// Modelo rápido de alta calidad (Nano Banana Flash) + salida 2K
+
+const FAST_MODEL_CONFIG = {
+
+model: "gemini-2.5-flash-image",
+
+resolution: "2K"
+
+};
+
+
+
+const video = document.getElementById("video");
+
+const canvas = document.getElementById("canvas");
+
+const resultImg = document.getElementById("result-img");
+
+const placeholder = document.getElementById("placeholder");
+
+const countdownEl = document.getElementById("countdown");
+
+const loader = document.getElementById("loader");
+
+const loaderText = document.getElementById("loader-text");
+
+const errorBox = document.getElementById("error-box");
+
+const heading = document.getElementById("heading");
+
+const frame = document.getElementById("frame");
+
+const generateBtn = document.getElementById("generate-btn");
+
+const selectors = document.getElementById("selectors");
+
+const camSwitcherBar = document.getElementById("cam-switcher-bar");
+
+
+
+let selectedMode = "selfie";
+
+let selectedDestination = "medanos";
+
+let isMirrored = false;
+
+let currentStream = null;
+
+let capturedDataUrl = null;
+
+let generatedDataUrl = null;
+
+
+
+function setMode(mode) {
+
+selectedMode = mode;
+
+document.getElementById("mode-selfie").classList.toggle("active", mode === "selfie");
+
+document.getElementById("mode-group").classList.toggle("active", mode === "group");
+
+frame.classList.toggle("group-ratio", mode === "group");
+
+}
+
+
+
+function setDestination(dest) {
+
+selectedDestination = dest;
+
+document.getElementById("dest-medanos").classList.toggle("active", dest === "medanos");
+
+document.getElementById("dest-salto").classList.toggle("active", dest === "salto");
+
+const destName = dest === "salto" ? "Salto Ángel" : "Médanos de Coro";
+
+generateBtn.textContent = `Crear Póster en ${destName}`;
+
+}
+
+
+
+function setStep(step) {
+
+["ui-start", "ui-camera", "ui-preview", "ui-done"].forEach(id => {
+
+document.getElementById(id).classList.add("hidden");
+
+});
+
+document.getElementById(step).classList.remove("hidden");
+
+selectors.classList.toggle("hidden", step === "ui-done");
+
+camSwitcherBar.classList.toggle("hidden", step !== "ui-camera");
+
+errorBox.classList.add("hidden");
+
+}
+
+
+
+function showError(msg) {
+
+errorBox.textContent = msg;
+
+errorBox.classList.remove("hidden");
+
+}
+
+
+
+function stopCurrentStream() {
+
+if (currentStream) {
+
+currentStream.getTracks().forEach(track => track.stop());
+
+currentStream = null;
+
+}
+
+}
+
+
+
+function formatLabel(device, index) {
+
+const raw = (device.label || "").trim();
+
+if (!raw) return `Cámara ${index + 1}`;
+
+const lower = raw.toLowerCase();
+
+if (lower.includes("osmo") || lower.includes("dji")) return "DJI Osmo Action";
+
+if (lower.includes("usb") || lower.includes("uvc") || lower.includes("external")) return "Cámara USB";
+
+if (lower.includes("front") || lower.includes("user")) return "Cámara Frontal";
+
+if (lower.includes("back") || lower.includes("environment")) return "Cámara Trasera";
+
+return raw.replace(/\s*\([0-9a-f]{4}:[0-9a-f]{4}\)\s*/i, "");
+
+}
+
+
+
+function isUsbOrExternal(device) {
+
+const l = (device.label || "").toLowerCase();
+
+return l.includes("usb") || l.includes("osmo") || l.includes("dji") ||
+
+l.includes("uvc") || l.includes("webcam") || l.includes("external") ||
+
+l.includes("camera 1") || l.includes("back") || l.includes("environment");
+
+}
+
+
+
+async function renderCameraChips(activeDeviceId) {
+
+const devices = await navigator.mediaDevices.enumerateDevices();
+
+const videoInputs = devices.filter(d => d.kind === "videoinput");
+
+
+
+camSwitcherBar.innerHTML = "";
+
+if (videoInputs.length <= 1) return;
+
+
+
+videoInputs.forEach((dev, idx) => {
+
+const btn = document.createElement("button");
+
+btn.type = "button";
+
+btn.className = "cam-chip" + (dev.deviceId === activeDeviceId ? " active" : "");
+
+btn.textContent = formatLabel(dev, idx);
+
+btn.onclick = () => openSpecificCamera(dev.deviceId, !isUsbOrExternal(dev));
+
+camSwitcherBar.appendChild(btn);
+
+});
+
+}
+
+
+
+async function openSpecificCamera(deviceId, mirrorFlag = false) {
+
+stopCurrentStream();
+
+
+
+const constraintsList = [
+
+{
+
+video: {
+
+deviceId: { exact: deviceId },
+
+width: { ideal: 1920 },
+
+height: { ideal: 1080 },
+
+frameRate: { ideal: 30, max: 30 }
+
+},
+
+audio: false
+
+},
+
+{
+
+video: { deviceId: { exact: deviceId } },
+
+audio: false
+
+}
+
+];
+
+
+
+let stream = null;
+
+for (const c of constraintsList) {
+
+try {
+
+stream = await navigator.mediaDevices.getUserMedia(c);
+
+break;
+
+} catch (err) {
+
+// Intenta el siguiente constraint
+
+}
+
+}
+
+
+
+if (!stream) {
+
+throw new Error("No se pudo iniciar la transmisión de la cámara seleccionada.");
+
+}
+
+
+
+currentStream = stream;
+
+isMirrored = mirrorFlag;
+
+video.srcObject = currentStream;
+
+video.classList.toggle("mirror", isMirrored);
+
+await video.play().catch(() => {});
+
+
+
+const activeTrack = currentStream.getVideoTracks()[0];
+
+const activeId = activeTrack?.getSettings?.()?.deviceId || deviceId;
+
+await renderCameraChips(activeId);
+
+
+
+placeholder.classList.add("hidden");
+
+resultImg.classList.add("hidden");
+
+video.classList.remove("hidden");
+
+setStep("ui-camera");
+
+}
+
+
+
+async function startWithMode(mode) {
+
+try {
+
+stopCurrentStream();
+
+
+
+if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+
+showError("El navegador bloqueó la cámara. Abre esta web con HTTPS (no como archivo local).");
+
+return;
+
+}
+
+
+
+const initialStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+
+const devices = await navigator.mediaDevices.enumerateDevices();
+
+const videoInputs = devices.filter(d => d.kind === "videoinput");
+
+
+
+if (videoInputs.length === 0) {
+
+initialStream.getTracks().forEach(t => t.stop());
+
+showError("No se detectó ninguna cámara conectada.");
+
+return;
+
+}
+
+
+
+let chosenDevice = null;
+
+if (mode === "usb") {
+
+chosenDevice = videoInputs.find(isUsbOrExternal) || videoInputs[videoInputs.length - 1];
+
+} else {
+
+chosenDevice = videoInputs.find(d => !isUsbOrExternal(d)) || videoInputs[0];
+
+}
+
+
+
+const initialTrackId = initialStream.getVideoTracks()[0]?.getSettings?.()?.deviceId;
+
+
+
+if (chosenDevice.deviceId === initialTrackId && mode === "internal") {
+
+currentStream = initialStream;
+
+isMirrored = true;
+
+video.srcObject = currentStream;
+
+video.classList.add("mirror");
+
+await video.play().catch(() => {});
+
+await renderCameraChips(initialTrackId);
+
+
+
+placeholder.classList.add("hidden");
+
+resultImg.classList.add("hidden");
+
+video.classList.remove("hidden");
+
+setStep("ui-camera");
+
+} else {
+
+initialStream.getTracks().forEach(t => t.stop());
+
+await openSpecificCamera(chosenDevice.deviceId, mode === "internal");
+
+}
+
+} catch (e) {
+
+if (e.name === "NotAllowedError") {
+
+showError("Permiso denegado. Habilita la cámara en los ajustes de Chrome/Android.");
+
+} else if (e.name === "NotReadableError") {
+
+showError("Cámara ocupada por otra app (cierra la app Cámara de Android en segundo plano).");
+
+} else {
+
+showError(`Error (${e.name || "Cámara"}): ${e.message}`);
+
+}
+
+}
+
+}
+
+
+
+function startCountdown() {
+
+let sec = 3;
+
+countdownEl.textContent = sec;
+
+countdownEl.classList.remove("hidden");
+
+
+
+const timer = setInterval(() => {
+
+sec--;
+
+if (sec > 0) {
+
+countdownEl.textContent = sec;
+
+} else {
+
+clearInterval(timer);
+
+countdownEl.classList.add("hidden");
+
+capture();
+
+}
+
+}, 1000);
+
+}
+
+
+
+function capture() {
+
+const targetRatio = selectedMode === "group" ? 4 / 3 : 3 / 4;
+
+const vw = video.videoWidth || 1280;
+
+const vh = video.videoHeight || 720;
+
+const videoRatio = vw / vh;
+
+
+
+let sx = 0, sy = 0, sw = vw, sh = vh;
+
+if (videoRatio > targetRatio) {
+
+sw = vh * targetRatio;
+
+sx = (vw - sw) / 2;
+
+} else {
+
+sh = vw / targetRatio;
+
+sy = (vh - sh) / 2;
+
+}
+
+
+
+// 1024px agiliza la subida sin perder nitidez facial para el modelo 2K
+
+const maxDim = 1024;
+
+if (sw >= sh) {
+
+canvas.width = Math.min(maxDim, sw);
+
+canvas.height = canvas.width / targetRatio;
+
+} else {
+
+canvas.height = Math.min(maxDim, sh);
+
+canvas.width = canvas.height * targetRatio;
+
+}
+
+
+
+const ctx = canvas.getContext("2d");
+
+ctx.save();
+
+if (isMirrored) {
+
+ctx.translate(canvas.width, 0);
+
+ctx.scale(-1, 1);
+
+}
+
+ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+ctx.restore();
+
+
+
+capturedDataUrl = canvas.toDataURL("image/jpeg", 0.85);
+
+resultImg.src = capturedDataUrl;
+
+
+
+video.classList.add("hidden");
+
+resultImg.classList.remove("hidden");
+
+setStep("ui-preview");
+
+}
+
+
+
+function retakePhoto() {
+
+resultImg.classList.add("hidden");
+
+video.classList.remove("hidden");
+
+setStep("ui-camera");
+
+}
+
+
+
+function loadImage(src) {
+
+return new Promise((resolve, reject) => {
+
+const img = new Image();
+
+img.crossOrigin = "anonymous";
+
+img.onload = () => resolve(img);
+
+img.onerror = (e) => reject(e);
+
+img.src = src;
+
+});
+
+}
+
+
+
+function drawSpacedText(ctx, text, x, y, spacing) {
+
+const chars = text.split("");
+
+const totalWidth = chars.reduce((acc, ch) => acc + ctx.measureText(ch).width, 0) + spacing * (chars.length - 1);
+
+let currentX = x - totalWidth / 2;
+
+for (const ch of chars) {
+
+ctx.fillText(ch, currentX + ctx.measureText(ch).width / 2, y);
+
+currentX += ctx.measureText(ch).width + spacing;
+
+}
+
+}
+
+
+
+async function composeMoviePoster(baseImageDataUrl, destination) {
+
+await document.fonts.ready;
+
+
+
+const baseImg = await loadImage(baseImageDataUrl);
+
+const posterCanvas = document.createElement("canvas");
+
+posterCanvas.width = baseImg.width;
+
+posterCanvas.height = baseImg.height;
+
+const ctx = posterCanvas.getContext("2d");
+
+
+
+ctx.drawImage(baseImg, 0, 0);
+
+
+
+const w = posterCanvas.width;
+
+const h = posterCanvas.height;
+
+
+
+const bottomGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
+
+bottomGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
+
+bottomGrad.addColorStop(0.5, "rgba(0, 0, 0, 0.62)");
+
+bottomGrad.addColorStop(1, "rgba(0, 0, 0, 0.94)");
+
+ctx.fillStyle = bottomGrad;
+
+ctx.fillRect(0, h * 0.58, w, h * 0.42);
+
+
+
+const titleText = destination === "salto" ? "SALTO ÁNGEL" : "MÉDANOS DE CORO";
+
+const taglineText = destination === "salto"
+
+? "PARQUE NACIONAL CANAIMA • VENEZUELA"
+
+: "ESTADO FALCÓN • VENEZUELA";
+
+
+
+ctx.textAlign = "center";
+
+const titleSize = Math.round(w * 0.066);
+
+ctx.font = `800 ${titleSize}px 'Cinzel', Georgia, serif`;
+
+const titleGrad = ctx.createLinearGradient(0, h - h * 0.18, 0, h - h * 0.12);
+
+titleGrad.addColorStop(0, "#ffffff");
+
+titleGrad.addColorStop(0.7, "#f1f5f9");
+
+titleGrad.addColorStop(1, "#fbbf24");
+
+ctx.fillStyle = titleGrad;
+
+ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+
+ctx.shadowBlur = 18;
+
+drawSpacedText(ctx, titleText, w / 2, h - h * 0.136, Math.round(w * 0.005));
+
+ctx.shadowBlur = 0;
+
+
+
+ctx.fillStyle = "rgba(245, 158, 11, 0.95)";
+
+const subSize = Math.round(w * 0.018);
+
+ctx.font = `700 ${subSize}px 'Montserrat', sans-serif`;
+
+drawSpacedText(ctx, taglineText, w / 2, h - h * 0.105, Math.round(w * 0.004));
+
+
+
+try {
+
+const logoImg = await loadImage(LOGO_PATH);
+
+const maxLogoW = w * 0.34;
+
+const maxLogoH = h * 0.075;
+
+const ratio = Math.min(maxLogoW / logoImg.width, maxLogoH / logoImg.height);
+
+const drawW = logoImg.width * ratio;
+
+const drawH = logoImg.height * ratio;
+
+const drawX = (w - drawW) / 2;
+
+const drawY = h - drawH - (h * 0.022);
+
+
+
+ctx.drawImage(logoImg, drawX, drawY, drawW, drawH);
+
+} catch (e) {
+
+console.warn("No se encontró marcapais.png:", e);
+
+}
+
+
+
+return posterCanvas.toDataURL("image/jpeg", 0.92);
+
+}
+
+
+
+async function processImage() {
+
+const destName = selectedDestination === "salto" ? "el Salto Ángel" : "Los Médanos de Coro";
+
+loaderText.textContent = `Integrando escena en ${destName}...`;
+
+loader.classList.remove("hidden");
+
+errorBox.classList.add("hidden");
+
+
+
+try {
+
+const res = await fetch(WORKER_URL, {
+
+method: "POST",
+
+headers: { "Content-Type": "application/json" },
+
+body: JSON.stringify({
+
+image: capturedDataUrl,
+
+mode: selectedMode,
+
+destination: selectedDestination,
+
+model: FAST_MODEL_CONFIG.model,
+
+resolution: FAST_MODEL_CONFIG.resolution
+
+})
+
+});
+
+
+
+const data = await res.json();
+
+
+
+if (!res.ok || !data.image) {
+
+throw new Error(data.error || "Error al generar la foto");
+
+}
+
+
+
+generatedDataUrl = await composeMoviePoster(data.image, selectedDestination);
+
+resultImg.src = generatedDataUrl;
+
+heading.textContent = `¡Tu Póster en ${destName}!`;
+
+setStep("ui-done");
+
+} catch (err) {
+
+showError("Error: " + err.message);
+
+} finally {
+
+loader.classList.add("hidden");
+
+}
+
+}
+
+
+
+async function saveToGallery() {
+
+if (!generatedDataUrl) return;
+
+const filename = `poster-venezuela-${selectedDestination}-${selectedMode}.jpg`;
+
+
+
+try {
+
+const response = await fetch(generatedDataUrl);
+
+const blob = await response.blob();
+
+const file = new File([blob], filename, { type: "image/jpeg" });
+
+
+
+if (navigator.canShare && navigator.canShare({ files: [file] })) {
+
+await navigator.share({
+
+files: [file],
+
+title: "Venezuela Abierta al Futuro"
+
+});
+
+return;
+
+}
+
+} catch (err) {
+
+if (err.name === "AbortError") return;
+
+}
+
+
+
+const a = document.createElement("a");
+
+a.href = generatedDataUrl;
+
+a.download = filename;
+
+document.body.appendChild(a);
+
+a.click();
+
+document.body.removeChild(a);
+
+}
+
+
+
+function resetExperience() {
+
+heading.textContent = "Elige tu encuadre y destino";
+
+resultImg.classList.add("hidden");
+
+video.classList.remove("hidden");
+
+setStep("ui-camera");
+
+}
+
+</script>
+
+
+
 </body>
-</html>
+
+</html> 
